@@ -55,4 +55,7 @@ public:
 	bool Logout(void *buf, int id);
 	bool syncData(void *buf, int id);
 	void transmitProcess(void * buf, int id);
+
+	//아이피주소얻기
+	void printHostInfo();
 };

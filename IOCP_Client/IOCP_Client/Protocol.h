@@ -27,7 +27,7 @@ struct CTOS_SYNC
 struct STOC_SYNC
 {
 	BYTE	ID;
-	char data[MAX_PACKET_SIZE - 2];
+	char data[MAX_PACKET_SIZE - 3];
 };
 
 #pragma pack(pop)

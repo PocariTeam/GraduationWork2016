@@ -12,6 +12,10 @@ int g_nID = -1;
 
 int main(int argc, char *argv[])
 {
+	char serverAddr[256];
+	printf("서버주소 입력(xxx.xxx.xxx.xxx):");
+	scanf("%s", serverAddr);
+
 	int retval;
 
 	// 윈속 초기화
@@ -27,7 +31,7 @@ int main(int argc, char *argv[])
 	SOCKADDR_IN serveraddr;
 	ZeroMemory(&serveraddr, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_addr.s_addr = inet_addr(SERVERIP);
+	serveraddr.sin_addr.s_addr = inet_addr(serverAddr);
 	serveraddr.sin_port = htons(SERVER_PORT);
 	retval = connect(sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
@@ -51,7 +55,6 @@ int main(int argc, char *argv[])
 	// 서버와 데이터 통신
 	while (1) {
 
-		printf("\n[보낼 데이터]:");
 		if (fgets(inputBuf, MAX_PACKET_SIZE - 2, stdin) == NULL)
 			break;
 		

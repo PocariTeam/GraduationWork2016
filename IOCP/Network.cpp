@@ -57,6 +57,8 @@ void CNetwork::startServer()
 
 	cout << "acceptThread와 " << si.dwNumberOfProcessors * 2 << "개의 workerThread 생성" << endl;
 	cout << "startServer()" << endl;
+
+	printHostInfo();
 }
 
 void CNetwork::endServer()
@@ -67,6 +69,23 @@ void CNetwork::endServer()
 	WSACleanup();
 
 	cout << "endServer()" << endl;
+}
+
+void CNetwork::printHostInfo() {
+	char szLocalHostName[512]; // 이 컴퓨터가 네트워크에서 식별되는 이름이 저장될 문자열 버퍼입니다.
+	struct hostent * pLocalHostInformation; // 로컬 호스트의 정보가 담길 구조체의 포인터
+
+	gethostname(szLocalHostName, sizeof(szLocalHostName));
+	printf("로컬 호스트의 이름은 \"%s\"입니다.\n", szLocalHostName);
+	pLocalHostInformation = gethostbyname(szLocalHostName);
+
+	/* 한 컴퓨터에서 여러 IP를 할당 받을 수 있습니다. 이를 모두 출력합니다. */
+	for (int i = 0; pLocalHostInformation->h_addr_list[i] != NULL; i++)
+	{
+		printf("hostent.h_addr_list[%d] = %s\n", i, inet_ntoa(*(struct in_addr*)pLocalHostInformation->h_addr_list[i]));
+	}
+
+
 }
 
 bool CNetwork::acceptThread()
@@ -80,6 +99,7 @@ bool CNetwork::acceptThread()
 	listenSockAddr.sin_family = AF_INET;
 	listenSockAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	listenSockAddr.sin_port = htons(SERVER_PORT);
+
 
 	int retval = ::bind(m_listenSock, (sockaddr*)&listenSockAddr, sizeof(listenSockAddr));
 	if (retval == SOCKET_ERROR){
@@ -263,7 +283,7 @@ bool CNetwork::Login(void * buf, int id)
 	// 다른 플레이어에게 접속 사실을 알림
 	// 실제코드에서는 위치정보 등 부가정보도 넘겨야 함
 	for (auto client : m_vpClientInfo) {
-		if (client && id != client->nID) {
+		if (client) {
 			transmitProcess(sendData, client->nID);
 		}
 	}
@@ -314,7 +334,7 @@ bool CNetwork::syncData(void * buf, int id)
 	memcpy(pData->data, recvData, strlen(recvData->data)+1);
 
 	for (auto client : m_vpClientInfo) {
-		if (client && id != client->nID) {
+		if (client) {
 			transmitProcess(sendData, client->nID);
 		}
 	}

@@ -1,10 +1,12 @@
-﻿빌드 시작: 2016-09-16 오전 11:13:10
+﻿빌드 시작: 2016-09-16 오후 2:20:04
      1>2 노드의 "D:\GraduationWork_Minsik\IOCP_Client\IOCP_Client\IOCP_Client.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>d:\graduationwork_minsik\iocp_client\iocp_client\main.cpp(68): warning C4267: '=': 'size_t'에서 'UCHAR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>d:\graduationwork_minsik\iocp_client\iocp_client\main.cpp(30): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+     1>d:\graduationwork_minsik\iocp_client\iocp_client\main.cpp(71): warning C4267: '=': 'size_t'에서 'UCHAR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+     1>d:\graduationwork_minsik\iocp_client\iocp_client\main.cpp(17): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(1270): note: 'scanf' 선언을 참조하십시오.
+     1>d:\graduationwork_minsik\iocp_client\iocp_client\main.cpp(34): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
          c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1850): note: 'inet_addr' 선언을 참조하십시오.
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork_Minsik\IOCP_Client\Debug\IOCP_Client.exe" /INCREMENTAL /NOLOGO d3d11.lib d3dx11.lib d3dx11d.lib d3dcompiler.lib d3dx9.lib d3dx9d.lib dxerr.lib dxguid.lib dxgi.lib winmm.lib dinput8.lib XInput.lib dsound.lib X3DAudio.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\GraduationWork_Minsik\IOCP_Client\Debug\IOCP_Client.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork_Minsik\IOCP_Client\Debug\IOCP_Client.lib" /MACHINE:X86 Debug\main.obj
@@ -14,4 +16,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:00.96
+경과 시간: 00:00:01.12
