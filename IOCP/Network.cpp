@@ -40,7 +40,7 @@ void CNetwork::initNetwork()
 	if (m_hIOCP == NULL)
 		err_quit("IOCP 생성 실패");
 
-	cout << "CNetwork 초기화 완료" << endl;
+	cout << "initNetwork()" << endl;
 
 }
 
@@ -56,6 +56,7 @@ void CNetwork::startServer()
 	}
 
 	cout << "acceptThread와 " << si.dwNumberOfProcessors * 2 << "개의 workerThread 생성" << endl;
+	cout << "startServer()" << endl;
 }
 
 void CNetwork::endServer()
@@ -65,7 +66,7 @@ void CNetwork::endServer()
 	}
 	WSACleanup();
 
-	cout << "서버 종료" << endl;
+	cout << "endServer()" << endl;
 }
 
 bool CNetwork::acceptThread()
@@ -109,7 +110,7 @@ bool CNetwork::acceptThread()
 			break;
 		}
 
-		cout << "클라이언트 접속: IP주소:" << inet_ntoa(clientAddr.sin_addr) << ", 포트번호:" << ntohs(clientAddr.sin_port) << endl;
+		cout << "[시스템] " << m_nID <<"번 클라 접속! IP주소:" << inet_ntoa(clientAddr.sin_addr) << ", 포트번호:" << ntohs(clientAddr.sin_port) << endl;
 
 		// 소켓 정보 구조체 할당
 		SOCKETINFO *pSocketInfo = new SOCKETINFO;
@@ -157,7 +158,6 @@ void CNetwork::workerThread()
 			auto sockdata = m_vpClientInfo[key];
 			m_vpClientInfo[key] = nullptr;
 			delete sockdata;
-			cout << "클라이언트 접속종료" << endl;
 			Logout(nullptr, key);
 			continue;
 		}
@@ -263,7 +263,9 @@ bool CNetwork::Login(void * buf, int id)
 	// 다른 플레이어에게 접속 사실을 알림
 	// 실제코드에서는 위치정보 등 부가정보도 넘겨야 함
 	for (auto client : m_vpClientInfo) {
-		transmitProcess(sendData, client->nID);
+		if (client && id != client->nID) {
+			transmitProcess(sendData, client->nID);
+		}
 	}
 
 	return true;
@@ -271,6 +273,24 @@ bool CNetwork::Login(void * buf, int id)
 
 bool CNetwork::Logout(void * buf, int id)
 {
+	//cout << "로그인 패킷" << endl;
+	UCHAR sendData[MAX_PACKET_SIZE] = { 0 };
+
+	HEADER *phead = (HEADER*)sendData;
+	phead->byPacketID = PAK_RMV;
+	phead->ucSize = sizeof(HEADER) + 1;
+
+	STOC_SYNC *pdata1 = (STOC_SYNC*)(sendData + sizeof(HEADER));
+	pdata1->ID = id;
+
+	for (auto &data : m_vpClientInfo){
+		if (data){
+			transmitProcess(sendData, data->nID);
+		}
+	}
+
+	cout << "[시스템] " << id << "번 클라이언트 접속 종료!" << endl;
+
 	return true;
 }
 
@@ -294,7 +314,9 @@ bool CNetwork::syncData(void * buf, int id)
 	memcpy(pData->data, recvData, strlen(recvData->data)+1);
 
 	for (auto client : m_vpClientInfo) {
-		transmitProcess(sendData, client->nID);
+		if (client && id != client->nID) {
+			transmitProcess(sendData, client->nID);
+		}
 	}
 
 	return true;

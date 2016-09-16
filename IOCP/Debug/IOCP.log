@@ -1,9 +1,18 @@
-﻿빌드 시작: 2016-09-15 오후 5:42:33
-     1>2 노드의 "D:\3_2\넷겜플\졸작서버\IOCP\IOCP.vcxproj" 프로젝트(Build 대상)입니다.
-     1>Link:
-         IOCP.vcxproj -> D:\3_2\넷겜플\졸작서버\IOCP\Debug\IOCP.exe
-     1>"D:\3_2\넷겜플\졸작서버\IOCP\IOCP.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+﻿빌드 시작: 2016-09-16 오전 11:13:00
+     1>2 노드의 "D:\GraduationWork_Minsik\IOCP\IOCP.vcxproj" 프로젝트(Build 대상)입니다.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Network.cpp
+         Network.cpp
+     1>d:\graduationwork_minsik\iocp\network.cpp(113): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+         c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1868): note: 'inet_ntoa' 선언을 참조하십시오.
+     1>d:\graduationwork_minsik\iocp\network.cpp(348): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'int'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork_Minsik\IOCP\Debug\IOCP.exe" /INCREMENTAL /NOLOGO d3d11.lib d3dx11.lib d3dx11d.lib d3dcompiler.lib d3dx9.lib d3dx9d.lib dxerr.lib dxguid.lib dxgi.lib winmm.lib dinput8.lib XInput.lib dsound.lib X3DAudio.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\GraduationWork_Minsik\IOCP\Debug\IOCP.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork_Minsik\IOCP\Debug\IOCP.lib" /MACHINE:X86 Debug\main.obj
+         Debug\Network.obj
+         Debug\stdafx.obj
+         IOCP.vcxproj -> D:\GraduationWork_Minsik\IOCP\Debug\IOCP.exe
+     1>"D:\GraduationWork_Minsik\IOCP\IOCP.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
 
 빌드했습니다.
 
-경과 시간: 00:00:00.03
+경과 시간: 00:00:01.46
