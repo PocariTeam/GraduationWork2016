@@ -3,6 +3,7 @@
 
 #define		MAX_PACKET_SIZE			256
 #define		SERVER_PORT				9000
+#define		MAX_ID_CNT				10
 
 #define		PAK_SYNC				0
 #define		PAK_ID					1

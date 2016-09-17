@@ -6,9 +6,10 @@
 void err_quit(char *msg);
 // 소켓 함수 오류 출력
 void err_display(char *msg);
+// 리시브스레드
 void recvThreadFunc(SOCKET* sock);
 
-int g_nID = -1;
+int g_nID;
 
 int main(int argc, char *argv[])
 {
@@ -49,8 +50,6 @@ int main(int argc, char *argv[])
 	phead->byPacketID = PAK_ID;
 	phead->ucSize = sizeof(HEADER);
 	retval = send(sock, sendData, phead->ucSize, 0);
-
-	while (g_nID == -1);
 
 	// 서버와 데이터 통신
 	while (1) {

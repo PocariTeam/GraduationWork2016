@@ -40,6 +40,10 @@ void CNetwork::initNetwork()
 	if (m_hIOCP == NULL)
 		err_quit("IOCP 생성 실패");
 
+	for (int i = 0; i < MAX_ID_CNT; ++i){
+		m_vpClientInfo.push_back(nullptr);
+	}
+
 	cout << "initNetwork()" << endl;
 
 }
@@ -80,8 +84,7 @@ void CNetwork::printHostInfo() {
 	pLocalHostInformation = gethostbyname(szLocalHostName);
 
 	/* 한 컴퓨터에서 여러 IP를 할당 받을 수 있습니다. 이를 모두 출력합니다. */
-	for (int i = 0; pLocalHostInformation->h_addr_list[i] != NULL; i++)
-	{
+	for (int i = 0; pLocalHostInformation->h_addr_list[i] != NULL; i++){
 		printf("hostent.h_addr_list[%d] = %s\n", i, inet_ntoa(*(struct in_addr*)pLocalHostInformation->h_addr_list[i]));
 	}
 
@@ -122,7 +125,7 @@ bool CNetwork::acceptThread()
 
 	while (1) {
 
-		//accept
+		// accept
 		addrLen = sizeof(clientAddr);
 		clientSock = accept(m_listenSock, (SOCKADDR*)&clientAddr, &addrLen);
 		if (clientSock == INVALID_SOCKET) {
@@ -130,7 +133,13 @@ bool CNetwork::acceptThread()
 			break;
 		}
 
-		cout << "[시스템] " << m_nID <<"번 클라 접속! IP주소:" << inet_ntoa(clientAddr.sin_addr) << ", 포트번호:" << ntohs(clientAddr.sin_port) << endl;
+		// 접속차단
+		// !! (추가필요) 해당 플레이어에게 그 사실을 알려야 함
+		if (m_nID >= MAX_ID_CNT) {
+			closesocket(clientSock);
+			cout << "[시스템] 최대 수용 " << MAX_ID_CNT << "명을 초과하여 새로운 접속차단" << endl;
+			continue;
+		}
 
 		// 소켓 정보 구조체 할당
 		SOCKETINFO *pSocketInfo = new SOCKETINFO;
@@ -138,11 +147,26 @@ bool CNetwork::acceptThread()
 		ZeroMemory(&pSocketInfo->overlapped, sizeof(pSocketInfo->overlapped));
 		pSocketInfo->sock = clientSock;
 		pSocketInfo->optype = OP_TYPE::OP_RECV;
-		pSocketInfo->nID = m_nID++;
 		pSocketInfo->wsabuf.buf = pSocketInfo->IOBuf;
 		pSocketInfo->wsabuf.len = MAX_PACKET_SIZE;
 
-		m_vpClientInfo.push_back(pSocketInfo);
+		// 빈자리 찾아서 소켓정보벡터에 넣기
+		bool bisFull = true;
+		for (int i = 0; i < MAX_ID_CNT; ++i) {
+			if (!m_vpClientInfo[i]) {
+				pSocketInfo->nID = i;
+				m_vpClientInfo[i] = pSocketInfo;
+				++m_nID;
+				bisFull = false;
+				cout << "[시스템] 총 접속:" << m_nID << "명 [" << i << "]번 클라 접속! IP주소:" << inet_ntoa(clientAddr.sin_addr) << ", 포트번호:" << ntohs(clientAddr.sin_port) << endl;
+				break;
+			}
+		}
+		// 혹시 몰라서 넣은 에러체크. 실제 로직대로라면 무조건 빈자리가 있어야 함.
+		if (bisFull) {
+			cout << "클라이언트벡터에서 빈자리를 찾지 못했습니다. \n" << endl;
+			continue;
+		}
 
 		// 소켓과 입출력 완료 포트 연결
 		CreateIoCompletionPort((HANDLE)clientSock, m_hIOCP, pSocketInfo->nID, 0);	//핸들, 포트, 키값, 최대스레드(의미x)
@@ -175,9 +199,6 @@ void CNetwork::workerThread()
 
 		// 접속 종료 처리
 		if (0 == IOsize){
-			auto sockdata = m_vpClientInfo[key];
-			m_vpClientInfo[key] = nullptr;
-			delete sockdata;
 			Logout(nullptr, key);
 			continue;
 		}
@@ -206,9 +227,6 @@ void CNetwork::workerThread()
 					
 					// 패킷처리
 					if (!packetProcess(sockInfo->packetBuf, key)){
-						auto sockdata = m_vpClientInfo[key];
-						m_vpClientInfo[key] = nullptr;
-						delete sockdata;
 						Logout(nullptr, key);
 						continue;
 					}
@@ -238,7 +256,8 @@ void CNetwork::workerThread()
 			}
 		}
 		else if (sockInfo->optype == OP_TYPE::OP_SEND){
-			// Send()였다면 그냥 무시하기 위해 받은 구조체 삭제
+			// Overlapped 구조체는 입출력이 완료되기 전까지 메모리에서 사라지면 안되므로 동적할당을 했었다.
+			// 그러므로 Send()가 완료되었다면 반드시 메모리 해제를 해주어야 한다.
 			delete sockInfo;
 		}
 		else{
@@ -293,13 +312,17 @@ bool CNetwork::Login(void * buf, int id)
 
 bool CNetwork::Logout(void * buf, int id)
 {
-	//cout << "로그인 패킷" << endl;
-	UCHAR sendData[MAX_PACKET_SIZE] = { 0 };
+	// 소켓을 닫는다.
+	closesocket(m_vpClientInfo[id]->sock);
+	delete  m_vpClientInfo[id];
+	m_vpClientInfo[id] = nullptr;
+	--m_nID;
 
+	// 플레이어들에게 접속종료 사실을 알린다.
+	UCHAR sendData[MAX_PACKET_SIZE] = { 0 };
 	HEADER *phead = (HEADER*)sendData;
 	phead->byPacketID = PAK_RMV;
 	phead->ucSize = sizeof(HEADER) + 1;
-
 	STOC_SYNC *pdata1 = (STOC_SYNC*)(sendData + sizeof(HEADER));
 	pdata1->ID = id;
 
@@ -366,12 +389,9 @@ void CNetwork::transmitProcess(void *buf, int id)
 		if (WSA_IO_PENDING != err_code){
 			err_display("[CNetworkManager::sendPacket()] WSASend");
 			printf("%s \n", WSAGetLastError());
-			//로그아웃
-			//Logout(sockid, NULL);
 			return;
 		}
 	}
-	//cout << "패킷 전송 완료" << IOsize << endl;
 }
 
 void CNetwork::err_quit(char * msg)
