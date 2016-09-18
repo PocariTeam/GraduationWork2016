@@ -32,6 +32,7 @@ class CNetwork
 	SOCKET							m_listenSock;
 	HANDLE							m_hIOCP;
 	UINT							m_nID;
+	mutex							m_lock;
 public:
 
 	CNetwork();

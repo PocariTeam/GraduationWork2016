@@ -137,7 +137,7 @@ bool CNetwork::acceptThread()
 		// !! (추가필요) 해당 플레이어에게 그 사실을 알려야 함
 		if (m_nID >= MAX_ID_CNT) {
 			closesocket(clientSock);
-			cout << "[시스템] 최대 수용 " << MAX_ID_CNT << "명을 초과하여 새로운 접속차단" << endl;
+			cout << "[시스템] 벡터 " << MAX_ID_CNT << "칸을 초과하여 새로운 접속차단" << endl;
 			continue;
 		}
 
@@ -149,24 +149,10 @@ bool CNetwork::acceptThread()
 		pSocketInfo->optype = OP_TYPE::OP_RECV;
 		pSocketInfo->wsabuf.buf = pSocketInfo->IOBuf;
 		pSocketInfo->wsabuf.len = MAX_PACKET_SIZE;
+		pSocketInfo->nID = m_nID;
 
-		// 빈자리 찾아서 소켓정보벡터에 넣기
-		bool bisFull = true;
-		for (int i = 0; i < MAX_ID_CNT; ++i) {
-			if (!m_vpClientInfo[i]) {
-				pSocketInfo->nID = i;
-				m_vpClientInfo[i] = pSocketInfo;
-				++m_nID;
-				bisFull = false;
-				cout << "[시스템] 총 접속:" << m_nID << "명 [" << i << "]번 클라 접속! IP주소:" << inet_ntoa(clientAddr.sin_addr) << ", 포트번호:" << ntohs(clientAddr.sin_port) << endl;
-				break;
-			}
-		}
-		// 혹시 몰라서 넣은 에러체크. 실제 로직대로라면 무조건 빈자리가 있어야 함.
-		if (bisFull) {
-			cout << "클라이언트벡터에서 빈자리를 찾지 못했습니다. \n" << endl;
-			continue;
-		}
+		m_vpClientInfo[m_nID++] = pSocketInfo;
+		cout << "[시스템] " << pSocketInfo->nID << "번 클라 접속! IP주소:" << inet_ntoa(clientAddr.sin_addr) << ", 포트번호:" << ntohs(clientAddr.sin_port) << endl;
 
 		// 소켓과 입출력 완료 포트 연결
 		CreateIoCompletionPort((HANDLE)clientSock, m_hIOCP, pSocketInfo->nID, 0);	//핸들, 포트, 키값, 최대스레드(의미x)
@@ -316,7 +302,6 @@ bool CNetwork::Logout(void * buf, int id)
 	closesocket(m_vpClientInfo[id]->sock);
 	delete  m_vpClientInfo[id];
 	m_vpClientInfo[id] = nullptr;
-	--m_nID;
 
 	// 플레이어들에게 접속종료 사실을 알린다.
 	UCHAR sendData[MAX_PACKET_SIZE] = { 0 };
@@ -388,7 +373,7 @@ void CNetwork::transmitProcess(void *buf, int id)
 		int err_code = WSAGetLastError();
 		if (WSA_IO_PENDING != err_code){
 			err_display("[CNetworkManager::sendPacket()] WSASend");
-			printf("%s \n", WSAGetLastError());
+			printf("Error Code: %d \n", WSAGetLastError());
 			return;
 		}
 	}
@@ -403,7 +388,6 @@ void CNetwork::err_quit(char * msg)
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 		(LPTSTR)&lpMsgBuf, 0, NULL);
 	MessageBox(NULL, (LPCTSTR)lpMsgBuf, (LPCWSTR)msg, MB_ICONERROR);
-	LocalFree(lpMsgBuf);
 	exit(1);
 }
 
@@ -415,6 +399,7 @@ void CNetwork::err_display(char * msg)
 		NULL, WSAGetLastError(),
 		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 		(LPTSTR)&lpMsgBuf, 0, NULL);
+	//MessageBox(NULL, (LPCTSTR)lpMsgBuf, (LPCWSTR)msg, MB_ICONERROR);
 	printf("[%s] %s", msg, (char *)lpMsgBuf);
 	LocalFree(lpMsgBuf);
 }

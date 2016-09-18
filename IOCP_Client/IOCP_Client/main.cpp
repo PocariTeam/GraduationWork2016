@@ -13,9 +13,9 @@ int g_nID;
 
 int main(int argc, char *argv[])
 {
-	char serverAddr[256];
-	printf("서버주소 입력(xxx.xxx.xxx.xxx):");
-	scanf("%s", serverAddr);
+	//char serverAddr[256];
+	//printf("서버주소 입력(xxx.xxx.xxx.xxx):");
+	//scanf("%s", serverAddr);
 
 	int retval;
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	SOCKADDR_IN serveraddr;
 	ZeroMemory(&serveraddr, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_addr.s_addr = inet_addr(serverAddr);
+	serveraddr.sin_addr.s_addr = inet_addr(SERVERIP);
 	serveraddr.sin_port = htons(SERVER_PORT);
 	retval = connect(sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
