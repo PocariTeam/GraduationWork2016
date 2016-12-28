@@ -1,0 +1,12 @@
+﻿빌드 시작: 2016-12-28 오후 10:59:16
+     1>2 노드의 "D:\GraduationWork\Minsik\Client_PhysX\GW_Client\Client\Client.vcxproj" 프로젝트(Build 대상)입니다.
+     1>FxCompile:
+         C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Utilities\bin\x86\fxc.exe /nologo /E"main" /Fo "D:\GraduationWork\Minsik\Client_PhysX\GW_Client\Release\Shader_Cube.cso" ..\Executable\Resources\Shader\Shader_Cube.fx 
+     1>FXC : error X3501: 'main': entrypoint not found
+         
+         compilation failed; no code produced
+     1>"D:\GraduationWork\Minsik\Client_PhysX\GW_Client\Client\Client.vcxproj" 프로젝트를 빌드했습니다(Build 대상). - 실패
+
+빌드하지 못했습니다.
+
+경과 시간: 00:00:00.37
