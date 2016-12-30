@@ -13,9 +13,11 @@
 
 HRESULT CScene_Stage::Initialize( HWND hWnd, ID3D11Device * pDevice, ID3D11DeviceContext * pContext )
 {
-
 	m_pPhysicsManager = new CPhysicsManager;
-	m_pPhysicsManager->InitNx();
+	if (!m_pPhysicsManager->InitNx()) {
+		MessageBox(0, "PhysicsManager->InitNx() Error!", 0, MB_OK);
+		return E_FAIL;
+	}
 
 	Create_BaseObject( pDevice, pContext );
 	Create_Environment( pDevice, pContext );
@@ -31,8 +33,38 @@ int CScene_Stage::Update( const float & fTimeDelta )
 	if( nullptr != m_pCamera )
 		m_pCamera->Update( fTimeDelta );
 
-	if(nullptr != m_pPhysicsManager)
-		m_pPhysicsManager->Update( fTimeDelta );
+	/* 물리엔진이 제대로 작동되는지를 확인하기 위한 테스트 구문 시작 */
+
+	if (nullptr != m_pPhysicsManager)
+		m_pPhysicsManager->Update(fTimeDelta);
+
+	int nbActors = m_pPhysicsManager->m_Scene->getNbActors();
+	NxActor** actors = m_pPhysicsManager->m_Scene->getActors();
+	while (nbActors--)
+	{
+		NxActor* actorPlayer = *actors++;
+		if (!actorPlayer->userData) continue;
+
+		NxVec3 pos = actorPlayer->getGlobalPosition();
+		auto player = m_plistObj[OBJ_MOVING].begin();
+		XMFLOAT3* playerPos = (*player)->Get_Pos();
+		*playerPos = XMFLOAT3(pos.x, pos.y, pos.z);
+
+	}
+
+
+	//
+	////행렬 전체 설정
+	//NxF32 m[4 * 4];
+	//actorPlayer->getGlobalPose().getRowMajor44(m);
+
+	//auto player = m_plistObj[OBJ_MOVING].begin();
+	//XMFLOAT4X4A* playerPos = (*player)->Get_World();
+	//*playerPos = XMFLOAT4X4A(m);
+	
+	
+
+	/* 물리엔진이 제대로 작동되는지를 확인하기 위한 테스트 구문 끝 */
 
 	CScene::Update( fTimeDelta );
 
@@ -86,10 +118,12 @@ void CScene_Stage::Create_BaseObject( ID3D11Device* pDevice, ID3D11DeviceContext
 	CShader* pShader = CShaderMgr::GetInstance()->Clone_Shaders( "Shader_Cube" );
 	CMesh* pMesh = CResourceMgr::GetInstance()->CloneMesh( "Mesh_Point" );
 	CTexture* pTexture = CResourceMgr::GetInstance()->CloneTexture( "Texture_Metal" );
-	CPlayer*	pPlayer = CPlayer::Create( pDevice, pContext, pMesh, pTexture, XMFLOAT3{ 0.f, 0.f, 0.f } );
+	CPlayer*	pPlayer = CPlayer::Create( pDevice, pContext, pMesh, pTexture, XMFLOAT3{ 0.f, 10.0f, 0.f } );
 	m_plistObj[OBJ_MOVING].push_back( pPlayer );
 	pShader->Set_RenderObject( pPlayer );
 	m_RenderGroup[RENDER_DEPTHTEST].push_back( pShader );
+
+	m_pPhysicsManager->CreateCube(NxVec3( 0.f, 10.0f, 0.f ), 2);
 
 	// Camera
 	m_pCamera = CCamera_Third::Create( pDevice, pContext, pPlayer->Get_Transform() );
