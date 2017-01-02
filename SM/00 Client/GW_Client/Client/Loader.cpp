@@ -4,6 +4,7 @@
 #include "Function.h"
 #include "ShaderMgr.h"
 #include "RenderState.h"
+#include "PhysicsMgr.h"
 #include <process.h>
 
 bool CLoader::m_bLoading = false;
@@ -29,23 +30,36 @@ HRESULT CLoader::Initialize( void )
 
 void CLoader::Load_Resource( void )
 {
+	if( FAILED( CPhysicsMgr::GetInstance()->Initialize() ) )
+		MessageBox( NULL, "CPhysicsMgr::Initialize Failed", 0, MB_OK );
+
 	CRenderState::Initialize( m_pDevice );
 
-	CResourceMgr::GetInstance()->AddMesh( m_pDevice, m_pContext, CResourceMgr::MESH_POINT, L"Mesh_Point" );
+	CResourceMgr::GetInstance()->AddMesh( m_pDevice, m_pContext, CResourceMgr::MESH_POINT, "Mesh_Point" );
+
+	CResourceMgr::GetInstance()->AddMesh( m_pDevice, m_pContext, CResourceMgr::MESH_DEBUG, "Mesh_Sphere", XMFLOAT3(), "../Executable/Resources/Mesh/Sphere.jsm" );
+
+	CResourceMgr::GetInstance()->AddMesh( m_pDevice, m_pContext, CResourceMgr::MESH_DEBUG, "Mesh_Box", XMFLOAT3(), "../Executable/Resources/Mesh/Box.jsm" );
+
+	CResourceMgr::GetInstance()->AddMesh( m_pDevice, m_pContext, CResourceMgr::MESH_DEBUG, "Mesh_Capsule", XMFLOAT3(), "../Executable/Resources/Mesh/Capsule.jsm" );
 
 	// Texture Load
 	CResourceMgr::GetInstance()->AddTexture( m_pDevice, m_pContext
-		, CResourceMgr::TEXTURE_SINGLE, L"../Executable/Resources/Texture/metal.png", L"Texture_Metal" );
+		, CResourceMgr::TEXTURE_SINGLE, "../Executable/Resources/Texture/metal.png", "Texture_Metal" );
 
 	CResourceMgr::GetInstance()->AddTexture( m_pDevice, m_pContext
-		, CResourceMgr::TEXTURE_SINGLE, L"../Executable/Resources/Texture/Terrain.jpg", L"Texture_Terrain" );
+		, CResourceMgr::TEXTURE_SINGLE, "../Executable/Resources/Texture/Terrain.jpg", "Texture_Terrain" );
 
 	CShaderMgr::GetInstance()->Create_Shaders( m_pDevice, CShader::INPUT_POSITION_ONLY
-		, CShaderMgr::SHADER_BASE, L"../Executable/Resources/Shader/Shader_Cube.fx", L"Shader_Cube", true );
+		, CShaderMgr::SHADER_BASE, "../Executable/Resources/Shader/Shader_Cube.fx", "Shader_Cube", true );
 
 	CShaderMgr::GetInstance()->Create_Shaders( m_pDevice, CShader::INPUT_POSITION_ONLY
-		, CShaderMgr::SHADER_BASE, L"../Executable/Resources/Shader/Shader_Terrain.fx", L"Shader_Terrain", true );
+		, CShaderMgr::SHADER_BASE, "../Executable/Resources/Shader/Shader_Terrain.fx", "Shader_Terrain", true );
 	
+#ifdef _DEBUG
+	CShaderMgr::GetInstance()->Create_Shaders( m_pDevice, CShader::INPUT_POSITION_ONLY
+		, CShaderMgr::SHADER_BASE, "../Executable/Resources/Shader/Shader_Debug.fx", "Shader_Debug" );
+#endif
 	m_bLoading = true;
 	m_bComplete = true;
 }

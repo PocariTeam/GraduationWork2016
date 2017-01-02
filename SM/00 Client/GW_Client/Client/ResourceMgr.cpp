@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "SingleTexture.h"
 #include "Point.h"
+#include "ActorShape.h"
 
 CResourceMgr*	CResourceMgr::m_pInstance = nullptr;
 
@@ -71,12 +72,12 @@ CTexture * CResourceMgr::CloneTexture( const TCHAR * pTextrueKey )
 }
 
 HRESULT CResourceMgr::AddMesh( ID3D11Device* pDevice, ID3D11DeviceContext* pContext
-	, MESH_TYPE eMeshType, const TCHAR* pMeshKey, XMFLOAT3& vSizeData /*= XMFLOAT3( 0.f, 0.f, 1.f )*/, const TCHAR* pObjPath/* = nullptr*/ )
+	, MESH_TYPE eMeshType, const TCHAR* pMeshKey, XMFLOAT3& vSizeData /*= XMFLOAT3( 0.f, 0.f, 1.f )*/, const TCHAR* pJsmPath/* = nullptr*/ )
 {
 	CMesh*		pMesh = FindMesh( pMeshKey );
 	if( nullptr != pMesh )
 	{
-		MessageBox( nullptr, L"이미 만들어진 키값입니다.", nullptr, MB_OK );
+		MessageBox( nullptr, "이미 만들어진 키값입니다.", nullptr, MB_OK );
 		return E_FAIL;
 	}
 
@@ -110,13 +111,13 @@ HRESULT CResourceMgr::AddMesh( ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 		// pMesh = CBackground::Create( pDevice, pContext );
 		break;
 
-	case MESH_OBJ:
-		// pMesh = CObjMesh::Create( pDevice, pContext, pObjPath );
+	case MESH_DEBUG:
+		pMesh = CActorShape::Create( pDevice, pContext, pJsmPath );
 		break;
 	}
 
 	if( nullptr == pMesh ) {
-		MessageBox( nullptr, L"Mesh 생성 실패", nullptr, MB_OK );
+		MessageBox( nullptr, "Mesh 생성 실패", nullptr, MB_OK );
 		return E_FAIL;
 	}
 
@@ -130,7 +131,7 @@ HRESULT CResourceMgr::AddTexture( ID3D11Device * pDevice, ID3D11DeviceContext * 
 
 	if( nullptr != pTexture )
 	{
-		MessageBox( nullptr, L"이미 만들어진 키값입니다.", nullptr, MB_OK );
+		MessageBox( nullptr, "이미 만들어진 키값입니다.", nullptr, MB_OK );
 		return E_FAIL;
 	}
 
@@ -145,7 +146,7 @@ HRESULT CResourceMgr::AddTexture( ID3D11Device * pDevice, ID3D11DeviceContext * 
 	}
 	
 	if( nullptr == pTexture ) {
-		MessageBox( nullptr, L"Textures 생성 실패", nullptr, MB_OK );
+		MessageBox( nullptr, "Textures 생성 실패", nullptr, MB_OK );
 		return E_FAIL;
 	}
 

@@ -42,14 +42,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -75,8 +75,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../Executable/ThirdParty/SDKs/lib/win64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -84,8 +84,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../ThirdParty/include/;</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../ThirdParty/lib/;</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../Executable/ThirdParty/SDKs/lib/win64;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -152,6 +152,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActorShape.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Base_Shader.h" />
     <ClInclude Include="Camera.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Loader.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="PhysicsMgr.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Renderer.h" />
@@ -185,9 +187,9 @@
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActorShape.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Base_Shader.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -201,6 +203,7 @@
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="PhysicsMgr.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -221,7 +224,6 @@
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />
@@ -232,6 +234,14 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Executable\Resources\Shader\Shader_Cube.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Shader_Debug.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

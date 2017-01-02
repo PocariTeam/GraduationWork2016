@@ -4,7 +4,9 @@
 #include "Function.h"
 #include "Mesh.h"
 #include "Texture.h"
-
+#include "NxActor.h"
+#include "NxShape.h"
+#include "ResourceMgr.h"
 int	CGameObject::Update( float fTimeDelta )
 {
 	map< const char*, CComponent*>::iterator	iter = m_mapComponent.begin();

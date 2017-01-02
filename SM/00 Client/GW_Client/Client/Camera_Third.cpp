@@ -37,10 +37,8 @@ CCamera_Third* CCamera_Third::Create( ID3D11Device* pDevice, ID3D11DeviceContext
 
 int CCamera_Third::Update( float fTimeDelta )
 {
-	if( nullptr == m_pTarget ) return 0;
-
 	XMVECTOR	vUp{ 0.f, 1.f, 0.f, 0.f };
-	XMVECTOR	vAt = XMLoadFloat3( &m_pTarget->m_vPos );
+	XMVECTOR	vAt = XMLoadFloat3( &XMFLOAT3( 0.f, 0.f, 0.f ) );
 	XMVECTOR	vEye = vAt;
 
 	Check_Key( fTimeDelta );

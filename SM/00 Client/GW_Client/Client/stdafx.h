@@ -9,6 +9,7 @@
 
 #define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용은 Windows 헤더에서 제외합니다.
 // Windows 헤더 파일:
+#define NOMINMAX
 #include <windows.h>
 
 // C 런타임 헤더 파일입니다.
@@ -46,6 +47,11 @@
 #pragma comment( lib, "dxgi.lib" )
 #pragma comment( lib, "dxguid.lib" )
 #pragma comment( lib, "dInput8.lib" )
+
+#pragma comment( lib, "NxCharacter64.lib" )
+#pragma comment( lib, "PhysXCooking64.lib" )
+#pragma comment( lib, "PhysXCore64.lib" )
+#pragma comment( lib, "PhysXLoader64.lib" )
 
 using namespace std;
 using namespace DirectX;

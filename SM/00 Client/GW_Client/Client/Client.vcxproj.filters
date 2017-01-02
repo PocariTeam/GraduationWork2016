@@ -160,14 +160,17 @@
     <Filter Include="소스 파일\03 Resources\03 Model\01 DynamicModel">
       <UniqueIdentifier>{c97e50df-308a-4913-810e-195ef9158e7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\02 Component\00 Transform">
-      <UniqueIdentifier>{f18ad328-21c9-49d3-931c-f5e9aab4e761}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02 Utilty\01 Renderer\00 RenderState">
       <UniqueIdentifier>{97dfbf3c-e7f3-4ae0-8ba2-f5d31d1b55e6}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\99 Loader">
       <UniqueIdentifier>{19f58ac6-943b-4a96-b30c-091646bb3111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager">
+      <UniqueIdentifier>{828a55bb-7513-4f77-9a50-aa9651c9214c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\01 Mesh\05 ActorShape">
+      <UniqueIdentifier>{bc11b34d-1173-420e-9220-b106d8de079c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -212,9 +215,6 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>소스 파일\02 Utilty\00 SuperClass\01 GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>소스 파일\02 Utilty\00 SuperClass\02 Component\00 Transform</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>소스 파일\03 Resources\01 Mesh\02 Cube</Filter>
@@ -276,6 +276,12 @@
     <ClInclude Include="Point.h">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Point</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsMgr.h">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorShape.h">
+      <Filter>소스 파일\03 Resources\01 Mesh\05 ActorShape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -301,9 +307,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일\02 Utilty\00 SuperClass\01 GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>소스 파일\02 Utilty\00 SuperClass\02 Component\00 Transform</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\02 Cube</Filter>
@@ -365,6 +368,12 @@
     <ClCompile Include="Point.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Point</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsMgr.cpp">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorShape.cpp">
+      <Filter>소스 파일\03 Resources\01 Mesh\05 ActorShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -387,6 +396,9 @@
       <Filter>소스 파일\02 Utilty\03 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Shader_Terrain.fx">
+      <Filter>소스 파일\02 Utilty\03 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Shader_Debug.fx">
       <Filter>소스 파일\02 Utilty\03 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

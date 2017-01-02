@@ -5,6 +5,7 @@
 
 #include "Scene.h"
 
+class CPhysicsMgr;
 class CShader;
 class CScene_Stage
 	: public CScene
@@ -19,14 +20,13 @@ public:
 	virtual void Release( void );
 private:
 	void	Create_BaseObject( ID3D11Device* pDevice, ID3D11DeviceContext* pContext );
-	void	Create_Environment( ID3D11Device* pDevice, ID3D11DeviceContext* pContext );
-	void	Create_MovingObject( ID3D11Device* pDevice, ID3D11DeviceContext* pContext );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, ID3D11DeviceContext* pContext );
 private:
 	CScene_Stage() = default;
 	virtual ~CScene_Stage() = default;
 private:
+	CPhysicsMgr*		m_pPhysicsMgr;
 	using SHADERLIST = list<CShader*>;
 	SHADERLIST			m_RenderGroup[RENDER_END];
 	bool				m_bOverlapped[2];

@@ -6,7 +6,7 @@ class CResourceMgr
 {
 public:
 	enum MESH_TYPE { MESH_RECT, MESH_CUBE, MESH_SPHERE
-		, MESH_HEIGHTMAP, MESH_BACKGROUND, MESH_POINT, MESH_OBJ, MESH_PARTICLE, MESH_END };
+		, MESH_HEIGHTMAP, MESH_BACKGROUND, MESH_POINT, MESH_DEBUG, MESH_PARTICLE, MESH_END };
 	enum TEXTURE_TYPE { TEXTURE_SINGLE, TEXTURE_MULTI, TEXTURE_END	};
 private:
 	CResourceMgr();
@@ -25,7 +25,7 @@ public:
 
 public:
 	HRESULT AddMesh( ID3D11Device* pDevice, ID3D11DeviceContext* pContext
-		, MESH_TYPE eMeshType, const TCHAR* pMeshKey, XMFLOAT3& vSizeData = XMFLOAT3( 0.f, 0.f, 1.f ), const TCHAR* pObjPath = nullptr );
+		, MESH_TYPE eMeshType, const TCHAR* pMeshKey, XMFLOAT3& vSizeData = XMFLOAT3( 0.f, 0.f, 1.f ), const TCHAR* pJsmPath = nullptr );
 	HRESULT AddTexture( ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TEXTURE_TYPE eTextureType
 	, const TCHAR* pPath, const TCHAR* pTextureKey, int iTextureCnt = 1 );
 private:

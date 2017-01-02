@@ -94,6 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #ifdef _DEBUG
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	FreeConsole();
 #endif
 
     return (int) msg.wParam;
@@ -154,6 +155,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    UpdateWindow(hWnd);
 
    g_pMainFrm = CMainFrm::Create( hWnd );
+
+#ifdef _DEBUG
+   AllocConsole();
+#endif
 
    return TRUE;
 }
