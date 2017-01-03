@@ -194,7 +194,7 @@ void CPhysicsMgr::Render( ID3D11DeviceContext* pContext )
 				vScale = tScale.max - tScale.min;
 				( *dpShape )->getGlobalPose().getRowMajor44( mtxWorld );
 				mtxWorld[0] *= vScale.x;
-				mtxWorld[5] *= vScale.y;
+				mtxWorld[5] *= vScale.y / 3.f;
 				mtxWorld[10] *= vScale.z;
 				SetContantBuffer( pContext, mtxWorld );
 				pCapsule->Render( pContext );
