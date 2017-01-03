@@ -172,6 +172,12 @@
     <Filter Include="소스 파일\03 Resources\01 Mesh\05 ActorShape">
       <UniqueIdentifier>{bc11b34d-1173-420e-9220-b106d8de079c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\00 Camera\00 Third">
+      <UniqueIdentifier>{b7228994-59c9-4a5c-9786-665f24da1a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic">
+      <UniqueIdentifier>{8821a299-7447-436b-9410-5daeda249037}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -267,9 +273,6 @@
     <ClInclude Include="Terrain.h">
       <Filter>소스 파일\00 Client\03 Object\01 InStage\01 Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="Camera_Third.h">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -281,6 +284,12 @@
     </ClInclude>
     <ClInclude Include="ActorShape.h">
       <Filter>소스 파일\03 Resources\01 Mesh\05 ActorShape</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera_Third.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\00 Third</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera_Dynamic.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -359,9 +368,6 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InStage\01 Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="Camera_Third.cpp">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -373,6 +379,12 @@
     </ClCompile>
     <ClCompile Include="ActorShape.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\05 ActorShape</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Third.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\00 Third</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Dynamic.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

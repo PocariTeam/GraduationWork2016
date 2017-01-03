@@ -10,8 +10,8 @@ class CCamera_Third :
 	public CCamera
 {
 private:
-	CCamera_Third();
-	virtual ~CCamera_Third();
+	CCamera_Third() = default;
+	virtual ~CCamera_Third() = default;
 private:
 	virtual HRESULT	Initialize( ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, CTransform* pTarget );
 public:

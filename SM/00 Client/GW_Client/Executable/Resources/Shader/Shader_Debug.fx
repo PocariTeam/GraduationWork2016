@@ -33,7 +33,7 @@ VS_OUT VS( VS_IN In )
 
 float4 PS( VS_OUT In ) : SV_Target
 {
-	 float4 vColor = float4( 1.f, 1.f, 1.f, 1.f );
+	 float4 vColor = float4( 1.f, 1.f, 0.f, 1.f );
 
 	return vColor;
 }

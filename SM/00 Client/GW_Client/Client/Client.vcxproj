@@ -156,6 +156,7 @@
     <ClInclude Include="Base.h" />
     <ClInclude Include="Base_Shader.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Camera_Dynamic.h" />
     <ClInclude Include="Camera_Third.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Component.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Base_Shader.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Camera_Dynamic.cpp" />
     <ClCompile Include="Camera_Third.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Component.cpp" />

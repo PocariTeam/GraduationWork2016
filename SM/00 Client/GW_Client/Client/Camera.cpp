@@ -18,6 +18,8 @@ HRESULT CCamera::Initialize( ID3D11Device* pDevice, ID3D11DeviceContext* pDevice
 
 DWORD	CCamera::Release()
 {
+	CGameObject::Release();
+
 	m_pCbMtxCamera->Release();
 
 	return 0;

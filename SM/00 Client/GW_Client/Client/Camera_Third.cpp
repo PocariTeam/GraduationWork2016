@@ -2,15 +2,6 @@
 #include "Camera_Third.h"
 #include "Transform.h"
 
-CCamera_Third::CCamera_Third()
-{
-}
-
-
-CCamera_Third::~CCamera_Third()
-{
-}
-
 HRESULT	CCamera_Third::Initialize( ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, CTransform* pTarget )
 {
 	if( FAILED( CCamera::Initialize( pDevice, pDeviceContext ) ) )
@@ -38,7 +29,7 @@ CCamera_Third* CCamera_Third::Create( ID3D11Device* pDevice, ID3D11DeviceContext
 int CCamera_Third::Update( float fTimeDelta )
 {
 	XMVECTOR	vUp{ 0.f, 1.f, 0.f, 0.f };
-	XMVECTOR	vAt = XMLoadFloat3( &XMFLOAT3( 0.f, 0.f, 0.f ) );
+	XMVECTOR	vAt = XMLoadFloat3( &XMFLOAT3( m_pTarget->m_vPos ) );
 	XMVECTOR	vEye = vAt;
 
 	Check_Key( fTimeDelta );

@@ -8,13 +8,14 @@
 #include "Function.h"
 #include "ShaderMgr.h"
 #include "Player.h"
-#include "Camera_Third.h"
+#include "Camera_Dynamic.h"
 #include "Terrain.h"
 #include "PhysicsMgr.h"
 #include "RenderState.h"
 
 HRESULT CScene_Stage::Initialize( HWND hWnd, ID3D11Device * pDevice, ID3D11DeviceContext * pContext )
 {
+	m_hWnd = hWnd;
 	/* PhysX Scene Create */
 	m_pPhysicsMgr = CPhysicsMgr::GetInstance();
 	if( FAILED( m_pPhysicsMgr->CreateScene( pDevice ) ) )
@@ -34,13 +35,13 @@ int CScene_Stage::Update( const float & fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
 
-	if( ( GetAsyncKeyState( 'W' ) & 0x8000 )
+	if( ( GetAsyncKeyState( '1' ) & 0x8000 )
 		&& m_bOverlapped[0] ) {
 		CRenderer::m_bWireFrame = !CRenderer::m_bWireFrame;
 		m_bOverlapped[0] = false;
 	}
 
-	else if( !( GetAsyncKeyState( 'W' ) & 0x8000 ) ) m_bOverlapped[0] = true;
+	else if( !( GetAsyncKeyState( '1' ) & 0x8000 ) ) m_bOverlapped[0] = true;
 	
 	m_pPhysicsMgr->Update( fTimeDelta );
 	CRenderer::GetInstance()->Copy_RenderGroup( m_RenderGroup );
@@ -70,6 +71,8 @@ void CScene_Stage::Render( ID3D11DeviceContext * pContext )
 
 void CScene_Stage::Release( void )
 {
+	CScene::Release();
+
 	for( int i = 0; i < RENDER_END; ++i ) {
 		if( !m_RenderGroup[i].empty() ) {
 			auto iter_shader = m_RenderGroup[i].begin();
@@ -86,8 +89,6 @@ void CScene_Stage::Release( void )
 		m_pPhysicsMgr->Release_Scene();
 		m_pPhysicsMgr = nullptr;
 	}
-
-	CScene::Release();
 
 	delete this;
 }
@@ -117,7 +118,7 @@ void CScene_Stage::Create_BaseObject( ID3D11Device* pDevice, ID3D11DeviceContext
 	m_RenderGroup[RENDER_DEPTHTEST].push_back( pShader );
 
 	// Camera
-	m_pCamera = CCamera_Third::Create( pDevice, pContext, nullptr );
+	m_pCamera = CCamera_Dynamic::Create( m_hWnd, pDevice, pContext );
 
 	m_pPhysicsMgr->Connect_Actors( &vecGameObject );
 }
