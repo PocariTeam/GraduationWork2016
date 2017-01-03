@@ -33,7 +33,9 @@ public:
 	void Render( ID3D11DeviceContext* pContext );
 	void Release_Scene();
 	void Release();
-	void CreateCube( const NxVec3& pos, int size = 2, const NxVec3 * initialVelocity = NULL );
+	void CreateCube(const NxVec3& pos, int size, const NxReal density);
+	void CreateCapsule(const NxVec3 & pos, const NxReal height, const NxReal radius, const NxReal density);
+	void CreateSphere(const NxVec3 & pos, const NxReal radius, const NxReal density);
 };
 
 #endif

@@ -121,7 +121,9 @@ HRESULT CPhysicsMgr::CreateScene( ID3D11Device* pDevice )
 	actorDesc.shapes.pushBack( &planeDesc );
 	m_pScene->createActor( actorDesc );
 
-	CreateCube( NxVec3( 0.f, 10.0f, 0.f ), 2 );
+	CreateCube( NxVec3( 0.f, 5.0f, 0.f ), 2,10.0f );
+	CreateCapsule(NxVec3(-5.0f, 5.0f, 0.f), 2, 2, 10.0f);
+	CreateSphere(NxVec3(5.0f, 5.0f, 0.f), 2, 10.0f);
 
 	m_pArrActors = m_pScene->getActors();
 	m_dwActorCnt = m_pScene->getNbActors();
@@ -236,23 +238,67 @@ void CPhysicsMgr::Release()
 	delete this;
 }
 
-void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxVec3* initialVelocity )
+void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxReal density)
 {
-	if( m_pScene == NULL ) return;
-
-	// Create body
-	NxBodyDesc bodyDesc;
-	bodyDesc.angularDamping = 0.5f;
-	if( initialVelocity ) bodyDesc.linearVelocity = *initialVelocity;
+	if (m_pScene == NULL) {
+		printf("m_pScene == NULL! \n");
+		return;
+	}
 
 	NxBoxShapeDesc boxDesc;
 	boxDesc.dimensions = NxVec3( ( float )size * 0.5f, ( float )size * 0.5f, ( float )size*0.5f );
 	boxDesc.localPose.t = NxVec3( ( float )0.0f, ( float )size*0.5f, ( float )size*0.0f );
+	
+	NxBodyDesc bodyDesc;
 
 	NxActorDesc actorDesc;
 	actorDesc.shapes.pushBack( &boxDesc );
 	actorDesc.body = &bodyDesc;
-	actorDesc.density = 10.0f;
+	actorDesc.density = density;
 	actorDesc.globalPose.t = pos;
 	m_pScene->createActor( actorDesc );
+}
+
+void CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, const NxReal radius, const NxReal density)
+{
+	if (m_pScene == NULL) {
+		printf("m_pScene == NULL! \n");
+		return;
+	}
+
+	NxCapsuleShapeDesc capsuleDesc;
+	capsuleDesc.height = height;
+	capsuleDesc.radius = radius;
+	capsuleDesc.localPose.t = NxVec3(0, radius + height*0.5f, 0);
+
+	NxBodyDesc bodyDesc;
+
+	NxActorDesc actorDesc;
+	actorDesc.shapes.pushBack(&capsuleDesc);
+	actorDesc.body = &bodyDesc;
+	actorDesc.density = density;
+	actorDesc.globalPose.t = pos;
+	m_pScene->createActor(actorDesc);
+}
+
+
+void CPhysicsMgr::CreateSphere(const NxVec3& pos, const NxReal radius, const NxReal density)
+{
+	if (m_pScene == NULL) {
+		printf("m_pScene == NULL! \n");
+		return;
+	}
+
+	NxSphereShapeDesc sphereDesc;
+	sphereDesc.radius = radius;
+	sphereDesc.localPose.t = NxVec3(0, radius, 0);
+
+	NxBodyDesc bodyDesc;
+
+	NxActorDesc actorDesc;
+	actorDesc.shapes.pushBack(&sphereDesc);
+	actorDesc.body = &bodyDesc;
+	actorDesc.density = density;
+	actorDesc.globalPose.t = pos;
+	m_pScene->createActor(actorDesc);
 }
