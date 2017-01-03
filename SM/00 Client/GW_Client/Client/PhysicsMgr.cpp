@@ -38,11 +38,11 @@ void CPhysicsMgr::DestroyInstance( void )
 void CPhysicsMgr::Connect_Actors( vector<CGameObject*>* pvecGameObject )
 {
 	if( nullptr == pvecGameObject ) return;
-	if( pvecGameObject->size() != m_dwActorCnt ) return;
+	// if( pvecGameObject->size() != m_dwActorCnt ) return;
 
 	NxActor** dpActor = m_pArrActors;
 
-	for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
+	for( DWORD i = 0; i < pvecGameObject->size(); ++i, ++dpActor )
 	{
 		NxActor* pActor = *dpActor;
 		pActor->userData = ( *pvecGameObject )[i];
@@ -138,11 +138,11 @@ void CPhysicsMgr::Update( const float & fTimeDelta )
 
 	NxActor** dpActor = m_pArrActors;
 
-	for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
+	/*for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
 	{
 		CGameObject* pGameObject = ( CGameObject* )(*dpActor)->userData;
 		pGameObject->Update( fTimeDelta );
-	}
+	}*/
 
 	m_pScene->simulate( fTimeDelta );
 	m_pScene->flushStream();

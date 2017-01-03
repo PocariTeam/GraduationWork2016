@@ -149,6 +149,8 @@ void CPlayer::CreateConstantBuffer( ID3D11Device* pDevice, ID3D11DeviceContext* 
 
 void CPlayer::SetConstantBuffer( ID3D11DeviceContext * pContext )
 {
+	if( nullptr == m_pActor ) return;
+
 	NxF32 mtxWorld[16]{};
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
 	pContext->Map( m_pCBmtxWorld, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
