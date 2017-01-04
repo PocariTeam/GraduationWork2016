@@ -122,8 +122,8 @@ HRESULT CPhysicsMgr::CreateScene( ID3D11Device* pDevice )
 	m_pScene->createActor( actorDesc );
 
 	CreateCube( NxVec3( 0.f, 5.0f, 0.f ), 2, 10.0f );
-	CreateCapsule(NxVec3(-5.0f, 5.0f, 0.f), 2, 2, 10.0f);
-	CreateSphere(NxVec3(5.0f, 5.0f, 0.f), 2, 10.0f);
+	CreateCapsule(NxVec3(-5.0f, 5.0f, 0.f), 1, 0.3f, 10.0f);
+	CreateSphere(NxVec3(5.0f, 5.0f, 0.f), 1, 10.0f);
 
 	m_pArrActors = m_pScene->getActors();
 	m_dwActorCnt = m_pScene->getNbActors();
@@ -161,6 +161,9 @@ void CPhysicsMgr::Render( ID3D11DeviceContext* pContext )
 	NxF32* mtxWorld = new NxF32[16];
 	NxVec3	vScale{};
 	NxF32	fRadius{}, fHeight{};
+	NxMat34 mtxRealWorld{}, mtxScale{};
+	mtxRealWorld.zero();
+	mtxScale.zero();
 
 	for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
 	{
@@ -172,30 +175,32 @@ void CPhysicsMgr::Render( ID3D11DeviceContext* pContext )
 			switch( ( *dpShape )->getType() )
 			{
 			case NX_SHAPE_BOX:
+			{
 				vScale = ( ( NxBoxShape* )( *dpShape ) )->getDimensions() * 2.f;
-				( *dpShape )->getGlobalPose().getRowMajor44( mtxWorld );
-				mtxWorld[0] *= vScale.x;
-				mtxWorld[5] *= vScale.y;
-				mtxWorld[10] *= vScale.z;
+				mtxRealWorld = ( *dpShape )->getGlobalPose();
+				mtxScale.M.diagonal( vScale );
+				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
+				mtxRealWorld.getRowMajor44( mtxWorld );
 				SetContantBuffer( pContext, mtxWorld );
 				pBox->Render( pContext );
+			}
 				break;
 			case NX_SHAPE_SPHERE:
 				fRadius = ( ( NxSphereShape* )( *dpShape ) )->getRadius() * 2.f;
-				( *dpShape )->getGlobalPose().getRowMajor44( mtxWorld );
-				mtxWorld[0] *= fRadius;
-				mtxWorld[5] *= fRadius;
-				mtxWorld[10] *= fRadius;
+				mtxRealWorld = ( *dpShape )->getGlobalPose();
+				mtxScale.M.diagonal( NxVec3( fRadius ) );
+				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
+				mtxRealWorld.getRowMajor44( mtxWorld );
 				SetContantBuffer( pContext, mtxWorld );
 				pSphere->Render( pContext );
 				break;
 			case NX_SHAPE_CAPSULE:
 				fRadius = ( ( NxCapsuleShape* )( *dpShape ) )->getRadius() * 2.f;
 				fHeight = ( ( NxCapsuleShape* )( *dpShape ) )->getHeight();
-				( *dpShape )->getGlobalPose().getRowMajor44( mtxWorld );
-				mtxWorld[0] *= fRadius;
-				mtxWorld[5] *= ( fHeight + fRadius ) / 2.f;
-				mtxWorld[10] *= fRadius;
+				mtxRealWorld = ( *dpShape )->getGlobalPose();
+				mtxScale.M.diagonal( NxVec3( fRadius, ( fHeight + fRadius ) * 0.f, fRadius ) );
+				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
+				mtxRealWorld.getRowMajor44( mtxWorld );
 				SetContantBuffer( pContext, mtxWorld );
 				pCapsule->Render( pContext );
 				break;
@@ -246,7 +251,7 @@ void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxReal density)
 	NxBoxShapeDesc boxDesc;
 	boxDesc.dimensions = NxVec3( ( float )size * 0.5f, ( float )size * 0.5f, ( float )size*0.5f );
 	boxDesc.localPose.t = NxVec3( ( float )0.0f, ( float )size*0.5f, ( float )size*0.0f );
-	
+
 	NxBodyDesc bodyDesc;
 
 	NxActorDesc actorDesc;
@@ -254,6 +259,7 @@ void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxReal density)
 	actorDesc.body = &bodyDesc;
 	actorDesc.density = density;
 	actorDesc.globalPose.t = pos;
+	
 	m_pScene->createActor( actorDesc );
 }
 

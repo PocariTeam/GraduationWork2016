@@ -157,7 +157,8 @@ void CPlayer::SetConstantBuffer( ID3D11DeviceContext * pContext )
 
 	VS_CB_WORLD_MATRIX* pStruct = ( VS_CB_WORLD_MATRIX* )MappedSubresource.pData;
 	m_pActor->getGlobalPose().getRowMajor44( mtxWorld );
-	memcpy( &pStruct->m_mtxWorld, mtxWorld, sizeof( XMFLOAT4X4 ) );
+	pStruct->m_mtxWorld = ( XMFLOAT4X4A )mtxWorld;
+	// memcpy( &pStruct->m_mtxWorld, mtxWorld, sizeof( XMFLOAT4X4 ) );
 	XMStoreFloat4x4A( &pStruct->m_mtxWorldInv, XMMatrixInverse( nullptr, XMLoadFloat4x4A( &pStruct->m_mtxWorld ) ) );
 	pContext->Unmap( m_pCBmtxWorld, 0 );
 	pContext->VSSetConstantBuffers( VS_SLOT_WORLD_MATRIX, 1, &m_pCBmtxWorld );
