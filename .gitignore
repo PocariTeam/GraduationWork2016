@@ -1,7 +1,8 @@
-################################################################################
+﻿################################################################################
 # 이 .gitignore 파일은 Microsoft(R) Visual Studio에서 자동으로 만들어졌습니다.
 ################################################################################
 
 /SM/00 Client/GW_Client/GW_Client.VC.VC.opendb
 SM/00 Client/GW_Client/ipch/CLIENT-c77617ec/CLIENT-7e8bf9a9.ipch
 SM/00 Client/GW_Client/GW_Client.VC.db
+SM/00 Client/GW_Client/GW_Client.sdf
