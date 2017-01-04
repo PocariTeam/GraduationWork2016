@@ -1,3 +1,71 @@
-﻿  PhysicsMgr.cpp
-  Client.vcxproj -> C:\Users\jsm81\Desktop\GW_Git\SM\00 Client\GW_Client\Client\../Executable/Client.exe
-  Client.vcxproj -> ../Executable/Client.pdb (Full PDB)
+﻿빌드 시작: 2017-01-04 오후 9:20:07
+     1>2 노드의 "D:\GraduationWork\SM\00 Client\GW_Client\Client\Client.vcxproj" 프로젝트(Build 대상)입니다.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /ZI /nologo /W3 /WX- /Od /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt Loader.cpp MainFrm.cpp PhysicsMgr.cpp Scene_Stage.cpp
+         Scene_Stage.cpp
+         PhysicsMgr.cpp
+     1>d:\graduationwork\sm\00 client\gw_client\client\physicsmgr.cpp(151): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'NxScene *'
+     1>d:\graduationwork\sm\00 client\gw_client\client\physicsmgr.cpp(151): warning C4313: 'printf': 서식 문자열의 '%d'이(가) 인수 1('NxScene *' 형식)과(와) 충돌합니다.
+         MainFrm.cpp
+         Loader.cpp
+         코드를 생성하고 있습니다...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"../Executable/Client.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"../Executable/Client.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"../Executable/Client.lib" /MACHINE:X64 x64\Debug\Client.res
+         x64\Debug\NXU_Asc2Bin.obj
+         x64\Debug\NXU_ColladaExport.obj
+         x64\Debug\NXU_ColladaImport.obj
+         x64\Debug\NXU_cooking.obj
+         x64\Debug\NXU_customcopy.obj
+         x64\Debug\NXU_File.obj
+         x64\Debug\NXU_Geometry.obj
+         x64\Debug\NXU_GraphicsMesh.obj
+         x64\Debug\NXU_helper.obj
+         x64\Debug\NXU_hull.obj
+         x64\Debug\NXU_PhysicsExport.obj
+         x64\Debug\NXU_PhysicsInstantiator.obj
+         x64\Debug\NXU_ScaledCopy.obj
+         x64\Debug\NXU_schema.obj
+         x64\Debug\NXU_SchemaStream.obj
+         x64\Debug\NXU_Streaming.obj
+         x64\Debug\NXU_string.obj
+         x64\Debug\NXU_tinystr.obj
+         x64\Debug\NXU_tinyxml.obj
+         x64\Debug\NXU_tinyxmlerror.obj
+         x64\Debug\NXU_tinyxmlparser.obj
+         x64\Debug\ActorShape.obj
+         x64\Debug\Base.obj
+         x64\Debug\Base_Shader.obj
+         x64\Debug\Camera.obj
+         x64\Debug\Camera_Dynamic.obj
+         x64\Debug\Camera_Third.obj
+         x64\Debug\Client.obj
+         x64\Debug\Component.obj
+         x64\Debug\Cube.obj
+         x64\Debug\GameObject.obj
+         x64\Debug\GraphicDev.obj
+         x64\Debug\Instancing_Shader.obj
+         x64\Debug\Loader.obj
+         x64\Debug\MainFrm.obj
+         x64\Debug\Mesh.obj
+         x64\Debug\PhysicsMgr.obj
+         x64\Debug\Player.obj
+         x64\Debug\Point.obj
+         x64\Debug\Renderer.obj
+         x64\Debug\RenderState.obj
+         x64\Debug\ResourceMgr.obj
+         x64\Debug\Scene.obj
+         x64\Debug\Scene_Logo.obj
+         x64\Debug\Scene_Stage.obj
+         x64\Debug\Shader.obj
+         x64\Debug\ShaderMgr.obj
+         x64\Debug\SingleTexture.obj
+         x64\Debug\stdafx.obj
+         x64\Debug\Terrain.obj
+         x64\Debug\Texture.obj
+         x64\Debug\Timer.obj
+         Client.vcxproj -> D:\GraduationWork\SM\00 Client\GW_Client\Client\../Executable/Client.exe
+     1>"D:\GraduationWork\SM\00 Client\GW_Client\Client\Client.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:06.28

@@ -75,7 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;../Executable/ThirdParty/NxuStream2</IncludePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../Executable/ThirdParty/SDKs/lib/win64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,7 +84,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;../Executable/ThirdParty/NxuStream2</IncludePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../Executable/ThirdParty/SDKs/lib/win64;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -101,7 +101,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -111,7 +111,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,6 +152,26 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Asc2Bin.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaExport.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaImport.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_cooking.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_customcopy.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_File.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Geometry.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_GraphicsMesh.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_helper.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_hull.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsExport.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ScaledCopy.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_schema.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaStream.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaTypes.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Streaming.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_string.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_tinystr.h" />
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxml.h" />
     <ClInclude Include="ActorShape.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Base_Shader.h" />
@@ -190,6 +210,27 @@
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Asc2Bin.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaExport.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaImport.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_cooking.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_customcopy.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_File.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Geometry.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_GraphicsMesh.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_helper.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_hull.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsExport.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ScaledCopy.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_schema.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaStream.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Streaming.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_string.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinystr.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxml.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxmlerror.cpp" />
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxmlparser.cpp" />
     <ClCompile Include="ActorShape.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Base_Shader.cpp" />
@@ -267,6 +308,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Executable\ThirdParty\NxuStream2\TheNxuStreamFAQ.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

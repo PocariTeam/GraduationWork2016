@@ -115,7 +115,7 @@ void CScene_Stage::Create_BaseObject( ID3D11Device* pDevice, ID3D11DeviceContext
 	CPlayer*	pPlayer = CPlayer::Create( pDevice, pContext, pMesh, pTexture, XMFLOAT3{ 0.f, 0.f, 0.f } );
 	pShader->Set_RenderObject( pPlayer );
 	vecGameObject.push_back( pPlayer );
-	m_RenderGroup[RENDER_DEPTHTEST].push_back( pShader );
+	//m_RenderGroup[RENDER_DEPTHTEST].push_back( pShader );
 
 	// Camera
 	m_pCamera = CCamera_Dynamic::Create( m_hWnd, pDevice, pContext );

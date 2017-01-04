@@ -4,8 +4,10 @@
 #define _PHYSICSMGR_H_
 
 #include "NxPhysics.h"
+#include "NXU_helper.h"
 
 class CGameObject;
+
 class CPhysicsMgr {
 	explicit CPhysicsMgr( void );
 	~CPhysicsMgr( void ) = default;
@@ -28,6 +30,7 @@ private:
 	void			SetContantBuffer( ID3D11DeviceContext* pContext, NxF32* pMtxWorld );
 public:
 	HRESULT Initialize();
+	HRESULT LoadScene(const char * pFilename, NXU::NXU_FileType type);
 	HRESULT CreateScene( ID3D11Device* pDevice );
 	void Update( const float& fTimeDelta );
 	void Render( ID3D11DeviceContext* pContext );

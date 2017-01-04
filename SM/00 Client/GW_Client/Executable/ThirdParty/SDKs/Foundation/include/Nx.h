@@ -21,6 +21,7 @@ DLL export macros
 #endif
 #endif
 
+#define WIN32
 #ifndef NX_CALL_CONV
 	#if defined WIN32
 		#define NX_CALL_CONV __cdecl
