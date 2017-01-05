@@ -40,9 +40,6 @@
     <Filter Include="소스 파일\01 System\03 Timer">
       <UniqueIdentifier>{a1caf148-688f-4ca4-970b-b6af67759844}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utilty">
-      <UniqueIdentifier>{e584d4f9-f5f8-4aeb-ba99-dbac7ddff994}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03 Resources">
       <UniqueIdentifier>{44f7f9b1-6991-4905-a505-23d8eb58d2c4}</UniqueIdentifier>
     </Filter>
@@ -78,48 +75,6 @@
     </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\00 Camera">
       <UniqueIdentifier>{51bf75f4-0bd9-4834-850a-7c6115c82e0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass">
-      <UniqueIdentifier>{6d0599e3-c7ba-44bc-af5f-21b764a0b38a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\00 Base">
-      <UniqueIdentifier>{45c26779-63f5-490b-9d04-9acd5071d157}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject">
-      <UniqueIdentifier>{ab01ecaa-3b3d-45f1-8ce4-9b9ffc4a3a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject\00 Camera">
-      <UniqueIdentifier>{d6605582-dd9e-446c-97d3-85a155837f4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\02 Component">
-      <UniqueIdentifier>{ce46deab-bc57-4a60-be66-3511d495f205}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\01 Renderer">
-      <UniqueIdentifier>{49d03e0d-a5d9-4531-8eda-0faeeca8e848}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\02 Light">
-      <UniqueIdentifier>{65dbf251-bdda-4ed9-b993-c8756dd4eb7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\02 Light\00 Manager">
-      <UniqueIdentifier>{c9cdbcec-3cea-496a-ac76-9928e5e3339d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader">
-      <UniqueIdentifier>{fdd48a4c-e4ba-4aa8-930f-e19a024623d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\00 Manager">
-      <UniqueIdentifier>{b6de0fea-132e-482f-ba7a-5321da0a2081}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\02 Instancing_Shader">
-      <UniqueIdentifier>{f41a6e2f-79c3-41a8-8f99-4cb9afe49d3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\01 Base_Shader">
-      <UniqueIdentifier>{38246365-e191-4e0f-bdce-fbc57e3b5506}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\03 Particle_Shader">
-      <UniqueIdentifier>{f77e3819-533f-4f13-9f3e-af790a7c805f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\99 HLSL">
-      <UniqueIdentifier>{e3784a60-87d9-44f6-9db6-d3b4f447dde1}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\03 Resources\00 Manager">
       <UniqueIdentifier>{dcb8b7e1-a741-4b9c-84f9-44ec12ef1ff2}</UniqueIdentifier>
@@ -160,9 +115,6 @@
     <Filter Include="소스 파일\03 Resources\03 Model\01 DynamicModel">
       <UniqueIdentifier>{c97e50df-308a-4913-810e-195ef9158e7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utilty\01 Renderer\00 RenderState">
-      <UniqueIdentifier>{97dfbf3c-e7f3-4ae0-8ba2-f5d31d1b55e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\99 Loader">
       <UniqueIdentifier>{19f58ac6-943b-4a96-b30c-091646bb3111}</UniqueIdentifier>
     </Filter>
@@ -180,6 +132,54 @@
     </Filter>
     <Filter Include="소스 파일\99 CommonCode">
       <UniqueIdentifier>{2a999c30-9de3-4bb2-9526-582ad617cfd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty">
+      <UniqueIdentifier>{e584d4f9-f5f8-4aeb-ba99-dbac7ddff994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass">
+      <UniqueIdentifier>{6d0599e3-c7ba-44bc-af5f-21b764a0b38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\00 Base">
+      <UniqueIdentifier>{45c26779-63f5-490b-9d04-9acd5071d157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject">
+      <UniqueIdentifier>{ab01ecaa-3b3d-45f1-8ce4-9b9ffc4a3a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject\00 Camera">
+      <UniqueIdentifier>{d6605582-dd9e-446c-97d3-85a155837f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\02 Component">
+      <UniqueIdentifier>{ce46deab-bc57-4a60-be66-3511d495f205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\01 Renderer">
+      <UniqueIdentifier>{49d03e0d-a5d9-4531-8eda-0faeeca8e848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\01 Renderer\00 RenderState">
+      <UniqueIdentifier>{97dfbf3c-e7f3-4ae0-8ba2-f5d31d1b55e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\02 Light">
+      <UniqueIdentifier>{65dbf251-bdda-4ed9-b993-c8756dd4eb7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\02 Light\00 Manager">
+      <UniqueIdentifier>{c9cdbcec-3cea-496a-ac76-9928e5e3339d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader">
+      <UniqueIdentifier>{fdd48a4c-e4ba-4aa8-930f-e19a024623d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\00 Manager">
+      <UniqueIdentifier>{b6de0fea-132e-482f-ba7a-5321da0a2081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\02 Instancing_Shader">
+      <UniqueIdentifier>{f41a6e2f-79c3-41a8-8f99-4cb9afe49d3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\01 Base_Shader">
+      <UniqueIdentifier>{38246365-e191-4e0f-bdce-fbc57e3b5506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\03 Particle_Shader">
+      <UniqueIdentifier>{f77e3819-533f-4f13-9f3e-af790a7c805f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\99 HLSL">
+      <UniqueIdentifier>{e3784a60-87d9-44f6-9db6-d3b4f447dde1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

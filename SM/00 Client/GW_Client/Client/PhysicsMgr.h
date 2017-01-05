@@ -31,6 +31,7 @@ private:
 public:
 	HRESULT Initialize();
 	HRESULT LoadScene(const char * pFilename, NXU::NXU_FileType type);
+//	void SwitchCoordinateSystem(NxScene * scene, NxMat34 mat);
 	HRESULT CreateScene( ID3D11Device* pDevice );
 	void Update( const float& fTimeDelta );
 	void Render( ID3D11DeviceContext* pContext );

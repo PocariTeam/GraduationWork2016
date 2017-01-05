@@ -9,7 +9,7 @@ HRESULT	CCamera_Dynamic::Initialize( HWND hWnd, ID3D11Device* pDevice, ID3D11Dev
 		return E_FAIL;
 
 	m_hWnd = hWnd;
-	m_vEye = XMFLOAT3( 0.f, 10.f, -20.f );
+	m_vEye = XMFLOAT3( 0.f, 40.f, -60.f );
 	m_vAt = XMFLOAT3( 0.f, 0.f, 0.f );
 
 	return S_OK;

@@ -5,6 +5,8 @@
 #include "ResourceMgr.h"
 #include "Mesh.h"
 #include "Define.h"
+#include "Stream.h"
+#include "NxCooking.h"
 
 
 CPhysicsMgr*	CPhysicsMgr::m_pInstance;
@@ -95,7 +97,7 @@ HRESULT CPhysicsMgr::Initialize()
 
 HRESULT CPhysicsMgr::LoadScene(const char *pFilename, NXU::NXU_FileType type)
 {
-	HRESULT success = false;
+	HRESULT success = E_FAIL;
 
 	if (m_pPhysicsSDK)
 	{
@@ -106,89 +108,71 @@ HRESULT CPhysicsMgr::LoadScene(const char *pFilename, NXU::NXU_FileType type)
 		{
 			if (m_pScene)
 			{
-				// Release old scene
 				m_pPhysicsSDK->releaseScene(*m_pScene);
 				m_pScene = nullptr;
 			}
-			if (m_pPhysicsSDK)
-			{
-				success = NXU::instantiateCollection(c, *m_pPhysicsSDK, m_pScene, 0, 0);
-			}
+			
+			success = NXU::instantiateCollection(c, *m_pPhysicsSDK, 0, 0, 0);
+			
+			m_pScene = m_pPhysicsSDK->getScene(0);
+
 			NXU::releaseCollection(c);
 
-			NxU32 nbActors = m_pScene->getNbActors();
-			NxActor **alist = m_pScene->getActors();
-
-			for (NxU32 i = 0; i<nbActors; i++)
+			if (m_pScene)
 			{
-				NxActor *a = alist[i];
-				NxVec3 pos = a->getGlobalPosition();
-				printf("액터 '%s'의 위치: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
 
-				NxU32 nbShapes = a->getNbShapes();
-				if (nbShapes)
+				NxU32 nbActors = m_pScene->getNbActors();
+				NxActor **alist = m_pScene->getActors();
+
+				for (NxU32 i = 0; i < nbActors; i++)
 				{
-					NxShape ** slist = (NxShape **)a->getShapes();
-					for (NxU32 j = 0; j<nbShapes; j++)
-					{
-						NxShape *s = slist[j];
-						NxVec3 spos = s->getGlobalPosition();
-						printf("충돌메쉬[%d]%s의 위치: (%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
+					NxActor *a = alist[i];
+					NxVec3 pos = a->getGlobalPosition();
 
+					printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
+
+					NxU32 nbShapes = a->getNbShapes();
+					if (nbShapes)
+					{
+						NxShape ** slist = (NxShape **)a->getShapes();
+						for (NxU32 j = 0; j < nbShapes; j++)
+						{
+							NxShape *s = slist[j];
+							NxVec3 spos = s->getLocalPosition();
+							printf("   [%d] %s의 local: (%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
+
+						}
 					}
 				}
+			}
+			else {
+				printf("m_pScene is NULL! \n");
+				success = E_FAIL;
 			}
 
 		}
 		else
 		{
-			printf("NxuPhysicsCollection == NULL! \n");
+			printf("NxuPhysicsCollection is NULL! \n");
 		}
 	}
 
-
 	if (success)
-		printf("Scene %d loaded from file %s.\n", m_pScene, pFilename);
+		printf("Scene loaded from file %s.\n", pFilename);
 
 	return success;
 }
 
 HRESULT CPhysicsMgr::CreateScene( ID3D11Device* pDevice )
 {
-	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.05f );
-
-	// Create a scene
-	NxSceneDesc sceneDesc;
-	sceneDesc.gravity = NxVec3( 0.0f, -9.81f, 0.0f );
-	if( m_pPhysicsSDK->getHWVersion() != NX_HW_VERSION_NONE ) {
-		sceneDesc.simType = NX_SIMULATION_HW;
-	}
-	m_pScene = m_pPhysicsSDK->createScene( sceneDesc );
-
-	if( m_pScene == NULL )
-	{
-		printf( "\nError: Unable to create a PhysX scene, exiting the sample.\n\n" );
+	if (!LoadScene("../Executable/Resources/Scene/result.xml", NXU::FT_XML)) {
+		printf("LoadScene() is failed! \n");
 		return E_FAIL;
-	}
-
-	// Set default material
-	NxMaterial* defaultMaterial = m_pScene->getMaterialFromIndex( 0 );
-	defaultMaterial->setRestitution( 0.5f );
-	defaultMaterial->setStaticFriction( 0.5f );
-	defaultMaterial->setDynamicFriction( 0.5f );
-
-	// Create ground plane
-	NxPlaneShapeDesc planeDesc;
-	NxActorDesc actorDesc;
-	actorDesc.shapes.pushBack( &planeDesc );
-	m_pScene->createActor( actorDesc );
-
-	CreateCube( NxVec3( 0.f, 5.0f, 0.f ), 2, 10.0f );
-	CreateCapsule(NxVec3(-5.0f, 5.0f, 0.f), 1, 0.5f, 10.0f);
-	CreateSphere(NxVec3(5.0f, 5.0f, 0.f), 1, 10.0f);
+	};
 
 	m_pArrActors = m_pScene->getActors();
 	m_dwActorCnt = m_pScene->getNbActors();
+
 #ifdef _DEBUG
 	CreateContantBuffer( pDevice );
 #endif
@@ -313,7 +297,7 @@ void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxReal density)
 	NxBoxShapeDesc boxDesc;
 	boxDesc.dimensions = NxVec3( ( float )size * 0.5f, ( float )size * 0.5f, ( float )size*0.5f );
 	boxDesc.localPose.t = NxVec3( ( float )0.0f, ( float )size*0.5f, ( float )size*0.0f );
-
+	
 	NxBodyDesc bodyDesc;
 
 	NxActorDesc actorDesc;

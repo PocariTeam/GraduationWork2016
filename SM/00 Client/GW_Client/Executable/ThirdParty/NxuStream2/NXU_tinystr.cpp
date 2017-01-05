@@ -23,7 +23,7 @@ distribution.
  */
 
 /*
- * THIS	NXU_FILE WAS ALTERED BY	Tyge Løvset, 7.	April	2005.
+ * THIS	NXU_FILE WAS ALTERED BY	Tyge L?set, 7.	April	2005.
  */
 
 
