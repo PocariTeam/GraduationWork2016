@@ -144,55 +144,62 @@ HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType 
 
 NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale)
 {
-	float	fSKINWIDTH = 0.2f;
-	
-	// 박스 컨트롤러
-	NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
-	NxBoxControllerDesc desc;
-	NxVec3 tmp = startPos;
-	desc.extents = InitialExtents * scale;
-	desc.position.x = tmp.x;
-	desc.position.y = tmp.y + desc.extents.y;
-	desc.position.z = tmp.z;
-	desc.upDirection = NX_Y;
-	desc.slopeLimit = 0;
-	desc.slopeLimit = cosf(NxMath::degToRad(45.0f));
-	desc.skinWidth = fSKINWIDTH;
-	desc.stepOffset = 0.5;
-	desc.userData = (NxActor*)actor;
-	//	desc.stepOffset	= 0.01f;
-	//		desc.stepOffset		= 0;
-	//		desc.stepOffset		= 10;
-	//desc.callback = &gControllerHitReport;
-	NxController *pCtrl = m_pCCTManager->createController(m_pScene, desc);
+	float	fSKINWIDTH = 0.1f;
+	NxController *pCtrl;
+
+	if (true) {
+
+		// 박스 컨트롤러
+		NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
+		NxBoxControllerDesc desc;
+		desc.extents = InitialExtents * scale;
+		desc.position.x = startPos.x;
+		desc.position.y = startPos.y;
+		desc.position.z = startPos.z;
+		desc.upDirection = NX_Y;
+		desc.slopeLimit = 0;
+		desc.slopeLimit = cosf(NxMath::degToRad(45.0f));
+		desc.skinWidth = fSKINWIDTH;
+		desc.stepOffset = 0.5;
+		desc.userData = (NxActor*)actor;
+		//	desc.stepOffset	= 0.01f;
+		//		desc.stepOffset		= 0;
+		//		desc.stepOffset		= 10;
+		//desc.callback = &gControllerHitReport;
+		pCtrl = m_pCCTManager->createController(m_pScene, desc);
+	}
+	else {
+
+		// 캡슐 컨트롤러
+		NxF32	InitialRadius = 0.5f;
+		NxF32	InitialHeight = 2.0f;
+		NxCapsuleControllerDesc desc;
+		desc.position.x = startPos.x;
+		desc.position.y = startPos.y;
+		desc.position.z = startPos.z;
+		desc.radius = InitialRadius * scale;
+		desc.height = InitialHeight * scale;
+		desc.upDirection = NX_Y;
+		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
+		desc.slopeLimit = 0;
+		desc.skinWidth = fSKINWIDTH;
+		desc.stepOffset = 0.5;
+		desc.stepOffset = InitialRadius * 0.5 * scale;
+		desc.userData = (NxActor*)actor;
+		//	desc.stepOffset	= 0.01f;
+		//	desc.stepOffset		= 0;	// Fixes some issues
+		//	desc.stepOffset		= 10;
+		//desc.callback = &gControllerHitReport;
+		pCtrl = m_pCCTManager->createController(m_pScene, desc);
+	}
 	pCtrl->setCollision(false);
+	NxBounds3 bound;
+	pCtrl->getActor()->getShapes()[0]->getWorldBounds(bound);
+	NxVec3 extents;
+	bound.getExtents(extents);
+	pCtrl->getActor()->getShapes()[0]->setLocalPosition(NxVec3(0, extents.y, 0));
+
 	return pCtrl;
-
-	// 캡슐 컨트롤러
-
-	//NxF32	InitialRadius = 0.5f;
-	//NxF32	InitialHeight = 2.0f;
-	//NxCapsuleControllerDesc desc;
-	//NxVec3 tmp = startPos;
-	//desc.position.x = tmp.x;
-	//desc.position.y = tmp.y;
-	//desc.position.z = tmp.z;
-	//desc.radius = InitialRadius * scale;
-	//desc.height = InitialHeight * scale;
-	//desc.upDirection = NX_Y;
-	////		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
-	//desc.slopeLimit = 0;
-	//desc.skinWidth = fSKINWIDTH;
-	//desc.stepOffset = 0.5;
-	//desc.stepOffset = InitialRadius * 0.5 * scale;
-	//desc.userData = (NxActor*)actor;
-	////	desc.stepOffset	= 0.01f;
-	////	desc.stepOffset		= 0;	// Fixes some issues
-	////	desc.stepOffset		= 10;
-	//desc.callback = &gControllerHitReport;
-	//NxController *pCtrl = m_pCCTManager->createController(m_pScene, desc);
-	//pCtrl->setCollision(false);
-	//return pCtrl;
 
 }
 
@@ -221,8 +228,9 @@ HRESULT CPhysicsMgr::SetScene()
 				a->raiseBodyFlag(NX_BF_KINEMATIC);
 				a->setGlobalPosition(NxVec3(0, 0, 0));
 
+
 				// 컨트롤러 생성
-				m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(),6.0f);
+				m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(),5.0f);
 			}
 
 
@@ -240,7 +248,11 @@ HRESULT CPhysicsMgr::SetScene()
 		}
 	}
 
-	// Create the character controllers
+	for (int i = 0; i < 20; ++i) {
+		for (int j = 0; j < 20; ++j) {
+			CreateSphere(NxVec3(-30 + 3 * j, 0, -30 + 3*i), 0.5, 10.0f);
+		}
+	}
 
 
 	return S_OK;
@@ -286,10 +298,24 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 	{
 		dir += NxVec3(+1, 0, 0)*fTimeDelta*fSpeed;
 	}
-	m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.000001f, collisionFlags);
-	NxVec3 pos = m_pMyCCT->getActor()->getGlobalPosition();
-	((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(pos);
+	if (!dir.isZero())
+	{
+		// 이동
+		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.000001f, collisionFlags);
+		NxVec3 pos = m_pMyCCT->getActor()->getGlobalPosition();
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(pos);
 
+		// 회전
+		dir.normalize();
+		//NxVec3 oldLook = m_pMyCCT->getActor()->getGlobalPose().M.getRow(3);
+		NxVec3 oldLook(0, 0, -1.0f);
+		NxVec3 cross = oldLook.cross(dir);
+		NxReal rotAngle = acos(oldLook.dot(dir));
+		rotAngle *= (cross.y > 0.0f) ? 1.0f : -1.0f;
+		NxMat33 rot;
+		rot.rotY(rotAngle);
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalOrientation(rot);
+	}
 
 	NxActor** dpActor = m_pScene->getActors();
 	NxU32 nbActors = m_pScene->getNbActors();
@@ -301,7 +327,6 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		pGameObject->Update(fTimeDelta);
 	}
 	}
-
 
 	m_pScene->simulate(fTimeDelta);
 	m_pScene->flushStream();
