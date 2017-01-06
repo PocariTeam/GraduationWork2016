@@ -6,6 +6,15 @@
 #include "NxPhysics.h"
 #include "NXU_helper.h"
 
+enum GameGroup
+{
+	GROUP_NON_COLLIDABLE,
+	GROUP_COLLIDABLE_NON_PUSHABLE,
+	GROUP_COLLIDABLE_PUSHABLE,
+};
+
+#define COLLIDABLE_MASK	(1<<GROUP_COLLIDABLE_NON_PUSHABLE) | (1<<GROUP_COLLIDABLE_PUSHABLE)
+
 class CGameObject;
 class UserAllocator;
 class NxControllerManager;
@@ -28,13 +37,14 @@ private:
 	NxScene*				m_pScene;
 	ID3D11Buffer*			m_pCBmtxWorld;
 	NxControllerManager*	m_pCCTManager;
+	NxController*			m_pMyCCT;
 private:
 	HRESULT			CreateContantBuffer( ID3D11Device * pDevice );
 	void			SetContantBuffer( ID3D11DeviceContext* pContext, NxF32* pMtxWorld );
 public:
 	HRESULT Initialize();
 	HRESULT LoadSceneFromFile(const char * pFilename, NXU::NXU_FileType type);
-	NxController* CreateCharacterController(const NxVec3& startPos, NxReal scale);
+	NxController* CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale);
 	HRESULT SetScene();
 	HRESULT CreateScene( ID3D11Device* pDevice );
 	void Update( const float& fTimeDelta );

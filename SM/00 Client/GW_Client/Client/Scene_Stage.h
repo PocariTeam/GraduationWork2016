@@ -3,6 +3,7 @@
 #ifndef _Scene_Stage_H_
 #define _Scene_Stage_H_
 
+
 #include "Scene.h"
 
 class CPhysicsMgr;

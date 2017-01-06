@@ -142,10 +142,10 @@ HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType 
 	return success;
 }
 
-NxController* CPhysicsMgr::CreateCharacterController(const NxVec3& startPos, NxReal scale)
+NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale)
 {
 	float	fSKINWIDTH = 0.2f;
-
+	
 	// 박스 컨트롤러
 	NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
 	NxBoxControllerDesc desc;
@@ -159,18 +159,19 @@ NxController* CPhysicsMgr::CreateCharacterController(const NxVec3& startPos, NxR
 	desc.slopeLimit = cosf(NxMath::degToRad(45.0f));
 	desc.skinWidth = fSKINWIDTH;
 	desc.stepOffset = 0.5;
+	desc.userData = (NxActor*)actor;
 	//	desc.stepOffset	= 0.01f;
 	//		desc.stepOffset		= 0;
 	//		desc.stepOffset		= 10;
 	//desc.callback = &gControllerHitReport;
-	return m_pCCTManager->createController(m_pScene, desc);
-
+	NxController *pCtrl = m_pCCTManager->createController(m_pScene, desc);
+	pCtrl->setCollision(false);
+	return pCtrl;
 
 	// 캡슐 컨트롤러
 
 	//NxF32	InitialRadius = 0.5f;
 	//NxF32	InitialHeight = 2.0f;
-
 	//NxCapsuleControllerDesc desc;
 	//NxVec3 tmp = startPos;
 	//desc.position.x = tmp.x;
@@ -184,11 +185,14 @@ NxController* CPhysicsMgr::CreateCharacterController(const NxVec3& startPos, NxR
 	//desc.skinWidth = fSKINWIDTH;
 	//desc.stepOffset = 0.5;
 	//desc.stepOffset = InitialRadius * 0.5 * scale;
+	//desc.userData = (NxActor*)actor;
 	////	desc.stepOffset	= 0.01f;
-	////		desc.stepOffset		= 0;	// Fixes some issues
-	////		desc.stepOffset		= 10;
+	////	desc.stepOffset		= 0;	// Fixes some issues
+	////	desc.stepOffset		= 10;
 	//desc.callback = &gControllerHitReport;
-	//return m_pCCTManager->createController(m_pScene, desc);
+	//NxController *pCtrl = m_pCCTManager->createController(m_pScene, desc);
+	//pCtrl->setCollision(false);
+	//return pCtrl;
 
 }
 
@@ -210,8 +214,15 @@ HRESULT CPhysicsMgr::SetScene()
 
 			printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
 
+			// 캐릭터 설정 (지금은 myPlayer가 나의 캐릭터라고 가정)
 			if (strcmp(a->getName(), "myPlayer")==0) {
-				CreateCharacterController(NxVec3(0,0,0),1.0f);
+
+				// 임시설정값 (실제는 파일에서 미리 설정해주어야 함)
+				a->raiseBodyFlag(NX_BF_KINEMATIC);
+				a->setGlobalPosition(NxVec3(0, 0, 0));
+
+				// 컨트롤러 생성
+				m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(),6.0f);
 			}
 
 
@@ -235,6 +246,8 @@ HRESULT CPhysicsMgr::SetScene()
 	return S_OK;
 }
 
+
+
 HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 {
 	if (!LoadSceneFromFile("../Executable/Resources/Scene/human_fix.xml", NXU::FT_XML)) {
@@ -252,16 +265,43 @@ HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 
 void CPhysicsMgr::Update(const float & fTimeDelta)
 {
-	if (m_pScene == NULL)
-		return;
+
+	NxVec3 dir(0, 0, 0);
+	NxF32 fSpeed = 5.0f;
+	NxU32 collisionFlags;
+
+	if (GetAsyncKeyState(VK_UP) & 0x8000) 
+	{
+		dir += NxVec3(0, 0, 1)*fTimeDelta*fSpeed;
+	}
+	if ((GetAsyncKeyState(VK_DOWN) & 0x8000))
+	{
+		dir += NxVec3(0, 0, -1)*fTimeDelta*fSpeed;
+	}
+	if ((GetAsyncKeyState(VK_LEFT) & 0x8000))
+	{
+		dir += NxVec3(-1, 0, 0)*fTimeDelta*fSpeed;
+	}
+	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000))
+	{
+		dir += NxVec3(+1, 0, 0)*fTimeDelta*fSpeed;
+	}
+	m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.000001f, collisionFlags);
+	NxVec3 pos = m_pMyCCT->getActor()->getGlobalPosition();
+	((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(pos);
+
 
 	NxActor** dpActor = m_pScene->getActors();
+	NxU32 nbActors = m_pScene->getNbActors();
 
-	/*for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
+	for( DWORD i = 0; i < nbActors; ++i, ++dpActor )
 	{
 	CGameObject* pGameObject = ( CGameObject* )(*dpActor)->userData;
-	pGameObject->Update( fTimeDelta );
-	}*/
+	if (pGameObject) {
+		pGameObject->Update(fTimeDelta);
+	}
+	}
+
 
 	m_pScene->simulate(fTimeDelta);
 	m_pScene->flushStream();
@@ -335,25 +375,29 @@ void CPhysicsMgr::Render(ID3D11DeviceContext* pContext)
 
 void CPhysicsMgr::Release_Scene()
 {
-	if (nullptr != m_pScene)
+	if (m_pScene)
 	{
+		m_pCCTManager->purgeControllers();
+		NxReleaseControllerManager(m_pCCTManager);
 		m_pPhysicsSDK->releaseScene(*m_pScene);
+		m_pCCTManager = nullptr;
 		m_pScene = nullptr;
 	}
 }
 
 void CPhysicsMgr::Release()
 {
-	if (nullptr != m_pScene)
-	{
-		m_pPhysicsSDK->releaseScene(*m_pScene);
-		m_pScene = nullptr;
-	}
 
-	if (nullptr != m_pPhysicsSDK)
+	if (m_pPhysicsSDK)
 	{
 		NxReleasePhysicsSDK(m_pPhysicsSDK);
 		m_pPhysicsSDK = nullptr;
+	}
+
+	if (m_pAllocator)
+	{
+		delete m_pAllocator;
+		m_pAllocator = nullptr;
 	}
 
 	delete this;
