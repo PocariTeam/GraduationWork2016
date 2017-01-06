@@ -7,95 +7,107 @@
 #include "Define.h"
 #include "Stream.h"
 #include "NxCooking.h"
+#include "Cooking.h"
+#include "NxControllerManager.h"
+#include "UserAllocator.h"
+#include "NxBoxController.h"
+#include "NxCapsuleController.h"
 
 
 CPhysicsMgr*	CPhysicsMgr::m_pInstance;
 
 
-CPhysicsMgr::CPhysicsMgr( void )
-	: m_pPhysicsSDK( nullptr )
-	, m_pScene( nullptr )
-	, m_pArrActors( nullptr )
-	, m_dwActorCnt( 0 )
-	, m_pCBmtxWorld( nullptr )
+CPhysicsMgr::CPhysicsMgr(void)
+	: m_pPhysicsSDK(nullptr)
+	, m_pScene(nullptr)
+	, m_pCBmtxWorld(nullptr)
 {
 
 }
 
-CPhysicsMgr* CPhysicsMgr::GetInstance( void )
+CPhysicsMgr* CPhysicsMgr::GetInstance(void)
 {
-	if( nullptr == m_pInstance )
+	if (nullptr == m_pInstance)
 		m_pInstance = new CPhysicsMgr;
 
 	return m_pInstance;
 }
 
-void CPhysicsMgr::DestroyInstance( void )
+void CPhysicsMgr::DestroyInstance(void)
 {
-	if( nullptr != m_pInstance )
+	if (nullptr != m_pInstance)
 	{
 		m_pInstance->Release();
 		m_pInstance = nullptr;
 	}
 }
 
-void CPhysicsMgr::Connect_Actors( vector<CGameObject*>* pvecGameObject )
+void CPhysicsMgr::Connect_Actors(vector<CGameObject*>* pvecGameObject)
 {
-	if( nullptr == pvecGameObject ) return;
+	if (nullptr == pvecGameObject) return;
 	// if( pvecGameObject->size() != m_dwActorCnt ) return;
 
-	NxActor** dpActor = m_pArrActors;
+	NxActor** dpActor = m_pScene->getActors();
 
-	for( DWORD i = 0; i < 1 /*pvecGameObject->size()*/; ++i, ++dpActor )
+	for (DWORD i = 0; i < 1 /*pvecGameObject->size()*/; ++i, ++dpActor)
 	{
 		NxActor* pActor = *dpActor;
-		pActor->userData = ( *pvecGameObject )[i];
-		( *pvecGameObject )[i]->SetActor( pActor );
+		pActor->userData = (*pvecGameObject)[i];
+		(*pvecGameObject)[i]->SetActor(pActor);
 	}
 }
 
-HRESULT CPhysicsMgr::CreateContantBuffer( ID3D11Device * pDevice )
+HRESULT CPhysicsMgr::CreateContantBuffer(ID3D11Device * pDevice)
 {
 	/* VS 용 World */
 	D3D11_BUFFER_DESC Buffer_Desc;
-	ZeroMemory( &Buffer_Desc, sizeof( Buffer_Desc ) );
+	ZeroMemory(&Buffer_Desc, sizeof(Buffer_Desc));
 	Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
-	Buffer_Desc.ByteWidth = sizeof( XMFLOAT4X4 );
+	Buffer_Desc.ByteWidth = sizeof(XMFLOAT4X4);
 	Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	pDevice->CreateBuffer( &Buffer_Desc, NULL, &m_pCBmtxWorld );
+	pDevice->CreateBuffer(&Buffer_Desc, NULL, &m_pCBmtxWorld);
 	return S_OK;
 }
 
-void CPhysicsMgr::SetContantBuffer( ID3D11DeviceContext* pContext, NxF32* pMtxWorld )
+void CPhysicsMgr::SetContantBuffer(ID3D11DeviceContext* pContext, NxF32* pMtxWorld)
 {
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
-	pContext->Map( m_pCBmtxWorld, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
+	pContext->Map(m_pCBmtxWorld, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource);
 
-	XMFLOAT4X4* pmtxWorld = ( XMFLOAT4X4* )MappedSubresource.pData;
-	memcpy( pmtxWorld, pMtxWorld, sizeof( XMFLOAT4X4 ) );
-	pContext->Unmap( m_pCBmtxWorld, 0 );
-	pContext->VSSetConstantBuffers( VS_SLOT_WORLD_MATRIX, 1, &m_pCBmtxWorld );
+	XMFLOAT4X4* pmtxWorld = (XMFLOAT4X4*)MappedSubresource.pData;
+	memcpy(pmtxWorld, pMtxWorld, sizeof(XMFLOAT4X4));
+	pContext->Unmap(m_pCBmtxWorld, 0);
+	pContext->VSSetConstantBuffers(VS_SLOT_WORLD_MATRIX, 1, &m_pCBmtxWorld);
 }
 
 HRESULT CPhysicsMgr::Initialize()
 {
-	// Initialize PhysicsSDK
+	m_pAllocator = new UserAllocator;
+
+	bool status = InitCooking(m_pAllocator);
+	if (!status) {
+		printf("Unable to initialize the cooking library. Please make sure that you have correctly installed the latest version of the NVIDIA PhysX SDK.");
+		return E_FAIL;
+	}
+
 	NxPhysicsSDKDesc sdkDesc;
 	sdkDesc.flags ^= NX_SDKF_NO_HARDWARE;
 	NxSDKCreateError errorCode = NXCE_NO_ERROR;
-	m_pPhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION, NULL, NULL, sdkDesc, &errorCode );
-	if( m_pPhysicsSDK == NULL )
+	m_pPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION, m_pAllocator, NULL, sdkDesc, &errorCode);
+	if (m_pPhysicsSDK == NULL)
 	{
-		printf( "\nSDK create error (%d - %s).\nUnable to initialize the PhysX SDK, exiting the sample.\n\n", errorCode, getNxSDKCreateError( errorCode ) );
+		printf("\nSDK create error (%d - %s).\nUnable to initialize the PhysX SDK, exiting the sample.\n\n", errorCode, getNxSDKCreateError(errorCode));
 		return E_FAIL;
 	}
+
+	m_pCCTManager = NxCreateControllerManager(m_pAllocator);
 
 	return S_OK;
 }
 
-HRESULT CPhysicsMgr::LoadScene(const char *pFilename, NXU::NXU_FileType type)
+HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType type)
 {
 	HRESULT success = E_FAIL;
 
@@ -111,45 +123,12 @@ HRESULT CPhysicsMgr::LoadScene(const char *pFilename, NXU::NXU_FileType type)
 				m_pPhysicsSDK->releaseScene(*m_pScene);
 				m_pScene = nullptr;
 			}
-			
+
 			success = NXU::instantiateCollection(c, *m_pPhysicsSDK, 0, 0, 0);
-			
+
 			m_pScene = m_pPhysicsSDK->getScene(0);
 
 			NXU::releaseCollection(c);
-
-			if (m_pScene)
-			{
-
-				NxU32 nbActors = m_pScene->getNbActors();
-				NxActor **alist = m_pScene->getActors();
-
-				for (NxU32 i = 0; i < nbActors; i++)
-				{
-					NxActor *a = alist[i];
-					NxVec3 pos = a->getGlobalPosition();
-
-					printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
-
-					NxU32 nbShapes = a->getNbShapes();
-					if (nbShapes)
-					{
-						NxShape ** slist = (NxShape **)a->getShapes();
-						for (NxU32 j = 0; j < nbShapes; j++)
-						{
-							NxShape *s = slist[j];
-							NxVec3 spos = s->getLocalPosition();
-							printf("   [%d] %s의 local: (%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
-
-						}
-					}
-				}
-			}
-			else {
-				printf("m_pScene is NULL! \n");
-				success = E_FAIL;
-			}
-
 		}
 		else
 		{
@@ -163,47 +142,139 @@ HRESULT CPhysicsMgr::LoadScene(const char *pFilename, NXU::NXU_FileType type)
 	return success;
 }
 
-HRESULT CPhysicsMgr::CreateScene( ID3D11Device* pDevice )
+NxController* CPhysicsMgr::CreateCharacterController(const NxVec3& startPos, NxReal scale)
 {
-	if (!LoadScene("../Executable/Resources/Scene/result.xml", NXU::FT_XML)) {
+	float	fSKINWIDTH = 0.2f;
+
+	// 박스 컨트롤러
+	NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
+	NxBoxControllerDesc desc;
+	NxVec3 tmp = startPos;
+	desc.extents = InitialExtents * scale;
+	desc.position.x = tmp.x;
+	desc.position.y = tmp.y + desc.extents.y;
+	desc.position.z = tmp.z;
+	desc.upDirection = NX_Y;
+	desc.slopeLimit = 0;
+	desc.slopeLimit = cosf(NxMath::degToRad(45.0f));
+	desc.skinWidth = fSKINWIDTH;
+	desc.stepOffset = 0.5;
+	//	desc.stepOffset	= 0.01f;
+	//		desc.stepOffset		= 0;
+	//		desc.stepOffset		= 10;
+	//desc.callback = &gControllerHitReport;
+	return m_pCCTManager->createController(m_pScene, desc);
+
+
+	// 캡슐 컨트롤러
+
+	//NxF32	InitialRadius = 0.5f;
+	//NxF32	InitialHeight = 2.0f;
+
+	//NxCapsuleControllerDesc desc;
+	//NxVec3 tmp = startPos;
+	//desc.position.x = tmp.x;
+	//desc.position.y = tmp.y;
+	//desc.position.z = tmp.z;
+	//desc.radius = InitialRadius * scale;
+	//desc.height = InitialHeight * scale;
+	//desc.upDirection = NX_Y;
+	////		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
+	//desc.slopeLimit = 0;
+	//desc.skinWidth = fSKINWIDTH;
+	//desc.stepOffset = 0.5;
+	//desc.stepOffset = InitialRadius * 0.5 * scale;
+	////	desc.stepOffset	= 0.01f;
+	////		desc.stepOffset		= 0;	// Fixes some issues
+	////		desc.stepOffset		= 10;
+	//desc.callback = &gControllerHitReport;
+	//return m_pCCTManager->createController(m_pScene, desc);
+
+}
+
+HRESULT CPhysicsMgr::SetScene()
+{
+	if (!m_pScene) {
+		return E_FAIL;
+	}
+
+	 NxU32 nbActors = m_pScene->getNbActors();
+	 NxActor** aList = m_pScene->getActors();
+
+	if (m_pScene)
+	{
+		for (NxU32 i = 0; i < nbActors; i++)
+		{
+			NxActor *a = aList[i];
+			NxVec3 pos = a->getGlobalPosition();
+
+			printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
+
+			if (strcmp(a->getName(), "myPlayer")==0) {
+				CreateCharacterController(NxVec3(0,0,0),1.0f);
+			}
+
+
+			NxU32 nbShapes = a->getNbShapes();
+			if (nbShapes)
+			{
+				NxShape ** slist = (NxShape **)a->getShapes();
+				for (NxU32 j = 0; j < nbShapes; j++)
+				{
+					NxShape *s = slist[j];
+					NxVec3 spos = s->getLocalPosition();
+					printf("   [%d] %s의 local: (%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
+				}
+			}
+		}
+	}
+
+	// Create the character controllers
+
+
+	return S_OK;
+}
+
+HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
+{
+	if (!LoadSceneFromFile("../Executable/Resources/Scene/human_fix.xml", NXU::FT_XML)) {
 		printf("LoadScene() is failed! \n");
 		return E_FAIL;
 	};
 
-	m_pArrActors = m_pScene->getActors();
-	m_dwActorCnt = m_pScene->getNbActors();
+	SetScene();
 
 #ifdef _DEBUG
-	CreateContantBuffer( pDevice );
+	CreateContantBuffer(pDevice);
 #endif
 	return S_OK;
 }
 
-void CPhysicsMgr::Update( const float & fTimeDelta )
+void CPhysicsMgr::Update(const float & fTimeDelta)
 {
-	if( m_pScene == NULL )
+	if (m_pScene == NULL)
 		return;
 
-	NxActor** dpActor = m_pArrActors;
+	NxActor** dpActor = m_pScene->getActors();
 
 	/*for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
 	{
-		CGameObject* pGameObject = ( CGameObject* )(*dpActor)->userData;
-		pGameObject->Update( fTimeDelta );
+	CGameObject* pGameObject = ( CGameObject* )(*dpActor)->userData;
+	pGameObject->Update( fTimeDelta );
 	}*/
 
-	m_pScene->simulate( fTimeDelta );
+	m_pScene->simulate(fTimeDelta);
 	m_pScene->flushStream();
-	m_pScene->fetchResults( NX_RIGID_BODY_FINISHED, true );
+	m_pScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
 
-void CPhysicsMgr::Render( ID3D11DeviceContext* pContext )
+void CPhysicsMgr::Render(ID3D11DeviceContext* pContext)
 {
-	NxActor** dpActor = m_pArrActors;
+	NxActor** dpActor = m_pScene->getActors();
 
-	CMesh* pBox = CResourceMgr::GetInstance()->CloneMesh( "Mesh_Box" );
-	CMesh* pSphere = CResourceMgr::GetInstance()->CloneMesh( "Mesh_Sphere" );
-	CMesh* pCapsule = CResourceMgr::GetInstance()->CloneMesh( "Mesh_Capsule" );
+	CMesh* pBox = CResourceMgr::GetInstance()->CloneMesh("Mesh_Box");
+	CMesh* pSphere = CResourceMgr::GetInstance()->CloneMesh("Mesh_Sphere");
+	CMesh* pCapsule = CResourceMgr::GetInstance()->CloneMesh("Mesh_Capsule");
 	NxF32* mtxWorld = new NxF32[16];
 	NxVec3	vScale{};
 	NxF32	fRadius{}, fHeight{};
@@ -211,44 +282,45 @@ void CPhysicsMgr::Render( ID3D11DeviceContext* pContext )
 	mtxRealWorld.zero();
 	mtxScale.zero();
 
-	for( DWORD i = 0; i < m_dwActorCnt; ++i, ++dpActor )
+	DWORD nbActors = m_pScene->getNbActors();
+	for (DWORD i = 0; i < nbActors; ++i, ++dpActor)
 	{
-		DWORD dwShapeCnt = ( *dpActor )->getNbShapes();
-		NxShape* const * dpShape = ( *dpActor )->getShapes();
-		
-		for( DWORD j = 0; j < dwShapeCnt; ++j, ++dpShape )
+		DWORD dwShapeCnt = (*dpActor)->getNbShapes();
+		NxShape* const * dpShape = (*dpActor)->getShapes();
+
+		for (DWORD j = 0; j < dwShapeCnt; ++j, ++dpShape)
 		{
-			switch( ( *dpShape )->getType() )
+			switch ((*dpShape)->getType())
 			{
 			case NX_SHAPE_BOX:
 			{
-				vScale = ( ( NxBoxShape* )( *dpShape ) )->getDimensions() * 2.f;
-				mtxRealWorld = ( *dpShape )->getGlobalPose();
-				mtxScale.M.diagonal( vScale );
-				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
-				mtxRealWorld.getRowMajor44( mtxWorld );
-				SetContantBuffer( pContext, mtxWorld );
-				pBox->Render( pContext );
+				vScale = ((NxBoxShape*)(*dpShape))->getDimensions() * 2.f;
+				mtxRealWorld = (*dpShape)->getGlobalPose();
+				mtxScale.M.diagonal(vScale);
+				mtxRealWorld.multiply(mtxRealWorld, mtxScale);
+				mtxRealWorld.getRowMajor44(mtxWorld);
+				SetContantBuffer(pContext, mtxWorld);
+				pBox->Render(pContext);
 			}
-				break;
+			break;
 			case NX_SHAPE_SPHERE:
-				fRadius = ( ( NxSphereShape* )( *dpShape ) )->getRadius() * 2.f;
-				mtxRealWorld = ( *dpShape )->getGlobalPose();
-				mtxScale.M.diagonal( NxVec3( fRadius ) );
-				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
-				mtxRealWorld.getRowMajor44( mtxWorld );
-				SetContantBuffer( pContext, mtxWorld );
-				pSphere->Render( pContext );
+				fRadius = ((NxSphereShape*)(*dpShape))->getRadius() * 2.f;
+				mtxRealWorld = (*dpShape)->getGlobalPose();
+				mtxScale.M.diagonal(NxVec3(fRadius));
+				mtxRealWorld.multiply(mtxRealWorld, mtxScale);
+				mtxRealWorld.getRowMajor44(mtxWorld);
+				SetContantBuffer(pContext, mtxWorld);
+				pSphere->Render(pContext);
 				break;
 			case NX_SHAPE_CAPSULE:
-				fRadius = ( ( NxCapsuleShape* )( *dpShape ) )->getRadius() * 2.f;
-				fHeight = ( ( NxCapsuleShape* )( *dpShape ) )->getHeight();
-				mtxRealWorld = ( *dpShape )->getGlobalPose();
-				mtxScale.M.diagonal( NxVec3( fRadius, ( fHeight + fRadius ) * 0.5f, fRadius ) );
-				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
-				mtxRealWorld.getRowMajor44( mtxWorld );
-				SetContantBuffer( pContext, mtxWorld );
-				pCapsule->Render( pContext );
+				fRadius = ((NxCapsuleShape*)(*dpShape))->getRadius() * 2.f;
+				fHeight = ((NxCapsuleShape*)(*dpShape))->getHeight();
+				mtxRealWorld = (*dpShape)->getGlobalPose();
+				mtxScale.M.diagonal(NxVec3(fRadius, (fHeight + fRadius) * 0.5f, fRadius));
+				mtxRealWorld.multiply(mtxRealWorld, mtxScale);
+				mtxRealWorld.getRowMajor44(mtxWorld);
+				SetContantBuffer(pContext, mtxWorld);
+				pCapsule->Render(pContext);
 				break;
 			}
 		}
@@ -263,31 +335,31 @@ void CPhysicsMgr::Render( ID3D11DeviceContext* pContext )
 
 void CPhysicsMgr::Release_Scene()
 {
-	if( nullptr != m_pScene )
+	if (nullptr != m_pScene)
 	{
-		m_pPhysicsSDK->releaseScene( *m_pScene );
+		m_pPhysicsSDK->releaseScene(*m_pScene);
 		m_pScene = nullptr;
 	}
 }
 
 void CPhysicsMgr::Release()
 {
-	if( nullptr != m_pScene )
+	if (nullptr != m_pScene)
 	{
-		m_pPhysicsSDK->releaseScene( *m_pScene );
+		m_pPhysicsSDK->releaseScene(*m_pScene);
 		m_pScene = nullptr;
 	}
 
-	if( nullptr != m_pPhysicsSDK )
+	if (nullptr != m_pPhysicsSDK)
 	{
-		NxReleasePhysicsSDK( m_pPhysicsSDK );
+		NxReleasePhysicsSDK(m_pPhysicsSDK);
 		m_pPhysicsSDK = nullptr;
 	}
 
 	delete this;
 }
 
-void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxReal density)
+void CPhysicsMgr::CreateCube(const NxVec3& pos, int size, const NxReal density)
 {
 	if (m_pScene == NULL) {
 		printf("m_pScene == NULL! \n");
@@ -295,18 +367,18 @@ void CPhysicsMgr::CreateCube( const NxVec3& pos, int size, const NxReal density)
 	}
 
 	NxBoxShapeDesc boxDesc;
-	boxDesc.dimensions = NxVec3( ( float )size * 0.5f, ( float )size * 0.5f, ( float )size*0.5f );
-	boxDesc.localPose.t = NxVec3( ( float )0.0f, ( float )size*0.5f, ( float )size*0.0f );
-	
+	boxDesc.dimensions = NxVec3((float)size * 0.5f, (float)size * 0.5f, (float)size*0.5f);
+	boxDesc.localPose.t = NxVec3((float)0.0f, (float)size*0.5f, (float)size*0.0f);
+
 	NxBodyDesc bodyDesc;
 
 	NxActorDesc actorDesc;
-	actorDesc.shapes.pushBack( &boxDesc );
+	actorDesc.shapes.pushBack(&boxDesc);
 	actorDesc.body = &bodyDesc;
 	actorDesc.density = density;
 	actorDesc.globalPose.t = pos;
-	
-	m_pScene->createActor( actorDesc );
+
+	m_pScene->createActor(actorDesc);
 }
 
 void CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, const NxReal radius, const NxReal density)

@@ -7,6 +7,9 @@
 #include "NXU_helper.h"
 
 class CGameObject;
+class UserAllocator;
+class NxControllerManager;
+class NxController;
 
 class CPhysicsMgr {
 	explicit CPhysicsMgr( void );
@@ -17,21 +20,22 @@ public:
 	static CPhysicsMgr*	GetInstance( void );
 	static void			DestroyInstance( void );
 public:
-	DWORD  Get_ActorCnt() { return m_dwActorCnt; }
+	DWORD  Get_ActorCnt() { return m_pScene->getNbActors(); }
 	void   Connect_Actors( vector<CGameObject*>* pvecGameObject );
 private:
-	NxPhysicsSDK*	m_pPhysicsSDK;
-	NxScene*		m_pScene;
-	NxActor**		m_pArrActors;
-	DWORD			m_dwActorCnt;
-	ID3D11Buffer*	m_pCBmtxWorld;
+	UserAllocator*			m_pAllocator;
+	NxPhysicsSDK*			m_pPhysicsSDK;
+	NxScene*				m_pScene;
+	ID3D11Buffer*			m_pCBmtxWorld;
+	NxControllerManager*	m_pCCTManager;
 private:
 	HRESULT			CreateContantBuffer( ID3D11Device * pDevice );
 	void			SetContantBuffer( ID3D11DeviceContext* pContext, NxF32* pMtxWorld );
 public:
 	HRESULT Initialize();
-	HRESULT LoadScene(const char * pFilename, NXU::NXU_FileType type);
-//	void SwitchCoordinateSystem(NxScene * scene, NxMat34 mat);
+	HRESULT LoadSceneFromFile(const char * pFilename, NXU::NXU_FileType type);
+	NxController* CreateCharacterController(const NxVec3& startPos, NxReal scale);
+	HRESULT SetScene();
 	HRESULT CreateScene( ID3D11Device* pDevice );
 	void Update( const float& fTimeDelta );
 	void Render( ID3D11DeviceContext* pContext );

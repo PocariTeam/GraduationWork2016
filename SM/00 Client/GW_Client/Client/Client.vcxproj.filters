@@ -181,6 +181,12 @@
     <Filter Include="소스 파일\02 Utilty\03 Shader\99 HLSL">
       <UniqueIdentifier>{e3784a60-87d9-44f6-9db6-d3b4f447dde1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\99 CommonCode\00 NxuStream2">
+      <UniqueIdentifier>{2a775e86-2f68-4e68-bb10-25cb44956c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99 CommonCode\01 SamepleCommonCode">
+      <UniqueIdentifier>{93f350b3-3d03-4ae9-9015-ce835e26b41d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -295,64 +301,70 @@
       <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Asc2Bin.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaExport.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaImport.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_cooking.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_customcopy.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_File.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Geometry.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_GraphicsMesh.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_helper.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_hull.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsExport.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ScaledCopy.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_schema.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaStream.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaTypes.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Streaming.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_string.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_tinystr.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClInclude>
     <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxml.h">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\SampleCommonCode\src\UserAllocator.h">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\SampleCommonCode\src\cooking.h">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -450,67 +462,73 @@
       <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Asc2Bin.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaExport.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaImport.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_cooking.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_customcopy.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_File.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Geometry.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_GraphicsMesh.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_helper.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_hull.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsExport.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ScaledCopy.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_schema.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaStream.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Streaming.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_string.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinystr.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxml.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxmlerror.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxmlparser.cpp">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\SampleCommonCode\src\UserAllocator.cpp">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\SampleCommonCode\src\cooking.cpp">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -542,7 +560,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Executable\ThirdParty\NxuStream2\TheNxuStreamFAQ.htm">
-      <Filter>소스 파일\99 CommonCode</Filter>
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </None>
   </ItemGroup>
 </Project>

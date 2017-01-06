@@ -342,8 +342,6 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 
 void SaveScene(const char *pFilename)
 {
-	char SaveFilename[512];
-	strcpy(SaveFilename, pFilename);
 
 	// 중력과 filter값은 프로그램에서 바꾸어줘야 한다.
 	gScene->setGravity(NxVec3(0, -9.81f, 0));
@@ -353,13 +351,13 @@ void SaveScene(const char *pFilename)
 	if (c)
 	{
 		char scratch[512];
-		sprintf(scratch, "%s.xml", SaveFilename);
+		sprintf(scratch, "%s_fix.xml", pFilename);
 		printf("Saving NxuStream XML file to '%s'\r\n", scratch);
 		NXU::saveCollection(c, scratch, NXU::FT_XML, false, false);
 
-		//sprintf(scratch, "%s.nxb", SaveFilename);
-		//printf("Saving NxuStream BINARY file to '%s'\r\n", scratch);
-		//NXU::saveCollection(c, scratch, NXU::FT_BINARY, true, true);
+		sprintf(scratch, "%s_fix.nxb", pFilename);
+		printf("Saving NxuStream BINARY file to '%s'\r\n", scratch);
+		NXU::saveCollection(c, scratch, NXU::FT_BINARY, true, true);
 
 		//sprintf(scratch, "%s.dae", SaveFilename);
 		//printf("Saving COLLADA Physics 1.4.1 file to '%s'\r\n", scratch);
@@ -393,12 +391,12 @@ int main() {
 
 		case 1:
 			if (LoadScene(fileName, NXU::FT_XML)) {
-				SaveScene("result");
+				SaveScene(fileName);
 			}
 			break;
 		case 2:
 			if (LoadScene(fileName, NXU::FT_BINARY)) {
-				SaveScene("result");
+				SaveScene(fileName);
 			}
 			break;
 		}
