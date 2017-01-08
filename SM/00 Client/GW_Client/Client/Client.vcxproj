@@ -319,6 +319,7 @@
     <None Include="..\Executable\ThirdParty\NxuStream2\TheNxuStreamFAQ.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

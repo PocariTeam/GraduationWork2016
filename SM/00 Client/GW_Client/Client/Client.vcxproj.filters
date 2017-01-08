@@ -562,5 +562,6 @@
     <None Include="..\Executable\ThirdParty\NxuStream2\TheNxuStreamFAQ.htm">
       <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

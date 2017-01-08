@@ -6,14 +6,14 @@
 #include "NxPhysics.h"
 #include "NXU_helper.h"
 
-enum GameGroup
+enum CollGroup
 {
-	GROUP_NON_COLLIDABLE,
-	GROUP_COLLIDABLE_NON_PUSHABLE,
-	GROUP_COLLIDABLE_PUSHABLE,
+	PLAYER,
+	STATIC,
+	DYNAMIC
 };
 
-#define COLLIDABLE_MASK	(1<<GROUP_COLLIDABLE_NON_PUSHABLE) | (1<<GROUP_COLLIDABLE_PUSHABLE)
+#define COLLIDABLE_MASK	(1<<STATIC) | (1<<DYNAMIC)
 
 class CGameObject;
 class UserAllocator;
@@ -45,15 +45,16 @@ public:
 	HRESULT Initialize();
 	HRESULT LoadSceneFromFile(const char * pFilename, NXU::NXU_FileType type);
 	NxController* CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale);
-	HRESULT SetScene();
+	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
+	HRESULT SetupScene();
 	HRESULT CreateScene( ID3D11Device* pDevice );
 	void Update( const float& fTimeDelta );
 	void Render( ID3D11DeviceContext* pContext );
 	void Release_Scene();
 	void Release();
-	void CreateCube(const NxVec3& pos, int size, const NxReal density);
-	void CreateCapsule(const NxVec3 & pos, const NxReal height, const NxReal radius, const NxReal density);
-	void CreateSphere(const NxVec3 & pos, const NxReal radius, const NxReal density);
+	void CreateCube(const NxVec3& pos, int size, const NxReal density=0.0f);
+	void CreateCapsule(const NxVec3 & pos, const NxReal height, const NxReal radius, const NxReal density = 0.0f);
+	void CreateSphere(const NxVec3 & pos, const NxReal radius, const NxReal density = 0.0f);
 };
 
 #endif

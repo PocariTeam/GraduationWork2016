@@ -17,6 +17,41 @@
 CPhysicsMgr*	CPhysicsMgr::m_pInstance;
 
 
+class ControllerHitReport : public NxUserControllerHitReport
+{
+public:
+	virtual NxControllerAction  onShapeHit(const NxControllerShapeHit& hit)
+	{
+
+		if (1 && hit.shape)
+		{
+			NxCollisionGroup group = hit.shape->getGroup();
+			if (group == DYNAMIC)
+			{
+				NxActor& actor = hit.shape->getActor();
+				// We only allow horizontal pushes. Vertical pushes when we stand on dynamic objects creates
+				// useless stress on the solver. It would be possible to enable/disable vertical pushes on
+				// particular objects, if the gameplay requires it.
+				if (hit.dir.y == 0.0f)
+				{
+					NxF32 coeff = actor.getMass() * hit.length * 10.0f;
+					actor.addForceAtLocalPos(hit.dir*coeff, NxVec3(0, 0, 0), NX_IMPULSE);
+					//						actor.addForceAtPos(hit.dir*coeff, hit.controller->getPosition(), NX_IMPULSE);
+					//						actor.addForceAtPos(hit.dir*coeff, hit.worldPos, NX_IMPULSE);
+				}
+			}
+		}
+
+		return NX_ACTION_NONE;
+	}
+
+	virtual NxControllerAction  onControllerHit(const NxControllersHit& hit)
+	{
+		return NX_ACTION_NONE;
+	}
+
+} gControllerHitReport;
+
 CPhysicsMgr::CPhysicsMgr(void)
 	: m_pPhysicsSDK(nullptr)
 	, m_pScene(nullptr)
@@ -27,6 +62,7 @@ CPhysicsMgr::CPhysicsMgr(void)
 
 CPhysicsMgr* CPhysicsMgr::GetInstance(void)
 {
+
 	if (nullptr == m_pInstance)
 		m_pInstance = new CPhysicsMgr;
 
@@ -144,10 +180,12 @@ HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType 
 
 NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale)
 {
+	//actor->raiseActorFlag(NX_AF_DISABLE_RESPONSE);
+
 	float	fSKINWIDTH = 0.1f;
 	NxController *pCtrl;
 
-	if (true) {
+	if (!true) {
 
 		// 박스 컨트롤러
 		NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
@@ -165,7 +203,7 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		//	desc.stepOffset	= 0.01f;
 		//		desc.stepOffset		= 0;
 		//		desc.stepOffset		= 10;
-		//desc.callback = &gControllerHitReport;
+		desc.callback = &gControllerHitReport;
 		pCtrl = m_pCCTManager->createController(m_pScene, desc);
 	}
 	else {
@@ -189,28 +227,51 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		//	desc.stepOffset	= 0.01f;
 		//	desc.stepOffset		= 0;	// Fixes some issues
 		//	desc.stepOffset		= 10;
-		//desc.callback = &gControllerHitReport;
+		desc.callback = &gControllerHitReport;
 		pCtrl = m_pCCTManager->createController(m_pScene, desc);
 	}
-	pCtrl->setCollision(false);
+	
+	NxActor *CCTActor = pCtrl->getActor();
+	int reuslt = CCTActor->getShapes()[0]->getGroup();
 	NxBounds3 bound;
-	pCtrl->getActor()->getShapes()[0]->getWorldBounds(bound);
 	NxVec3 extents;
+	CCTActor->getShapes()[0]->getWorldBounds(bound);
 	bound.getExtents(extents);
-	pCtrl->getActor()->getShapes()[0]->setLocalPosition(NxVec3(0, extents.y, 0));
+	CCTActor->getShapes()[0]->setLocalPosition(NxVec3(0, extents.y, 0));
 
 	return pCtrl;
 
 }
 
-HRESULT CPhysicsMgr::SetScene()
+void CPhysicsMgr::SetActorGroup(NxActor* actor, NxCollisionGroup group)
+{
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape*const* shapes = actor->getShapes();
+
+	while (nbShapes--)
+	{
+		shapes[nbShapes]->setGroup(group);
+	}
+}
+
+
+HRESULT CPhysicsMgr::SetupScene()
 {
 	if (!m_pScene) {
 		return E_FAIL;
 	}
+	
+/* 
+	PPU를 이용한 물리계산, 해당 Compartment를 액터에 넣어주어야 함
 
-	 NxU32 nbActors = m_pScene->getNbActors();
-	 NxActor** aList = m_pScene->getActors();
+	NxCompartmentDesc cdesc;
+	cdesc.type = NX_SCT_RIGIDBODY;
+	cdesc.deviceCode = NX_DC_PPU_AUTO_ASSIGN;
+	NxCompartment *c = m_pScene->createCompartment(cdesc);
+*/
+
+	NxU32 nbActors = m_pScene->getNbActors();
+	NxActor** aList = m_pScene->getActors();
 
 	if (m_pScene)
 	{
@@ -221,18 +282,34 @@ HRESULT CPhysicsMgr::SetScene()
 
 			printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
 
-			// 캐릭터 설정 (지금은 myPlayer가 나의 캐릭터라고 가정)
-			if (strcmp(a->getName(), "myPlayer")==0) {
+			// 충돌그루핑
+			if (a->isDynamic()) 
+			{
+				// 캐릭터 설정 (지금은 myPlayer가 나의 캐릭터라고 가정)
+				if (strcmp(a->getName(), "myPlayer") == 0) 
+				{
+					SetActorGroup(a, CollGroup::PLAYER);
 
-				// 임시설정값 (실제는 파일에서 미리 설정해주어야 함)
-				a->raiseBodyFlag(NX_BF_KINEMATIC);
-				a->setGlobalPosition(NxVec3(0, 0, 0));
+					// 임시설정값 (실제는 파일에서 미리 설정해주어야 함)
+					a->raiseBodyFlag(NX_BF_KINEMATIC);
+					a->setGlobalPosition(NxVec3(0, 0, 0));
 
+					// 컨트롤러 생성
+					m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(), 5.0f);
 
-				// 컨트롤러 생성
-				m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(),5.0f);
+					//테스트용
+					CreateCharacterController(a, NxVec3(-5, 0, 5), 7.0f);
+
+				}
+				else
+				{
+					SetActorGroup(a, CollGroup::DYNAMIC);
+				}
 			}
-
+			else 
+			{
+				SetActorGroup(a, CollGroup::STATIC);
+			}
 
 			NxU32 nbShapes = a->getNbShapes();
 			if (nbShapes)
@@ -247,12 +324,14 @@ HRESULT CPhysicsMgr::SetScene()
 			}
 		}
 	}
-
-	for (int i = 0; i < 20; ++i) {
-		for (int j = 0; j < 20; ++j) {
+	
+	// 테스트용
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
 			CreateSphere(NxVec3(-30 + 3 * j, 0, -30 + 3*i), 0.5, 10.0f);
 		}
 	}
+	CreateCube(NxVec3(7, 0, 7), 10); // 스태틱
 
 
 	return S_OK;
@@ -267,7 +346,7 @@ HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 		return E_FAIL;
 	};
 
-	SetScene();
+	SetupScene();
 
 #ifdef _DEBUG
 	CreateContantBuffer(pDevice);
@@ -304,6 +383,11 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.000001f, collisionFlags);
 		NxVec3 pos = m_pMyCCT->getActor()->getGlobalPosition();
 		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(pos);
+
+		/* 테스트용: 플레이어 액터만 움직이기
+		NxVec3 oldPos = ((NxActor*)m_pMyCCT->getUserData())->getGlobalPosition();
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(oldPos+dir);
+		*/
 
 		// 회전
 		dir.normalize();
@@ -438,14 +522,23 @@ void CPhysicsMgr::CreateCube(const NxVec3& pos, int size, const NxReal density)
 	NxBoxShapeDesc boxDesc;
 	boxDesc.dimensions = NxVec3((float)size * 0.5f, (float)size * 0.5f, (float)size*0.5f);
 	boxDesc.localPose.t = NxVec3((float)0.0f, (float)size*0.5f, (float)size*0.0f);
-
-	NxBodyDesc bodyDesc;
+	
 
 	NxActorDesc actorDesc;
-	actorDesc.shapes.pushBack(&boxDesc);
-	actorDesc.body = &bodyDesc;
-	actorDesc.density = density;
 	actorDesc.globalPose.t = pos;
+
+	if (density) {
+		NxBodyDesc bodyDesc;
+		actorDesc.body = &bodyDesc;
+		actorDesc.density = density;
+		boxDesc.group = CollGroup::DYNAMIC;
+	}
+	else {
+		actorDesc.body = NULL;
+		boxDesc.group = CollGroup::STATIC;
+	}
+
+	actorDesc.shapes.pushBack(&boxDesc);
 
 	m_pScene->createActor(actorDesc);
 }
@@ -462,13 +555,22 @@ void CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, const Nx
 	capsuleDesc.radius = radius;
 	capsuleDesc.localPose.t = NxVec3(0, radius + height * 0.5f, 0);
 
-	NxBodyDesc bodyDesc;
-
 	NxActorDesc actorDesc;
-	actorDesc.shapes.pushBack(&capsuleDesc);
-	actorDesc.body = &bodyDesc;
-	actorDesc.density = density;
 	actorDesc.globalPose.t = pos;
+
+	if (density) {
+		NxBodyDesc bodyDesc;
+		actorDesc.body = &bodyDesc;
+		actorDesc.density = density;
+		capsuleDesc.group = CollGroup::DYNAMIC;
+	}
+	else {
+		actorDesc.body = NULL;
+		capsuleDesc.group = CollGroup::STATIC;
+	}
+
+	actorDesc.shapes.pushBack(&capsuleDesc);
+
 	m_pScene->createActor(actorDesc);
 }
 
@@ -484,12 +586,21 @@ void CPhysicsMgr::CreateSphere(const NxVec3& pos, const NxReal radius, const NxR
 	sphereDesc.radius = radius;
 	sphereDesc.localPose.t = NxVec3(0, radius, 0);
 
-	NxBodyDesc bodyDesc;
-
 	NxActorDesc actorDesc;
-	actorDesc.shapes.pushBack(&sphereDesc);
-	actorDesc.body = &bodyDesc;
-	actorDesc.density = density;
 	actorDesc.globalPose.t = pos;
+
+	if (density) {
+		NxBodyDesc bodyDesc;
+		actorDesc.body = &bodyDesc;
+		actorDesc.density = density;
+		sphereDesc.group = CollGroup::DYNAMIC;
+	}
+	else {
+		actorDesc.body = NULL;
+		sphereDesc.group = CollGroup::STATIC;
+	}
+
+	actorDesc.shapes.pushBack(&sphereDesc);
+
 	m_pScene->createActor(actorDesc);
 }
