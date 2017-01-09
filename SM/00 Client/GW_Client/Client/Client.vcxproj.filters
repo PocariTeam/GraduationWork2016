@@ -366,6 +366,9 @@
     <ClInclude Include="..\Executable\ThirdParty\SampleCommonCode\src\cooking.h">
       <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
     </ClInclude>
+    <ClInclude Include="HitReport.h">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -529,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="..\Executable\ThirdParty\SampleCommonCode\src\cooking.cpp">
       <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="HitReport.cpp">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

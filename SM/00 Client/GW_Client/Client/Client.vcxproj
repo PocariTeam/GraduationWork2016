@@ -189,6 +189,7 @@
     <ClInclude Include="Function.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GraphicDev.h" />
+    <ClInclude Include="HitReport.h" />
     <ClInclude Include="Instancing_Shader.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="MainFrm.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicDev.cpp" />
+    <ClCompile Include="HitReport.cpp" />
     <ClCompile Include="Instancing_Shader.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="MainFrm.cpp" />
