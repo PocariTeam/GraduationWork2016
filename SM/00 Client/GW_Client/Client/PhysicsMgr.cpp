@@ -19,6 +19,17 @@ extern ControllerHitReport gControllerHitReport;
 
 CPhysicsMgr*	CPhysicsMgr::m_pInstance;
 
+
+//점프를 위한 변수들
+/*
+a(t) = cte = g
+v(t) = g*t + v0
+y(t) = g*t^2 + v0*t + y0
+*/
+bool gJump = false;
+NxF32 jumpTime; 
+NxF32 GRAVITY = -9.81f;
+
 CPhysicsMgr::CPhysicsMgr(void)
 	: m_pPhysicsSDK(nullptr)
 	, m_pScene(nullptr)
@@ -151,10 +162,10 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 {
 	//actor->raiseActorFlag(NX_AF_DISABLE_RESPONSE);
 
-	float	fSKINWIDTH = 0.1f;
+	float	fSKINWIDTH = 0.5f;
 	NxController *pCtrl;
 
-	if (!true) {
+	if (true) {
 
 		// 박스 컨트롤러
 		NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
@@ -190,8 +201,8 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
 		desc.slopeLimit = 0;
 		desc.skinWidth = fSKINWIDTH;
-		desc.stepOffset = 0.5;
-		desc.stepOffset = InitialRadius * 0.5 * scale;
+		desc.stepOffset = 0.5f;
+		desc.stepOffset = InitialRadius * 0.5f * scale;
 		desc.userData = (NxActor*)actor;
 		//	desc.stepOffset	= 0.01f;
 		//	desc.stepOffset		= 0;	// Fixes some issues
@@ -258,7 +269,6 @@ HRESULT CPhysicsMgr::SetupScene()
 				// 캐릭터 설정 (지금은 myPlayer가 나의 캐릭터라고 가정)
 				if (strcmp(a->getName(), "myPlayer") == 0) 
 				{
-					a->setGroup(CollGroup::MY_CHARACTER);
 					SetShapesCollisionGroup(a, CollGroup::MY_CHARACTER);
 
 					// 임시설정값 (실제는 파일에서 미리 설정해주어야 함)
@@ -268,19 +278,17 @@ HRESULT CPhysicsMgr::SetupScene()
 					// 컨트롤러 생성
 					m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(), 1.0f);
 
-					//테스트용
+					// 테스트용 상대방
 					CreateCharacterController(a, NxVec3(5, 0, -5), 2.0f);
 
 				}
 				else
 				{
-					a->setGroup(CollGroup::DYNAMIC);
 					SetShapesCollisionGroup(a, CollGroup::DYNAMIC);
 				}
 			}
 			else 
 			{
-				a->setGroup(CollGroup::STATIC);
 				SetShapesCollisionGroup(a, CollGroup::STATIC);
 			}
 
@@ -301,7 +309,7 @@ HRESULT CPhysicsMgr::SetupScene()
 	// 테스트용
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 10; ++j) {
-			CreateSphere(NxVec3(-30 + 3 * j, 0, -30 + 3*i), 0.5, 10.0f);
+			CreateSphere(NxVec3(-30.0f + 3 * j, 0, -30.0f + 3*i), 0.5f, 10.0f);
 		}
 	}
 	CreateCube(NxVec3(7, 0, 7), 10); // 스태틱
@@ -309,7 +317,7 @@ HRESULT CPhysicsMgr::SetupScene()
 	a->raiseBodyFlag(NX_BF_KINEMATIC);
 	SetShapesCollisionGroup(a, CollGroup::OTHER_CHARACTER);
 
-
+	CreateCube(NxVec3(0, -61, 0), 60);
 
 	return S_OK;
 }
@@ -331,37 +339,60 @@ HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 	return S_OK;
 }
 
+
 void CPhysicsMgr::Update(const float & fTimeDelta)
 {
-
 	NxVec3 dir(0, 0, 0);
-	NxF32 fSpeed = 5.0f;
-	NxU32 collisionFlags;
+	NxF32 fSpeed = 10.0f;
 
 	if (GetAsyncKeyState(VK_UP) & 0x8000) 
 	{
-		dir += NxVec3(0, 0, 1)*fTimeDelta*fSpeed;
+		dir += NxVec3(0, 0, +1);
 	}
 	if ((GetAsyncKeyState(VK_DOWN) & 0x8000))
 	{
-		dir += NxVec3(0, 0, -1)*fTimeDelta*fSpeed;
+		dir += NxVec3(0, 0, -1);
 	}
 	if ((GetAsyncKeyState(VK_LEFT) & 0x8000))
 	{
-		dir += NxVec3(-1, 0, 0)*fTimeDelta*fSpeed;
+		dir += NxVec3(-1, 0, 0);
 	}
 	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000))
 	{
-		dir += NxVec3(+1, 0, 0)*fTimeDelta*fSpeed;
+		dir += NxVec3(+1, 0, 0);
 	}
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && !gJump)
+	{
+		jumpTime = 0.0f;
+		gJump = true;
+	}
+
+	dir.normalize();
+	dir *= fTimeDelta*fSpeed;
+
+	if (gJump) {
+		jumpTime += fTimeDelta;
+		NxF32 h = GRAVITY*jumpTime*jumpTime + fSpeed*jumpTime;
+		dir.y += (h - GRAVITY)*fTimeDelta;
+	}
+
 	if (!dir.isZero())
 	{
 		// 이동
-		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.000001f, collisionFlags);
-		NxVec3 pos = m_pMyCCT->getActor()->getGlobalPosition();
-		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(pos);
+		NxU32 collisionFlags;
+		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.001f, collisionFlags);
 
-		/* 테스트용: 플레이어 액터만 움직이기
+		if (collisionFlags & NXCC_COLLISION_DOWN)
+		{
+			if(gJump) { gJump = false; }
+			printf("높이: %f \n", m_pMyCCT->getPosition().y);
+		}
+
+		m_pCCTManager->updateControllers();
+		NxExtendedVec3 pos = m_pMyCCT->getPosition();
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y, pos.z));
+
+		/*	테스트용: 플레이어 액터만 움직이기
 		NxVec3 oldPos = ((NxActor*)m_pMyCCT->getUserData())->getGlobalPosition();
 		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(oldPos+dir);
 		*/
@@ -377,6 +408,7 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		rot.rotY(rotAngle);
 		((NxActor*)m_pMyCCT->getUserData())->moveGlobalOrientation(rot);
 
+		
 		/*
 		// Sweep API를 이용한 충돌체크
 		NxSweepQueryHit result[100];
@@ -520,12 +552,10 @@ NxActor* CPhysicsMgr::CreateCube(const NxVec3& pos, int size, const NxReal densi
 		NxBodyDesc bodyDesc;
 		actorDesc.body = &bodyDesc;
 		actorDesc.density = density;
-		actorDesc.group = CollGroup::DYNAMIC;
 		boxDesc.group = CollGroup::DYNAMIC;
 	}
 	else {
 		actorDesc.body = NULL;
-		actorDesc.group = CollGroup::STATIC;
 		boxDesc.group = CollGroup::STATIC;
 	}
 
@@ -555,12 +585,10 @@ NxActor* CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, cons
 		NxBodyDesc bodyDesc;
 		actorDesc.body = &bodyDesc;
 		actorDesc.density = density;
-		actorDesc.group = CollGroup::DYNAMIC;
 		capsuleDesc.group = CollGroup::DYNAMIC;
 	}
 	else {
 		actorDesc.body = NULL;
-		actorDesc.group = CollGroup::STATIC;
 		capsuleDesc.group = CollGroup::STATIC;
 	}
 
@@ -589,12 +617,10 @@ NxActor* CPhysicsMgr::CreateSphere(const NxVec3& pos, const NxReal radius, const
 		NxBodyDesc bodyDesc;
 		actorDesc.body = &bodyDesc;
 		actorDesc.density = density;
-		actorDesc.group = CollGroup::DYNAMIC;
 		sphereDesc.group = CollGroup::DYNAMIC;
 	}
 	else {
 		actorDesc.body = NULL;
-		actorDesc.group = CollGroup::STATIC;
 		sphereDesc.group = CollGroup::STATIC;
 	}
 	actorDesc.shapes.pushBack(&sphereDesc);
