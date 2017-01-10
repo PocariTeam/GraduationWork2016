@@ -18,15 +18,11 @@ extern UserEntityReport gUserEntityReport;
 extern ControllerHitReport gControllerHitReport;
 
 CPhysicsMgr*	CPhysicsMgr::m_pInstance;
-
+float gSpace = 0.0f; // 컨트롤러와 액터간의 차이보정 (임시로 전역변수)
 
 //점프를 위한 변수들
-/*
-a(t) = cte = g
-v(t) = g*t + v0
-y(t) = g*t^2 + v0*t + y0
-*/
 bool gJump = false;
+bool gDown = false;
 NxF32 jumpTime; 
 NxF32 GRAVITY = -9.81f;
 
@@ -51,7 +47,7 @@ CPhysicsMgr* CPhysicsMgr::GetInstance(void)
 
 void CPhysicsMgr::DestroyInstance(void)
 {
-	if (nullptr != m_pInstance)
+	if (m_pInstance)
 	{
 		m_pInstance->Release();
 		m_pInstance = nullptr;
@@ -103,6 +99,7 @@ HRESULT CPhysicsMgr::Initialize()
 	m_pAllocator = new UserAllocator;
 
 	bool status = InitCooking(m_pAllocator);
+	
 	if (!status) {
 		printf("Unable to initialize the cooking library. Please make sure that you have correctly installed the latest version of the NVIDIA PhysX SDK.");
 		return E_FAIL;
@@ -162,27 +159,25 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 {
 	//actor->raiseActorFlag(NX_AF_DISABLE_RESPONSE);
 
-	float	fSKINWIDTH = 0.5f;
+	float	fSKINWIDTH = 0.1f;
 	NxController *pCtrl;
 
-	if (true) {
+	if (!true) {
 
 		// 박스 컨트롤러
 		NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
 		NxBoxControllerDesc desc;
 		desc.extents = InitialExtents * scale;
 		desc.position.x = startPos.x;
-		desc.position.y = startPos.y;
+		gSpace = desc.extents.y;
+		desc.position.y = startPos.y + gSpace;
 		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
 		desc.slopeLimit = 0;
 		desc.slopeLimit = cosf(NxMath::degToRad(45.0f));
 		desc.skinWidth = fSKINWIDTH;
-		desc.stepOffset = 0.5;
+		desc.stepOffset = 0.1f;
 		desc.userData = (NxActor*)actor;
-		//	desc.stepOffset	= 0.01f;
-		//		desc.stepOffset		= 0;
-		//		desc.stepOffset		= 10;
 		desc.callback = &gControllerHitReport;
 		pCtrl = m_pCCTManager->createController(m_pScene, desc);
 	}
@@ -192,32 +187,25 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		NxF32	InitialRadius = 0.5f;
 		NxF32	InitialHeight = 2.0f;
 		NxCapsuleControllerDesc desc;
-		desc.position.x = startPos.x;
-		desc.position.y = startPos.y;
-		desc.position.z = startPos.z;
 		desc.radius = InitialRadius * scale;
 		desc.height = InitialHeight * scale;
+		desc.position.x = startPos.x;
+		gSpace = (desc.height*0.5f + desc.radius);
+		desc.position.y = startPos.y + gSpace;
+		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
 		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
 		desc.slopeLimit = 0;
 		desc.skinWidth = fSKINWIDTH;
-		desc.stepOffset = 0.5f;
+		desc.stepOffset = 0.1f;
 		desc.stepOffset = InitialRadius * 0.5f * scale;
 		desc.userData = (NxActor*)actor;
-		//	desc.stepOffset	= 0.01f;
-		//	desc.stepOffset		= 0;	// Fixes some issues
-		//	desc.stepOffset		= 10;
 		desc.callback = &gControllerHitReport;
 		pCtrl = m_pCCTManager->createController(m_pScene, desc);
 	}
 
 	NxActor *CCTActor = pCtrl->getActor();
 	CCTActor->setName("Character Controller");
-	NxBounds3 bound;
-	NxVec3 extents;
-	CCTActor->getShapes()[0]->getWorldBounds(bound);
-	bound.getExtents(extents);
-	CCTActor->getShapes()[0]->setLocalPosition(NxVec3(0, extents.y, 0));
 
 	return pCtrl;
 
@@ -241,7 +229,9 @@ HRESULT CPhysicsMgr::SetupScene()
 	if (!m_pScene) {
 		return E_FAIL;
 	}
-	
+	m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.2f);
+	m_pScene->simulate(0);
+
 /* 
 	PPU를 이용한 물리계산, 해당 Compartment를 액터에 넣어주어야 함
 
@@ -259,6 +249,7 @@ HRESULT CPhysicsMgr::SetupScene()
 		for (NxU32 i = 0; i < nbActors; i++)
 		{
 			NxActor *a = aList[i];
+			
 			NxVec3 pos = a->getGlobalPosition();
 
 			printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
@@ -266,21 +257,15 @@ HRESULT CPhysicsMgr::SetupScene()
 			// 충돌그루핑
 			if (a->isDynamic()) 
 			{
-				// 캐릭터 설정 (지금은 myPlayer가 나의 캐릭터라고 가정)
 				if (strcmp(a->getName(), "myPlayer") == 0) 
 				{
 					SetShapesCollisionGroup(a, CollGroup::MY_CHARACTER);
-
-					// 임시설정값 (실제는 파일에서 미리 설정해주어야 함)
-					a->raiseBodyFlag(NX_BF_KINEMATIC);
-					a->setGlobalPosition(NxVec3(0, 0, 0));
-
-					// 컨트롤러 생성
-					m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(), 1.0f);
-
-					// 테스트용 상대방
-					CreateCharacterController(a, NxVec3(5, 0, -5), 2.0f);
-
+					m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
+				}
+				else if (strcmp(a->getName(), "yourPlayer") == 0) 
+				{
+					SetShapesCollisionGroup(a, CollGroup::OTHER_CHARACTER);
+					CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
 				}
 				else
 				{
@@ -307,17 +292,14 @@ HRESULT CPhysicsMgr::SetupScene()
 	}
 	
 	// 테스트용
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 10; ++j) {
-			CreateSphere(NxVec3(-30.0f + 3 * j, 0, -30.0f + 3*i), 0.5f, 10.0f);
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			CreateSphere(NxVec3(-30.0f + 10 * j, 0, -30.0f + 10*i), 3.0f, 10.0f);
 		}
 	}
-	CreateCube(NxVec3(7, 0, 7), 10); // 스태틱
-	auto a = CreateCube(NxVec3(-7, 0, 7), 10); // 키네마틱
-	a->raiseBodyFlag(NX_BF_KINEMATIC);
-	SetShapesCollisionGroup(a, CollGroup::OTHER_CHARACTER);
+	CreateCube(NxVec3(-7, 0, 7), 5); 
 
-	CreateCube(NxVec3(0, -61, 0), 60);
+	CreateCube(NxVec3(0, -60, 0), 60);
 
 	return S_OK;
 }
@@ -326,7 +308,7 @@ HRESULT CPhysicsMgr::SetupScene()
 
 HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 {
-	if (!LoadSceneFromFile("../Executable/Resources/Scene/human_fix.xml", NXU::FT_XML)) {
+	if (!LoadSceneFromFile("../Executable/Resources/Scene/testCube_fix.xml", NXU::FT_XML)) {
 		printf("LoadScene() is failed! \n");
 		return E_FAIL;
 	};
@@ -342,6 +324,9 @@ HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 
 void CPhysicsMgr::Update(const float & fTimeDelta)
 {
+
+	m_pScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+
 	NxVec3 dir(0, 0, 0);
 	NxF32 fSpeed = 10.0f;
 
@@ -361,46 +346,17 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 	{
 		dir += NxVec3(+1, 0, 0);
 	}
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && !gJump)
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && !gJump && !gDown)
 	{
 		jumpTime = 0.0f;
 		gJump = true;
 	}
 
-	dir.normalize();
-	dir *= fTimeDelta*fSpeed;
-
-	if (gJump) {
-		jumpTime += fTimeDelta;
-		NxF32 h = GRAVITY*jumpTime*jumpTime + fSpeed*jumpTime;
-		dir.y += (h - GRAVITY)*fTimeDelta;
-	}
-
 	if (!dir.isZero())
 	{
-		// 이동
-		NxU32 collisionFlags;
-		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.001f, collisionFlags);
-
-		if (collisionFlags & NXCC_COLLISION_DOWN)
-		{
-			if(gJump) { gJump = false; }
-			printf("높이: %f \n", m_pMyCCT->getPosition().y);
-		}
-
-		m_pCCTManager->updateControllers();
-		NxExtendedVec3 pos = m_pMyCCT->getPosition();
-		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y, pos.z));
-
-		/*	테스트용: 플레이어 액터만 움직이기
-		NxVec3 oldPos = ((NxActor*)m_pMyCCT->getUserData())->getGlobalPosition();
-		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(oldPos+dir);
-		*/
-
 		// 회전
 		dir.normalize();
-		//NxVec3 oldLook = m_pMyCCT->getActor()->getGlobalPose().M.getRow(3);
-		NxVec3 oldLook(0, 0, -1.0f);
+		NxVec3 oldLook = m_pMyCCT->getActor()->getGlobalPose().M.getColumn(2);
 		NxVec3 cross = oldLook.cross(dir);
 		NxReal rotAngle = acos(oldLook.dot(dir));
 		rotAngle *= (cross.y > 0.0f) ? 1.0f : -1.0f;
@@ -408,6 +364,43 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		rot.rotY(rotAngle);
 		((NxActor*)m_pMyCCT->getUserData())->moveGlobalOrientation(rot);
 
+		// 이동속도
+		dir *= fTimeDelta*fSpeed;
+	}
+
+	if (gJump) {
+		jumpTime += fTimeDelta;
+		NxF32 h = GRAVITY*jumpTime*jumpTime + fSpeed*jumpTime;
+		dir.y += (h - GRAVITY)*fTimeDelta;
+	}
+	else if (gDown) 
+	{
+		dir.y += GRAVITY*fTimeDelta;
+	}
+
+	if (!dir.isZero())
+	{
+		// 이동
+		NxU32 collisionFlags;
+		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.0001f, collisionFlags);
+		if (collisionFlags & NXCC_COLLISION_DOWN)
+		{
+			gJump = gDown = false;
+		}
+		else if(!gJump && !gDown)
+		{
+			gDown = true;
+		}
+
+		m_pCCTManager->updateControllers();
+		NxExtendedVec3 pos = m_pMyCCT->getPosition();
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y- gSpace, pos.z));
+
+		/*	테스트용: 플레이어 액터만 움직이기
+		NxVec3 oldPos = ((NxActor*)m_pMyCCT->getUserData())->getGlobalPosition();
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(oldPos+dir);
+		*/
+		
 		
 		/*
 		// Sweep API를 이용한 충돌체크
@@ -433,7 +426,6 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 
 	m_pScene->simulate(fTimeDelta);
 	m_pScene->flushStream();
-	m_pScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
 
 void CPhysicsMgr::Render(ID3D11DeviceContext* pContext)
@@ -510,6 +502,7 @@ void CPhysicsMgr::Release_Scene()
 		m_pPhysicsSDK->releaseScene(*m_pScene);
 		m_pCCTManager = nullptr;
 		m_pScene = nullptr;
+		
 	}
 }
 
@@ -524,6 +517,7 @@ void CPhysicsMgr::Release()
 
 	if (m_pAllocator)
 	{
+		CloseCooking();
 		delete m_pAllocator;
 		m_pAllocator = nullptr;
 	}

@@ -291,7 +291,7 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 
 				NxMat34 mat;
 				NxMat33 orient;
-				orient.setColumn(0, NxVec3(-1, 0, 0));
+				orient.setColumn(0, NxVec3(1, 0, 0));
 				orient.setColumn(1, NxVec3(0, 0, 1));
 				orient.setColumn(2, NxVec3(0, 1, 0));
 				mat.M = orient;
@@ -305,6 +305,8 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 				{
 					NxActor *a = alist[i];
 					NxVec3 pos = a->getGlobalPosition();
+
+					//a->clearBodyFlag(NX_BF_VISUALIZATION);
 					printf(" - ╬вем '%s': (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
 
 					NxU32 nbShapes = a->getNbShapes();
@@ -314,6 +316,7 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 						for (NxU32 j = 0; j < nbShapes; j++)
 						{
 							NxShape *s = slist[j];
+							//s->setFlag(NX_SF_VISUALIZATION, false);
 							NxVec3 spos = s->getLocalPosition();
 							printf("   [%d] '%s'local:(%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
 
@@ -335,7 +338,7 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 
 
 	if (success)
-		printf("Scene '%d' loaded from file %s.\n", false, scratch);
+		printf("Scene loaded from '%s'.\n", scratch);
 
 	return success;
 }
@@ -355,9 +358,9 @@ void SaveScene(const char *pFilename)
 		printf("Saving NxuStream XML file to '%s'\r\n", scratch);
 		NXU::saveCollection(c, scratch, NXU::FT_XML, false, false);
 
-		sprintf(scratch, "%s_fix.nxb", pFilename);
-		printf("Saving NxuStream BINARY file to '%s'\r\n", scratch);
-		NXU::saveCollection(c, scratch, NXU::FT_BINARY, true, true);
+		//sprintf(scratch, "%s_fix.nxb", pFilename);
+		//printf("Saving NxuStream BINARY file to '%s'\r\n", scratch);
+		//NXU::saveCollection(c, scratch, NXU::FT_BINARY, true, true);
 
 		//sprintf(scratch, "%s.dae", SaveFilename);
 		//printf("Saving COLLADA Physics 1.4.1 file to '%s'\r\n", scratch);
