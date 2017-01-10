@@ -1,4 +1,4 @@
-﻿빌드 시작: 2017-01-10 오후 5:47:05
+﻿빌드 시작: 2017-01-10 오후 11:00:24
      1>2 노드의 "D:\GraduationWork\Minsik\SwitchCoordinateSystem\SwitchCoordinateSystem\SwitchCoordinateSystem.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /GL /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt main.cpp
@@ -48,4 +48,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:02.14
+경과 시간: 00:00:02.28

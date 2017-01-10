@@ -306,7 +306,7 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 					NxActor *a = alist[i];
 					NxVec3 pos = a->getGlobalPosition();
 
-					//a->clearBodyFlag(NX_BF_VISUALIZATION);
+					a->clearBodyFlag(NX_BF_VISUALIZATION);
 					printf(" - ╬вем '%s': (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
 
 					NxU32 nbShapes = a->getNbShapes();
@@ -316,7 +316,7 @@ bool LoadScene(const char *pFilename, NXU::NXU_FileType type)
 						for (NxU32 j = 0; j < nbShapes; j++)
 						{
 							NxShape *s = slist[j];
-							//s->setFlag(NX_SF_VISUALIZATION, false);
+							s->setFlag(NX_SF_VISUALIZATION, false);
 							NxVec3 spos = s->getLocalPosition();
 							printf("   [%d] '%s'local:(%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
 

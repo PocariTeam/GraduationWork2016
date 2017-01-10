@@ -99,7 +99,7 @@ HRESULT CPhysicsMgr::Initialize()
 	m_pAllocator = new UserAllocator;
 
 	bool status = InitCooking(m_pAllocator);
-	
+
 	if (!status) {
 		printf("Unable to initialize the cooking library. Please make sure that you have correctly installed the latest version of the NVIDIA PhysX SDK.");
 		return E_FAIL;
@@ -114,6 +114,12 @@ HRESULT CPhysicsMgr::Initialize()
 		printf("\nSDK create error (%d - %s).\nUnable to initialize the PhysX SDK, exiting the sample.\n\n", errorCode, getNxSDKCreateError(errorCode));
 		return E_FAIL;
 	}
+
+	NxSceneDesc sceneDesc;
+	sceneDesc.groundPlane = true;
+	sceneDesc.gravity = NxVec3(0, -9.81f, 0);
+	sceneDesc.simType = NX_SIMULATION_HW;
+	m_pScene = m_pPhysicsSDK->createScene(sceneDesc);
 
 	m_pCCTManager = NxCreateControllerManager(m_pAllocator);
 
@@ -138,10 +144,9 @@ HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType 
 			}
 
 			success = NXU::instantiateCollection(c, *m_pPhysicsSDK, 0, 0, 0);
+			NXU::releaseCollection(c);
 
 			m_pScene = m_pPhysicsSDK->getScene(0);
-
-			NXU::releaseCollection(c);
 		}
 		else
 		{
@@ -162,8 +167,8 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 	float	fSKINWIDTH = 0.1f;
 	NxController *pCtrl;
 
-	if (!true) {
-
+	if (!true) 
+	{
 		// 박스 컨트롤러
 		NxVec3	InitialExtents(0.5f, 1.0f, 0.5f);
 		NxBoxControllerDesc desc;
@@ -181,8 +186,8 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		desc.callback = &gControllerHitReport;
 		pCtrl = m_pCCTManager->createController(m_pScene, desc);
 	}
-	else {
-
+	else 
+	{
 		// 캡슐 컨트롤러
 		NxF32	InitialRadius = 0.5f;
 		NxF32	InitialHeight = 2.0f;
@@ -204,8 +209,9 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		pCtrl = m_pCCTManager->createController(m_pScene, desc);
 	}
 
-	NxActor *CCTActor = pCtrl->getActor();
-	CCTActor->setName("Character Controller");
+	char CCTName[256] = "CCTActor of ";
+	strcat(CCTName, actor->getName());
+	pCtrl->getActor()->setName(CCTName);
 
 	return pCtrl;
 
@@ -231,6 +237,15 @@ HRESULT CPhysicsMgr::SetupScene()
 	}
 	m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.2f);
 	m_pScene->simulate(0);
+
+	if (m_pScene->getSimType() == NX_SIMULATION_HW)
+	{
+		MessageBox(NULL, "HW", 0, MB_OK);
+	}
+	else
+	{
+		MessageBox(NULL, "SW", 0, MB_OK);
+	}
 
 /* 
 	PPU를 이용한 물리계산, 해당 Compartment를 액터에 넣어주어야 함
@@ -292,14 +307,16 @@ HRESULT CPhysicsMgr::SetupScene()
 	}
 	
 	// 테스트용
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 3; ++j) {
+	for (int i = 0; i < 3; ++i) 
+	{
+		for (int j = 0; j < 3; ++j) 
+		{
 			CreateSphere(NxVec3(-30.0f + 10 * j, 0, -30.0f + 10*i), 3.0f, 10.0f);
 		}
 	}
 	CreateCube(NxVec3(-7, 0, 7), 5); 
 
-	CreateCube(NxVec3(0, -60, 0), 60);
+	CreateCube(NxVec3(0, -100, 0), 100);
 
 	return S_OK;
 }
@@ -308,7 +325,8 @@ HRESULT CPhysicsMgr::SetupScene()
 
 HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 {
-	if (!LoadSceneFromFile("../Executable/Resources/Scene/testCube_fix.xml", NXU::FT_XML)) {
+	if (!LoadSceneFromFile("../Executable/Resources/Scene/testCube_fix.xml", NXU::FT_XML)) 
+	{
 		printf("LoadScene() is failed! \n");
 		return E_FAIL;
 	};
@@ -324,7 +342,6 @@ HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 
 void CPhysicsMgr::Update(const float & fTimeDelta)
 {
-
 	m_pScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 
 	NxVec3 dir(0, 0, 0);
@@ -352,9 +369,9 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		gJump = true;
 	}
 
+	// 회전
 	if (!dir.isZero())
 	{
-		// 회전
 		dir.normalize();
 		NxVec3 oldLook = m_pMyCCT->getActor()->getGlobalPose().M.getColumn(2);
 		NxVec3 cross = oldLook.cross(dir);
@@ -368,7 +385,9 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		dir *= fTimeDelta*fSpeed;
 	}
 
-	if (gJump) {
+	// 수직이동
+	if (gJump) 
+	{
 		jumpTime += fTimeDelta;
 		NxF32 h = GRAVITY*jumpTime*jumpTime + fSpeed*jumpTime;
 		dir.y += (h - GRAVITY)*fTimeDelta;
@@ -378,9 +397,9 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		dir.y += GRAVITY*fTimeDelta;
 	}
 
+	// 수평이동
 	if (!dir.isZero())
 	{
-		// 이동
 		NxU32 collisionFlags;
 		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.0001f, collisionFlags);
 		if (collisionFlags & NXCC_COLLISION_DOWN)
@@ -394,16 +413,16 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 
 		m_pCCTManager->updateControllers();
 		NxExtendedVec3 pos = m_pMyCCT->getPosition();
-		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y- gSpace, pos.z));
+		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y - gSpace, pos.z));
 
-		/*	테스트용: 플레이어 액터만 움직이기
+		/*	
+		테스트용: 플레이어 액터만 움직이기
 		NxVec3 oldPos = ((NxActor*)m_pMyCCT->getUserData())->getGlobalPosition();
 		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(oldPos+dir);
 		*/
 		
-		
 		/*
-		// Sweep API를 이용한 충돌체크
+		Sweep API를 이용한 충돌체크
 		NxSweepQueryHit result[100];
 		NxCapsule testBody;
 		((NxActor*)m_pMyCCT->getUserData())->getShapes()[1]->isCapsule()->getWorldCapsule(testBody);
@@ -416,12 +435,13 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 	NxActor** dpActor = m_pScene->getActors();		
 	NxU32 nbActors = m_pScene->getNbActors();
 
-	for( DWORD i = 0; i < nbActors; ++i, ++dpActor )
+	for (DWORD i = 0; i < nbActors; ++i, ++dpActor)
 	{
-	CGameObject* pGameObject = ( CGameObject* )(*dpActor)->userData;
-	if (pGameObject) {
-		pGameObject->Update(fTimeDelta);
-	}
+		CGameObject* pGameObject = (CGameObject*)(*dpActor)->userData;
+		if (pGameObject)
+		{
+			pGameObject->Update(fTimeDelta);
+		}
 	}
 
 	m_pScene->simulate(fTimeDelta);
