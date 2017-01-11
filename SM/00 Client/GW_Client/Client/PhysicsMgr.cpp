@@ -14,8 +14,9 @@
 #include "NxControllerManager.h"
 #include "HitReport.h"
 
-extern UserEntityReport gUserEntityReport;
+extern EntityReport gUserEntityReport;
 extern ControllerHitReport gControllerHitReport;
+extern ContactReport gContactReport;
 
 CPhysicsMgr*	CPhysicsMgr::m_pInstance;
 float gSpace = 0.0f; // 컨트롤러와 액터간의 차이보정 (임시로 전역변수)
@@ -235,16 +236,21 @@ HRESULT CPhysicsMgr::SetupScene()
 	if (!m_pScene) {
 		return E_FAIL;
 	}
+
 	m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.2f);
+	m_pScene->setUserContactReport(&gContactReport);
+	m_pScene->setActorGroupPairFlags(CollGroup::MY_CHARACTER, CollGroup::DYNAMIC, NX_NOTIFY_ON_START_TOUCH);
+
 	m_pScene->simulate(0);
 
+	// 테스트용 시뮬레이션 타입 체크
 	if (m_pScene->getSimType() == NX_SIMULATION_HW)
 	{
-		MessageBox(NULL, "HW", 0, MB_OK);
+		MessageBox(NULL, "Hardware Simulate", 0, MB_OK);
 	}
 	else
 	{
-		MessageBox(NULL, "SW", 0, MB_OK);
+		MessageBox(NULL, "Software Simulate", 0, MB_OK);
 	}
 
 /* 
@@ -274,21 +280,25 @@ HRESULT CPhysicsMgr::SetupScene()
 			{
 				if (strcmp(a->getName(), "myPlayer") == 0) 
 				{
+					a->setGroup(CollGroup::MY_CHARACTER);
 					SetShapesCollisionGroup(a, CollGroup::MY_CHARACTER);
 					m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
 				}
 				else if (strcmp(a->getName(), "yourPlayer") == 0) 
 				{
+					a->setGroup(CollGroup::OTHER_CHARACTER);
 					SetShapesCollisionGroup(a, CollGroup::OTHER_CHARACTER);
 					CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
 				}
 				else
 				{
+					a->setGroup(CollGroup::DYNAMIC);
 					SetShapesCollisionGroup(a, CollGroup::DYNAMIC);
 				}
 			}
 			else 
 			{
+				a->setGroup(CollGroup::STATIC);
 				SetShapesCollisionGroup(a, CollGroup::STATIC);
 			}
 
@@ -566,10 +576,12 @@ NxActor* CPhysicsMgr::CreateCube(const NxVec3& pos, int size, const NxReal densi
 		NxBodyDesc bodyDesc;
 		actorDesc.body = &bodyDesc;
 		actorDesc.density = density;
+		actorDesc.group = CollGroup::DYNAMIC;
 		boxDesc.group = CollGroup::DYNAMIC;
 	}
 	else {
 		actorDesc.body = NULL;
+		actorDesc.group = CollGroup::STATIC;
 		boxDesc.group = CollGroup::STATIC;
 	}
 
@@ -599,10 +611,12 @@ NxActor* CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, cons
 		NxBodyDesc bodyDesc;
 		actorDesc.body = &bodyDesc;
 		actorDesc.density = density;
+		actorDesc.group = CollGroup::DYNAMIC;
 		capsuleDesc.group = CollGroup::DYNAMIC;
 	}
 	else {
 		actorDesc.body = NULL;
+		actorDesc.group = CollGroup::STATIC;
 		capsuleDesc.group = CollGroup::STATIC;
 	}
 
@@ -631,10 +645,12 @@ NxActor* CPhysicsMgr::CreateSphere(const NxVec3& pos, const NxReal radius, const
 		NxBodyDesc bodyDesc;
 		actorDesc.body = &bodyDesc;
 		actorDesc.density = density;
+		actorDesc.group = CollGroup::DYNAMIC;
 		sphereDesc.group = CollGroup::DYNAMIC;
 	}
 	else {
 		actorDesc.body = NULL;
+		actorDesc.group = CollGroup::STATIC;
 		sphereDesc.group = CollGroup::STATIC;
 	}
 	actorDesc.shapes.pushBack(&sphereDesc);

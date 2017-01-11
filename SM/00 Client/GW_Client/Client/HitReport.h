@@ -11,7 +11,7 @@ enum CollGroup
 
 #define COLLIDABLE_MASK	(1<<STATIC) | (1<<DYNAMIC)
 
-class UserEntityReport : public NxUserEntityReport<NxSweepQueryHit> {
+class EntityReport : public NxUserEntityReport<NxSweepQueryHit> {
 public:
 	virtual bool onEvent(NxU32 nbEntities, NxSweepQueryHit* entities);
 };
@@ -23,4 +23,10 @@ public:
 	virtual NxControllerAction  onShapeHit(const NxControllerShapeHit& hit);
 	virtual NxControllerAction  onControllerHit(const NxControllersHit& hit);
 
+};
+
+class ContactReport : public NxUserContactReport
+{
+public:
+	virtual void onContactNotify(NxContactPair& pair, NxU32 events);
 };

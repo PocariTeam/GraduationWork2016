@@ -4,12 +4,16 @@
 #include "NxControllerManager.h"
 #include "HitReport.h"
 
-UserEntityReport gUserEntityReport;
+// sweep 충돌(플레이어-플레이어)
+EntityReport gUserEntityReport;
+// 컨트롤러 충돌
 ControllerHitReport gControllerHitReport;
+// 범용 충돌 (실제 충돌하는 객체들끼리만 가능)
+ContactReport gContactReport;
 
-bool UserEntityReport::onEvent(NxU32 nbEntities, NxSweepQueryHit* entities) {
+bool EntityReport::onEvent(NxU32 nbEntities, NxSweepQueryHit* entities) {
 
-	for (int i = 0; i < nbEntities; ++i)
+	for (NxU32 i = 0; i < nbEntities; ++i)
 	{
 		printf("[%d]번째 충돌한 도형: %s \n", i, entities[i].hitShape->getName());
 	}
@@ -45,4 +49,10 @@ NxControllerAction  ControllerHitReport::onShapeHit(const NxControllerShapeHit& 
 NxControllerAction  ControllerHitReport::onControllerHit(const NxControllersHit& hit)
 {
 	return NX_ACTION_NONE;
+}
+
+
+void ContactReport::onContactNotify(NxContactPair& pair, NxU32 events)
+{
+	printf("%s 와 %s가 충돌! \n", pair.actors[0]->getName(), pair.actors[1]->getName());
 }

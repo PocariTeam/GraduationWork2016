@@ -1,0 +1,11 @@
+﻿빌드 시작: 2017-01-11 오후 4:37:57
+     1>2 노드의 "D:\GraduationWork\Minsik\AnimalKingdom_Server\ServerLibrary\ServerLibrary.vcxproj" 프로젝트(Build 대상)입니다.
+     1>Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\ServerLibrary.lib" /NOLOGO /MACHINE:X64 x64\Debug\stdafx.obj
+         x64\Debug\Clock.obj
+         ServerLibrary.vcxproj -> D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\ServerLibrary.lib
+     1>"D:\GraduationWork\Minsik\AnimalKingdom_Server\ServerLibrary\ServerLibrary.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:00.10

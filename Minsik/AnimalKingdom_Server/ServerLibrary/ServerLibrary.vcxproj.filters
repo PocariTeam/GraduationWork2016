@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{da53d120-5c9b-4ff3-9681-2113c9bdd79a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{a6e4850e-8295-43e1-95dc-d288ebb5ffa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\tinyXml">
+      <UniqueIdentifier>{5ee793b8-460f-4c61-9470-b3531f9e3a92}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ServerLibrary.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Type.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Util.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\RandomMt.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Singleton.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Clock.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\tinyXml\tinystr.h">
+      <Filter>Util\tinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\tinyXml\tinyxml.h">
+      <Filter>Util\tinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Config.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Util\Clock.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinystr.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinyxml.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinyxmlerror.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinyxmlparser.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Config.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

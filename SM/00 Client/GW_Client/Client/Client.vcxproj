@@ -75,7 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;../Executable/ThirdParty/NxuStream2</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;../Executable/ThirdParty/NxuStream2;../Executable/ThirdParty/SampleCommonCode/src</IncludePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../Executable/ThirdParty/SDKs/lib/win64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,7 +84,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;../Executable/ThirdParty/SampleCommonCode/src;../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;../Executable/ThirdParty/NxuStream2</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);../Executable/ThirdParty/SampleCommonCode/src/win;../Executable/ThirdParty/SDKs/Foundation/include;../Executable/ThirdParty/SDKs/Foundation/include/win;../Executable/ThirdParty/SDKs/Physics/include;../Executable/ThirdParty/SDKs/Cooking/include;../Executable/ThirdParty/SDKs/PhysXLoader/include;../Executable/ThirdParty/SDKs/NxCharacter/include;../Executable/ThirdParty/NxuStream2;../Executable/ThirdParty/SampleCommonCode/src</IncludePath>
     <LibraryPath>$(LibraryPath);$(DXSDK_DIR)lib/x64/;../Executable/ThirdParty/SDKs/lib/win64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -107,6 +107,8 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,6 +143,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -1,0 +1,19 @@
+﻿빌드 시작: 2017-01-11 오후 5:33:56
+     1>2 노드의 "D:\GraduationWork\Minsik\AnimalKingdom_Server\ServerLibrary\ServerLibrary.vcxproj" 프로젝트(Build 대상)입니다.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /MP /O2 /Oi /GL /D NDEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"x64\Release\ServerLibrary.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt Util\Config.cpp
+         Config.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Release\ServerLibrary.lib" /NOLOGO /MACHINE:X64 /LTCG x64\Release\stdafx.obj
+         x64\Release\Clock.obj
+         x64\Release\Config.obj
+         x64\Release\tinystr.obj
+         x64\Release\tinyxml.obj
+         x64\Release\tinyxmlerror.obj
+         x64\Release\tinyxmlparser.obj
+         ServerLibrary.vcxproj -> D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Release\ServerLibrary.lib
+     1>"D:\GraduationWork\Minsik\AnimalKingdom_Server\ServerLibrary\ServerLibrary.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:00.52
