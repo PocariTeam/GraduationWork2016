@@ -22,9 +22,9 @@
 
 typedef enum {
 	DAY_SUNDAY = 0,
-	DAY_MONDAY = 1,        //중국어로 월요일은 星期一
-	DAY_TUESDAY = 2,        //중국어로 화요일은 星期二
-	DAY_WEDNESDAY = 3,        //...
+	DAY_MONDAY = 1,
+	DAY_TUESDAY = 2,
+	DAY_WEDNESDAY = 3,
 	DAY_THURSDAY = 4,
 	DAY_FRIDAY = 5,
 	DAY_SATURDAY = 6,

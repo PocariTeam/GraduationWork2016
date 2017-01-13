@@ -1,18 +1,14 @@
-﻿빌드 시작: 2017-01-11 오후 5:13:59
+﻿빌드 시작: 2017-01-13 오후 6:13:27
      1>2 노드의 "D:\GraduationWork\Minsik\AnimalKingdom_Server\AnimalKingdom\AnimalKingdom.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /MP /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"x64\Debug\AnimalKingdom.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\ServerLibrary\stdafx.cpp
-         stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /MP /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /sdl /MP /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp
          main.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.exe" /INCREMENTAL /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.lib" /MACHINE:X64 x64\Debug\stdafx.obj
-         x64\Debug\main.obj
-     1>main.obj : error LNK2019: "public: __cdecl Clock::Clock(void)" (??0Clock@@QEAA@XZ) 외부 기호(참조 위치: "public: static class Clock & __cdecl Singleton<class Clock>::getInstance(void)" (?getInstance@?$Singleton@VClock@@@@SAAEAVClock@@XZ) 함수)에서 확인하지 못했습니다.
-     1>main.obj : error LNK2019: "public: __cdecl Clock::~Clock(void)" (??1Clock@@QEAA@XZ) 외부 기호(참조 위치: "void __cdecl `public: static class Clock & __cdecl Singleton<class Clock>::getInstance(void)'::`2'::`dynamic atexit destructor for 'instance''(void)" (??__Finstance@?1??getInstance@?$Singleton@VClock@@@@SAAEAVClock@@XZ@YAXXZ) 함수)에서 확인하지 못했습니다.
-     1>D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.exe : fatal error LNK1120: 2개의 확인할 수 없는 외부 참조입니다.
-     1>"D:\GraduationWork\Minsik\AnimalKingdom_Server\AnimalKingdom\AnimalKingdom.vcxproj" 프로젝트를 빌드했습니다(Build 대상). - 실패
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Visual Leak Detector\lib\Win64" winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.lib" /MACHINE:X64 x64\Debug\main.obj
+         D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\ServerLibrary.lib
+         AnimalKingdom.vcxproj -> D:\GraduationWork\Minsik\AnimalKingdom_Server\x64\Debug\AnimalKingdom.exe
+     1>"D:\GraduationWork\Minsik\AnimalKingdom_Server\AnimalKingdom\AnimalKingdom.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
 
-빌드하지 못했습니다.
+빌드했습니다.
 
-경과 시간: 00:00:02.74
+경과 시간: 00:00:01.20

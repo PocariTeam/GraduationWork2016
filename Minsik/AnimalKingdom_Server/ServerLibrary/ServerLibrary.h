@@ -24,7 +24,6 @@
 #include <algorithm>  
 #include <functional>
 
-#include <array>
 #include <thread>
 #include <mutex>
 #include <memory>
@@ -55,26 +54,26 @@ typedef void(*Function)(void *);
 #include "./Util/Type.h"
 #include "./Util/Util.h"
 
-//#include "./Util/GameObject.h"
+#include "./Util/GameObject.h"
 #include "./Util/Singleton.h"
 #include "./Util/RandomMT.h"
 
 #include "./Util/Clock.h"
-//#include "./Util/Logger.h"
-//#include "./Util/Assert.h"
+#include "./Util/Logger.h"
+#include "./Util/Assert.h"
 //
-//#include "./Util/Table.h"
-//#include "./Util/Thread.h"
-//#include "./Util/Lock.h"
-//#include "./Util/ThreadJobQueue.h"
-//#include "./Util/Task.h"
+#include "./Util/Table.h"
+#include "./Util/Thread.h"
+#include "./Util/Lock.h"
+#include "./Util/ThreadJobQueue.h"
+#include "./Util/Task.h"
 //
-//#include "./Util/MemoryLeak.h"
-//#include "./Util/Memory_LowFragmentationHeap.h"
-//#include "./Util/Minidump.h"
+#include "./Util/MemoryLeak.h"
+#include "./Util/Memory_LowFragmentationHeap.h"
+#include "./Util/Minidump.h"
 //
 //#include "./Util/SMTPMail.h"
-//#include "./Util/Config.h"
+#include "./Util/Config.h"
 //#include "./Util/Monitoring.h"
 //#include "./util/ProgramValidation.h"
 //
@@ -108,6 +107,6 @@ typedef void(*Function)(void *);
 //#include "./Database/ADODatabase.h"
 //#include "./Database/Query.h"
 //#include "./Database/DBManager.h"
-//
-//// 전역 변수
-//#include "Shutdown.h"
+
+// 전역 변수
+#include "Shutdown.h"

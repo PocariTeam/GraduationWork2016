@@ -145,24 +145,42 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerLibrary.h" />
+    <ClInclude Include="Shutdown.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Util\Assert.h" />
     <ClInclude Include="Util\Clock.h" />
     <ClInclude Include="Util\Config.h" />
+    <ClInclude Include="Util\GameObject.h" />
+    <ClInclude Include="Util\Lock.h" />
+    <ClInclude Include="Util\Logger.h" />
+    <ClInclude Include="Util\MemoryLeak.h" />
+    <ClInclude Include="Util\Memory_LowFragmentationHeap.h" />
+    <ClInclude Include="Util\Minidump.h" />
     <ClInclude Include="Util\RandomMt.h" />
     <ClInclude Include="Util\Singleton.h" />
+    <ClInclude Include="Util\Table.h" />
+    <ClInclude Include="Util\Task.h" />
+    <ClInclude Include="Util\Thread.h" />
     <ClInclude Include="Util\tinyXml\tinystr.h" />
     <ClInclude Include="Util\tinyXml\tinyxml.h" />
     <ClInclude Include="Util\Type.h" />
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Shutdown.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Util\Assert.cpp" />
     <ClCompile Include="Util\Clock.cpp" />
     <ClCompile Include="Util\Config.cpp" />
+    <ClCompile Include="Util\Lock.cpp" />
+    <ClCompile Include="Util\Logger.cpp" />
+    <ClCompile Include="Util\Minidump.cpp" />
+    <ClCompile Include="Util\Task.cpp" />
+    <ClCompile Include="Util\Thread.cpp" />
     <ClCompile Include="Util\tinyXml\tinystr.cpp" />
     <ClCompile Include="Util\tinyXml\tinyxml.cpp" />
     <ClCompile Include="Util\tinyXml\tinyxmlerror.cpp" />

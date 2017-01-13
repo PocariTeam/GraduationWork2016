@@ -10,6 +10,9 @@
     <Filter Include="Util\tinyXml">
       <UniqueIdentifier>{5ee793b8-460f-4c61-9470-b3531f9e3a92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Net">
+      <UniqueIdentifier>{8e7d6840-20ed-4e2a-be78-332d663c9a69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -48,6 +51,39 @@
     <ClInclude Include="Util\Config.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Lock.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Thread.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Table.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Shutdown.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Logger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Minidump.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Assert.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\MemoryLeak.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Memory_LowFragmentationHeap.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\GameObject.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Task.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Util\Clock.cpp">
@@ -69,6 +105,27 @@
       <Filter>Util\tinyXml</Filter>
     </ClCompile>
     <ClCompile Include="Util\Config.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Lock.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Thread.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Shutdown.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Logger.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Minidump.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Assert.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Task.cpp">
       <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
