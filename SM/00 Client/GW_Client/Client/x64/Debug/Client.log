@@ -1,0 +1,71 @@
+﻿빌드 시작: 2017-01-11 오후 6:02:21
+     1>2 노드의 "D:\GraduationWork\SM\00 Client\GW_Client\Client\Client.vcxproj" 프로젝트(Build 대상)입니다.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /ZI /nologo /W3 /WX- /MP /Od /D _DEBUG /D _WINDOWS /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt PhysicsMgr.cpp
+         PhysicsMgr.cpp
+     1>d:\graduationwork\sm\00 client\gw_client\client\physicsmgr.cpp(214): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
+     1>d:\graduationwork\sm\00 client\gw_client\client\physicsmgr.cpp(426): warning C4244: '인수': 'Extended'에서 'NxReal'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"../Executable/Client.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"../Executable/Client.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"../Executable/Client.lib" /MACHINE:X64 x64\Debug\Client.res
+         x64\Debug\NXU_Asc2Bin.obj
+         x64\Debug\NXU_ColladaExport.obj
+         x64\Debug\NXU_ColladaImport.obj
+         x64\Debug\NXU_cooking.obj
+         x64\Debug\NXU_customcopy.obj
+         x64\Debug\NXU_File.obj
+         x64\Debug\NXU_Geometry.obj
+         x64\Debug\NXU_GraphicsMesh.obj
+         x64\Debug\NXU_helper.obj
+         x64\Debug\NXU_hull.obj
+         x64\Debug\NXU_PhysicsExport.obj
+         x64\Debug\NXU_PhysicsInstantiator.obj
+         x64\Debug\NXU_ScaledCopy.obj
+         x64\Debug\NXU_schema.obj
+         x64\Debug\NXU_SchemaStream.obj
+         x64\Debug\NXU_Streaming.obj
+         x64\Debug\NXU_string.obj
+         x64\Debug\NXU_tinystr.obj
+         x64\Debug\NXU_tinyxml.obj
+         x64\Debug\NXU_tinyxmlerror.obj
+         x64\Debug\NXU_tinyxmlparser.obj
+         x64\Debug\cooking.obj
+         x64\Debug\UserAllocator.obj
+         x64\Debug\ActorShape.obj
+         x64\Debug\Base.obj
+         x64\Debug\Base_Shader.obj
+         x64\Debug\Camera.obj
+         x64\Debug\Camera_Dynamic.obj
+         x64\Debug\Camera_Third.obj
+         x64\Debug\Client.obj
+         x64\Debug\Component.obj
+         x64\Debug\Cube.obj
+         x64\Debug\GameObject.obj
+         x64\Debug\GraphicDev.obj
+         x64\Debug\HitReport.obj
+         x64\Debug\Instancing_Shader.obj
+         x64\Debug\Loader.obj
+         x64\Debug\MainFrm.obj
+         x64\Debug\Mesh.obj
+         x64\Debug\PhysicsMgr.obj
+         x64\Debug\Player.obj
+         x64\Debug\Point.obj
+         x64\Debug\Renderer.obj
+         x64\Debug\RenderState.obj
+         x64\Debug\ResourceMgr.obj
+         x64\Debug\Scene.obj
+         x64\Debug\Scene_Logo.obj
+         x64\Debug\Scene_Stage.obj
+         x64\Debug\Shader.obj
+         x64\Debug\ShaderMgr.obj
+         x64\Debug\SingleTexture.obj
+         x64\Debug\stdafx.obj
+         x64\Debug\Terrain.obj
+         x64\Debug\Texture.obj
+         x64\Debug\Timer.obj
+         Client.vcxproj -> D:\GraduationWork\SM\00 Client\GW_Client\Client\../Executable/Client.exe
+     1>"D:\GraduationWork\SM\00 Client\GW_Client\Client\Client.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:01.68

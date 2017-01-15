@@ -1,4 +1,4 @@
-#define TERRAINSIZE 16.f
+#define TERRAINSIZE 32.f
 
 /* GS */
 cbuffer CbMtxViewProj : register( b0 )

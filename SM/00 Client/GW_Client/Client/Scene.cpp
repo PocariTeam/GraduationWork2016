@@ -22,7 +22,7 @@ CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, ID3D11DeviceContext 
 	}
 
 	if( nullptr == pScene ) {
-		MessageBox( hWnd, L"Scene 积己 角菩", nullptr, MB_OK );
+		MessageBox( hWnd, "Scene 积己 角菩", nullptr, MB_OK );
 	}
 	return pScene;
 }
@@ -44,26 +44,8 @@ HRESULT CScene::Initialize( HWND hWnd, ID3D11Device * pDevice, ID3D11DeviceConte
 
 int CScene::Update( const float& fTimeDelta )
 {
-	for( size_t i = 0; i < OBJ_END; i++ ) {
-		if( m_plistObj[i].empty() )
-			continue;
-
-		list<CGameObject*>::iterator iter_begin = m_plistObj[i].begin();
-
-		for( ; iter_begin != m_plistObj[i].end(); )
-		{
-			if( 0 >( *iter_begin )->Update( fTimeDelta ) )
-			{
-				( *iter_begin )->Release();
-				( *iter_begin ) = nullptr;
-
-				iter_begin = m_plistObj[i].erase( iter_begin );
-			}
-
-			else
-				iter_begin++;
-		}
-	}
+	if( nullptr != m_pCamera )
+		m_pCamera->Update( fTimeDelta );
 
 	return 0;
 }
@@ -71,18 +53,4 @@ int CScene::Update( const float& fTimeDelta )
 void CScene::Release( void )
 {
 	::Safe_Release( m_pCamera );
-
-	for( size_t i = 0; i < OBJ_END; i++ ) {
-		if( m_plistObj[i].empty() )
-			continue;
-
-		list<CGameObject*>::iterator iter_begin = m_plistObj[i].begin();
-
-		for( ; iter_begin != m_plistObj[i].end(); ) {
-			( *iter_begin )->Release();
-			iter_begin = m_plistObj[i].erase( iter_begin );
-		}
-
-		m_plistObj[i].clear();
-	}
 }

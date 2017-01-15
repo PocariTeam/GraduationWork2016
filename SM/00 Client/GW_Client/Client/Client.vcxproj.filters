@@ -40,9 +40,6 @@
     <Filter Include="소스 파일\01 System\03 Timer">
       <UniqueIdentifier>{a1caf148-688f-4ca4-970b-b6af67759844}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utilty">
-      <UniqueIdentifier>{e584d4f9-f5f8-4aeb-ba99-dbac7ddff994}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03 Resources">
       <UniqueIdentifier>{44f7f9b1-6991-4905-a505-23d8eb58d2c4}</UniqueIdentifier>
     </Filter>
@@ -78,48 +75,6 @@
     </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\00 Camera">
       <UniqueIdentifier>{51bf75f4-0bd9-4834-850a-7c6115c82e0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass">
-      <UniqueIdentifier>{6d0599e3-c7ba-44bc-af5f-21b764a0b38a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\00 Base">
-      <UniqueIdentifier>{45c26779-63f5-490b-9d04-9acd5071d157}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject">
-      <UniqueIdentifier>{ab01ecaa-3b3d-45f1-8ce4-9b9ffc4a3a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject\00 Camera">
-      <UniqueIdentifier>{d6605582-dd9e-446c-97d3-85a155837f4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\02 Component">
-      <UniqueIdentifier>{ce46deab-bc57-4a60-be66-3511d495f205}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\01 Renderer">
-      <UniqueIdentifier>{49d03e0d-a5d9-4531-8eda-0faeeca8e848}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\02 Light">
-      <UniqueIdentifier>{65dbf251-bdda-4ed9-b993-c8756dd4eb7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\02 Light\00 Manager">
-      <UniqueIdentifier>{c9cdbcec-3cea-496a-ac76-9928e5e3339d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader">
-      <UniqueIdentifier>{fdd48a4c-e4ba-4aa8-930f-e19a024623d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\00 Manager">
-      <UniqueIdentifier>{b6de0fea-132e-482f-ba7a-5321da0a2081}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\02 Instancing_Shader">
-      <UniqueIdentifier>{f41a6e2f-79c3-41a8-8f99-4cb9afe49d3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\01 Base_Shader">
-      <UniqueIdentifier>{38246365-e191-4e0f-bdce-fbc57e3b5506}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\03 Particle_Shader">
-      <UniqueIdentifier>{f77e3819-533f-4f13-9f3e-af790a7c805f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utilty\03 Shader\99 HLSL">
-      <UniqueIdentifier>{e3784a60-87d9-44f6-9db6-d3b4f447dde1}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\03 Resources\00 Manager">
       <UniqueIdentifier>{dcb8b7e1-a741-4b9c-84f9-44ec12ef1ff2}</UniqueIdentifier>
@@ -160,14 +115,77 @@
     <Filter Include="소스 파일\03 Resources\03 Model\01 DynamicModel">
       <UniqueIdentifier>{c97e50df-308a-4913-810e-195ef9158e7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utilty\00 SuperClass\02 Component\00 Transform">
-      <UniqueIdentifier>{f18ad328-21c9-49d3-931c-f5e9aab4e761}</UniqueIdentifier>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\99 Loader">
+      <UniqueIdentifier>{19f58ac6-943b-4a96-b30c-091646bb3111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager">
+      <UniqueIdentifier>{828a55bb-7513-4f77-9a50-aa9651c9214c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\01 Mesh\05 ActorShape">
+      <UniqueIdentifier>{bc11b34d-1173-420e-9220-b106d8de079c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\00 Camera\00 Third">
+      <UniqueIdentifier>{b7228994-59c9-4a5c-9786-665f24da1a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic">
+      <UniqueIdentifier>{8821a299-7447-436b-9410-5daeda249037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99 CommonCode">
+      <UniqueIdentifier>{2a999c30-9de3-4bb2-9526-582ad617cfd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty">
+      <UniqueIdentifier>{e584d4f9-f5f8-4aeb-ba99-dbac7ddff994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass">
+      <UniqueIdentifier>{6d0599e3-c7ba-44bc-af5f-21b764a0b38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\00 Base">
+      <UniqueIdentifier>{45c26779-63f5-490b-9d04-9acd5071d157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject">
+      <UniqueIdentifier>{ab01ecaa-3b3d-45f1-8ce4-9b9ffc4a3a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\01 GameObject\00 Camera">
+      <UniqueIdentifier>{d6605582-dd9e-446c-97d3-85a155837f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\00 SuperClass\02 Component">
+      <UniqueIdentifier>{ce46deab-bc57-4a60-be66-3511d495f205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\01 Renderer">
+      <UniqueIdentifier>{49d03e0d-a5d9-4531-8eda-0faeeca8e848}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\02 Utilty\01 Renderer\00 RenderState">
       <UniqueIdentifier>{97dfbf3c-e7f3-4ae0-8ba2-f5d31d1b55e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\99 Loader">
-      <UniqueIdentifier>{19f58ac6-943b-4a96-b30c-091646bb3111}</UniqueIdentifier>
+    <Filter Include="소스 파일\02 Utilty\02 Light">
+      <UniqueIdentifier>{65dbf251-bdda-4ed9-b993-c8756dd4eb7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\02 Light\00 Manager">
+      <UniqueIdentifier>{c9cdbcec-3cea-496a-ac76-9928e5e3339d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader">
+      <UniqueIdentifier>{fdd48a4c-e4ba-4aa8-930f-e19a024623d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\00 Manager">
+      <UniqueIdentifier>{b6de0fea-132e-482f-ba7a-5321da0a2081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\02 Instancing_Shader">
+      <UniqueIdentifier>{f41a6e2f-79c3-41a8-8f99-4cb9afe49d3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\01 Base_Shader">
+      <UniqueIdentifier>{38246365-e191-4e0f-bdce-fbc57e3b5506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\03 Particle_Shader">
+      <UniqueIdentifier>{f77e3819-533f-4f13-9f3e-af790a7c805f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utilty\03 Shader\99 HLSL">
+      <UniqueIdentifier>{e3784a60-87d9-44f6-9db6-d3b4f447dde1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99 CommonCode\00 NxuStream2">
+      <UniqueIdentifier>{2a775e86-2f68-4e68-bb10-25cb44956c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99 CommonCode\01 SamepleCommonCode">
+      <UniqueIdentifier>{93f350b3-3d03-4ae9-9015-ce835e26b41d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -212,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>소스 파일\02 Utilty\00 SuperClass\01 GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>소스 파일\02 Utilty\00 SuperClass\02 Component\00 Transform</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>소스 파일\03 Resources\01 Mesh\02 Cube</Filter>
@@ -267,14 +282,92 @@
     <ClInclude Include="Terrain.h">
       <Filter>소스 파일\00 Client\03 Object\01 InStage\01 Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="Camera_Third.h">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Point</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsMgr.h">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorShape.h">
+      <Filter>소스 파일\03 Resources\01 Mesh\05 ActorShape</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera_Third.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\00 Third</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera_Dynamic.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Asc2Bin.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaExport.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaImport.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_cooking.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_customcopy.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_File.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Geometry.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_GraphicsMesh.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_helper.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_hull.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsExport.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_ScaledCopy.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_schema.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaStream.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaTypes.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_Streaming.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_string.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_tinystr.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxml.h">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\SampleCommonCode\src\UserAllocator.h">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Executable\ThirdParty\SampleCommonCode\src\cooking.h">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="HitReport.h">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +394,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일\02 Utilty\00 SuperClass\01 GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>소스 파일\02 Utilty\00 SuperClass\02 Component\00 Transform</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\02 Cube</Filter>
@@ -356,14 +446,95 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InStage\01 Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="Camera_Third.cpp">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Point.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Point</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsMgr.cpp">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorShape.cpp">
+      <Filter>소스 파일\03 Resources\01 Mesh\05 ActorShape</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Third.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\00 Third</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Dynamic.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\00 Camera\01 Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Asc2Bin.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaExport.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ColladaImport.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_cooking.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_customcopy.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_File.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Geometry.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_GraphicsMesh.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_helper.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_hull.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsExport.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_ScaledCopy.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_schema.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_SchemaStream.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_Streaming.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_string.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinystr.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxml.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxmlerror.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\NxuStream2\NXU_tinyxmlparser.cpp">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\SampleCommonCode\src\UserAllocator.cpp">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\SampleCommonCode\src\cooking.cpp">
+      <Filter>소스 파일\99 CommonCode\01 SamepleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="HitReport.cpp">
+      <Filter>소스 파일\00 Client\02 Scene\03 Stage\00 PhysicsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -389,5 +560,14 @@
     <FxCompile Include="..\Executable\Resources\Shader\Shader_Terrain.fx">
       <Filter>소스 파일\02 Utilty\03 Shader\99 HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Shader_Debug.fx">
+      <Filter>소스 파일\02 Utilty\03 Shader\99 HLSL</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Executable\ThirdParty\NxuStream2\TheNxuStreamFAQ.htm">
+      <Filter>소스 파일\99 CommonCode\00 NxuStream2</Filter>
+    </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

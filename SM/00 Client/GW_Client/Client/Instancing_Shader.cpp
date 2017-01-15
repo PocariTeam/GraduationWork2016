@@ -158,16 +158,16 @@ void CInstancing_Shader::SetInstanceBuffer( ID3D11DeviceContext* pDeviceContext 
 	case CShader::INPUT_TANGENT:
 	{
 		XMFLOAT4X4A* pArr = ( XMFLOAT4X4A* )MappedSubresource.pData;
-		for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
-			XMStoreFloat4x4A( &pArr[i], XMMatrixTranspose( XMLoadFloat4x4A( &m_vecRenderObject[i]->Get_Transform()->m_mtxWorld ) ) );
+		//for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
+		//	XMStoreFloat4x4A( &pArr[i], XMMatrixTranspose( XMLoadFloat4x4A( &m_vecRenderObject[i]->Get_Transform()->m_mtxWorld ) ) );
 		iStride = sizeof( XMFLOAT4X4A );
 	}
 	break;
 	case CShader::INPUT_POSITION_ONLY:
 	{
 		XMFLOAT3* pArr = ( XMFLOAT3* )MappedSubresource.pData;
-		for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
-			memcpy( &pArr[i], &m_vecRenderObject[i]->Get_Transform()->m_vPos, sizeof( XMFLOAT3 ) );
+		//for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
+		//	memcpy( &pArr[i], &m_vecRenderObject[i]->Get_Transform()->m_vPos, sizeof( XMFLOAT3 ) );
 		iStride = sizeof( XMFLOAT3 );
 	}
 	break;

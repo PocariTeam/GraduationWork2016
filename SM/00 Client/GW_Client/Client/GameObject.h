@@ -7,6 +7,7 @@
 #include "Struct.h"
 #include "Base.h"
 
+class NxActor;
 class CGraphicDev;
 class CComponent;
 class CMesh;
@@ -25,23 +26,19 @@ public:
 	virtual DWORD	Release( void );
 	virtual void	SetConstantBuffer( CGraphicDev* pGraphicDev ) {}
 	virtual void	SetConstantBuffer( ID3D11DeviceContext* pContext ) {}
-
+	void			SetActor( NxActor* pActor ) { m_pActor = pActor;  }
 public:
 	CMesh	*		Get_Mesh() { return m_pMeshCom; }
 	CTexture*		Get_Texture() { return m_pTexture; }
-	CTransform*		Get_Transform() { return m_pTransCom; }
-	XMFLOAT3*		Get_Pos() { if( m_pTransCom ) return &m_pTransCom->m_vPos; return nullptr; }
-	XMFLOAT3*		Get_Scale() { if( m_pTransCom ) return &m_pTransCom->m_vScale; return nullptr; }
-	XMFLOAT4X4A*	Get_World() { if( m_pTransCom ) return &m_pTransCom->m_mtxWorld; return nullptr; }
 protected:
 	map< const char*, CComponent*> m_mapComponent;
 
-	CTransform*				m_pTransCom{ nullptr };
 	CMesh*					m_pMeshCom{ nullptr };
 	CTexture*				m_pTexture{ nullptr };
 	MATERIAL				m_tMaterial;
 	ID3D11Buffer*			m_pCBmtxWorld{ nullptr };
 	ID3D11Buffer*			m_pCBMaterial{ nullptr };
+	NxActor*				m_pActor{ nullptr };
 };
 
 #endif

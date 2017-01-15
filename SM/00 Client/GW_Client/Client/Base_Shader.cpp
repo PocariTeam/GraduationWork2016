@@ -113,15 +113,15 @@ DWORD CBase_Shader::Release( void )
 
 void CBase_Shader::Render( ID3D11DeviceContext* pDeviceContext )
 {
-	if( m_vecRenderObject.empty() )
-		return;
-
 	pDeviceContext->IASetInputLayout( m_pInputLayout );
 	pDeviceContext->VSSetShader( m_pVertexShader, NULL, 0 );
 	pDeviceContext->HSSetShader( m_pHullShader, NULL, 0 );
 	pDeviceContext->DSSetShader( m_pDomainShader, NULL, 0 );
 	pDeviceContext->GSSetShader( m_pGeometryShader, NULL, 0 );
 	pDeviceContext->PSSetShader( m_pPixelShader, NULL, 0 );
+
+	if( m_vecRenderObject.empty() )
+		return;
 
 	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
 		m_vecRenderObject[i]->Render( pDeviceContext );

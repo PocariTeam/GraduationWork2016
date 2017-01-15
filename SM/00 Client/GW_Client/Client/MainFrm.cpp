@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "ShaderMgr.h"
 #include "ResourceMgr.h"
+#include "PhysicsMgr.h"
 
 HRESULT CMainFrm::Initialize( const HWND hWnd )
 {
@@ -56,7 +57,9 @@ void CMainFrm::Render( void )
 void CMainFrm::Release( void )
 {
 	::Safe_Release( m_pScene );
+	
 	CRenderer::GetInstance()->Release();
+	CPhysicsMgr::GetInstance()->Release();
 	CShaderMgr::GetInstance()->Release();
 	CResourceMgr::GetInstance()->Release();
 	::Safe_Release( m_pGraphicDev );

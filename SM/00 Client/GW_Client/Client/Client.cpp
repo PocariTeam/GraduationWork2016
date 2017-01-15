@@ -94,6 +94,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #ifdef _DEBUG
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	FreeConsole();
 #endif
 
     return (int) msg.wParam;
@@ -139,11 +140,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
+
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_BORDER;
    RECT	 rcWindow{ 0, 0, WIN_WIDTH, WIN_HEIGHT };
    AdjustWindowRect( &rcWindow, dwStyle, FALSE );
+
+   // _CrtSetBreakAlloc( 5985 );
 
    HWND hWnd = CreateWindowW( szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       0, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top, nullptr, nullptr, hInstance, nullptr);
@@ -154,6 +158,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    UpdateWindow(hWnd);
 
    g_pMainFrm = CMainFrm::Create( hWnd );
+
+#ifdef _DEBUG
+   AllocConsole();
+   freopen("CONIN$", "rt", stdin);
+   freopen("CONOUT$", "wt", stdout);
+#endif
 
    return TRUE;
 }
