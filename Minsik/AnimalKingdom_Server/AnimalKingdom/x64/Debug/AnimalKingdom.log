@@ -1,4 +1,4 @@
-﻿빌드 시작: 2017-01-13 오후 6:13:27
+﻿빌드 시작: 2017-01-20 오후 12:54:00
      1>2 노드의 "D:\GraduationWork\Minsik\AnimalKingdom_Server\AnimalKingdom\AnimalKingdom.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /sdl /MP /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt main.cpp

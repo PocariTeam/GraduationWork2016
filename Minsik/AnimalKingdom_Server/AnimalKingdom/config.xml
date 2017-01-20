@@ -1,23 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <App>
-  <Name>Chatting Server</Name>
+  <Name>AnimalKingdom Server</Name>
   <Server>
     <IP>127.0.0.1</IP>
-    <Port>9200</Port>
+    <Port>9000</Port>
     <ThreadCount>5</ThreadCount>
   </Server>
-  <Terminal>
-    <LoginServer>
-      <IP>127.0.0.1</IP>
-      <Port>9000</Port>
-    </LoginServer>
-    <DBAgent>
-      <IP>127.0.0.1</IP>
-      <Port>9100</Port>
-    </DBAgent>
-  </Terminal>
   <Log>
-    <Path>./Log/LoginLog.log</Path>
+    <Path>AnimalKingdomLog.log</Path>
     <Prefix>System</Prefix>
     <Type>WithFile</Type>
   </Log>

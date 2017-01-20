@@ -1,0 +1,27 @@
+#pragma once
+#include "stdafx.h"
+
+#define MAX_IOCP_THREAD		SIZE_64
+
+class IOCPServer : public Singleton<IOCPServer> {
+
+	char							ip_[16];
+	int								port_;
+	int								workerThreadCount_;
+	SOCKET							listenSocket_;
+	HANDLE							iocp_;
+	Thread							*acceptThread_;
+	array<Thread *, SIZE_64>		workerThread_;
+
+private:
+	static DWORD WINAPI			acceptThread(LPVOID serverPtr);
+	static DWORD WINAPI			workerThread(LPVOID serverPtr);
+	bool						createListenSocket();
+public:
+	IOCPServer();
+	~IOCPServer();
+	void						initialize(xml_t * config);
+	bool						run();
+	void						onAccept(SOCKET accepter, SOCKADDR_IN addrInfo);
+	void						command(wstr_t cmd);
+};

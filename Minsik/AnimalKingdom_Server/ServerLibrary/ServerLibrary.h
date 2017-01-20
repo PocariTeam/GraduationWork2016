@@ -72,9 +72,7 @@ typedef void(*Function)(void *);
 #include "./Util/Memory_LowFragmentationHeap.h"
 #include "./Util/Minidump.h"
 //
-//#include "./Util/SMTPMail.h"
 #include "./Util/Config.h"
-//#include "./Util/Monitoring.h"
 //#include "./util/ProgramValidation.h"
 //
 ////패킷들
@@ -90,12 +88,9 @@ typedef void(*Function)(void *);
 //#include "./Contents/ContentsProcess.h"
 //
 ////서버
-//#include "./Net/Session.h"
-//#include "./Net/SessionManager.h"
-//#include "./Net/Server.h"
-//
-//#include "./Net/Iocp/IOCPServer.h"
-//#include "./Net/Iocp/IOCPSession.h"
+#include "./Net/IOCPServer.h"
+#include "./Net/SessionManager.h"
+#include "./Net/Session.h"
 //#include "./Net/SessionMonitor.h"
 //
 ////터미널

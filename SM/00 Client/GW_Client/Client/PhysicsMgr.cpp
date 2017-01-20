@@ -241,6 +241,12 @@ HRESULT CPhysicsMgr::SetupScene()
 	m_pScene->setUserContactReport(&gContactReport);
 	m_pScene->setActorGroupPairFlags(CollGroup::MY_CHARACTER, CollGroup::DYNAMIC, NX_NOTIFY_ON_START_TOUCH);
 
+	// Create the default material
+	NxMaterial* defaultMaterial = m_pScene->getMaterialFromIndex(0);
+	defaultMaterial->setRestitution(0.0);
+	defaultMaterial->setStaticFriction(0.5);
+	defaultMaterial->setDynamicFriction(0.5);
+
 	m_pScene->simulate(0);
 
 	// 테스트용 시뮬레이션 타입 체크

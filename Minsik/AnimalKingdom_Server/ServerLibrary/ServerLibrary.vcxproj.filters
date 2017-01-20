@@ -84,6 +84,15 @@
     <ClInclude Include="Util\Task.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Net\IOCPServer.h">
+      <Filter>Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\SessionManager.h">
+      <Filter>Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\Session.h">
+      <Filter>Net</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Util\Clock.cpp">
@@ -127,6 +136,15 @@
     </ClCompile>
     <ClCompile Include="Util\Task.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\IOCPServer.cpp">
+      <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\SessionManager.cpp">
+      <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\Session.cpp">
+      <Filter>Net</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
