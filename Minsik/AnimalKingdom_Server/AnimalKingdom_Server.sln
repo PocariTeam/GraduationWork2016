@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerLibrary", "ServerLibr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AnimalKingdom", "AnimalKingdom\AnimalKingdom.vcxproj", "{DF143021-3113-4DB4-A279-9A9301AC8077}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestClient", "TestClient\TestClient.vcxproj", "{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{DF143021-3113-4DB4-A279-9A9301AC8077}.Release|x64.Build.0 = Release|x64
 		{DF143021-3113-4DB4-A279-9A9301AC8077}.Release|x86.ActiveCfg = Release|Win32
 		{DF143021-3113-4DB4-A279-9A9301AC8077}.Release|x86.Build.0 = Release|Win32
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Debug|x64.ActiveCfg = Debug|x64
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Debug|x64.Build.0 = Debug|x64
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Debug|x86.ActiveCfg = Debug|Win32
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Debug|x86.Build.0 = Debug|Win32
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Release|x64.ActiveCfg = Release|x64
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Release|x64.Build.0 = Release|x64
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Release|x86.ActiveCfg = Release|Win32
+		{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

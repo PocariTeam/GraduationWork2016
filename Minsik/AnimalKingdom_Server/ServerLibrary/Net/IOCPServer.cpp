@@ -100,7 +100,6 @@ void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
 		SAFE_DELETE(session);
 		return;
 	}
-	session->ioData_[IO_READ].clear();
 
 	HANDLE handle = CreateIoCompletionPort((HANDLE)accepter, this->iocp_, (ULONG_PTR)&(*session), NULL);
 	if (!handle) {
@@ -108,9 +107,10 @@ void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
 		return;
 	}
 
-	SLog(L"* client accecpt from [%S]", session->clientAddress().c_str());
+	SLog(L"* client accecpt from [%S]", session->getAddress().c_str());
 
-#error 리시브 부분 추가 필요!
+	session->recv();
+
 }
 
 bool IOCPServer::createListenSocket()
@@ -175,6 +175,48 @@ DWORD IOCPServer::acceptThread(LPVOID serverPtr)
 
 DWORD IOCPServer::workerThread(LPVOID serverPtr)
 {
+	IOCPServer *server = (IOCPServer *)serverPtr;
+
+	while (!_shutdown) {
+
+		IoData			*ioData = nullptr;
+		Session			*session = nullptr;
+		DWORD			transferSize;
+
+		BOOL retval = GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
+		if (!retval) {
+			continue;
+		}
+		if (session == nullptr) {
+			SLog(L"! socket data broken");
+			return 0;
+		}
+		if (transferSize == 0) {
+			SessionManager::getInstance().closeSession(session);
+			continue;
+		}
+
+		switch (ioData->ioType_)
+		{
+		case IO_SEND:
+		{
+			// send 처리
+			continue;
+		}
+		case IO_RECV:
+		{
+			session->onRecv((size_t)transferSize);
+			continue;
+		}
+		case IO_ERROR:
+		{
+			SLog(L"! IO_ERROR! ");
+			SessionManager::getInstance().closeSession(session);
+			continue;
+		}
+		}
+
+	}
 	return 0;
 }
 

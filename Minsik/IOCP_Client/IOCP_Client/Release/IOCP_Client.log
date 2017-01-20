@@ -1,23 +1,13 @@
-﻿빌드 시작: 2016-09-18 오후 4:25:22
-     1>2 노드의 "D:\GraduationWork_Minsik\IOCP_Client\IOCP_Client\IOCP_Client.vcxproj" 프로젝트(Build 대상)입니다.
+﻿빌드 시작: 2017-01-20 오후 5:21:14
+     1>2 노드의 "D:\GraduationWork\Minsik\IOCP_Client\IOCP_Client\IOCP_Client.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp stdafx.cpp
-         main.cpp
-     1>main.cpp(70): warning C4267: '=': 'size_t'에서 'UCHAR'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-     1>main.cpp(18): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1270): note: 'scanf' 선언을 참조하십시오.
-     1>main.cpp(35): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-         C:\Program Files (x86)\Windows Kits\8.1\Include\um\winsock2.h(1850): note: 'inet_addr' 선언을 참조하십시오.
-         stdafx.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork_Minsik\IOCP_Client\Release\IOCP_Client.exe" /INCREMENTAL:NO /NOLOGO d3d11.lib d3dx11.lib d3dx11d.lib d3dcompiler.lib d3dx9.lib d3dx9d.lib dxerr.lib dxguid.lib dxgi.lib winmm.lib dinput8.lib XInput.lib dsound.lib X3DAudio.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\GraduationWork_Minsik\IOCP_Client\Release\IOCP_Client.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork_Minsik\IOCP_Client\Release\IOCP_Client.lib" /MACHINE:X86 /SAFESEH Release\main.obj
-         Release\stdafx.obj
-         코드를 생성하고 있습니다.
-         All 74 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-         코드를 생성했습니다.
-         IOCP_Client.vcxproj -> D:\GraduationWork_Minsik\IOCP_Client\Release\IOCP_Client.exe
-     1>"D:\GraduationWork_Minsik\IOCP_Client\IOCP_Client\IOCP_Client.vcxproj" 프로젝트를 빌드했습니다(Build 대상).
+         CL.exe /c /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp stdafx.cpp
+         TRACKER : 오류 TRK0005: "CL.exe"을(를) 찾지 못했습니다. 지정된 파일을 찾을 수 없습니다.
+         
+         
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppCommon.targets(355,5): error MSB6006: "CL.exe"이(가) 종료되었습니다(코드: 5).
+     1>"D:\GraduationWork\Minsik\IOCP_Client\IOCP_Client\IOCP_Client.vcxproj" 프로젝트를 빌드했습니다(Build 대상). - 실패
 
-빌드했습니다.
+빌드하지 못했습니다.
 
-경과 시간: 00:00:02.35
+경과 시간: 00:00:00.06

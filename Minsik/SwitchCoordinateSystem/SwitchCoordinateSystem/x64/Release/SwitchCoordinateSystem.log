@@ -1,7 +1,62 @@
-﻿빌드 시작: 2017-01-10 오후 11:00:24
+﻿빌드 시작: 2017-01-20 오후 5:18:39
      1>2 노드의 "D:\GraduationWork\Minsik\SwitchCoordinateSystem\SwitchCoordinateSystem\SwitchCoordinateSystem.vcxproj" 프로젝트(Build 대상)입니다.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /GL /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt ..\ThirdParty\NxuStream2\NXU_Asc2Bin.cpp ..\ThirdParty\NxuStream2\NXU_ColladaExport.cpp ..\ThirdParty\NxuStream2\NXU_ColladaImport.cpp ..\ThirdParty\NxuStream2\NXU_cooking.cpp ..\ThirdParty\NxuStream2\NXU_customcopy.cpp ..\ThirdParty\NxuStream2\NXU_File.cpp ..\ThirdParty\NxuStream2\NXU_Geometry.cpp ..\ThirdParty\NxuStream2\NXU_GraphicsMesh.cpp ..\ThirdParty\NxuStream2\NXU_helper.cpp ..\ThirdParty\NxuStream2\NXU_hull.cpp ..\ThirdParty\NxuStream2\NXU_PhysicsExport.cpp ..\ThirdParty\NxuStream2\NXU_PhysicsInstantiator.cpp ..\ThirdParty\NxuStream2\NXU_ScaledCopy.cpp ..\ThirdParty\NxuStream2\NXU_schema.cpp ..\ThirdParty\NxuStream2\NXU_SchemaStream.cpp ..\ThirdParty\NxuStream2\NXU_Streaming.cpp ..\ThirdParty\NxuStream2\NXU_string.cpp ..\ThirdParty\NxuStream2\NXU_tinystr.cpp ..\ThirdParty\NxuStream2\NXU_tinyxml.cpp ..\ThirdParty\NxuStream2\NXU_tinyxmlerror.cpp ..\ThirdParty\NxuStream2\NXU_tinyxmlparser.cpp ..\ThirdParty\SampleCommonCode\src\cooking.cpp ..\ThirdParty\SampleCommonCode\src\Stream.cpp main.cpp
+         NXU_Asc2Bin.cpp
+         NXU_ColladaExport.cpp
+         NXU_ColladaImport.cpp
+         NXU_cooking.cpp
+         NXU_customcopy.cpp
+         NXU_File.cpp
+         NXU_Geometry.cpp
+         NXU_GraphicsMesh.cpp
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(212): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(255): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(260): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(274): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(398): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(412): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(429): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(644): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(662): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(695): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(709): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>d:\graduationwork\minsik\switchcoordinatesystem\thirdparty\nxustream2\NXU_GraphicsMesh.h(733): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(119): note: 'strcpy' 선언을 참조하십시오.
+     1>..\ThirdParty\NxuStream2\NXU_GraphicsMesh.cpp(222): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+     1>..\ThirdParty\NxuStream2\NXU_GraphicsMesh.cpp(491): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(346): note: 'strncpy' 선언을 참조하십시오.
+         NXU_helper.cpp
+         NXU_hull.cpp
+         NXU_PhysicsExport.cpp
+         NXU_PhysicsInstantiator.cpp
+         NXU_ScaledCopy.cpp
+         NXU_schema.cpp
+         NXU_SchemaStream.cpp
+         NXU_Streaming.cpp
+         NXU_string.cpp
+         NXU_tinystr.cpp
+     1>..\ThirdParty\NxuStream2\NXU_tinystr.cpp : warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+         NXU_tinyxml.cpp
+         NXU_tinyxmlerror.cpp
+         컴파일하고 있습니다...
+         NXU_tinyxmlparser.cpp
+         cooking.cpp
+         Stream.cpp
+     1>..\ThirdParty\SampleCommonCode\src\Stream.cpp(7): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: 'fopen' 선언을 참조하십시오.
          main.cpp
      1>main.cpp(264): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1769): note: 'sprintf' 선언을 참조하십시오.
@@ -14,7 +69,7 @@
      1>main.cpp(391): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1270): note: 'scanf' 선언을 참조하십시오.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork\Minsik\SwitchCoordinateSystem\x64\Release\SwitchCoordinateSystem.exe" /INCREMENTAL:NO /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\GraduationWork\Minsik\SwitchCoordinateSystem\x64\Release\SwitchCoordinateSystem.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork\Minsik\SwitchCoordinateSystem\x64\Release\SwitchCoordinateSystem.lib" /MACHINE:X64 x64\Release\NXU_Asc2Bin.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraduationWork\Minsik\SwitchCoordinateSystem\x64\Release\SwitchCoordinateSystem.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files (x86)\Visual Leak Detector\lib\Win64" winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\GraduationWork\Minsik\SwitchCoordinateSystem\x64\Release\SwitchCoordinateSystem.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraduationWork\Minsik\SwitchCoordinateSystem\x64\Release\SwitchCoordinateSystem.lib" /MACHINE:X64 x64\Release\NXU_Asc2Bin.obj
          x64\Release\NXU_ColladaExport.obj
          x64\Release\NXU_ColladaImport.obj
          x64\Release\NXU_cooking.obj
@@ -39,7 +94,7 @@
          x64\Release\Stream.obj
          x64\Release\main.obj
          코드를 생성하고 있습니다.
-         2 of 2997 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+         0 of 2997 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
            0 functions had inline decision re-evaluated but remain unchanged
          코드를 생성했습니다.
@@ -48,4 +103,4 @@
 
 빌드했습니다.
 
-경과 시간: 00:00:02.28
+경과 시간: 00:00:06.65
