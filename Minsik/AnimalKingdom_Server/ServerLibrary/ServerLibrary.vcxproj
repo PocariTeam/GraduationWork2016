@@ -144,9 +144,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Contents\PacketManager.h" />
+    <ClInclude Include="Contents\Player.h" />
+    <ClInclude Include="Contents\GameRoom.h" />
+    <ClInclude Include="Contents\RoomManager.h" />
     <ClInclude Include="Net\IOCPServer.h" />
     <ClInclude Include="Net\Session.h" />
     <ClInclude Include="Net\SessionManager.h" />
+    <ClInclude Include="Protocol\Protocol.h" />
     <ClInclude Include="ServerLibrary.h" />
     <ClInclude Include="Shutdown.h" />
     <ClInclude Include="stdafx.h" />
@@ -171,6 +176,10 @@
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Contents\PacketManager.cpp" />
+    <ClCompile Include="Contents\Player.cpp" />
+    <ClCompile Include="Contents\GameRoom.cpp" />
+    <ClCompile Include="Contents\RoomManager.cpp" />
     <ClCompile Include="Net\IOCPServer.cpp" />
     <ClCompile Include="Net\Session.cpp" />
     <ClCompile Include="Net\SessionManager.cpp" />

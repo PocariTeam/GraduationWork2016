@@ -57,14 +57,14 @@ void Session::onRecv(size_t recvSize)
 	// 패킷조립 및 실행
 	char *recvBuf = ioData_[IO_RECV].buffer_.data();
 	IoData *ioData = &ioData_[IO_RECV];
-
+	
 	while (0 < recvSize) 
 	{
-
 		//현재 처리하는 패킷이 없을 경우 recvBuf의 첫번째 바이트를 사이즈로 설정
 		if (0 == ioData->totalBytes_) {
-			// FIX: 임시로 헤더의 크기는 1바이트
-			ioData->totalBytes_ = recvBuf[0];
+			// FIX: 항상 2바이트 이상 읽는다는 가정하에 짜여진 코드
+			HEADER* pHeader = (HEADER*)recvBuf;
+			ioData->totalBytes_ = pHeader->size;
 		}
 
 		// 패킷을 만들기 위해 필요한 남은 사이즈 = 
@@ -77,9 +77,8 @@ void Session::onRecv(size_t recvSize)
 		{
 			memcpy(packetBuffer, recvBuf, restSize);
 
-			// FIX: 패킷처리
-			printf("받은 패킷: %s \n", &ioData->packetBuffer_[2]);
-
+			PacketManager::getInstance().packetProcess(this, ioData->packetBuffer_.data());
+			
 			recvBuf += restSize;
 			recvSize -= restSize;
 		}

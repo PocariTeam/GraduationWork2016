@@ -13,6 +13,12 @@
     <Filter Include="Net">
       <UniqueIdentifier>{8e7d6840-20ed-4e2a-be78-332d663c9a69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{d940934f-4033-4a19-b593-a70a036c8f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{3c3fff06-6dd7-4356-8caf-87695f67991c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -93,6 +99,21 @@
     <ClInclude Include="Net\Session.h">
       <Filter>Net</Filter>
     </ClInclude>
+    <ClInclude Include="Contents\RoomManager.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Player.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol\Protocol.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\GameRoom.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\PacketManager.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Util\Clock.cpp">
@@ -145,6 +166,18 @@
     </ClCompile>
     <ClCompile Include="Net\Session.cpp">
       <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\Player.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\RoomManager.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\GameRoom.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\PacketManager.cpp">
+      <Filter>Contents</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

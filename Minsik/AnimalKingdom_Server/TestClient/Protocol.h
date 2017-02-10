@@ -1,32 +1,41 @@
 #pragma once
 
 #define		SOCKET_BUF_SIZE			1024*10
+#define		GAMEROOM_CAPACITY		10
 #define		SERVER_PORT				9000
 #define		SERVERIP				"127.0.0.1"
 
-#define		PAK_SYNC				0
-#define		PAK_ID					1
-#define		PAK_REG					2
-#define		PAK_RMV					3
+typedef enum {
+	PAK_Announce,
+	PAK_EnterRoom,
+	PAK_ExitRoom,
+	PAK_RoomInfo
+} PAK_ID;
 
+struct RoomInfo
+{
+	UINT	playerCount;
+	BOOL	playing;
+};
 
 #pragma pack(push, 1)
 
 struct HEADER
 {
-	UCHAR			ucSize;
-	BYTE			byPacketID;
+	UINT16			size;
+	PAK_ID			packetID;
 };
 
-struct CTOS_SYNC
+struct C_EnterRoom
 {
-	char data[SOCKET_BUF_SIZE - 2];
+	HEADER	header;
+	UINT	roomNumber;
 };
 
-struct STOC_SYNC
+struct S_RoomListInfo
 {
-	BYTE	ID;
-	char data[SOCKET_BUF_SIZE - 3];
+	HEADER		header;
+	RoomInfo	roomInfo[GAMEROOM_CAPACITY];
 };
 
 #pragma pack(pop)

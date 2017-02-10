@@ -20,9 +20,9 @@ int g_nID;
 int main(int argc, char *argv[])
 {
 	char serverAddr[256];
-	//printf("서버주소 입력(xxx.xxx.xxx.xxx):");
-	//scanf("%s", serverAddr);
-	strcpy(serverAddr, "127.0.0.1");
+	printf("서버주소 입력(xxx.xxx.xxx.xxx):");
+	scanf("%s", serverAddr);
+	//strcpy(serverAddr, "127.0.0.1");
 	int retval;
 
 	// 윈속 초기화
@@ -51,35 +51,67 @@ int main(int argc, char *argv[])
 	// 리시브스레드
 	std::thread recvThread { recvThreadFunc , &sock};
 
-	//로그인
-	HEADER *phead = (HEADER*)sendData;
-	phead->byPacketID = PAK_ID;
-	phead->ucSize = sizeof(HEADER);
-	retval = send(sock, sendData, phead->ucSize, 0);
-
+	int inputKey;
 	// 서버와 데이터 통신
 	while (1) {
-		printf("보낼 데이터:");
-		if (fgets(inputBuf, SOCKET_BUF_SIZE - 2, stdin) == NULL)
+		//printf("보낼 데이터:");
+		//if (fgets(inputBuf, SOCKET_BUF_SIZE - 2, stdin) == NULL)
+		//	break;
+		//
+		//// '\n' 문자 제거
+		//len = strlen(inputBuf);
+		//if (inputBuf[len - 1] == '\n')
+		//	inputBuf[len - 1] = '\0';
+		//if (strlen(inputBuf) == 0)
+		//	continue;
+
+		//// 헤더와 데이터 붙이기
+		//HEADER *phead = (HEADER*)sendData;
+		//phead->packetID = PAK_SYNC;
+		//phead->size = strlen(inputBuf)+1 + sizeof(HEADER);
+
+		//CTOS_SYNC *pData = (CTOS_SYNC*)(sendData + sizeof(HEADER));
+		//memcpy(pData->data, inputBuf, strlen(inputBuf) + 1);
+
+		//// 데이터 보내기
+		//retval = send(sock, sendData, phead->size, 0);
+		//if (retval == SOCKET_ERROR) {
+		//	err_display("send()");
+		//	break;
+		//}
+
+INPUT:
+
+		printf("========================================= \n");
+		printf(" 0 방접속, 1 방나가기 \n");
+		printf("========================================= \n");
+		printf("InputKey:");
+		scanf("%d", &inputKey);
+
+		switch (inputKey)
+		{
+		case 0:
+		{
+			C_EnterRoom *pEnterRoom = (C_EnterRoom*)sendData;
+			pEnterRoom->header.size = sizeof(C_EnterRoom);
+			pEnterRoom->header.packetID = PAK_EnterRoom;
+			printf("방번호:");
+			scanf("%d", &pEnterRoom->roomNumber);
 			break;
-		
-		// '\n' 문자 제거
-		len = strlen(inputBuf);
-		if (inputBuf[len - 1] == '\n')
-			inputBuf[len - 1] = '\0';
-		if (strlen(inputBuf) == 0)
-			continue;
-
-		// 헤더와 데이터 붙이기
-		HEADER *phead = (HEADER*)sendData;
-		phead->byPacketID = PAK_SYNC;
-		phead->ucSize = strlen(inputBuf)+1 + sizeof(HEADER);
-
-		CTOS_SYNC *pData = (CTOS_SYNC*)(sendData + sizeof(HEADER));
-		memcpy(pData->data, inputBuf, strlen(inputBuf) + 1);
-
+		}
+		case 1:
+		{
+			HEADER *pExitRoom = (HEADER*)sendData;
+			pExitRoom->size = sizeof(HEADER);
+			pExitRoom->packetID = PAK_ExitRoom;
+			break;
+		}
+		default:
+			printf("정의되지 않은 명령키 \n");
+			goto INPUT;
+		}
 		// 데이터 보내기
-		retval = send(sock, sendData, phead->ucSize, 0);
+		retval = send(sock, sendData, ((HEADER*)sendData)->size, 0);
 		if (retval == SOCKET_ERROR) {
 			err_display("send()");
 			break;
@@ -128,35 +160,35 @@ void recvThreadFunc(SOCKET* sock) {
 	// 데이터 받기
 	while (1) {
 		ZeroMemory(recvData, sizeof(recvData));
-		retval = recv(*sock, recvData, sizeof(STOC_SYNC), 0);
-		if (retval == SOCKET_ERROR) {
-			err_display("recv()");
-			break;
-		}
-		else if (retval == 0)
-			break;
-		HEADER* pHeader = (HEADER*)recvData;
-		STOC_SYNC *outputBuf = (STOC_SYNC*)((UCHAR*)recvData + sizeof(HEADER));
-		switch (pHeader->byPacketID) {
-		case PAK_ID:
-			printf("\n[시스템] 접속했습니다. 부여받은 아이디는 [%d]번 입니다.", outputBuf->ID);
-			g_nID = outputBuf->ID;
-			break;
-		case PAK_REG:
-			printf("\n[시스템] %d번 클라가 접속했습니다.", outputBuf->ID);
-			printf("\n[보낼 데이터]:");
-			break;
-		case PAK_RMV:
-			printf("\n[시스템] %d번 클라가 종료했습니다.", outputBuf->ID);
-			printf("\n[보낼 데이터]:");
-			break;
-		case PAK_SYNC:
-			// 받은 데이터 출력
-			printf("\n[%d]번 클라가 입력한 정보: %s", outputBuf->ID, outputBuf->data);
-			printf("\n[보낼 데이터]:");
-			break;
 
-		}
+		//retval = recv(*sock, recvData, sizeof(STOC_SYNC), 0);
+		//if (retval == SOCKET_ERROR) {
+		//	err_display("recv()");
+		//	break;
+		//}
+		//else if (retval == 0)
+		//	break;
+		//HEADER* pHeader = (HEADER*)recvData;
+		//STOC_SYNC *outputBuf = (STOC_SYNC*)((UCHAR*)recvData + sizeof(HEADER));
+		//switch (pHeader->packetID) {
+		//case PAK_ID:
+		//	printf("\n[시스템] 접속했습니다. 부여받은 아이디는 [%d]번 입니다.", outputBuf->ID);
+		//	g_nID = outputBuf->ID;
+		//	break;
+		//case PAK_REG:
+		//	printf("\n[시스템] %d번 클라가 접속했습니다.", outputBuf->ID);
+		//	printf("\n[보낼 데이터]:");
+		//	break;
+		//case PAK_RMV:
+		//	printf("\n[시스템] %d번 클라가 종료했습니다.", outputBuf->ID);
+		//	printf("\n[보낼 데이터]:");
+		//	break;
+		//case PAK_SYNC:
+		//	// 받은 데이터 출력
+		//	printf("\n[%d]번 클라가 입력한 정보: %s", outputBuf->ID, outputBuf->data);
+		//	printf("\n[보낼 데이터]:");
+		//	break;
+		//}
 
 
 

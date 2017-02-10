@@ -5,7 +5,6 @@
 
 class IOCPServer : public Singleton<IOCPServer> {
 
-	char							ip_[16];
 	int								port_;
 	int								workerThreadCount_;
 	SOCKET							listenSocket_;
@@ -23,5 +22,6 @@ public:
 	void						initialize(xml_t * config);
 	bool						run();
 	void						onAccept(SOCKET accepter, SOCKADDR_IN addrInfo);
+	void printHostInfo();
 	void						command(wstr_t cmd);
 };

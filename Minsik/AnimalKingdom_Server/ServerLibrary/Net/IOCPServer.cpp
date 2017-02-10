@@ -40,7 +40,7 @@ void IOCPServer::initialize(xml_t *config)
 		return;
 	}
 	xmlNode_t *elem = root->FirstChildElement("IP");
-	strcpy_s(ip_, elem->GetText());
+//	strcpy_s(ip_, elem->GetText());
 
 	elem = root->FirstChildElement("Port");
 	sscanf_s(elem->GetText(), "%d", &port_);
@@ -113,6 +113,22 @@ void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
 
 }
 
+void IOCPServer::printHostInfo() {
+	char szLocalHostName[512]; // 이 컴퓨터가 네트워크에서 식별되는 이름이 저장될 문자열 버퍼입니다.
+	struct hostent * pLocalHostInformation; // 로컬 호스트의 정보가 담길 구조체의 포인터
+
+	gethostname(szLocalHostName, sizeof(szLocalHostName));
+	SLog(L"* Host name is %S.", szLocalHostName);
+	pLocalHostInformation = gethostbyname(szLocalHostName);
+
+	/* 한 컴퓨터에서 여러 IP를 할당 받을 수 있습니다. 이를 모두 출력합니다. */
+	for (int i = 0; pLocalHostInformation->h_addr_list[i] != NULL; i++) {
+		SLog(L"* Hostent.h_addr_list[%d] = \"%S\", port: %d", i, inet_ntoa(*(struct in_addr*)pLocalHostInformation->h_addr_list[i]),port_);
+	}
+	
+}
+
+
 bool IOCPServer::createListenSocket()
 {
 	listenSocket_ = WSASocket(AF_INET, SOCK_STREAM, NULL, NULL, 0, WSA_FLAG_OVERLAPPED);
@@ -125,7 +141,9 @@ bool IOCPServer::createListenSocket()
 	SOCKADDR_IN serverAddr;
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons((u_short)port_);
-	inet_pton(AF_INET, ip_, &(serverAddr.sin_addr));
+	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	//inet_pton(AF_INET, ip_, &(serverAddr.sin_addr));
+	IOCPServer::printHostInfo();
 
 	// 소켓재사용옵션
 	//int reUseAddr = 1;
@@ -148,9 +166,9 @@ bool IOCPServer::createListenSocket()
 		return false;
 	}
 
-	array<char, SIZE_64> ip;
-	inet_ntop(AF_INET, &(serverAddr.sin_addr), ip.data(), ip.size());
-	SLog(L"* server listen socket created, ip: %S, port: %d", ip.data(), port_);
+	//array<char, SIZE_64> ip;
+	//inet_ntop(AF_INET, &(serverAddr.sin_addr), ip.data(), ip.size());
+	//SLog(L"* server listen socket created, ip: %S, port: %d", ip.data(), port_);
 	return true;
 }
 
@@ -185,6 +203,7 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 
 		BOOL retval = GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
 		if (!retval) {
+			RoomManager::getInstance().exitRoom(session);
 			continue;
 		}
 		if (session == nullptr) {

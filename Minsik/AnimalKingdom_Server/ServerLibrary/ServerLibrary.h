@@ -5,6 +5,8 @@
 #pragma comment(lib, "mswsock.lib")
 #pragma comment(lib, "Winmm.lib")
 
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #include <Ws2tcpip.h>
 #include <winsock2.h>
 #include <mswsock.h>
@@ -50,7 +52,9 @@ typedef void(*Function)(void *);
 
 // TODO: 필수 헤더 파일
 //-------------------------------------------------------------------//
-//#include "./Net/WinSocket.h"
+////프로토콜
+#include "./Protocol/Protocol.h"
+
 #include "./Util/Type.h"
 #include "./Util/Util.h"
 
@@ -84,14 +88,19 @@ typedef void(*Function)(void *);
 //#include "./Net/Packet/Package.h"
 //#include "./Net/Packet/PacketObfuscation.h"
 //
-////컨텐츠 관련
-//#include "./Contents/ContentsProcess.h"
+///컨텐츠
+//
+#include "./Contents/RoomManager.h"
+#include "./Contents/GameRoom.h"
+#include "./Contents/Player.h"
+#include "./Contents/PacketManager.h"
 //
 ////서버
 #include "./Net/IOCPServer.h"
 #include "./Net/SessionManager.h"
 #include "./Net/Session.h"
 //#include "./Net/SessionMonitor.h"
+//
 //
 ////터미널
 //#include "./Net/Terminal/TerminalSession.h"
