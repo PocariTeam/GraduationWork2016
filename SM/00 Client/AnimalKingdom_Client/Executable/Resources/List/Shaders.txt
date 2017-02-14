@@ -1,0 +1,4 @@
+3
+Shader_Mesh 0 3 1 ../Executable/Resources/Shader/Mesh.fx
+Shader_Light 0 0 1 ../Executable/Resources/Shader/Light.fx
+Shader_Blend 0 0 1 ../Executable/Resources/Shader/Blend.fx
