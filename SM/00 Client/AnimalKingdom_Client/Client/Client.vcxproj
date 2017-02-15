@@ -162,14 +162,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="..\Executable\Resources\List\AnimateMeshes.txt" />
+    <Text Include="..\Executable\Resources\List\Animation.txt" />
     <Text Include="..\Executable\Resources\List\Shaders.txt" />
     <Text Include="..\Executable\Resources\List\StaticMeshes.txt" />
     <Text Include="..\Executable\Resources\List\Textures.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimateMesh.h" />
     <ClInclude Include="AnimateMeshMgr.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AnimationMgr.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Base.h" />
@@ -218,8 +222,10 @@
     <ClInclude Include="Wallpaper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimateMesh.cpp" />
     <ClCompile Include="AnimateMeshMgr.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationMgr.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Base.cpp" />

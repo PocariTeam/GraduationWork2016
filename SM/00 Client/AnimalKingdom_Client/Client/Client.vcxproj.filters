@@ -193,6 +193,12 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\01 Terrain">
       <UniqueIdentifier>{cb3a8d4c-5a93-4fb1-a34a-f50668fb72cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\NewFilter1">
+      <UniqueIdentifier>{2a70ecf3-abfb-4955-896e-459ea44243f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\98 Controller">
+      <UniqueIdentifier>{19aee632-c751-413e-9021-9f6ee7e8ba87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -203,6 +209,12 @@
       <Filter>소스 파일\03 Resources\05 List</Filter>
     </Text>
     <Text Include="..\Executable\Resources\List\StaticMeshes.txt">
+      <Filter>소스 파일\03 Resources\05 List</Filter>
+    </Text>
+    <Text Include="..\Executable\Resources\List\AnimateMeshes.txt">
+      <Filter>소스 파일\03 Resources\05 List</Filter>
+    </Text>
+    <Text Include="..\Executable\Resources\List\Animation.txt">
       <Filter>소스 파일\03 Resources\05 List</Filter>
     </Text>
   </ItemGroup>
@@ -351,6 +363,12 @@
     <ClInclude Include="LightMgr.h">
       <Filter>소스 파일\02 Utility\02 Light</Filter>
     </ClInclude>
+    <ClInclude Include="AnimateMesh.h">
+      <Filter>소스 파일\03 Resources\01 Mesh\01 Animate</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h">
+      <Filter>소스 파일\03 Resources\03 Animation\98 Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -469,6 +487,12 @@
     </ClCompile>
     <ClCompile Include="LightMgr.cpp">
       <Filter>소스 파일\02 Utility\02 Light</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimateMesh.cpp">
+      <Filter>소스 파일\03 Resources\01 Mesh\01 Animate</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationController.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\98 Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

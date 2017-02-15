@@ -30,6 +30,7 @@ HRESULT CLogo::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_Textures", "../Executable/Resources/List/Textures.txt", pDevice, CThreadMgr::LOAD_TEXTURE );
 	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_StaticMeshes", "../Executable/Resources/List/StaticMeshes.txt", pDevice, CThreadMgr::LOAD_MESH );
 	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_Shaders", "../Executable/Resources/List/Shaders.txt", pDevice, CThreadMgr::LOAD_SHADER );
+	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_AnimateMeshes", "../Executable/Resources/List/AnimateMeshes.txt", pDevice, CThreadMgr::LOAD_ANIMATEMESH );
 
 	return CScene::Initialize( hWnd, pDevice );
 }

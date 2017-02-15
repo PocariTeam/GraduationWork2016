@@ -46,6 +46,19 @@ typedef struct tagVertex_PNTT
 	XMFLOAT2	m_vUV;
 }VERTEX_PNTT;
 
+typedef struct tagVertex_PNTTB {
+	XMFLOAT3	m_vPos;
+	XMFLOAT3	m_vNormal;
+	XMFLOAT3	m_vTangent;
+	XMFLOAT2	m_vUV;
+	pair<UINT, double> m_pairBlend[ 4 ];
+
+	tagVertex_PNTTB()
+	{
+		ZeroMemory( m_pairBlend, 4 * ( sizeof( UINT ) + sizeof( double ) ) );
+	}
+}VERTEX_PNTTB;
+
 /*                           Constant Buffer                                   */
 
 typedef struct tagConstantBuffer_Camera

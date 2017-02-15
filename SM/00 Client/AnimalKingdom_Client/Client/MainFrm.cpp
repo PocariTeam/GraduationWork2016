@@ -15,7 +15,7 @@
 #include "RenderTargetMgr.h"
 #include "Renderer.h"
 #include "LightMgr.h"
-//#include "PhysicsMgr.h"
+#include "AnimateMeshMgr.h"
 
 HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 {
@@ -111,6 +111,7 @@ DWORD CMainFrm::Release( void )
 	CLightMgr::DestroyInstance();
 	CRenderer::DestroyInstance();
 	CRenderTargetMgr::DestroyInstance();
+	CAnimateMeshMgr::DestroyInstance();
 	CMeshMgr::DestroyInstance();
 	CTextureMgr::DestroyInstance();
 	CShaderMgr::DestroyInstance();
