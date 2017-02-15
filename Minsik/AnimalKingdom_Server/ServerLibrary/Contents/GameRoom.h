@@ -17,4 +17,5 @@ public:
 	~GameRoom();
 	bool enter(Session* session);
 	bool exit(Session* session);
+	RoomInfo getRoomInfo();
 };

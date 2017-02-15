@@ -19,9 +19,9 @@ private:
 public:
 	IOCPServer();
 	~IOCPServer();
+	void						printHostInfo();
 	void						initialize(xml_t * config);
 	bool						run();
 	void						onAccept(SOCKET accepter, SOCKADDR_IN addrInfo);
-	void printHostInfo();
 	void						command(wstr_t cmd);
 };

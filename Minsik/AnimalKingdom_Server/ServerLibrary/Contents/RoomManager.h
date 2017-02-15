@@ -11,6 +11,7 @@ private:
 public:
 	RoomManager();
 	~RoomManager();
-	void enterRoom(Session* session, UINT roomNum);
-	void exitRoom(Session* session);
+	bool enterRoom(Session* session, UINT roomNum);
+	bool exitRoom(Session* session);
+	RoomInfo *getRoomListInfo();
 };

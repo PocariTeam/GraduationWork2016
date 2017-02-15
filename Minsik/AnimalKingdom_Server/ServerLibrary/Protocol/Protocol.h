@@ -6,10 +6,10 @@
 #define		SERVERIP				"127.0.0.1"
 
 typedef enum {
-	PAK_Announce,
-	PAK_EnterRoom,
-	PAK_ExitRoom,
-	PAK_RoomInfo
+	PAK_REQ_EnterRoom,
+	PAK_REQ_ExitRoom,
+	PAK_RJT_Room,
+	PAK_ANS_RoomList
 } PAK_ID;
 
 struct RoomInfo
@@ -36,6 +36,7 @@ struct S_RoomListInfo
 {
 	HEADER		header;
 	RoomInfo	roomInfo[GAMEROOM_CAPACITY];
+	//array<RoomInfo, GAMEROOM_CAPACITY> roomInfo;
 };
 
 #pragma pack(pop)

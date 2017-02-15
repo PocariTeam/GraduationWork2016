@@ -35,13 +35,14 @@ struct IoData
 
 //////////////////////////////////////////////////////////////////////
 
-
+#define NOT_IN_ROOM	-1
 
 class Session
 {
 	SOCKET				socket_;
 	SOCKADDR_IN			addrInfo_;
 	oid_t				id_;
+	INT32				roomNum_;
 
 public:
 	array<IoData, IO_DATA_MAX> ioData_;
@@ -51,10 +52,13 @@ public:
 	bool			onAccept(SOCKET socket, SOCKADDR_IN addrInfo);
 	void			onRecv(size_t recvSize);
 	void			recv();
+	void			send();
 
 	str_t			getAddress();
 	oid_t			getID()				{ return id_; };
 	void			setID(oid_t id)		{ id_ = id; };
 	SOCKET&			getSocket()			{ return socket_; };
+	INT32			getRoomNumber()		{ return roomNum_; };
+	void			setRoomNumber(INT32 n) { roomNum_ = n; };
 
 };

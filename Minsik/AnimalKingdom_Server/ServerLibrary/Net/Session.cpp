@@ -40,6 +40,7 @@ void Session::initialize()
 	ZeroMemory(&addrInfo_, sizeof(addrInfo_));
 	ioData_[IO_RECV].ioType_ = IO_RECV;
 	ioData_[IO_SEND].ioType_ = IO_SEND;
+	roomNum_ = NOT_IN_ROOM;
 }
 
 bool Session::onAccept(SOCKET socket, SOCKADDR_IN addrInfo)
@@ -77,7 +78,7 @@ void Session::onRecv(size_t recvSize)
 		{
 			memcpy(packetBuffer, recvBuf, restSize);
 
-			PacketManager::getInstance().packetProcess(this, ioData->packetBuffer_.data());
+			PacketManager::getInstance().recvProcess(this, ioData->packetBuffer_.data());
 			
 			recvBuf += restSize;
 			recvSize -= restSize;
@@ -111,6 +112,24 @@ void Session::recv()
 			SLog(L"! socket error: %d", WSAGetLastError());
 		}
 	}
+}
+
+void Session::send()
+{
+	WSABUF wsaBuf;
+	wsaBuf.buf = ioData_[IO_SEND].buffer_.data();
+	wsaBuf.len = ioData_[IO_SEND].totalBytes_;
+
+	DWORD flags = 0;
+	DWORD sendBytes;
+	DWORD errorCode = WSASend(socket_, &wsaBuf, 1, &sendBytes, flags, &ioData_[IO_SEND].overlapped_, NULL);
+	if (errorCode == SOCKET_ERROR) {
+		if (WSAGetLastError() != WSA_IO_PENDING) {
+			SLog(L"! socket error: %d", WSAGetLastError());
+			return;
+		}
+	}
+
 }
 
 str_t Session::getAddress()

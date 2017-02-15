@@ -79,8 +79,6 @@ bool IOCPServer::run()
 		std::getline(std::wcin, cmdLine);
 		SLog(L"Input was: %s", cmdLine.c_str());
 		command(cmdLine);
-
-
 	}
 	return true;
 }
@@ -108,9 +106,10 @@ void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
 	}
 
 	SLog(L"* client accecpt from [%S]", session->getAddress().c_str());
+	SLog(L"* RoomListInformation was sent to [%S]", session->getAddress().c_str());
 
+	PacketManager::getInstance().sendRoomList(session);
 	session->recv();
-
 }
 
 void IOCPServer::printHostInfo() {
@@ -202,8 +201,8 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 		DWORD			transferSize;
 
 		BOOL retval = GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
-		if (!retval) {
-			RoomManager::getInstance().exitRoom(session);
+		if (!retval) 
+		{
 			continue;
 		}
 		if (session == nullptr) {
@@ -211,6 +210,10 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			return 0;
 		}
 		if (transferSize == 0) {
+			if (session->getRoomNumber() != NOT_IN_ROOM)
+			{
+				RoomManager::getInstance().exitRoom(session);
+			}
 			SessionManager::getInstance().closeSession(session);
 			continue;
 		}

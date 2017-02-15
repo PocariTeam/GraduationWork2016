@@ -5,5 +5,7 @@ class Session;
 
 class PacketManager : public Singleton<PacketManager> {
 public:
-	void packetProcess(Session* session, char* buf);
+	void recvProcess(Session* session, char* buf);
+	void sendRejectRoom(Session* session);
+	void sendRoomList(Session* session);
 };

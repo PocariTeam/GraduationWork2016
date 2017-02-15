@@ -17,13 +17,11 @@ GameRoom::~GameRoom()
 bool GameRoom::enter(Session* session)
 {
 	SAFE_LOCK(lock_);
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+
+	if (playing_)
 	{
-		if ((*p)->getSession() == session)
-		{
-			SLog(L"! [%S] is already in the [%d] room. ", session->getAddress().c_str(), roomNum_);
-			return false;
-		}
+		SLog(L"! [%d] room is playing now.", roomNum_);
+		return false;
 	}
 
 	if (playerCount_ < PLAYER_CAPACITY)
@@ -32,7 +30,8 @@ bool GameRoom::enter(Session* session)
 		isMaster = (playerCount_ == 0) ? true : false;
 		playerList_.push_back(new Player(session, roomNum_, isMaster));
 		++playerCount_;
-		SLog(L"*  [%S] enters the [%d] room. ", session->getAddress().c_str(),roomNum_ );
+		session->setRoomNumber(roomNum_);
+		SLog(L"* [%S] enters the [%d] room. ", session->getAddress().c_str(),roomNum_ );
 		return true;
 	}
 	else
@@ -52,8 +51,18 @@ bool GameRoom::exit(Session* session)
 			SLog(L"* [%S] exits from the [%d] room. ", session->getAddress().c_str(), roomNum_);
 			playerList_.remove(*p);
 			--playerCount_;
+			session->setRoomNumber(NOT_IN_ROOM);
 			return true;
 		}
 	}
 	return false;
+}
+
+RoomInfo GameRoom::getRoomInfo()
+{
+	SAFE_LOCK(lock_);
+	RoomInfo r;
+	r.playerCount = playerCount_;
+	r.playing = playing_;
+	return r;
 }

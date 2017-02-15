@@ -28,9 +28,6 @@ typedef std::wstring			wstr_t;
 #define SIZE_8192			8192
 
 //-------------------------------------------------------------------//
-#define DB_PARAM_SIZE		8192
-
-//-------------------------------------------------------------------//
 // 패킷을 type을 맞추기 위한 재정의 C# 기준
 typedef unsigned char		Byte;
 typedef char				Char;

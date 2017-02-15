@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
 
 	// 데이터 통신에 사용할 변수
 	char sendData[SOCKET_BUF_SIZE] = { 0 };
-	char inputBuf[SOCKET_BUF_SIZE - 2];
-	int len;
+	//char inputBuf[SOCKET_BUF_SIZE - 2];
+	//int len;
 
 	// 리시브스레드
 	std::thread recvThread { recvThreadFunc , &sock};
@@ -85,7 +85,6 @@ INPUT:
 		printf("========================================= \n");
 		printf(" 0 방접속, 1 방나가기 \n");
 		printf("========================================= \n");
-		printf("InputKey:");
 		scanf("%d", &inputKey);
 
 		switch (inputKey)
@@ -94,7 +93,7 @@ INPUT:
 		{
 			C_EnterRoom *pEnterRoom = (C_EnterRoom*)sendData;
 			pEnterRoom->header.size = sizeof(C_EnterRoom);
-			pEnterRoom->header.packetID = PAK_EnterRoom;
+			pEnterRoom->header.packetID = PAK_ID::PAK_REQ_EnterRoom;
 			printf("방번호:");
 			scanf("%d", &pEnterRoom->roomNumber);
 			break;
@@ -103,7 +102,7 @@ INPUT:
 		{
 			HEADER *pExitRoom = (HEADER*)sendData;
 			pExitRoom->size = sizeof(HEADER);
-			pExitRoom->packetID = PAK_ExitRoom;
+			pExitRoom->packetID = PAK_ID::PAK_REQ_ExitRoom;
 			break;
 		}
 		default:
@@ -124,6 +123,97 @@ INPUT:
 	// 윈속 종료
 	WSACleanup();
 	return 0;
+}
+
+void packetProcess(char* buf)
+{
+	HEADER* header = (HEADER*)buf;
+
+	switch (header->packetID)
+	{
+	case PAK_ID::PAK_RJT_Room:
+	{
+		printf("\n !! 방 요청이 거부되었음 !! \n");
+		break;
+	}
+	case PAK_ID::PAK_ANS_RoomList:
+	{
+		S_RoomListInfo* packet = (S_RoomListInfo*)buf;
+		for (int i = 0; i < GAMEROOM_CAPACITY; ++i)
+		{
+			RoomInfo r = packet->roomInfo[i];
+			printf("[%d]번 방 - 인원: %d명, 플레이 상태: %d \n", i, r.playerCount, r.playing);
+		}
+		break;
+	}
+	}
+}
+
+void recvThreadFunc(SOCKET* sock) {
+	char recvBuf[SOCKET_BUF_SIZE] = { 0 };
+	char saveBuf[SOCKET_BUF_SIZE] = { 0 };
+	int retval;
+	int iCurrPacketSize = 0;
+	int iStoredPacketSize = 0;
+	while (1) 
+	{
+		// 데이터 받기
+		ZeroMemory(recvBuf, sizeof(recvBuf));
+		retval = recv(*sock, recvBuf, sizeof(recvBuf), 0);
+
+		if (retval == SOCKET_ERROR) 
+		{
+			err_quit("recv()");
+			break;
+		}
+
+		char *pRecvBuf = recvBuf;
+
+		while (0 < retval) 
+		{
+			if (0 == iCurrPacketSize) 
+			{
+				if (retval + iStoredPacketSize >= sizeof(HEADER)) 
+				{
+					int restHeaderSize = sizeof(HEADER) - iStoredPacketSize;
+					memcpy(saveBuf + iStoredPacketSize, pRecvBuf, restHeaderSize);
+					pRecvBuf += restHeaderSize;
+					iStoredPacketSize += restHeaderSize;
+					retval -= restHeaderSize;
+					iCurrPacketSize = ((HEADER*)saveBuf)->size;
+				}
+				else 
+				{
+					memcpy(saveBuf + iStoredPacketSize, pRecvBuf, retval);
+					iStoredPacketSize += retval;
+					retval = 0;
+					break;
+				}
+			}
+
+			int restSize = iCurrPacketSize - iStoredPacketSize;
+
+			if (restSize <= retval) 
+			{
+				memcpy(saveBuf + iStoredPacketSize, pRecvBuf, restSize);
+
+				packetProcess(saveBuf);
+
+				iCurrPacketSize = iStoredPacketSize = 0;
+
+				pRecvBuf += restSize;
+				retval -= restSize;
+			}
+			else 
+			{
+				memcpy(saveBuf + iStoredPacketSize, pRecvBuf, retval);
+
+				iStoredPacketSize += retval;
+				retval = 0;
+				//recvBuf += recvSize;
+			}
+		}
+	}
 }
 
 // 소켓 함수 오류 출력 후 종료
@@ -151,46 +241,4 @@ void err_display(char *msg)
 		(LPTSTR)&lpMsgBuf, 0, NULL);
 	printf("[%s] %s", msg, (char *)lpMsgBuf);
 	LocalFree(lpMsgBuf);
-}
-
-
-void recvThreadFunc(SOCKET* sock) {
-	char recvData[SOCKET_BUF_SIZE] = { 0 };
-	int retval;
-	// 데이터 받기
-	while (1) {
-		ZeroMemory(recvData, sizeof(recvData));
-
-		//retval = recv(*sock, recvData, sizeof(STOC_SYNC), 0);
-		//if (retval == SOCKET_ERROR) {
-		//	err_display("recv()");
-		//	break;
-		//}
-		//else if (retval == 0)
-		//	break;
-		//HEADER* pHeader = (HEADER*)recvData;
-		//STOC_SYNC *outputBuf = (STOC_SYNC*)((UCHAR*)recvData + sizeof(HEADER));
-		//switch (pHeader->packetID) {
-		//case PAK_ID:
-		//	printf("\n[시스템] 접속했습니다. 부여받은 아이디는 [%d]번 입니다.", outputBuf->ID);
-		//	g_nID = outputBuf->ID;
-		//	break;
-		//case PAK_REG:
-		//	printf("\n[시스템] %d번 클라가 접속했습니다.", outputBuf->ID);
-		//	printf("\n[보낼 데이터]:");
-		//	break;
-		//case PAK_RMV:
-		//	printf("\n[시스템] %d번 클라가 종료했습니다.", outputBuf->ID);
-		//	printf("\n[보낼 데이터]:");
-		//	break;
-		//case PAK_SYNC:
-		//	// 받은 데이터 출력
-		//	printf("\n[%d]번 클라가 입력한 정보: %s", outputBuf->ID, outputBuf->data);
-		//	printf("\n[보낼 데이터]:");
-		//	break;
-		//}
-
-
-
-	}
 }
