@@ -5,7 +5,6 @@
 #include "Client.h"
 #include "MainFrm.h"
 #include "Timer.h"
-#include "Value.h"
 #include "Function.h"
 
 #define MAX_LOADSTRING 100
@@ -17,6 +16,8 @@ WCHAR szWindowClass[ MAX_LOADSTRING ];            // 기본 창 클래스 이름입니다.
 
 /* Client MainFrame Object */
 CMainFrm*	g_pMainFrm{ nullptr };
+WORD g_wWinsizeX = 1024;
+WORD g_wWinsizeY = 768;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass( HINSTANCE hInstance );
@@ -157,7 +158,7 @@ BOOL InitInstance( HINSTANCE hInstance, int nCmdShow )
 
 	DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
 
-	RECT	 rcWindow{ 0, 0, g_dwWinsizeX, g_dwWinsizeY };
+	RECT	 rcWindow{ 0, 0, ( signed short )g_wWinsizeX, ( signed short )g_wWinsizeY };
 	AdjustWindowRect( &rcWindow, dwStyle, FALSE );
 
 	HWND hWnd = CreateWindowW( szWindowClass, szTitle, dwStyle,
@@ -189,6 +190,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 	switch( message )
 	{
 	case WM_SIZE:
+		g_wWinsizeX = LOWORD( lParam );
+		g_wWinsizeY = HIWORD( lParam );
 		g_pMainFrm->ResizeRenderTarget( LOWORD( lParam ), HIWORD( lParam ) );
 		break;
 	case WM_KEYDOWN:

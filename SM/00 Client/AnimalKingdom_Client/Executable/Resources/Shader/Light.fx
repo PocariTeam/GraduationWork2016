@@ -19,7 +19,9 @@ struct LIGHT
 	float2	vPadding;
 };
 
-cbuffer cbCamera : register( b0 )
+float4	g_vWinSize : register( b0 );
+
+cbuffer cbCamera : register( b1 )
 {
 	matrix g_mtxView;
 	matrix g_mtxProj;
@@ -45,6 +47,7 @@ struct VS_OUT
 {
 	float4 vPos : SV_POSITION;
 	float2 vUV : TEXCOORD0;
+	float2 vTexUV : TEXCOORD1;
 };
 
 struct PS_OUT
@@ -57,12 +60,12 @@ VS_OUT VS( uint iVertexNum : SV_VertexID )
 {
 	VS_OUT Out = ( VS_OUT )0;
 
-	if( iVertexNum == 0 ) { Out.vPos = float4( -1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 0.f ); }
-	else if( iVertexNum == 1 ) { Out.vPos = float4( +1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 1024.f, 0.f ); }
-	else if( iVertexNum == 2 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1024.f, 768.f ); }
-	else if( iVertexNum == 3 ) { Out.vPos = float4( -1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 0.f ); }
-	else if( iVertexNum == 4 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1024.f, 768.f ); }
-	else if( iVertexNum == 5 ) { Out.vPos = float4( -1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 768.f ); }
+	if( iVertexNum == 0 ) { Out.vPos = float4( -1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 0.f );  Out.vTexUV = float2( 0.f, 0.f ); }
+	else if( iVertexNum == 1 ) { Out.vPos = float4( +1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 0.f ); Out.vTexUV = float2( g_vWinSize.x, 0.f ); }
+	else if( iVertexNum == 2 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 1.f ); Out.vTexUV = float2( g_vWinSize.x, g_vWinSize.y ); }
+	else if( iVertexNum == 3 ) { Out.vPos = float4( -1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 0.f ); Out.vTexUV = float2( 0.f, 0.f ); }
+	else if( iVertexNum == 4 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 1.f ); Out.vTexUV = float2( g_vWinSize.x, g_vWinSize.y ); }
+	else if( iVertexNum == 5 ) { Out.vPos = float4( -1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 1.f ); Out.vTexUV = float2( 0.f, g_vWinSize.y ); }
 
 	return Out;
 }
@@ -71,10 +74,10 @@ PS_OUT	PS( VS_OUT	In )
 {
 	PS_OUT		Out = ( PS_OUT )0;
 
-	float4		vNormal = g_NormalTexture.Load( float3( In.vUV, 0.f ) );
-	float4		vWorldNormal = float4( vNormal.xyz * 2.f - 1.f, 0.f );
+	float3		vNormal = g_NormalTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).xyz;
+	float3		vWorldNormal = vNormal.xyz * 2.f - 1.f;
 
-	float4		vDepth = g_DepthTexture.Load( float3( In.vUV, 0.f ) );
+	float3		vDepth = g_DepthTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).xyz;
 	float		fViewZ = vDepth.y * 1000.f;
 
 	float4		vPos = ( float4 )0;
@@ -98,16 +101,16 @@ PS_OUT	PS( VS_OUT	In )
 		switch( g_tLight[ i ].fType )
 		{
 		case DIRECTIONAL :
-			vLight += saturate( max( dot( float4( g_tLight[ i ].vDir, 0.f ), vWorldNormal ), 0.f ) * g_tLight[ i ].vDiffuse + g_tLight[ i ].vAmbient );
-			vSpecular += Directional_Specular( g_tLight[ i ], vWorldNormal, vLookInv );
+			vLight += saturate( max( dot( -g_tLight[ i ].vDir, vWorldNormal ), 0.f ) * g_tLight[ i ].vDiffuse + g_tLight[ i ].vAmbient );
+			vSpecular += Directional_Specular( g_tLight[ i ], float4( vWorldNormal, 0.f ), vLookInv );
 			break;
 		case POINT :
 			vLight += Point_Lighting( g_tLight[ i ], vPos.xyz, vWorldNormal.xyz );
-			vSpecular += Point_Specular( g_tLight[ i ], vPos.xyz, vWorldNormal.xyz, vLookInv );
+			vSpecular += Point_Specular( g_tLight[ i ], vPos.xyz, vWorldNormal, vLookInv );
 			break;
 		case SPOT :
 			vLight += Spot_Lighting( g_tLight[ i ], vPos.xyz, vWorldNormal.xyz );
-			vSpecular += Spot_Specular( g_tLight[ i ], vPos.xyz, vWorldNormal.xyz, vLookInv );
+			vSpecular += Spot_Specular( g_tLight[ i ], vPos.xyz, vWorldNormal, vLookInv );
 			break;
 		}
 	}

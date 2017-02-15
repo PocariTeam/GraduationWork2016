@@ -1,14 +1,14 @@
 Texture2D gTexture : register( t0 );
 SamplerState gSamplerState : register( s0 );
 
-cbuffer cbCamera : register( b0 )
+matrix g_mtxWorld : register( b0 );
+
+cbuffer cbCamera : register( b1 )
 {
 	matrix g_mtxView;
 	matrix g_mtxProj;
 	float4 g_vCameraPos;
 };
-
-matrix g_mtxWorld : register( b1 );
 
 struct VS_IN
 {

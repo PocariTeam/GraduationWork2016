@@ -33,7 +33,7 @@ void CTerrain::CreateConstantBuffer( ID3D11Device* pDevice )
 	Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	pDevice->CreateBuffer( &Buffer_Desc, NULL, &m_pConstantBufferWorld );
+	pDevice->CreateBuffer( &Buffer_Desc, nullptr, &m_pConstantBufferWorld );
 }
 
 CTerrain* CTerrain::Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture )

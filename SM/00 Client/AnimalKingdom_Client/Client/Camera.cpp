@@ -19,7 +19,7 @@ CCamera::CCamera()
 
 HRESULT CCamera::Initialize( ID3D11Device* pDevice )
 {
-	XMMATRIX mtxProj = XMMatrixPerspectiveFovLH( XMConvertToRadians( 45.f ), float( g_dwWinsizeX ) / float( g_dwWinsizeY ), 1.f, 1000.f );
+	XMMATRIX mtxProj = XMMatrixPerspectiveFovLH( XMConvertToRadians( 45.f ), float( g_wWinsizeX ) / float( g_wWinsizeY ), 1.f, 1000.f );
 	XMStoreFloat4x4( &m_mtxProj, mtxProj );
 
 	CreateConstantBuffer( pDevice );
@@ -59,7 +59,7 @@ void CCamera::SetConstantBuffer( ID3D11DeviceContext* pContext )
 	CB_CAMERA* pConstantBuffer_Camera = ( CB_CAMERA* )MappedSubresource.pData;
 	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxView, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxView ) ) );
 	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxProj, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxProj ) ) );
-	memcpy_s( &pConstantBuffer_Camera->m_vCameraPos, sizeof( XMFLOAT4 ), &pConstantBuffer_Camera->m_mtxView.m[ 3 ], sizeof( XMFLOAT4 ) );
+	pConstantBuffer_Camera->m_vCameraPos = XMFLOAT4( m_vEye.x, m_vEye.y, m_vEye.z, 0.f );
 
 	pContext->Unmap( m_pConstantBufferCamera, 0 );
 	pContext->VSSetConstantBuffers( SLOT_CAMERA, 1, &m_pConstantBufferCamera );

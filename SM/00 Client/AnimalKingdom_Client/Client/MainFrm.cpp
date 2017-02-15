@@ -20,12 +20,12 @@
 HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 {
 	m_hWnd = hWnd;
-	m_pGraphicDev = CGraphicDev::Create( CGraphicDev::MODE_WIN, hWnd, g_dwWinsizeX, g_dwWinsizeY );
+	m_pGraphicDev = CGraphicDev::Create( CGraphicDev::MODE_WIN, hWnd, g_wWinsizeX, g_wWinsizeY );
 	if( nullptr == m_pGraphicDev ) return E_FAIL;
 
 	ID3D11Device*	pDevice = m_pGraphicDev->Get_Device();
 
-	if( FAILED( CRenderTargetMgr::GetInstance()->Initialize( pDevice, m_pGraphicDev->Get_SwapChain(), g_dwWinsizeX, g_dwWinsizeY ) ) )
+	if( FAILED( CRenderTargetMgr::GetInstance()->Initialize( pDevice, m_pGraphicDev->Get_SwapChain(), g_wWinsizeX, g_wWinsizeY ) ) )
 		return E_FAIL;
 	CRenderTargetMgr::GetInstance()->SetRenderTargetView( m_pGraphicDev->Get_Context(), CRenderTargetMgr::RT_BACK, 1 );
 

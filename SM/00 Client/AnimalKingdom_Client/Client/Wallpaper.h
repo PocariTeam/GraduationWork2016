@@ -14,6 +14,8 @@ private:
 	virtual ~CWallpaper();
 private:
 	HRESULT		Initialize( ID3D11Device* pDevice, CMesh* pMesh );
+	void		CreateConstantBuffer( ID3D11Device* pDevice );
+	void		SetConstantBuffer( ID3D11DeviceContext* pContext );
 public:
 	static	CWallpaper*	Create( ID3D11Device* pDevice, CMesh* pMesh );
 public:
