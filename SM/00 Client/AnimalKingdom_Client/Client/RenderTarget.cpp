@@ -45,13 +45,13 @@ HRESULT CRenderTarget::CreateRenderTarget( ID3D11Device* pDevice, const WORD& wS
 	tTexture2D_Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
 	//UINT dw4xMsaaQuality = 0;
-	/*if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R32G32B32A32_FLOAT, 4, &dw4xMsaaQuality ) ) )
-	{*/
+	//if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R32G32B32A32_FLOAT, 4, &dw4xMsaaQuality ) ) )
+	//{
 		tTexture2D_Desc.SampleDesc.Count = 1;
 		tTexture2D_Desc.SampleDesc.Quality = 0;
-	/*}
+	//}
 
-	else
+	/*else
 	{
 		tTexture2D_Desc.SampleDesc.Count = 4;
 		tTexture2D_Desc.SampleDesc.Quality = dw4xMsaaQuality - 1;

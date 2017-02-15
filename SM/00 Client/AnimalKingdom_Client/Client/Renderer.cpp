@@ -8,6 +8,23 @@
 
 CRenderer*	CSingleton<CRenderer>::m_pInstance;
 bool		CRenderer::m_bWireFrame = false;
+bool		CRenderer::m_bRenderTargetDebug = false;
+
+void CRenderer::SetWireframe( void )
+{
+	if( m_bWireFrame )
+		m_bWireFrame = false;
+	else
+		m_bWireFrame = true;
+}
+
+void CRenderer::SetRenderTargetDebug( void )
+{
+	if( m_bRenderTargetDebug )
+		m_bRenderTargetDebug = false;
+	else
+		m_bRenderTargetDebug = true;
+}
 
 void CRenderer::Clear_RenderGroup( void )
 {
@@ -21,19 +38,12 @@ void CRenderer::Clear_RenderGroup( void )
 	}
 }
 
-void CRenderer::SetWireframe( void )
-{
-	if( m_bWireFrame )
-		m_bWireFrame = false;
-	else
-		m_bWireFrame = true;
-}
-
 DWORD CRenderer::Release( void )
 {
 	Clear_RenderGroup();
 
 	delete this;
+
 	return 0;
 }
 
@@ -72,22 +82,27 @@ void CRenderer::Render( ID3D11DeviceContext* pContext )
 {
 	Render_Background( pContext );
 	Render_DepthTest( pContext );
+	if( !m_bWireFrame )
+	{
+		Render_Light( pContext );
+		Render_Blend( pContext );
+	}
 	Render_Alpha( pContext );
 	Render_UI( pContext );
+
+	if( m_bRenderTargetDebug && !m_bWireFrame )
+		Render_RenderTargetDebug( pContext );
 }
 
 void CRenderer::Render_Background( ID3D11DeviceContext* pContext )
 {
-	// 스카이박스 전용 : 그 어떤 객체들 보다도 먼저 그려져야하는 객체들
-
-	// 깊에버퍼에 값은 기록하지만, 깊이버퍼에 의한 정렬을 수행하지않고 무조건 덮어서 그린다.
 	// 깊이버퍼에 값을 기록하지않고 그린다.
 	if( m_bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
 	else CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
+
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_WRITE );
 
-	// 깊이값을 저장하기위한 변수
 	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_BACKGROUND ].begin();
 	SHADERLIST::iterator	iter_end = m_RenderGroup[ RENDER_BACKGROUND ].end();
 
@@ -99,8 +114,6 @@ void CRenderer::Render_Background( ID3D11DeviceContext* pContext )
 
 void CRenderer::Render_DepthTest( ID3D11DeviceContext* pContext )
 {
-	// 깊이버퍼에 의한 정렬을 수행
-	// 깊이버퍼에 값을 기록한다
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 
 	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_DEPTHTEST ].begin();
@@ -110,15 +123,15 @@ void CRenderer::Render_DepthTest( ID3D11DeviceContext* pContext )
 	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
-	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_NORMAL, 3 );
+	if( m_bWireFrame )
+		CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 3 );
+	else
+		CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_NORMAL, 3 );
 
 	for( ; iter != iter_end; ++iter )
 	{
 		( *iter )->Render( pContext );
 	}
-
-	Render_Light( pContext );
-	Render_Blend( pContext );
 }
 
 void CRenderer::Render_Light( ID3D11DeviceContext* pContext )
@@ -144,8 +157,8 @@ void CRenderer::Render_Blend( ID3D11DeviceContext* pContext )
 {
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
 
-	// D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_LIGHT ), D3DX11_IFF_JPG, "L.jpg" );
-	// D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_SPECULAR ), D3DX11_IFF_JPG, "S.jpg" );
+	// D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_LIGHT ), D3DX11_IFF_JPG, "Light.jpg" );
+	// D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_SPECULAR ), D3DX11_IFF_JPG, "Specular.jpg" );
 	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
@@ -181,6 +194,8 @@ void CRenderer::Render_UI( ID3D11DeviceContext* pContext )
 	// 깊에버퍼에 값은 기록하지만, 깊이버퍼에 의한 정렬을 수행하지않고 무조건 덮어서 그린다.
 	// 깊이버퍼에 값을 기록하지않고 그린다.
 
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
+
 	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_UI ].begin();
 	SHADERLIST::iterator	iter_end = m_RenderGroup[ RENDER_UI ].end();
 
@@ -191,4 +206,12 @@ void CRenderer::Render_UI( ID3D11DeviceContext* pContext )
 
 	// 깊이버퍼에 의한 정렬을 수행.
 	// 깊이버퍼에 값을 기록한다.
+}
+
+void CRenderer::Render_RenderTargetDebug( ID3D11DeviceContext* pContext )
+{
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
+
+	m_RenderGroup[ RENDER_DEBUG ].front()->Render( pContext );
+	CRenderTargetMgr::GetInstance()->Render( pContext );
 }

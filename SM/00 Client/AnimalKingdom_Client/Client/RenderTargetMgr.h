@@ -19,6 +19,8 @@ public:
 private:
 	void	Add( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY );
 	HRESULT	CreateDepthStencilBuffer( ID3D11Device* pDevice, const WORD& wSizeX, const WORD& wSizeY );
+	HRESULT	CreateConstantBuffer( ID3D11Device* pDevice );
+	void	SetConstantBuffer( ID3D11DeviceContext* pContext, eRT_Type eType );
 	void	AssembleRenderTargetView( void );
 	void	AssembleShaderResourceView( void );
 
@@ -29,7 +31,7 @@ public:
 	void				SetRenderTargetView( ID3D11DeviceContext* pContext, UINT iSelect, UINT iCnt );
 	void				SetShaderResourceView( ID3D11DeviceContext* pContext, UINT iStartSlot, UINT iSelect, UINT iCnt );
 	ID3D11Texture2D*	GetTexture( eRT_Type eType ) { return m_vecRenderTarget[ eType ]->Get_Texture(); }
-
+	void				Render( ID3D11DeviceContext* pContext );
 private:
 	vector<CRenderTarget*>		m_vecRenderTarget;
 	ID3D11RenderTargetView**	m_pArrRenderTargetView;
@@ -37,6 +39,8 @@ private:
 
 	ID3D11DepthStencilView*		m_pDepthStencilView;
 	ID3D11Texture2D*			m_pDepthStencilBuffer;
+
+	ID3D11Buffer*				m_pConstantBuffer;
 };
 
 #endif // RenderTargetMgr_h__

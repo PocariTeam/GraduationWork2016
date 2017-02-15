@@ -49,7 +49,6 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	for( DWORD i = 0; i < dwDriverTypes; i++ )
 	{
 		eDriverTypes = DriverTypes[i];
-
 		if( SUCCEEDED( D3D11CreateDevice( NULL /* 기본어댑터를 사용하겠다 */
 			, eDriverTypes				       /* 위에 참조 */
 			, nullptr						   /* SoftWare 구동기 지정 ( 우리는 하드웨어를 사용한다 ) */
@@ -117,9 +116,9 @@ HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, const WORD& wSiz
 	SwapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	// 4XMSAA 를 사용 사용수준 0 보다 크도록 강제
-	// UINT dw4xMsaaQuality = 0;
-	/*if( FAILED( m_pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
-	{*/
+	//UINT dw4xMsaaQuality = 0;
+	//if( FAILED( m_pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
+	//{
 		// 멀티샘플링을 끔
 		SwapChainDesc.SampleDesc.Count = 1;
 		SwapChainDesc.SampleDesc.Quality = 0;
@@ -127,12 +126,12 @@ HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, const WORD& wSiz
 
 	//else
 	//{
-	//	// 멀티샘플링 적용
+		// 멀티샘플링 적용
 	//	SwapChainDesc.SampleDesc.Count = 4;
 	//	SwapChainDesc.SampleDesc.Quality = dw4xMsaaQuality - 1;
 	//}
 
-	// assert( dw4xMsaaQuality > 0 );	// 0 보다 작으면 종료
+	//assert( dw4xMsaaQuality > 0 );	// 0 보다 작으면 종료
 
 									// 백버퍼의 용도 설정
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;

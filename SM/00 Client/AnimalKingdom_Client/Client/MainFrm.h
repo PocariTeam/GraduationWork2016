@@ -29,6 +29,7 @@ public:
 	static		CMainFrm*	Create( const HINSTANCE hInst, const HWND hWnd );
 private:
 	HRESULT	Change_Scene( void );
+	void	Check_Key( void );
 private:
 	CGraphicDev*	m_pGraphicDev;
 	HWND			m_hWnd;
@@ -36,11 +37,15 @@ private:
 	/* Scene */
 	CScene*				m_pScene;
 	BYTE				m_bySceneNum;
+
 	/* For FPS */
 	DWORD		m_dwCnt;
 	char		m_szFPS[ MAX_PATH ];
 	DWORD		m_dwFrameCnt;
 	float		m_fAccTime;
+
+	/* Check Key */
+	bool		m_bOverlapped;
 
 private:
 	CMainFrm();

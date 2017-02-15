@@ -10,7 +10,7 @@ class CRenderer
 	: public CSingleton<CRenderer>
 {
 public:
-	enum RENDERGROUP { RENDER_BACKGROUND, RENDER_DEPTHTEST, RENDER_LIGHT, RENDER_BLEND, RENDER_ALPHA, RENDER_UI, RENDER_END };
+	enum RENDERGROUP { RENDER_BACKGROUND, RENDER_DEPTHTEST, RENDER_LIGHT, RENDER_BLEND, RENDER_ALPHA, RENDER_UI, RENDER_DEBUG, RENDER_END };
 public:
 	HRESULT Add_RenderGroup( RENDERGROUP eGroup, CShader* pShader );
 	HRESULT Copy_RenderGroup( const list<CShader*>* pRenderGroup );
@@ -18,11 +18,13 @@ public:
 	void Render( ID3D11DeviceContext* pContext );
 	void Clear_RenderGroup( void );
 	void SetWireframe( void );
+	void SetRenderTargetDebug( void );
 private:
 	using SHADERLIST = list<CShader*>;
 	SHADERLIST			m_RenderGroup[ RENDER_END ];
 public:
 	static bool			m_bWireFrame;
+	static bool			m_bRenderTargetDebug;
 private:
 	void Render_Background( ID3D11DeviceContext* pContext );
 	void Render_DepthTest( ID3D11DeviceContext* pContext );
@@ -30,6 +32,7 @@ private:
 	void Render_Blend( ID3D11DeviceContext* pContext );
 	void Render_Alpha( ID3D11DeviceContext* pContext );
 	void Render_UI( ID3D11DeviceContext* pContext );
+	void Render_RenderTargetDebug( ID3D11DeviceContext* pContext );
 public:
 	DWORD Release( void );
 };

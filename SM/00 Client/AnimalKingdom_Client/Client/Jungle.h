@@ -31,6 +31,7 @@ private:
 	CShader*	m_pLightShader;
 	CWallpaper*	m_pScreen;
 	CShader*	m_pBlendShader;
+	CShader*	m_pDebugShader;
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 };

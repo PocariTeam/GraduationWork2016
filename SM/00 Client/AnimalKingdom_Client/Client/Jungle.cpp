@@ -44,6 +44,9 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_pBlendShader->Add_RenderObject( m_pScreen );
 	CRenderer::GetInstance()->Add_RenderGroup( CRenderer::RENDER_BLEND, m_pBlendShader );
 
+	m_pDebugShader = CShaderMgr::GetInstance()->Clone( "Shader_Debug" );
+	CRenderer::GetInstance()->Add_RenderGroup( CRenderer::RENDER_DEBUG, m_pDebugShader );
+
 	return CScene::Initialize( hWnd, pDevice );
 }
 
@@ -63,6 +66,7 @@ DWORD CJungle::Release( void )
 	::Safe_Release( m_pScreen );
 	::Safe_Release( m_pTerrain );
 	::Safe_Release( m_pShader );
+	::Safe_Release( m_pDebugShader );
 
 	delete this;
 

@@ -70,8 +70,7 @@ int CMainFrm::Update( const float& fTimeDelta )
 	
 	m_fAccTime += fTimeDelta;
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F1 ) & 0x80 )
-		CRenderer::GetInstance()->SetWireframe();
+	Check_Key();
 
 	if( iRetVal = m_pScene->Update( fTimeDelta ) ) {
 		m_bySceneNum = iRetVal;
@@ -127,7 +126,8 @@ DWORD CMainFrm::Release( void )
 void CMainFrm::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY )
 {
 	CRenderTargetMgr::GetInstance()->ResizeRenderTarget( m_pGraphicDev->Get_Device(), m_pGraphicDev->Get_Context(), m_pGraphicDev->Get_SwapChain(), wSizeX, wSizeY );
-	CRenderTargetMgr::GetInstance()->SetRenderTargetView( m_pGraphicDev->Get_Context(), CRenderTargetMgr::RT_BACK, 1 );
+	CRenderTargetMgr::GetInstance()->SetRenderTargetView( m_pGraphicDev->Get_Context(), 0, 1 );
+
 }
 
 CMainFrm* CMainFrm::Create( const HINSTANCE hInst, const HWND hWnd )
@@ -155,6 +155,27 @@ HRESULT CMainFrm::Change_Scene( void )
 	return S_OK;
 }
 
+void CMainFrm::Check_Key( void )
+{
+	/* Wireframe */
+	if( ( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F1 ) & 0x80 ) && m_bOverlapped )
+	{
+		CRenderer::GetInstance()->SetWireframe();
+		m_bOverlapped = false;
+	}
+
+	/* Debug RenderTarget */
+	else if( ( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F2 ) & 0x80 ) && m_bOverlapped )
+	{
+		CRenderer::GetInstance()->SetRenderTargetDebug();
+		m_bOverlapped = false;
+	}
+
+	else if( !( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F1 ) & 0x80 ) 
+		&& !( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F2 ) & 0x80 ) )
+		m_bOverlapped = true;
+}
+
 CMainFrm::CMainFrm()
 	: m_pGraphicDev( nullptr )
 	, m_pScene( nullptr )
@@ -162,6 +183,7 @@ CMainFrm::CMainFrm()
 	, m_dwCnt( 0 )
 	, m_dwFrameCnt( 0 )
 	, m_fAccTime( 0.f )
+	, m_bOverlapped( true )
 {
 	ZeroMemory( m_szFPS, sizeof( char ) * MAX_PATH );
 }
