@@ -193,11 +193,59 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\01 Terrain">
       <UniqueIdentifier>{cb3a8d4c-5a93-4fb1-a34a-f50668fb72cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\03 Resources\03 Animation\NewFilter1">
-      <UniqueIdentifier>{2a70ecf3-abfb-4955-896e-459ea44243f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03 Resources\03 Animation\98 Controller">
       <UniqueIdentifier>{19aee632-c751-413e-9021-9f6ee7e8ba87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\01 InGame\00 Player\00 Chameleon">
+      <UniqueIdentifier>{dc92aed4-3726-4b09-82d9-64159057ea4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon">
+      <UniqueIdentifier>{2a70ecf3-abfb-4955-896e-459ea44243f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\00 Global">
+      <UniqueIdentifier>{2b2b5bbf-849e-4ae3-aa63-7e1f1ef69d65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\01 Idle">
+      <UniqueIdentifier>{121dc1ac-d829-409f-9db6-1f285fc6a3ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\02 Attack">
+      <UniqueIdentifier>{63293357-2825-4e2d-8dd1-e1d465f69a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\02 Attack\00">
+      <UniqueIdentifier>{ccaf7ba8-062c-48d3-8461-a516ccdccab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\02 Attack\01">
+      <UniqueIdentifier>{a34904e9-df0f-4fd3-b7bb-500e4782dcba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\03 Run">
+      <UniqueIdentifier>{0cbf7737-381e-4d52-8587-abe75390a29d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\04 Jump">
+      <UniqueIdentifier>{a7bfe4aa-f36c-4c69-8eae-7bd4d74a9c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\04 Jump\00">
+      <UniqueIdentifier>{21ca06fb-9f40-4ff4-91c2-888cb5e01ec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\04 Jump\01">
+      <UniqueIdentifier>{e32c011a-992f-45d6-a5cf-5941cf6977f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\05 Defend">
+      <UniqueIdentifier>{665716a8-46f7-4274-b520-5c35aef04c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\06 Beaten">
+      <UniqueIdentifier>{194c669f-e46b-466c-8e29-c2dd340e844f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\08 Down">
+      <UniqueIdentifier>{d1a4f271-9e21-4e9a-bde1-926db64345ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\09 Standup">
+      <UniqueIdentifier>{cc3fb843-732a-45d5-83d5-b3141343eafc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\10 Die">
+      <UniqueIdentifier>{57929e8d-4d28-4ea7-bf58-5060b40e3cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\03 Animation\00 Chameleon\07 필살기">
+      <UniqueIdentifier>{7961bb9a-816f-4c12-b646-8bbba207c10f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +417,36 @@
     <ClInclude Include="AnimationController.h">
       <Filter>소스 파일\03 Resources\03 Animation\98 Controller</Filter>
     </ClInclude>
+    <ClInclude Include="Chameleon.h">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\00 Chameleon</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonGlobalAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\00 Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonIdleAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\01 Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonBeatenAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\06 Beaten</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonStandupAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\09 Standup</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonRunAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\03 Run</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonJumpAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\04 Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonDownAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\08 Down</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonDieAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\10 Die</Filter>
+    </ClInclude>
+    <ClInclude Include="ChameleonDefendAnimation.h">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\05 Defend</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -406,9 +484,6 @@
     </ClCompile>
     <ClCompile Include="Resources.cpp">
       <Filter>소스 파일\03 Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>소스 파일\03 Resources\03 Animation</Filter>
     </ClCompile>
     <ClCompile Include="AnimationMgr.cpp">
       <Filter>소스 파일\03 Resources\03 Animation\99 Manager</Filter>
@@ -493,6 +568,36 @@
     </ClCompile>
     <ClCompile Include="AnimationController.cpp">
       <Filter>소스 파일\03 Resources\03 Animation\98 Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Chameleon.cpp">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\00 Chameleon</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonGlobalAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\00 Global</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonIdleAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\01 Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonBeatenAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\06 Beaten</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonStandupAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\09 Standup</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonRunAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\03 Run</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonJumpAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\04 Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonDownAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\08 Down</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonDieAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\10 Die</Filter>
+    </ClCompile>
+    <ClCompile Include="ChameleonDefendAnimation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\05 Defend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

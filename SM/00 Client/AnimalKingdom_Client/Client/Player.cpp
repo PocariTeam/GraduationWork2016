@@ -6,7 +6,3 @@ CPlayer::CPlayer()
 {
 }
 
-
-CPlayer::~CPlayer()
-{
-}

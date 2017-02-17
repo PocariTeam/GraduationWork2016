@@ -42,8 +42,8 @@
 #include <d3d11.h>
 #include <d3dx11.h>
 
-#include <DirectXMath.h>
-#include <DirectXPackedVector.h>
+//#include <DirectXMath.h>
+//#include <DirectXPackedVector.h>
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 

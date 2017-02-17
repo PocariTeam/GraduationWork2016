@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DebugCamera.h"
 #include "InputMgr.h"
+#include "Value.h"
 
 CDebugCamera::CDebugCamera()
 	: CCamera()
@@ -65,8 +66,8 @@ void CDebugCamera::Check_Key( XMVECTOR& vEye, XMVECTOR& vAt, const float& fTimeD
 
 	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) & 0x80 ) && false == m_bClicked )
 	{
-		m_ptMouse.x = 1024 / 2;
-		m_ptMouse.y = 768 / 2;
+		m_ptMouse.x = g_wWinsizeX / 2;
+		m_ptMouse.y = g_wWinsizeY / 2;
 
 		::ClientToScreen( m_hWnd, &m_ptMouse );
 		::SetCursorPos( m_ptMouse.x, m_ptMouse.y );
