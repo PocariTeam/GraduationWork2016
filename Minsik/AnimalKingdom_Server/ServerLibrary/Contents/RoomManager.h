@@ -11,7 +11,10 @@ private:
 public:
 	RoomManager();
 	~RoomManager();
-	bool enterRoom(Session* session, UINT roomNum);
-	bool exitRoom(Session* session);
-	RoomInfo *getRoomListInfo();
+	bool			enterRoom(Session* session, UINT roomNum);
+	bool			exitRoom(Session* session);
+	RoomInfo		*getRoomList();
+	void			sendPlayerList(UINT32 roomNum);
+	bool			setPlayerReady(Session* session, BOOL b);
+	bool			setPlayerCharacter(Session* session, CHARACTER c);
 };

@@ -34,7 +34,7 @@ bool RoomManager::enterRoom(Session* session,UINT roomNum)
 	}
 	else
 	{
-		SLog(L"! Wrong RoomNumber, inputNumber: %d", roomNum);
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
 		return false;
 	}
 }
@@ -63,7 +63,7 @@ bool RoomManager::exitRoom(Session* session)
 
 }
 
-RoomInfo* RoomManager::getRoomListInfo()
+RoomInfo* RoomManager::getRoomList()
 {
 	SAFE_LOCK(lock_);
 
@@ -74,4 +74,38 @@ RoomInfo* RoomManager::getRoomListInfo()
 		pRoomList[i] = roomArray_[i]->getRoomInfo();
 	}
 	return pRoomList;
+}
+
+void RoomManager::sendPlayerList(UINT32 roomNum)
+{
+	SAFE_LOCK(lock_);
+
+	roomArray_[roomNum]->sendPlayerList();
+}
+
+bool RoomManager::setPlayerReady(Session* session, BOOL b)
+{
+	SAFE_LOCK(lock_);
+
+	UINT roomNum = session->getRoomNumber();
+	if (roomNum == NOT_IN_ROOM)
+	{
+		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		return false;
+	}
+	return roomArray_[roomNum]->setPlayerReady(session, b);
+}
+
+bool RoomManager::setPlayerCharacter(Session * session, CHARACTER c)
+{
+	SAFE_LOCK(lock_);
+
+	UINT roomNum = session->getRoomNumber();
+	if (roomNum == NOT_IN_ROOM)
+	{
+		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		return false;
+	}
+
+	return roomArray_[roomNum]->setPlayerCharacter(session, c);
 }

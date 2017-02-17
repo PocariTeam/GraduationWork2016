@@ -15,7 +15,8 @@ void err_display(char *msg);
 // 리시브스레드
 void recvThreadFunc(SOCKET* sock);
 
-int g_nID;
+int g_ID = -1;
+bool g_ready = false;
 
 int main(int argc, char *argv[])
 {
@@ -83,7 +84,7 @@ int main(int argc, char *argv[])
 INPUT:
 
 		printf("========================================= \n");
-		printf(" 0 방접속, 1 방나가기 \n");
+		printf(" 0 방접속, 1 방나가기 2 레디 3 캐릭터선택 \n");
 		printf("========================================= \n");
 		scanf("%d", &inputKey);
 
@@ -91,8 +92,8 @@ INPUT:
 		{
 		case 0:
 		{
-			C_EnterRoom *pEnterRoom = (C_EnterRoom*)sendData;
-			pEnterRoom->header.size = sizeof(C_EnterRoom);
+			C_RoomEnter *pEnterRoom = (C_RoomEnter*)sendData;
+			pEnterRoom->header.size = sizeof(C_RoomEnter);
 			pEnterRoom->header.packetID = PAK_ID::PAK_REQ_EnterRoom;
 			printf("방번호:");
 			scanf("%d", &pEnterRoom->roomNumber);
@@ -103,6 +104,25 @@ INPUT:
 			HEADER *pExitRoom = (HEADER*)sendData;
 			pExitRoom->size = sizeof(HEADER);
 			pExitRoom->packetID = PAK_ID::PAK_REQ_ExitRoom;
+			break;
+		}
+		case 2:
+		{
+			C_RoomReady *pRoomReady = (C_RoomReady*)sendData;
+			pRoomReady->header.size = sizeof(C_RoomReady);
+			pRoomReady->header.packetID = PAK_ID::PAK_REQ_Ready;
+			g_ready = !g_ready;
+			pRoomReady->ready = g_ready;
+			printf("게임준비[%d] \n",g_ready);
+			break;
+		}
+		case 3:
+		{
+			C_RoomCharacter* pRoomCharacter = (C_RoomCharacter*)sendData;
+			pRoomCharacter->header.size = sizeof(C_RoomCharacter);
+			pRoomCharacter->header.packetID = PAK_ID::PAK_REQ_Character;
+			printf("캐릭터번호:");
+			scanf("%d", &pRoomCharacter->character);
 			break;
 		}
 		default:
@@ -131,19 +151,39 @@ void packetProcess(char* buf)
 
 	switch (header->packetID)
 	{
-	case PAK_ID::PAK_RJT_Room:
+	case PAK_ANS_LOGIN:
 	{
-		printf("\n !! 방 요청이 거부되었음 !! \n");
+		S_Login *packet = (S_Login*)buf;
+		g_ID = packet->id;
+		printf("로그인:: 아이디는 [%d] 입니다. \n", g_ID);
+		break;
+	}
+	case PAK_ID::PAK_RJT_Request:
+	{
+		printf("\n !! 요청 실패 !! \n");
 		break;
 	}
 	case PAK_ID::PAK_ANS_RoomList:
 	{
-		S_RoomListInfo* packet = (S_RoomListInfo*)buf;
+		S_RoomList* packet = (S_RoomList*)buf;
 		for (int i = 0; i < GAMEROOM_CAPACITY; ++i)
 		{
 			RoomInfo r = packet->roomInfo[i];
 			printf("[%d]번 방 - 인원: %d명, 플레이 상태: %d \n", i, r.playerCount, r.playing);
 		}
+		break;
+	}
+	case PAK_ID::PAK_ANS_PlayerList:
+	{
+		S_PlayerList* packet = (S_PlayerList*)buf;
+		printf("========================================= \n");
+		printf("\t\t [방 정보] %\t\t \n");
+		for (int i = 0; i < packet->playerCount; ++i)
+		{
+			PlayerInfo r = packet->playerInfo[i];
+			printf(" id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", r.id, r.character, r.isReady, r.isMaster);
+		}
+		printf("========================================= \n");
 		break;
 	}
 	}

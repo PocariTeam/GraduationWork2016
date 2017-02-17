@@ -11,9 +11,4 @@
       <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\ServerLibrary\Protocol\Protocol.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>

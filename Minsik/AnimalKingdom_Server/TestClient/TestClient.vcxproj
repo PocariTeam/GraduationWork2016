@@ -21,9 +21,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\ServerLibrary\Protocol\Protocol.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{15C2E9CA-B714-4BFB-B9B9-008FBCD8AAB2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

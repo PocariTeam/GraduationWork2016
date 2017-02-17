@@ -1,6 +1,17 @@
 #pragma once
 #include "stdafx.h"
 
+//#ifdef _DEBUG
+//#define _CRTDBG_MAP_ALLOC
+//#include <stdlib.h> 
+//#include <crtdbg.h>
+//#ifndef DBG_NEW
+//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+//#define new DBG_NEW
+//#endif
+//#else
+//#endif
+
 #ifndef _DEBUG
 #define USE_VISUAL_LEAK_DETECTOR
 #endif
@@ -9,9 +20,6 @@
 #include <vld.h>
 //단 vld 의 경우 프로그램 종료시의 메모리 릭도 탐지해 표시함 ;ㅁ;
 #else //USE_VISUAL_LEAK_DETECTOR
-
-//메모리 누수 이슈
-//http://support.microsoft.com/kb/601929/ko
 
 #define _CRTDBG_MAP_ALLOC
 #include "crtdbg.h"
@@ -48,7 +56,7 @@ public:
         _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
         _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDOUT);
 
-        //_CrtSetBreakAlloc(1903); // <- 메모리 릭 검출 지점 브레이킹
+     //   _CrtSetBreakAlloc(388); // <- 메모리 릭 검출 지점 브레이킹
     }
 
     ~MemoryLeckDetct()

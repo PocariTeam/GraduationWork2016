@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <crtdbg.h>
 
 int main()
 {

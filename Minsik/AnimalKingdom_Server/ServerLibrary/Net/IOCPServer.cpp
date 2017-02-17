@@ -105,10 +105,10 @@ void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
 		return;
 	}
 
-	SLog(L"* client accecpt from [%S]", session->getAddress().c_str());
-	SLog(L"* RoomListInformation was sent to [%S]", session->getAddress().c_str());
-
+	SLog(L"* client id[%d] accecpt from [%S]", session->getID(), session->getAddress().c_str());
+	
 	PacketManager::getInstance().sendRoomList(session);
+	PacketManager::getInstance().sendLogin(session);
 	session->recv();
 }
 
@@ -201,10 +201,10 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 		DWORD			transferSize;
 
 		BOOL retval = GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
-		if (!retval) 
+		/*if (!retval) 
 		{
 			continue;
-		}
+		}*/
 		if (session == nullptr) {
 			SLog(L"! socket data broken");
 			return 0;
