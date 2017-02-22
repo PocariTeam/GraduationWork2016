@@ -14,7 +14,7 @@ GameRoom::~GameRoom()
 	}
 }
 
-bool GameRoom::enter(Session* session)
+BOOL GameRoom::enter(Session* session)
 {
 	SAFE_LOCK(lock_);
 
@@ -41,7 +41,7 @@ bool GameRoom::enter(Session* session)
 	}
 }
 
-bool GameRoom::exit(Session* session)
+BOOL GameRoom::exit(Session* session)
 {
 	SAFE_LOCK(lock_);
 	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
@@ -66,7 +66,7 @@ bool GameRoom::exit(Session* session)
 	return false;
 }
 
-bool GameRoom::setPlayerReady(Session* session, BOOL b)
+BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 {
 	SAFE_LOCK(lock_);
 
@@ -90,7 +90,7 @@ bool GameRoom::setPlayerReady(Session* session, BOOL b)
 	return false;
 }
 
-bool GameRoom::setPlayerCharacter(Session * session, CHARACTER ch)
+BOOL GameRoom::setPlayerCharacter(Session * session, CHARACTER ch)
 {
 	SAFE_LOCK(lock_);
 

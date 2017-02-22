@@ -13,10 +13,10 @@ private:
 public:
 	GameRoom(UINT roomNum);
 	~GameRoom();
-	bool		enter(Session* s);
-	bool		exit(Session* s);
-	bool		setPlayerReady(Session* s, BOOL b);
-	bool		setPlayerCharacter(Session* s, CHARACTER c);
+	BOOL		enter(Session* s);
+	BOOL		exit(Session* s);
+	BOOL		setPlayerReady(Session* s, BOOL b);
+	BOOL		setPlayerCharacter(Session* s, CHARACTER c);
 	RoomInfo	getRoomInfo();
 	void		sendPlayerList();
 };

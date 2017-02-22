@@ -2,20 +2,21 @@
 
 #define		SOCKET_BUF_SIZE			1024*10
 #define		SERVER_PORT				9000
-#define		SERVERIP				"127.0.0.1"
+#define		THREAD_COUNT			4
 
 #define		PLAYER_CAPACITY			4
 #define		GAMEROOM_CAPACITY		10
 
 typedef enum {
 	PAK_REQ_EnterRoom,
-	PAK_REQ_Ready,
 	PAK_REQ_Character,
+	PAK_REQ_Ready,
+	PAK_REQ_StartGame,
 	PAK_REQ_ExitRoom,
-	PAK_RJT_Request,
 	PAK_ANS_LOGIN,
 	PAK_ANS_RoomList,
-	PAK_ANS_PlayerList
+	PAK_ANS_PlayerList,
+	PAK_RJT_Request
 } PAK_ID;
 
 #pragma pack(push, 1)

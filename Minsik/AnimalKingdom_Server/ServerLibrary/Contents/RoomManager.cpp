@@ -18,7 +18,7 @@ RoomManager::~RoomManager()
 	}
 }
 
-bool RoomManager::enterRoom(Session* session,UINT roomNum)
+BOOL RoomManager::enterRoom(Session* session,UINT roomNum)
 {
 	SAFE_LOCK(lock_);
 
@@ -39,7 +39,7 @@ bool RoomManager::enterRoom(Session* session,UINT roomNum)
 	}
 }
 
-bool RoomManager::exitRoom(Session* session)
+BOOL RoomManager::exitRoom(Session* session)
 {
 	SAFE_LOCK(lock_);
 
@@ -83,7 +83,7 @@ void RoomManager::sendPlayerList(UINT32 roomNum)
 	roomArray_[roomNum]->sendPlayerList();
 }
 
-bool RoomManager::setPlayerReady(Session* session, BOOL b)
+BOOL RoomManager::setPlayerReady(Session* session, BOOL b)
 {
 	SAFE_LOCK(lock_);
 
@@ -96,7 +96,7 @@ bool RoomManager::setPlayerReady(Session* session, BOOL b)
 	return roomArray_[roomNum]->setPlayerReady(session, b);
 }
 
-bool RoomManager::setPlayerCharacter(Session * session, CHARACTER c)
+BOOL RoomManager::setPlayerCharacter(Session * session, CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 

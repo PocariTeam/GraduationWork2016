@@ -3,11 +3,11 @@
 
 IOCPServer::IOCPServer()
 {
-	xml_t config;
+	/*xml_t config;
 	if (!loadConfig(&config)) {
 		return;
-	}
-	this->initialize(&config);
+	}*/
+	this->initialize();
 
 	SLog(L"# Initialize network base");
 }
@@ -19,7 +19,7 @@ IOCPServer::~IOCPServer()
 	SLog(L"# ~IOCPServer()");
 }
 
-void IOCPServer::initialize(xml_t *config)
+void IOCPServer::initialize()
 {
 	// wsa 설정
 	WSADATA	wsa;
@@ -28,31 +28,32 @@ void IOCPServer::initialize(xml_t *config)
 		exit(0);
 	}
 
-	SLog(L"### WSA 2.2 set complet.");
+	port_ = SERVER_PORT;
+	workerThreadCount_ = THREAD_COUNT;
 
 	//테스크 설정
 	//TaskManager::getInstance();
 
 	//서버 설정
-	xmlNode_t *root = config->FirstChildElement("App")->FirstChildElement("Server");
-	if (!root) {
-		SLog(L"@ not exist server setting");
-		return;
-	}
-	xmlNode_t *elem = root->FirstChildElement("IP");
-//	strcpy_s(ip_, elem->GetText());
+	//xmlNode_t *root = config->FirstChildElement("App")->FirstChildElement("Server");
+	//if (!root) {
+	//	SLog(L"@ not exist server setting");
+	//	return;
+	//}
+	//xmlNode_t *elem = root->FirstChildElement("IP");
+	////strcpy_s(ip_, elem->GetText());
 
-	elem = root->FirstChildElement("Port");
-	sscanf_s(elem->GetText(), "%d", &port_);
+	//elem = root->FirstChildElement("Port");
+	//sscanf_s(elem->GetText(), "%d", &port_);
 
-	elem = root->FirstChildElement("ThreadCount");
-	sscanf_s(elem->GetText(), "%d", &workerThreadCount_);
-	SLog(L"* IO worker thread count : %d", workerThreadCount_);
+	//elem = root->FirstChildElement("ThreadCount");
+	//sscanf_s(elem->GetText(), "%d", &workerThreadCount_);
+	//SLog(L"* IO worker thread count : %d", workerThreadCount_);
 
-	root = config->FirstChildElement("App");
-	elem = root->FirstChildElement("Name");
+	//root = config->FirstChildElement("App");
+	//elem = root->FirstChildElement("Name");
 
-	SLog(L"### %S start!!! ###", elem->GetText());
+	//SLog(L"### %S start!!! ###", elem->GetText());
 }
 
 bool IOCPServer::run()
@@ -117,14 +118,13 @@ void IOCPServer::printHostInfo() {
 	struct hostent * pLocalHostInformation; // 로컬 호스트의 정보가 담길 구조체의 포인터
 
 	gethostname(szLocalHostName, sizeof(szLocalHostName));
-	SLog(L"* Host name is %S.", szLocalHostName);
+	SLog(L"# Host name is %S.", szLocalHostName);
 	pLocalHostInformation = gethostbyname(szLocalHostName);
 
 	/* 한 컴퓨터에서 여러 IP를 할당 받을 수 있습니다. 이를 모두 출력합니다. */
 	for (int i = 0; pLocalHostInformation->h_addr_list[i] != NULL; i++) {
-		SLog(L"* Hostent.h_addr_list[%d] = \"%S\", port: %d", i, inet_ntoa(*(struct in_addr*)pLocalHostInformation->h_addr_list[i]),port_);
+		SLog(L"# Hostent.h_addr_list[%d] = \"%S\", port: %d", i, inet_ntoa(*(struct in_addr*)pLocalHostInformation->h_addr_list[i]),port_);
 	}
-	
 }
 
 

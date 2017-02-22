@@ -104,6 +104,7 @@ INPUT:
 			HEADER *pExitRoom = (HEADER*)sendData;
 			pExitRoom->size = sizeof(HEADER);
 			pExitRoom->packetID = PAK_ID::PAK_REQ_ExitRoom;
+			g_ready = false;
 			break;
 		}
 		case 2:

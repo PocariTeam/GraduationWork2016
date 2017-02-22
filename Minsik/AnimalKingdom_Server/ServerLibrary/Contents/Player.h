@@ -7,13 +7,15 @@ class Player {
 	UINT		roomNum_;
 	BOOL		isReady_;
 	BOOL		isMaster_;
+	Lock				lock_;
+
 public:
 	Player(Session* s, UINT room, BOOL master = false);
 	~Player();
 	Session*	getSession() { return session_; };
 	PlayerInfo	getPlayerInfo();
-	void		setMaster(BOOL b) { isMaster_ = b; };
-	void		setReady(BOOL b) { isReady_ = b; };
-	void		setCharacter(CHARACTER c) { character_ = c; };
 	BOOL		getReady() { return isReady_; }
+	void		setMaster(BOOL b);
+	void		setReady(BOOL b);
+	void		setCharacter(CHARACTER c);
 };

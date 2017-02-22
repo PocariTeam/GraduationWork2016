@@ -16,12 +16,12 @@ private:
 	static DWORD WINAPI			acceptThread(LPVOID serverPtr);
 	static DWORD WINAPI			workerThread(LPVOID serverPtr);
 	bool						createListenSocket();
-public:
-	IOCPServer();
-	~IOCPServer();
 	void						printHostInfo();
-	void						initialize(xml_t * config);
-	bool						run();
+	void						initialize();
 	void						onAccept(SOCKET accepter, SOCKADDR_IN addrInfo);
 	void						command(wstr_t cmd);
+public:
+	bool						run();
+	IOCPServer();
+	~IOCPServer();
 };
