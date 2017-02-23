@@ -1,29 +1,29 @@
 #include "stdafx.h"
 #include "ChameleonGlobalAnimation.h"
+#include "Singleton.h"
 
+CChameleonGlobalAnimation* CSingleton<CChameleonGlobalAnimation>::m_pInstance;
 
-CChameleonGlobalAnimation::CChameleonGlobalAnimation()
-	: CAnimation<CChameleon>()
+DWORD CChameleonGlobalAnimation::Release( void )
+{
+	delete this;
+
+	return 0;
+}
+
+HRESULT CChameleonGlobalAnimation::Load( const char* pFilePath )
+{
+	return S_OK;
+}
+
+void CChameleonGlobalAnimation::Enter( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
 }
 
-CChameleonGlobalAnimation& CChameleonGlobalAnimation::operator=( const CChameleonGlobalAnimation& )
-{
-	return *this;
-}
-
-CChameleonGlobalAnimation::~CChameleonGlobalAnimation()
+void CChameleonGlobalAnimation::Execute( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
 }
 
-void CChameleonGlobalAnimation::Enter( CChameleon* pChameleon, const float& fTimeDelta )
-{
-}
-
-void CChameleonGlobalAnimation::Execute( CChameleon* pChameleon, const float& fTimeDelta )
-{
-}
-
-void CChameleonGlobalAnimation::Exit( CChameleon* pChameleon, const float& fTimeDelta )
+void CChameleonGlobalAnimation::Exit( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
 }

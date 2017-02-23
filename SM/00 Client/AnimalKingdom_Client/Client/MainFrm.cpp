@@ -16,6 +16,7 @@
 #include "Renderer.h"
 #include "LightMgr.h"
 #include "AnimateMeshMgr.h"
+#include "AnimationMgr.h"
 
 HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 {
@@ -57,7 +58,7 @@ HRESULT CMainFrm::Ready_Logo( ID3D11Device* pDevice )
 	CMeshMgr::GetInstance()->Add( pDevice, "Mesh_Background", pMesh );
 
 	/* Add Logo Shader */
-	CShaderMgr::GetInstance()->Add( pDevice, CShaderMgr::SHADER_NORMAL, CShader::INPUT_POS_ONLY, "Shader_Background", "../Executable/Resources/Shader/Background.fx" );
+	CShaderMgr::GetInstance()->Add( pDevice, CShaderMgr::SHADER_NORMAL, CShader::INPUT_NO, "Shader_Background", "../Executable/Resources/Shader/Background.fx" );
 		
 	return S_OK;
 }
@@ -107,6 +108,7 @@ DWORD CMainFrm::Release( void )
 
 	
 	/*CPhysicsMgr::GetInstance()->Release();*/
+	CAnimationMgr::DestroyInstance();
 	CLightMgr::DestroyInstance();
 	CRenderer::DestroyInstance();
 	CRenderTargetMgr::DestroyInstance();

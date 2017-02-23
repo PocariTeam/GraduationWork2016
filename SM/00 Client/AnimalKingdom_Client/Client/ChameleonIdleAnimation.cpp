@@ -1,31 +1,29 @@
 #include "stdafx.h"
 #include "ChameleonIdleAnimation.h"
+#include "Function.h"
+#include "Singleton.h"
 
-CChameleonIdleAnimation::CChameleonIdleAnimation( const CChameleonIdleAnimation& )
-	: CAnimation<CChameleon>()
+CChameleonIdleAnimation* CSingleton<CChameleonIdleAnimation>::m_pInstance;
+
+DWORD CChameleonIdleAnimation::Release( void )
+{
+	CAnimation::Release();
+	delete this;
+
+	return 0;
+}
+
+void CChameleonIdleAnimation::Enter( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
 }
 
-CChameleonIdleAnimation& CChameleonIdleAnimation::operator=( const CChameleonIdleAnimation& )
+void CChameleonIdleAnimation::Execute( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
-	return *this;
+	fTimePos += fTimeDelta * m_fSpeed;
+
+	if( m_dwLength <= ( DWORD )fTimePos ) fTimePos = 0.f;
 }
 
-CChameleonIdleAnimation::~CChameleonIdleAnimation()
+void CChameleonIdleAnimation::Exit( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
-}
-
-void CChameleonIdleAnimation::Enter( CChameleon* pChameleon, const float& fTimeDelta )
-{
-
-}
-
-void CChameleonIdleAnimation::Execute( CChameleon* pChameleon, const float& fTimeDelta )
-{
-
-}
-
-void CChameleonIdleAnimation::Exit( CChameleon* pChameleon, const float& fTimeDelta )
-{
-
 }

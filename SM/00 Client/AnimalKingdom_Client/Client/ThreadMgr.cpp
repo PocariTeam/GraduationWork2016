@@ -5,6 +5,7 @@
 #include "MeshMgr.h"
 #include "ShaderMgr.h"
 #include "AnimateMeshMgr.h"
+#include "AnimationMgr.h"
 
 CThreadMgr* CSingleton<CThreadMgr>::m_pInstance;
 
@@ -133,6 +134,9 @@ DWORD WINAPI CThreadMgr::LoadResources( LPVOID lpParameter )
 		break;
 	case LOAD_ANIMATEMESH:
 		CAnimateMeshMgr::GetInstance()->Load( pParam->m_pDevice, pParam->m_strPath );
+		break;
+	case LOAD_ANIMATION:
+		CAnimationMgr::GetInstance()->Load( pParam->m_pDevice, pParam->m_strPath );
 		break;
 	}
 

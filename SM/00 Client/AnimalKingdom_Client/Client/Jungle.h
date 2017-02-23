@@ -9,6 +9,7 @@
 class CShader;
 class CTerrain;
 class CWallpaper;
+class CPlayer;
 /*              */
 class CGameObject;
 class CJungle
@@ -32,6 +33,9 @@ private:
 	CWallpaper*	m_pScreen;
 	CShader*	m_pBlendShader;
 	CShader*	m_pDebugShader;
+	/* Test 170222 */
+	CPlayer*	m_pPlayer;
+	CShader*	m_pAnimateShader;
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 };

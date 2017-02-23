@@ -4,25 +4,27 @@
 #define AnimationMgr_h__
 
 #include "Singleton.h"
+#include "Enum.h"
 
-template <class CHAR_TYPE>
+class CGameObject;
 class CAnimationController;
 class CAnimationMgr
 	: public CSingleton<CAnimationMgr>
 {
 public:
 	enum eCharacter_Type { CHARACTER_CHM, CHARACTER_MON, CHARACTER_END };
-	using CHAR_TYPE = eCharacter_Type;
+	using CHARACTER_TYPE = eCharacter_Type;
 public:
-	template <class CHAR_TYPE>
-	CAnimationController<CHAR_TYPE>*	Clone( const eCharacter_Type& eType );
-	template <class CHAR_TYPE>
-	CAnimationController<CHAR_TYPE>*	Find( const eCharacter_Type& eType );
+	CAnimationController* Clone( const eCharacter_Type& eType, CGameObject* pOwner );
+	CAnimationController* Find( const eCharacter_Type& eType );
 public:
 	HRESULT Load( ID3D11Device* pDevice, const char* pFilePath );
 	DWORD   Release( void );
 private:
-	vector<CAnimationController<CHAR_TYPE>*>	m_vecAnimationController;
+	HRESULT Add( CHARACTER_TYPE eCharacterType, STATE eState, const char* pFilePath );
+	HRESULT Add( ID3D11Device* pDevice, const char* pFilePath );
+private:
+	vector<CAnimationController*>	m_vecAnimationController;
 };
 
 #endif // AnimationMgr_h__

@@ -10,7 +10,7 @@ class CShader
 	: public CResources
 {
 public:
-	enum INPUT_TYPE { INPUT_POS_ONLY, INPUT_PT, INPUT_PNT, INPUT_PNTT, INPUT_PARTICLE, INPUT_END };
+	enum INPUT_TYPE { INPUT_POS_ONLY, INPUT_PT, INPUT_PNT, INPUT_PNTT, INPUT_PARTICLE, INPUT_NO, INPUT_ANIMATE, INPUT_END };
 protected:
 	explicit CShader();
 	explicit CShader( const CShader& Instance );
@@ -21,10 +21,12 @@ protected:
 	HRESULT CreateGS( ID3D11Device* pDevice, const char* pFilePath );
 	HRESULT CreateHS( ID3D11Device* pDevice, const char* pFilePath );
 	HRESULT CreateDS( ID3D11Device* pDevice, const char* pFilePath );
+	HRESULT CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize = sizeof( XMFLOAT4X4 ) );
 public:
 	virtual CShader*	Clone( void )PURE;
 	virtual void Render( ID3D11DeviceContext* pContext )PURE;
 	virtual void Add_RenderObject( CGameObject* pGameObject )PURE;
+	void	SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData );
 public:
 	virtual DWORD Release();
 protected:
@@ -34,6 +36,7 @@ protected:
 	ID3D11GeometryShader*	m_pGS;
 	ID3D11HullShader*		m_pHS;
 	ID3D11DomainShader*		m_pDS;
+	ID3D11Buffer*			m_pConstantBuffer;
 };
 
 #endif // Shader_h__

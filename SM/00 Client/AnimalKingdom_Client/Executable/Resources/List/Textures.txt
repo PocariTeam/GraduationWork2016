@@ -1,4 +1,5 @@
-3
+4
 Texture_Sky 1 ../Executable/Resources/Texture/Sky/Sky.png
 Texture_Snowball 2 ../Executable/Resources/Texture/Snowball/Snowball%d.png
 Texture_Terrain 1 ../Executable/Resources/Texture/Terrain/Terrain.png
+Texture_Chameleon 1 ../Executable/Resources/Texture/Chameleon/Chameleon.png

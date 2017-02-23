@@ -6,24 +6,23 @@
 #include "Enum.h"
 #include "Singleton.h"
 
-template<class pCharacter_Type>
-class CAnimation
-	: public CSingleton<CAnimation<pCharacter_Type>>
-{
-protected:
-	virtual ~CAnimation() {};
-public:
-	virtual void Enter( pCharacter_Type* pOwner, const float& fTimeDelta )PURE;
-	virtual void Execute( pCharacter_Type* pOwner, const float& fTimeDelta )PURE;
-	virtual void Exit( pCharacter_Type* pOwner, const float& fTimeDelta )PURE;
-public:
-	virtual DWORD Release( void );
-};
 
-template<class eCharacter_Type>
-DWORD CAnimation<eCharacter_Type>::Release( void )
+class CGameObject;
+class CAnimation
 {
-	return 0;
-}
+public:
+	HRESULT Load( const char* pFilePath );
+	void	GetAnimationMatrix( XMFLOAT4X4* pOut, float fTimePos );
+	virtual void Enter( CGameObject* pOwner, const float& fTimeDelta, float& fTimePos )PURE;
+	virtual void Execute( CGameObject* pOwner, const float& fTimeDelta, float& fTimePos )PURE;
+	virtual void Exit( CGameObject* pOwner, const float& fTimeDelta, float& fTimePos )PURE;
+	virtual DWORD Release( void );
+
+protected:
+	XMFLOAT4X4**	m_dpArrFrame{ nullptr };
+	DWORD			m_dwJointCnt{ 0 };
+	DWORD			m_dwLength{ 0 };
+	float			m_fSpeed{ 0 };
+};
 
 #endif // Animation_h__

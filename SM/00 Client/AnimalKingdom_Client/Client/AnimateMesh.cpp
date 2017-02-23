@@ -65,6 +65,7 @@ HRESULT CAnimateMesh::CreateBuffer( ID3D11Device* pDevice, const char* pFilePath
 				if( FAILED( pDevice->CreateBuffer( &VTXBuffer_Desc, &VTXData, &m_pVB ) ) )
 					return E_FAIL;
 				::Safe_Delete_Array( pVertex );
+				szInformation = 0;
 			}
 				break;
 			case 'i':
@@ -91,6 +92,7 @@ HRESULT CAnimateMesh::CreateBuffer( ID3D11Device* pDevice, const char* pFilePath
 				if( FAILED( pDevice->CreateBuffer( &IdxBuffer_Desc, &IdxData, &m_pIB ) ) )
 					return E_FAIL;
 				::Safe_Delete_Array( pIndex );
+				szInformation = 0;
 			}
 			break;
 			}
@@ -128,9 +130,9 @@ void operator >> ( ifstream& pIn, VERTEX_PNTTB& tVertex_PNTTB )
 	pIn >> tVertex_PNTTB.m_vNormal.x;	pIn >> tVertex_PNTTB.m_vNormal.y;	pIn >> tVertex_PNTTB.m_vNormal.z;
 	pIn >> tVertex_PNTTB.m_vTangent.x; pIn >> tVertex_PNTTB.m_vTangent.y; pIn >> tVertex_PNTTB.m_vTangent.z;
 	pIn >> tVertex_PNTTB.m_vUV.x;		 pIn >> tVertex_PNTTB.m_vUV.y;
-	pIn >> tVertex_PNTTB.m_pairBlend[ 0 ].first; pIn >> tVertex_PNTTB.m_pairBlend[ 0 ].second;
-	pIn >> tVertex_PNTTB.m_pairBlend[ 1 ].first; pIn >> tVertex_PNTTB.m_pairBlend[ 1 ].second;
-	pIn >> tVertex_PNTTB.m_pairBlend[ 2 ].first; pIn >> tVertex_PNTTB.m_pairBlend[ 2 ].second;
-	pIn >> tVertex_PNTTB.m_pairBlend[ 3 ].first; pIn >> tVertex_PNTTB.m_pairBlend[ 3 ].second;
+	pIn >> tVertex_PNTTB.m_vIndex[ 0 ]; pIn >> tVertex_PNTTB.m_vWeight.x;
+	pIn >> tVertex_PNTTB.m_vIndex[ 1 ]; pIn >> tVertex_PNTTB.m_vWeight.y;
+	pIn >> tVertex_PNTTB.m_vIndex[ 2 ]; pIn >> tVertex_PNTTB.m_vWeight.z;
+	pIn >> tVertex_PNTTB.m_vIndex[ 3 ]; pIn >> tVertex_PNTTB.m_vWeight.w;
 }
 

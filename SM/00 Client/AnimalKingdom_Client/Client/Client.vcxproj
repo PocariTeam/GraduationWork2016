@@ -163,7 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="..\Executable\Resources\List\AnimateMeshes.txt" />
-    <Text Include="..\Executable\Resources\List\Animation.txt" />
+    <Text Include="..\Executable\Resources\List\Animations.txt" />
     <Text Include="..\Executable\Resources\List\Shaders.txt" />
     <Text Include="..\Executable\Resources\List\StaticMeshes.txt" />
     <Text Include="..\Executable\Resources\List\Textures.txt" />
@@ -287,6 +287,7 @@
     <ClCompile Include="ThreadMgr.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
+    <ClCompile Include="Animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />
@@ -296,6 +297,14 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Background.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>

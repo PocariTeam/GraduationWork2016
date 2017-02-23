@@ -6,30 +6,40 @@
 #include "Enum.h"
 #include "Base.h"
 
-template<class CHAR_TYPE>
+class CGameObject;
 class CAnimation;
-template<class CHAR_TYPE>
 class CAnimationController
 	: public CBase
 {
 private:
-	explicit CAnimationController( CHAR_TYPE* pOwner );
-	// explicit CAnimationController( const CAnimationController& pAnimationController );
-	~CAnimationController();
+	explicit CAnimationController( void );
+	explicit CAnimationController( const CAnimationController& Instance, CGameObject* pOwner );
 public:
 	void Update( const float& fTimeDelta );
-	CAnimationController* Clone( void );
+	void Render( ID3D11DeviceContext* pContext );
+	CAnimationController* Clone( CGameObject* pOwner );
+	static CAnimationController* Create( ID3D11Device* pDevice, const char* pFilePath );
+	DWORD Release( void );
 private:
-	CHAR_TYPE*	m_pOwner;
+	HRESULT	Initialize( ID3D11Device* pDevice, const char* pFilePath );
+	HRESULT Load( const char* pFilePath );
+	HRESULT CreateConstantBuffer( ID3D11Device* pDevice );
+private:
+	CGameObject*	m_pOwner;
 
-	CAnimation<CHAR_TYPE>*	m_pCurrentAnimation;
-	CAnimation<CHAR_TYPE>*	m_pPreviousAnimation;
-	CAnimation<CHAR_TYPE>*	m_pGlobalAnimation;
+	CAnimation*	m_pCurrentAnimation;
+	CAnimation*	m_pPreviousAnimation;
+	CAnimation*	m_pGlobalAnimation;
+
+	string*					m_pArrJointName;
+	DWORD					m_dwJointCnt;
+	float					m_fTimePos;
+	ID3D11Buffer*			m_pConstantBufferAnimation;
 public:
-	void	SetCurrentAnimation( CAnimation<CHAR_TYPE>* pAnimation );
-	void	SetGlobalAnimation( CAnimation<CHAR_TYPE>* pAnimation );
-	void	SetPreviousAnimation( CAnimation<CHAR_TYPE>* pAnimation );
-	void	Change_Animation( CAnimation<CHAR_TYPE>* pAnimation );
+	void	SetCurrentAnimation( CAnimation* pAnimation );
+	void	SetGlobalAnimation( CAnimation* pAnimation );
+	void	SetPreviousAnimation( CAnimation* pAnimation );
+	void	Change_Animation( CAnimation* pAnimation );
 	void	RevertToPreviousAnimation( void );
 };
 

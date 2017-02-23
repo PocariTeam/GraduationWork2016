@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include "D3DCompiler.h"
 #include "Function.h"
+#include "Define.h"
 
 CShader::CShader()
 	: CResources()
@@ -11,6 +12,7 @@ CShader::CShader()
 	, m_pGS( nullptr )
 	, m_pHS( nullptr )
 	, m_pDS( nullptr )
+	, m_pConstantBuffer( nullptr )
 {
 }
 
@@ -23,6 +25,7 @@ CShader::CShader( const CShader& Instance )
 	, m_pGS( Instance.m_pGS )
 	, m_pHS( Instance.m_pHS )
 	, m_pDS( Instance.m_pDS )
+	, m_pConstantBuffer( Instance.m_pConstantBuffer )
 {
 }
 
@@ -44,7 +47,8 @@ HRESULT CShader::CreateVS( ID3D11Device* pDevice, const char* pFilePath, D3D11_I
 	if( SUCCEEDED( D3DX11CompileFromFile( pFilePath, NULL, NULL, "VS", "vs_5_0", dwShaderFlag, 0, NULL, &pShaderBlob, &pErrorBlob, NULL ) ) )
 	{
 		pDevice->CreateVertexShader( pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), NULL, &m_pVS );
-		pDevice->CreateInputLayout( pInputElement, iComponentCnt, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout );
+		if( iComponentCnt > 0 )
+			pDevice->CreateInputLayout( pInputElement, iComponentCnt, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout );
 		pShaderBlob->Release();
 	}
 
@@ -174,12 +178,40 @@ HRESULT CShader::CreateDS( ID3D11Device* pDevice, const char* pFilePath )
 	return S_OK;
 }
 
+HRESULT CShader::CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize )
+{
+	D3D11_BUFFER_DESC Buffer_Desc;
+	ZeroMemory( &Buffer_Desc, sizeof( Buffer_Desc ) );
+	Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+	Buffer_Desc.ByteWidth = iBufferSize;
+	Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	pDevice->CreateBuffer( &Buffer_Desc, nullptr, &m_pConstantBuffer );
+
+	return S_OK;
+}
+
+void CShader::SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData )
+{
+	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
+
+	pContext->Map( m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
+	XMFLOAT4X4* pConstantBuffer = ( XMFLOAT4X4* )MappedSubresource.pData;
+	*pConstantBuffer = *( XMFLOAT4X4* )pData;
+
+	pContext->Unmap( m_pConstantBuffer, 0 );
+	pContext->VSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );
+	pContext->PSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );
+}
+
 DWORD CShader::Release()
 {
 	DWORD dwRefCnt = CResources::Release();
 
 	if( 0 == dwRefCnt )
 	{
+		::Safe_Release( m_pConstantBuffer );
 		::Safe_Release( m_pInputLayout );
 		::Safe_Release( m_pVS );
 		::Safe_Release( m_pPS );

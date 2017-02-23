@@ -35,7 +35,10 @@ void CNormalShader::Render( ID3D11DeviceContext* pContext )
 		return;
 
 	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
+	{
+		SetConstantBuffer( pContext, m_vecRenderObject[ i ]->GetWorld() );
 		m_vecRenderObject[ i ]->Render( pContext );
+	}
 }
 
 DWORD CNormalShader::Release( void )
@@ -117,6 +120,26 @@ HRESULT CNormalShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eI
 		iArrCnt = ARRAYSIZE( VTX_Element );
 	}
 	break;
+	case CShader::INPUT_ANIMATE:
+	{
+		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		pInputDesc = VTX_Element;
+		iArrCnt = ARRAYSIZE( VTX_Element );
+	}
+	break;
 	}
 
 	if( FAILED( CreateVS( pDevice, pFilePath, pInputDesc, iArrCnt ) ) )
@@ -128,6 +151,8 @@ HRESULT CNormalShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eI
 	CreateGS( pDevice, pFilePath );
 	CreateHS( pDevice, pFilePath );
 	CreateDS( pDevice, pFilePath );
+
+	CreateConstantBuffer( pDevice );
 	
 	return S_OK;
 }

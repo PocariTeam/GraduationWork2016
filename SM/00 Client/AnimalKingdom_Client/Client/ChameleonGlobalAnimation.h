@@ -4,20 +4,17 @@
 
 #include "Animation.h"
 
-class CChameleon;
+class CGameObject;
 class CChameleonGlobalAnimation
-	: public CAnimation<CChameleon>
+	: public CAnimation, public CSingleton<CChameleonGlobalAnimation>
 {
-private:
-	explicit CChameleonGlobalAnimation();
-	explicit CChameleonGlobalAnimation( const CChameleonGlobalAnimation& );
-	CChameleonGlobalAnimation& operator=( const CChameleonGlobalAnimation& );
-	virtual ~CChameleonGlobalAnimation();
-
 public:
-	virtual void Enter( CChameleon* pChameleon, const float& fTimeDelta );
-	virtual void Execute( CChameleon* pChameleon, const float& fTimeDelta );
-	virtual void Exit( CChameleon* pChameleon, const float& fTimeDelta );
+	DWORD	Release( void );
+public:
+	HRESULT Load( const char* pFilePath );
+	void Enter( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos );
+	void Execute( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos );
+	void Exit( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos );
 };
 
 #endif // ChameleonGlobalAnimation_h__

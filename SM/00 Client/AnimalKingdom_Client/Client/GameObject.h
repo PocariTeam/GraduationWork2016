@@ -7,6 +7,8 @@
 #include "Base.h"
 
 class NxActor;
+class CMesh;
+class CTexture;
 class CGameObject
 	: public CBase
 {
@@ -17,13 +19,14 @@ public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext )PURE;
 	virtual DWORD	Release( void );
-	virtual void	CreateConstantBuffer( ID3D11Device* pDevice ){};
-	virtual void	SetConstantBuffer( ID3D11DeviceContext* pContext ) {};
+public:
 	void			SetActor( NxActor* pActor ) { m_pActor = pActor; }
+	XMFLOAT4X4*		GetWorld() { return &m_mtxWorld; }
 protected:
-	ID3D11Buffer*	m_pConstantBufferWorld;
-	ID3D11Buffer*	m_pConstantBufferMaterial;
 	NxActor*		m_pActor;
+	XMFLOAT4X4		m_mtxWorld;
+	CMesh*			m_pMesh;
+	CTexture*		m_pTexture;
 };
 
 #endif

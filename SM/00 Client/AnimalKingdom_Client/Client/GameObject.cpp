@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "GameObject.h"
 #include "Function.h"
+#include "Define.h"
 
 CGameObject::CGameObject()
 	: CBase()
-	, m_pConstantBufferWorld( nullptr )
-	, m_pConstantBufferMaterial( nullptr )
 	, m_pActor( nullptr )
 {
+	XMStoreFloat4x4( &m_mtxWorld, XMMatrixIdentity() );
 }
 
 int	CGameObject::Update( const float& fTimeDelta )
@@ -20,8 +20,6 @@ DWORD	CGameObject::Release()
 	CBase::Release();
 
 	m_pActor = nullptr;
-	::Safe_Release( m_pConstantBufferWorld );
-	::Safe_Release( m_pConstantBufferMaterial );
 
 	return 0;
 }

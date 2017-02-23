@@ -19,7 +19,7 @@ struct LIGHT
 	float2	vPadding;
 };
 
-float4	g_vWinSize : register( b0 );
+matrix	g_mtxWinSize : register( b0 );
 
 cbuffer cbCamera : register( b1 )
 {
@@ -61,11 +61,11 @@ VS_OUT VS( uint iVertexNum : SV_VertexID )
 	VS_OUT Out = ( VS_OUT )0;
 
 	if( iVertexNum == 0 ) { Out.vPos = float4( -1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 0.f );  Out.vTexUV = float2( 0.f, 0.f ); }
-	else if( iVertexNum == 1 ) { Out.vPos = float4( +1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 0.f ); Out.vTexUV = float2( g_vWinSize.x, 0.f ); }
-	else if( iVertexNum == 2 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 1.f ); Out.vTexUV = float2( g_vWinSize.x, g_vWinSize.y ); }
+	else if( iVertexNum == 1 ) { Out.vPos = float4( +1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 0.f ); Out.vTexUV = float2( g_mtxWinSize._11, 0.f ); }
+	else if( iVertexNum == 2 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 1.f ); Out.vTexUV = float2( g_mtxWinSize._11, g_mtxWinSize._21 ); }
 	else if( iVertexNum == 3 ) { Out.vPos = float4( -1.f, +1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 0.f ); Out.vTexUV = float2( 0.f, 0.f ); }
-	else if( iVertexNum == 4 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 1.f ); Out.vTexUV = float2( g_vWinSize.x, g_vWinSize.y ); }
-	else if( iVertexNum == 5 ) { Out.vPos = float4( -1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 1.f ); Out.vTexUV = float2( 0.f, g_vWinSize.y ); }
+	else if( iVertexNum == 4 ) { Out.vPos = float4( +1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 1.f, 1.f ); Out.vTexUV = float2( g_mtxWinSize._11, g_mtxWinSize._21 ); }
+	else if( iVertexNum == 5 ) { Out.vPos = float4( -1.f, -1.f, 0.5f, 1.f ); Out.vUV = float2( 0.f, 1.f ); Out.vTexUV = float2( 0.f, g_mtxWinSize._21 ); }
 
 	return Out;
 }

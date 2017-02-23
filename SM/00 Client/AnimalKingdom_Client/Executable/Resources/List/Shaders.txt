@@ -1,5 +1,6 @@
-4
+5
 Shader_Mesh 0 3 1 ../Executable/Resources/Shader/Mesh.fx
+Shader_AnimateMesh 0 6 1 ../Executable/Resources/Shader/AnimateMesh.fx
 Shader_Light 0 0 1 ../Executable/Resources/Shader/Light.fx
 Shader_Blend 0 0 1 ../Executable/Resources/Shader/Blend.fx
 Shader_Debug 0 0 1 ../Executable/Resources/Shader/Debug.fx

@@ -4,21 +4,18 @@
 #define ChameleonRunAnimation_h__
 
 #include "Animation.h"
+#include "Singleton.h"
 
-class CChameleon;
+class CGameObject;
 class CChameleonRunAnimation
-	: public CAnimation<CChameleon>
+	: public CAnimation, public CSingleton<CChameleonRunAnimation>
 {
-private:
-	explicit CChameleonRunAnimation();
-	explicit CChameleonRunAnimation( const CChameleonRunAnimation& );
-	CChameleonRunAnimation& operator=( const CChameleonRunAnimation& );
-	~CChameleonRunAnimation();
-
 public:
-	virtual void Enter( CChameleon* pChameleon, const float& fTimeDelta );
-	virtual void Execute( CChameleon* pChameleon, const float& fTimeDelta );
-	virtual void Exit( CChameleon* pChameleon, const float& fTimeDelta );
+	DWORD	Release( void );
+public:
+	void Enter( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos );
+	void Execute( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos );
+	void Exit( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos );
 };
 
 #endif // ChameleonRunAnimation_h__

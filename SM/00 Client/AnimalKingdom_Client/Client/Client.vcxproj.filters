@@ -262,7 +262,7 @@
     <Text Include="..\Executable\Resources\List\AnimateMeshes.txt">
       <Filter>소스 파일\03 Resources\05 List</Filter>
     </Text>
-    <Text Include="..\Executable\Resources\List\Animation.txt">
+    <Text Include="..\Executable\Resources\List\Animations.txt">
       <Filter>소스 파일\03 Resources\05 List</Filter>
     </Text>
   </ItemGroup>
@@ -599,6 +599,9 @@
     <ClCompile Include="ChameleonDefendAnimation.cpp">
       <Filter>소스 파일\03 Resources\03 Animation\00 Chameleon\05 Defend</Filter>
     </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>소스 파일\03 Resources\03 Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -627,6 +630,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Debug.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

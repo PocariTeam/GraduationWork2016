@@ -51,11 +51,12 @@ typedef struct tagVertex_PNTTB {
 	XMFLOAT3	m_vNormal;
 	XMFLOAT3	m_vTangent;
 	XMFLOAT2	m_vUV;
-	pair<UINT, double> m_pairBlend[ 4 ];
+	int			m_vIndex[4];
+	XMFLOAT4	m_vWeight;
 
 	tagVertex_PNTTB()
 	{
-		ZeroMemory( m_pairBlend, 4 * ( sizeof( UINT ) + sizeof( double ) ) );
+		ZeroMemory( m_vIndex, 4 * ( sizeof( int ) + sizeof( float ) ) );
 	}
 }VERTEX_PNTTB;
 

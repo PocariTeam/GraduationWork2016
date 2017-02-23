@@ -9,9 +9,13 @@
 #include "Terrain.h"
 #include "LightMgr.h"
 #include "Wallpaper.h"
+#include "Player.h"
+#include "AnimationMgr.h"
 
 CJungle::CJungle()
 	: CScene()
+	, m_pShader( NULL )
+	, m_pTerrain( nullptr )
 {
 }
 
@@ -47,12 +51,19 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_pDebugShader = CShaderMgr::GetInstance()->Clone( "Shader_Debug" );
 	CRenderer::GetInstance()->Add_RenderGroup( CRenderer::RENDER_DEBUG, m_pDebugShader );
 
+	m_pPlayer = CPlayer::Create( pDevice, CAnimationMgr::CHARACTER_CHM );
+	m_pAnimateShader = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh" );
+	m_pAnimateShader->Add_RenderObject( m_pPlayer );
+	CRenderer::GetInstance()->Add_RenderGroup( CRenderer::RENDER_DEPTHTEST, m_pAnimateShader );
+
 	return CScene::Initialize( hWnd, pDevice );
 }
 
 int CJungle::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
+
+	m_pPlayer->Update( fTimeDelta );
 
 	return 0;
 }
@@ -67,6 +78,8 @@ DWORD CJungle::Release( void )
 	::Safe_Release( m_pTerrain );
 	::Safe_Release( m_pShader );
 	::Safe_Release( m_pDebugShader );
+	::Safe_Release( m_pPlayer );
+	::Safe_Release( m_pAnimateShader );
 
 	delete this;
 
