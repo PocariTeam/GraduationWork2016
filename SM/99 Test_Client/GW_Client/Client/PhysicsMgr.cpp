@@ -197,7 +197,7 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		desc.height = InitialHeight * scale;
 		desc.position.x = startPos.x;
 		gSpace = (desc.height*0.5f + desc.radius);
-		desc.position.y = startPos.y + gSpace;
+		desc.position.y = startPos.y; //+ gSpace;
 		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
 		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
@@ -284,7 +284,7 @@ HRESULT CPhysicsMgr::SetupScene()
 			// 충돌그루핑
 			if (a->isDynamic()) 
 			{
-				if (strcmp(a->getName(), "myPlayer") == 0) 
+				if (strcmp(a->getName(), "chm") == 0) 
 				{
 					a->setGroup(CollGroup::MY_CHARACTER);
 					SetShapesCollisionGroup(a, CollGroup::MY_CHARACTER);
@@ -341,7 +341,7 @@ HRESULT CPhysicsMgr::SetupScene()
 
 HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 {
-	if (!LoadSceneFromFile("../Executable/Resources/Scene/testCube_fix.xml", NXU::FT_XML)) 
+	if (!LoadSceneFromFile("../Executable/Resources/Scene/Jungle_fix.xml", NXU::FT_XML)) 
 	{
 		printf("LoadScene() is failed! \n");
 		return E_FAIL;

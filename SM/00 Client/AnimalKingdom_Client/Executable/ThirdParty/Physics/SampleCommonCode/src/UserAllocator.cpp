@@ -4,6 +4,8 @@
 //
 //						    Written by Bob Schade, 5-1-06
 // ===============================================================================
+#pragma warning( disable : 4477 )
+#pragma warning( disable : 4313 )
 
 #include <stdio.h>
 #include "NxPhysics.h"

@@ -74,7 +74,7 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	D3D11_RASTERIZER_DESC RSWireDesc;
 	ZeroMemory( &RSWireDesc, sizeof( D3D11_RASTERIZER_DESC ) );
 	RSWireDesc.FillMode = D3D11_FILL_WIREFRAME;
-	RSWireDesc.CullMode = D3D11_CULL_BACK;
+	RSWireDesc.CullMode = D3D11_CULL_NONE;
 	RSWireDesc.FrontCounterClockwise = false;
 	RSWireDesc.DepthClipEnable = true;
 	pDevice->CreateRasterizerState( &RSWireDesc, &m_pRasterizerState[ RS_WIREFRAME ] );

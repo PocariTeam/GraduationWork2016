@@ -35,11 +35,17 @@ CWallpaper* CWallpaper::Create( ID3D11Device* pDevice, CMesh* pMesh )
 	return pWallpater;
 }
 
+XMFLOAT4X4 CWallpaper::GetWorld()
+{
+	XMFLOAT4X4 Out;
+	Out._11 = ( float )g_wWinsizeX;
+	Out._12 = ( float )g_wWinsizeY;
+
+	return Out;
+}
+
 void CWallpaper::Render( ID3D11DeviceContext* pContext )
 {
-	m_mtxWorld._11 = ( float )g_wWinsizeX;
-	m_mtxWorld._12 = ( float )g_wWinsizeY;
-
 	m_pMesh->Render( pContext );
 }
 

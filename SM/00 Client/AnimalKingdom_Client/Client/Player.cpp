@@ -16,8 +16,10 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Initialize( ID3D11Device* pDevice )
+HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxActor* pActor )
 {
+	m_pActor = pActor;
+
 	return S_OK;
 }
 
@@ -48,14 +50,14 @@ DWORD CPlayer::Release( void )
 	return 0;
 }
 
-CPlayer* CPlayer::Create( ID3D11Device* pDevice, CAnimationMgr::CHARACTER_TYPE eType )
+CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxActor* pActor, CAnimationMgr::CHARACTER_TYPE eType )
 {
 	CPlayer* pPlayer{ nullptr };
 
 	switch( eType )
 	{
 	case CAnimationMgr::CHARACTER_CHM :
-		pPlayer = CChameleon::Create( pDevice );
+		pPlayer = CChameleon::Create( pDevice, pActor );
 		break;
 	case CAnimationMgr::CHARACTER_MON :
 		break;

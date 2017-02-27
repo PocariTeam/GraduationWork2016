@@ -12,9 +12,9 @@ private:
 	explicit CTerrain();
 	virtual ~CTerrain();
 private:
-	HRESULT		Initialize( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture );
+	HRESULT		Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture );
 public:
-	static CTerrain* Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture );
+	static CTerrain* Create( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture );
 public:
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );

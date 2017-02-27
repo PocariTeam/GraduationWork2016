@@ -6,6 +6,7 @@
 #include "ShaderMgr.h"
 #include "AnimateMeshMgr.h"
 #include "AnimationMgr.h"
+#include "Physics.h"
 
 CThreadMgr* CSingleton<CThreadMgr>::m_pInstance;
 
@@ -51,8 +52,6 @@ DWORD CThreadMgr::Release( void )
 
 HRESULT CThreadMgr::Create_Thread( eThread_Type eType, const char* pThreadKey, const char* pLoadPath, ID3D11Device* pDevice, UINT dwLoadType )
 {
-	// map 컨테이너에 동일한 키값 있는지 검사
-
 	switch( eType )
 	{
 	case THREAD_RENDER :
@@ -127,6 +126,7 @@ DWORD WINAPI CThreadMgr::LoadResources( LPVOID lpParameter )
 		CTextureMgr::GetInstance()->Load( pParam->m_pDevice, pParam->m_strPath );
 		break;
 	case LOAD_MESH:
+		CPhysics::GetInstance()->Initialize( pParam->m_pDevice );
 		CMeshMgr::GetInstance()->Load( pParam->m_pDevice, pParam->m_strPath );
 		break;
 	case LOAD_SHADER:

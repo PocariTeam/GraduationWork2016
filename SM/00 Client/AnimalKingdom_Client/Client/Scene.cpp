@@ -2,9 +2,11 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "Function.h"
+#include "Functor.h"
 #include "Camera.h"
 #include "Logo.h"
 #include "Jungle.h"
+#include "Shader.h"
 
 CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
 {
@@ -46,12 +48,18 @@ int CScene::Update( const float& fTimeDelta )
 	if( nullptr != m_pCamera )
 		m_pCamera->Update( fTimeDelta );
 
+	for( DWORD i = 0; i < ( DWORD )RENDER_END; ++i )
+		for_each( m_listShader[ i ].begin(), m_listShader[ i ].end(), [&fTimeDelta]( CShader* pShader ) { pShader->Update( fTimeDelta ); } );
+
 	return 0;
 }
 
 DWORD CScene::Release( void )
 {
 	::Safe_Release( m_pCamera );
+
+	for( DWORD i = 0; i < ( DWORD )RENDER_END; ++i )
+		for_each( m_listShader[ i ].begin(), m_listShader[ i ].end(), ReleaseElement() );
 
 	return 0;
 }

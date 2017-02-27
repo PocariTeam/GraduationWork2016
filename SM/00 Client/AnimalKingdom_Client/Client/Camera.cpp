@@ -6,6 +6,8 @@
 #include "Camera.h"
 #include "Function.h"
 
+// 카메라 쉐이크 사인그래프를 이용하여 구현
+
 CCamera::CCamera()
 	: CBase()
 	, m_pConstantBufferCamera( nullptr )

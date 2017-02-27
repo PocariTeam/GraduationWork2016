@@ -13,19 +13,20 @@ CTerrain::~CTerrain()
 {
 }
 
-HRESULT CTerrain::Initialize( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture )
+HRESULT CTerrain::Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture )
 {
+	m_pActor = pActor;
 	m_pMesh = pMesh;
 	m_pTexture = pTexture;
 
 	return S_OK;
 }
 
-CTerrain* CTerrain::Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture )
+CTerrain* CTerrain::Create( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture )
 {
 	CTerrain* pTerrain = new CTerrain;
 
-	if( FAILED( pTerrain->Initialize( pDevice, pMesh, pTexture ) ) )
+	if( FAILED( pTerrain->Initialize( pDevice, pActor, pMesh, pTexture ) ) )
 	{
 		pTerrain->Release();
 		pTerrain = nullptr;

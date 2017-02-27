@@ -4,6 +4,7 @@
 #define _GAMEOBJECT_H_
 
 #include "Struct.h"
+#include "Function.h"
 #include "Base.h"
 
 class NxActor;
@@ -21,10 +22,9 @@ public:
 	virtual DWORD	Release( void );
 public:
 	void			SetActor( NxActor* pActor ) { m_pActor = pActor; }
-	XMFLOAT4X4*		GetWorld() { return &m_mtxWorld; }
+	virtual XMFLOAT4X4 GetWorld();
 protected:
 	NxActor*		m_pActor;
-	XMFLOAT4X4		m_mtxWorld;
 	CMesh*			m_pMesh;
 	CTexture*		m_pTexture;
 };

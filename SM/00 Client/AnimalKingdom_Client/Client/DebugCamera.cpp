@@ -19,7 +19,7 @@ HRESULT CDebugCamera::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
 	m_hWnd = hWnd;
 
-	m_fSpeed = 10.f;
+	m_fSpeed = 100.f;
 	m_vAt = XMFLOAT3( 0.f, 0.f, 0.f );
 	m_vEye = XMFLOAT3( 0.f, 100.f, -120.f );
 	CalculateViewMatrix( &m_mtxView, XMFLOAT3{ 0.f, 100.f, -120.f }, XMFLOAT3{ 0.f, 0.f, 0.f } );

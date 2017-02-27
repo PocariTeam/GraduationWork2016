@@ -15,9 +15,9 @@ CChameleon::~CChameleon()
 {
 }
 
-HRESULT CChameleon::Initialize( ID3D11Device* pDevice )
+HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxActor* pActor )
 {
-	CPlayer::Initialize( pDevice );
+	CPlayer::Initialize( pDevice, pActor );
 
 	// Mesh, Texture, AnimationController »ý¼º
 	m_pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" );
@@ -49,11 +49,11 @@ DWORD CChameleon::Release( void )
 	return 0;
 }
 
-CChameleon* CChameleon::Create( ID3D11Device* pDevice )
+CChameleon* CChameleon::Create( ID3D11Device* pDevice, NxActor* pActor )
 {
 	CChameleon* pChameleon = new CChameleon;
 
-	if ( FAILED( pChameleon->Initialize( pDevice ) ) )
+	if ( FAILED( pChameleon->Initialize( pDevice, pActor ) ) )
 	{
 		pChameleon->Release();
 		pChameleon = nullptr;

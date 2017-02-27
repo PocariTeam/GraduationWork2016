@@ -28,14 +28,14 @@ void CRenderer::SetRenderTargetDebug( void )
 
 void CRenderer::Clear_RenderGroup( void )
 {
-	for( int i = 0; i < RENDER_END; ++i ) {
-		if( m_RenderGroup[ i ].empty() ) continue;
-		auto iter = m_RenderGroup[ i ].begin();
-		for( ; iter != m_RenderGroup[ i ].end(); )
-			iter = m_RenderGroup[ i ].erase( iter );
+	/*for( int i = 0; i < RENDER_END; ++i ) {
+		if( m_pRenderGroup[ i ].empty() ) continue;
+		auto iter = m_pRenderGroup[ i ].begin();
+		for( ; iter != m_pRenderGroup[ i ].end(); )
+			iter = m_pRenderGroup[ i ].erase( iter );
 
-		m_RenderGroup[ i ].clear();
-	}
+		m_pRenderGroup[ i ].clear();
+	}*/
 }
 
 DWORD CRenderer::Release( void )
@@ -55,18 +55,17 @@ HRESULT CRenderer::Add_RenderGroup( RENDERGROUP eGroup, CShader* pShader )
 	if( eGroup >= RENDER_END )
 		return E_FAIL;
 
-	m_RenderGroup[ eGroup ].push_back( pShader );
+	m_pRenderGroup[ eGroup ].push_back( pShader );
 
 	return S_OK;
 }
 
-HRESULT CRenderer::Copy_RenderGroup( const list<CShader*>* pRenderGroup )
+HRESULT CRenderer::Copy_RenderGroup( list<CShader*>* pRenderGroup )
 {
-	if( NULL == pRenderGroup )
+	if( nullptr == pRenderGroup )
 		return E_FAIL;
 
-	for( int i = 0; i < RENDER_END; ++i )
-		m_RenderGroup[ i ] = pRenderGroup[ i ];
+	m_pRenderGroup = pRenderGroup;
 
 	return S_OK;
 }
@@ -80,6 +79,8 @@ HRESULT CRenderer::Initialize( ID3D11Device* pDevice )
 
 void CRenderer::Render( ID3D11DeviceContext* pContext )
 {
+	if( nullptr == m_pRenderGroup ) return;
+
 	Render_Background( pContext );
 	Render_DepthTest( pContext );
 	if( !m_bWireFrame )
@@ -103,8 +104,8 @@ void CRenderer::Render_Background( ID3D11DeviceContext* pContext )
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_WRITE );
 
-	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_BACKGROUND ].begin();
-	SHADERLIST::iterator	iter_end = m_RenderGroup[ RENDER_BACKGROUND ].end();
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_BACKGROUND ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_BACKGROUND ].end();
 
 	for( ; iter != iter_end; ++iter )
 	{
@@ -116,8 +117,8 @@ void CRenderer::Render_DepthTest( ID3D11DeviceContext* pContext )
 {
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 
-	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_DEPTHTEST ].begin();
-	SHADERLIST::iterator	iter_end = m_RenderGroup[ RENDER_DEPTHTEST ].end();
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_DEPTHTEST ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_DEPTHTEST ].end();
 	
 	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
@@ -150,7 +151,7 @@ void CRenderer::Render_Light( ID3D11DeviceContext* pContext )
 
 	CLightMgr::GetInstance()->Render( pContext );
 
-	m_RenderGroup[ RENDER_LIGHT ].front()->Render( pContext );
+	m_pRenderGroup[ RENDER_LIGHT ].front()->Render( pContext );
 }
 
 void CRenderer::Render_Blend( ID3D11DeviceContext* pContext )
@@ -166,7 +167,7 @@ void CRenderer::Render_Blend( ID3D11DeviceContext* pContext )
  	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
 	CRenderTargetMgr::GetInstance()->SetShaderResourceView( pContext, 0, CRenderTargetMgr::RT_ALBEDO, 3 );
 
-	m_RenderGroup[ RENDER_BLEND ].front()->Render( pContext );
+	m_pRenderGroup[ RENDER_BLEND ].front()->Render( pContext );
 }
 
 void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
@@ -176,8 +177,8 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_WRITE );
 
-	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_ALPHA ].begin();
-	SHADERLIST::iterator	iter_end = m_RenderGroup[ RENDER_ALPHA ].end();
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
 
 	for( ; iter != iter_end; ++iter )
 	{
@@ -196,8 +197,8 @@ void CRenderer::Render_UI( ID3D11DeviceContext* pContext )
 
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
 
-	SHADERLIST::iterator	iter = m_RenderGroup[ RENDER_UI ].begin();
-	SHADERLIST::iterator	iter_end = m_RenderGroup[ RENDER_UI ].end();
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_UI ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_UI ].end();
 
 	for( ; iter != iter_end; ++iter )
 	{
@@ -212,6 +213,6 @@ void CRenderer::Render_RenderTargetDebug( ID3D11DeviceContext* pContext )
 {
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
 
-	m_RenderGroup[ RENDER_DEBUG ].front()->Render( pContext );
+	m_pRenderGroup[ RENDER_DEBUG ].front()->Render( pContext );
 	CRenderTargetMgr::GetInstance()->Render( pContext );
 }

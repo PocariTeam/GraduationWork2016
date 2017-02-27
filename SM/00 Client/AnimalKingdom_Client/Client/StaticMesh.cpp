@@ -36,65 +36,89 @@ HRESULT CStaticMesh::CreateBuffer( ID3D11Device* pDevice, const char* pFilePath 
 	pIn >> szType;
 
 	if( szType == 's' )
-		while( !pIn.eof() )
+	{
+		pIn >> szInformation;
+		if( szInformation == 'v' )
 		{
-			pIn >> szInformation;
-			switch( szInformation )
-			{
-			case 'v':
-			{
-				pIn >> m_dwVtxCnt;
-				m_dwVtxSize = sizeof( VERTEX_PNTT );
-				VERTEX_PNTT* pVertex = new VERTEX_PNTT[ m_dwVtxCnt ];
-				for( DWORD i = 0; i < m_dwVtxCnt; ++i )
-				{
-					pIn >> pVertex[ i ];
-				}
+			pIn >> m_dwVtxCnt;
+			m_dwVtxSize = sizeof( VERTEX_PNTT );
+			VERTEX_PNTT* pVertex = new VERTEX_PNTT[ m_dwVtxCnt ];
+			for( DWORD i = 0; i < m_dwVtxCnt; ++i )
+				pIn >> pVertex[ i ];
 
-				D3D11_BUFFER_DESC			VTXBuffer_Desc;
-				D3D11_SUBRESOURCE_DATA		VTXData;
+			D3D11_BUFFER_DESC			VTXBuffer_Desc;
+			D3D11_SUBRESOURCE_DATA		VTXData;
 
-				ZeroMemory( &VTXBuffer_Desc, sizeof( D3D11_BUFFER_DESC ) );
-				VTXBuffer_Desc.Usage = D3D11_USAGE_DEFAULT;
-				VTXBuffer_Desc.ByteWidth = m_dwVtxSize * m_dwVtxCnt;
-				VTXBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			ZeroMemory( &VTXBuffer_Desc, sizeof( D3D11_BUFFER_DESC ) );
+			VTXBuffer_Desc.Usage = D3D11_USAGE_DEFAULT;
+			VTXBuffer_Desc.ByteWidth = m_dwVtxSize * m_dwVtxCnt;
+			VTXBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
-				ZeroMemory( &VTXData, sizeof( D3D11_SUBRESOURCE_DATA ) );
-				VTXData.pSysMem = pVertex;
+			ZeroMemory( &VTXData, sizeof( D3D11_SUBRESOURCE_DATA ) );
+			VTXData.pSysMem = pVertex;
 
-				if( FAILED( pDevice->CreateBuffer( &VTXBuffer_Desc, &VTXData, &m_pVB ) ) )
-					return E_FAIL;
-				::Safe_Delete_Array( pVertex );
-			}
-			break;
-			case 'i':
-			{
-				pIn >> m_dwIdxCnt;
-				m_dwIdxSize = sizeof( DWORD );
-				DWORD*	pIndex = new DWORD[ m_dwIdxCnt ];
-				for( DWORD i = 0; i < m_dwIdxCnt; ++i )
-				{
-					pIn >> pIndex[ i ];
-				}
-
-				D3D11_BUFFER_DESC			IdxBuffer_Desc;
-				D3D11_SUBRESOURCE_DATA		IdxData;
-
-				ZeroMemory( &IdxBuffer_Desc, sizeof( D3D11_BUFFER_DESC ) );
-				IdxBuffer_Desc.Usage = D3D11_USAGE_DEFAULT;
-				IdxBuffer_Desc.ByteWidth = m_dwIdxSize * m_dwIdxCnt;
-				IdxBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-				ZeroMemory( &IdxData, sizeof( D3D11_SUBRESOURCE_DATA ) );
-				IdxData.pSysMem = pIndex;
-
-				if( FAILED( pDevice->CreateBuffer( &IdxBuffer_Desc, &IdxData, &m_pIB ) ) )
-					return E_FAIL;
-				::Safe_Delete_Array( pIndex );
-			}
-			break;
-			}
+			if( FAILED( pDevice->CreateBuffer( &VTXBuffer_Desc, &VTXData, &m_pVB ) ) )
+				return E_FAIL;
+			::Safe_Delete_Array( pVertex );
 		}
+	}
+
+	else if( szType == 'd' )
+	{
+		pIn >> szInformation;
+		if( szInformation == 'v' )
+		{
+			pIn >> m_dwVtxCnt;
+			m_dwVtxSize = sizeof( XMFLOAT3 );
+			XMFLOAT3* pVertex = new XMFLOAT3[ m_dwVtxCnt ];
+			for( DWORD i = 0; i < m_dwVtxCnt; ++i )
+			{
+				pIn >> pVertex[ i ].x;
+				pIn >> pVertex[ i ].y;
+				pIn >> pVertex[ i ].z;
+			}
+
+			D3D11_BUFFER_DESC			VTXBuffer_Desc;
+			D3D11_SUBRESOURCE_DATA		VTXData;
+
+			ZeroMemory( &VTXBuffer_Desc, sizeof( D3D11_BUFFER_DESC ) );
+			VTXBuffer_Desc.Usage = D3D11_USAGE_DEFAULT;
+			VTXBuffer_Desc.ByteWidth = m_dwVtxSize * m_dwVtxCnt;
+			VTXBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+			ZeroMemory( &VTXData, sizeof( D3D11_SUBRESOURCE_DATA ) );
+			VTXData.pSysMem = pVertex;
+
+			if( FAILED( pDevice->CreateBuffer( &VTXBuffer_Desc, &VTXData, &m_pVB ) ) )
+				return E_FAIL;
+			::Safe_Delete_Array( pVertex );
+		}
+	}
+
+	pIn >> szInformation;
+	if( szInformation == 'i' )
+	{
+		pIn >> m_dwIdxCnt;
+		m_dwIdxSize = sizeof( DWORD );
+		DWORD*	pIndex = new DWORD[ m_dwIdxCnt ];
+		for( DWORD i = 0; i < m_dwIdxCnt; ++i )
+			pIn >> pIndex[ i ];
+
+		D3D11_BUFFER_DESC			IdxBuffer_Desc;
+		D3D11_SUBRESOURCE_DATA		IdxData;
+
+		ZeroMemory( &IdxBuffer_Desc, sizeof( D3D11_BUFFER_DESC ) );
+		IdxBuffer_Desc.Usage = D3D11_USAGE_DEFAULT;
+		IdxBuffer_Desc.ByteWidth = m_dwIdxSize * m_dwIdxCnt;
+		IdxBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+		ZeroMemory( &IdxData, sizeof( D3D11_SUBRESOURCE_DATA ) );
+		IdxData.pSysMem = pIndex;
+
+		if( FAILED( pDevice->CreateBuffer( &IdxBuffer_Desc, &IdxData, &m_pIB ) ) )
+			return E_FAIL;
+		::Safe_Delete_Array( pIndex );
+	}
 
 	pIn.close();
 

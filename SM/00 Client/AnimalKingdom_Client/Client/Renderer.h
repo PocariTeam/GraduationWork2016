@@ -4,16 +4,15 @@
 #define _RENDERER_H_
 
 #include "Singleton.h"
+#include "Enum.h"
 
 class CShader;
 class CRenderer
 	: public CSingleton<CRenderer>
 {
 public:
-	enum RENDERGROUP { RENDER_BACKGROUND, RENDER_DEPTHTEST, RENDER_LIGHT, RENDER_BLEND, RENDER_ALPHA, RENDER_UI, RENDER_DEBUG, RENDER_END };
-public:
 	HRESULT Add_RenderGroup( RENDERGROUP eGroup, CShader* pShader );
-	HRESULT Copy_RenderGroup( const list<CShader*>* pRenderGroup );
+	HRESULT Copy_RenderGroup( list<CShader*>* pRenderGroup );
 	HRESULT Initialize( ID3D11Device* pDevice );
 	void Render( ID3D11DeviceContext* pContext );
 	void Clear_RenderGroup( void );
@@ -21,7 +20,7 @@ public:
 	void SetRenderTargetDebug( void );
 private:
 	using SHADERLIST = list<CShader*>;
-	SHADERLIST			m_RenderGroup[ RENDER_END ];
+	SHADERLIST*			m_pRenderGroup{ nullptr };
 public:
 	static bool			m_bWireFrame;
 	static bool			m_bRenderTargetDebug;

@@ -1,3 +1,6 @@
-2
+5
 Mesh_Snowball ../Executable/Resources/Mesh/Inanimate/Normal/Snowball.jsm
 Mesh_Terrain ../Executable/Resources/Mesh/Inanimate/Normal/Terrain.jsm
+Mesh_Box ../Executable/Resources/Mesh/Inanimate/Debug/Box.jsm
+Mesh_Capsule ../Executable/Resources/Mesh/Inanimate/Debug/Capsule.jsm
+Mesh_Sphere ../Executable/Resources/Mesh/Inanimate/Debug/Sphere.jsm

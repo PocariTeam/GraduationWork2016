@@ -14,13 +14,14 @@
 
 // C 런타임 헤더 파일입니다.
 #ifdef _DEBUG
-	#define _CRTDBG_MAP_ALLOC
+	// Physics 헤더와 충돌 발생
+	// #define _CRTDBG_MAP_ALLOC
 	#include <stdlib.h> 
 	#include <crtdbg.h>
-	#ifndef DBG_NEW
-		#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-		#define new DBG_NEW
-	#endif
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new DBG_NEW
+#endif
 #else
 	#include <stdlib.h> 
 #endif  // _DEBUG

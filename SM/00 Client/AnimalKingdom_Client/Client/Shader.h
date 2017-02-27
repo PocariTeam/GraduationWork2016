@@ -24,6 +24,7 @@ protected:
 	HRESULT CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize = sizeof( XMFLOAT4X4 ) );
 public:
 	virtual CShader*	Clone( void )PURE;
+	virtual void Update( const float& fTimeDelta )PURE;
 	virtual void Render( ID3D11DeviceContext* pContext )PURE;
 	virtual void Add_RenderObject( CGameObject* pGameObject )PURE;
 	void	SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData );

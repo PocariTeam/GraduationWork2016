@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "NXU_string.h"
+#pragma warning(disable:4996)
 
 #ifdef WIN32
 #pragma warning(push)

@@ -2,6 +2,7 @@
 #include "NormalShader.h"
 #include "Function.h"
 #include "GameObject.h"
+#include "Functor.h"
 
 CNormalShader::CNormalShader()
 	: CShader()
@@ -22,6 +23,15 @@ CShader* CNormalShader::Clone( void )
 	return new CNormalShader( *this );
 }
 
+void CNormalShader::Update( const float& fTimeDelta )
+{
+	if( m_vecRenderObject.empty() )
+		return;
+
+	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
+		m_vecRenderObject[ i ]->Update( fTimeDelta );
+}
+
 void CNormalShader::Render( ID3D11DeviceContext* pContext )
 {
 	pContext->IASetInputLayout( m_pInputLayout );
@@ -36,7 +46,7 @@ void CNormalShader::Render( ID3D11DeviceContext* pContext )
 
 	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
 	{
-		SetConstantBuffer( pContext, m_vecRenderObject[ i ]->GetWorld() );
+		SetConstantBuffer( pContext, &m_vecRenderObject[ i ]->GetWorld() );
 		m_vecRenderObject[ i ]->Render( pContext );
 	}
 }
@@ -45,7 +55,10 @@ DWORD CNormalShader::Release( void )
 {
 	DWORD dwRefCnt = CShader::Release();
 
-	if( !m_vecRenderObject.empty() ) m_vecRenderObject.clear();
+	for_each( m_vecRenderObject.begin(), m_vecRenderObject.end(), ReleaseElement() );
+	m_vecRenderObject.erase( m_vecRenderObject.begin(), m_vecRenderObject.end() );
+	m_vecRenderObject.swap( vector<CGameObject*>{} );
+
 	delete this;
 
 	return dwRefCnt;

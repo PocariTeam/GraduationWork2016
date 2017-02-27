@@ -77,10 +77,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(IncludePath);../Executable/ThirdParty/DX11/include;;../Executable/ThirdParty/Physics/SampleCommonCode/src/win;../Executable/ThirdParty/Physics/SDKs/Foundation/include;../Executable/ThirdParty/Physics/SDKs/Foundation/include/win;../Executable/ThirdParty/Physics/SDKs/Physics/include;../Executable/ThirdParty/Physics/SDKs/Cooking/include;../Executable/ThirdParty/Physics/SDKs/PhysXLoader/include;../Executable/ThirdParty/Physics/SDKs/NxCharacter/include;../Executable/ThirdParty/Physics/NxuStream2;../Executable/ThirdParty/Physics/SampleCommonCode/src</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir);../Executable/ThirdParty/DX11/include;../Executable/ThirdParty/Physics/SampleCommonCode/src/win;../Executable/ThirdParty/Physics/SDKs/Foundation/include;../Executable/ThirdParty/Physics/SDKs/Foundation/include/win;../Executable/ThirdParty/Physics/SDKs/Physics/include;../Executable/ThirdParty/Physics/SDKs/Cooking/include;../Executable/ThirdParty/Physics/SDKs/PhysXLoader/include;../Executable/ThirdParty/Physics/SDKs/NxCharacter/include;../Executable/ThirdParty/Physics/NxuStream2;../Executable/ThirdParty/Physics/SampleCommonCode/src</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <GenerateManifest>false</GenerateManifest>
-    <IntDir />
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -89,9 +89,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Executable/</OutDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);../Executable/ThirdParty/DX11/include;;../Executable/ThirdParty/Physics/SampleCommonCode/src/win;../Executable/ThirdParty/Physics/SDKs/Foundation/include;../Executable/ThirdParty/Physics/SDKs/Foundation/include/win;../Executable/ThirdParty/Physics/SDKs/Physics/include;../Executable/ThirdParty/Physics/SDKs/Cooking/include;../Executable/ThirdParty/Physics/SDKs/PhysXLoader/include;../Executable/ThirdParty/Physics/SDKs/NxCharacter/include;../Executable/ThirdParty/Physics/NxuStream2;../Executable/ThirdParty/Physics/SampleCommonCode/src</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);../Executable/ThirdParty/DX11/include;../Executable/ThirdParty/Physics/SampleCommonCode/src/win;../Executable/ThirdParty/Physics/SDKs/Foundation/include;../Executable/ThirdParty/Physics/SDKs/Foundation/include/win;../Executable/ThirdParty/Physics/SDKs/Physics/include;../Executable/ThirdParty/Physics/SDKs/Cooking/include;../Executable/ThirdParty/Physics/SDKs/PhysXLoader/include;../Executable/ThirdParty/Physics/SDKs/NxCharacter/include;../Executable/ThirdParty/Physics/NxuStream2;../Executable/ThirdParty/Physics/SampleCommonCode/src</IncludePath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
-    <IntDir />
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -170,6 +170,29 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Asc2Bin.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_ColladaExport.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_ColladaImport.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_cooking.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_customcopy.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_File.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Geometry.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_GraphicsMesh.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_helper.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_hull.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_PhysicsExport.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_PhysicsInstantiator.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_ScaledCopy.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_schema.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_SchemaStream.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_SchemaTypes.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Streaming.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_string.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_tinystr.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_tinyxml.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\SampleCommonCode\src\cooking.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\SampleCommonCode\src\UserAllocator.h" />
+    <ClInclude Include="..\Executable\ThirdParty\Physics\SampleCommonCode\src\Utilities.h" />
     <ClInclude Include="AnimateMesh.h" />
     <ClInclude Include="AnimateMeshMgr.h" />
     <ClInclude Include="Animation.h" />
@@ -189,6 +212,7 @@
     <ClInclude Include="ChameleonRunAnimation.h" />
     <ClInclude Include="ChameleonStandupAnimation.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="CollisionReport.h" />
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="InputMgr.h" />
@@ -207,6 +231,7 @@
     <ClInclude Include="MeshMgr.h" />
     <ClInclude Include="MultiTexture.h" />
     <ClInclude Include="NormalShader.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderState.h" />
@@ -232,6 +257,98 @@
     <ClInclude Include="Wallpaper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Asc2Bin.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_ColladaExport.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_ColladaImport.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_cooking.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_customcopy.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_File.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Geometry.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_GraphicsMesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_helper.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_hull.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_PhysicsExport.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_PhysicsInstantiator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_ScaledCopy.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_schema.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_SchemaStream.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Streaming.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_string.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_tinystr.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_tinyxml.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_tinyxmlerror.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_tinyxmlparser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\SampleCommonCode\src\Cooking.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Executable\ThirdParty\Physics\SampleCommonCode\src\userallocator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="AnimateMesh.cpp" />
     <ClCompile Include="AnimateMeshMgr.cpp" />
     <ClCompile Include="AnimationController.cpp" />
@@ -250,6 +367,7 @@
     <ClCompile Include="ChameleonRunAnimation.cpp" />
     <ClCompile Include="ChameleonStandupAnimation.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="CollisionReport.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Dot.cpp" />
@@ -264,6 +382,7 @@
     <ClCompile Include="MeshMgr.cpp" />
     <ClCompile Include="MultiTexture.cpp" />
     <ClCompile Include="NormalShader.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderState.cpp" />
@@ -297,6 +416,14 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Executable\Resources\Shader\ActorShape.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>

@@ -3,7 +3,9 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
-class CGameObject;
+#include "Enum.h"
+
+class CShader;
 class CCamera;
 class CScene
 {
@@ -23,6 +25,9 @@ protected:
 protected:
 	HWND				 m_hWnd;
 	CCamera*			 m_pCamera;
+	using SHADERLIST = list<CShader*>;
+	SHADERLIST		m_listShader[ RENDER_END ];
+
 };
 
 #endif

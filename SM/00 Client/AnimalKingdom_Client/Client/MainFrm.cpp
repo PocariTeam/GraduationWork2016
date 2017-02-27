@@ -17,6 +17,7 @@
 #include "LightMgr.h"
 #include "AnimateMeshMgr.h"
 #include "AnimationMgr.h"
+#include "Physics.h"
 
 HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 {
@@ -106,8 +107,7 @@ DWORD CMainFrm::Release( void )
 {
 	::Safe_Release( m_pScene );
 
-	
-	/*CPhysicsMgr::GetInstance()->Release();*/
+	CPhysics::DestroyInstance();
 	CAnimationMgr::DestroyInstance();
 	CLightMgr::DestroyInstance();
 	CRenderer::DestroyInstance();

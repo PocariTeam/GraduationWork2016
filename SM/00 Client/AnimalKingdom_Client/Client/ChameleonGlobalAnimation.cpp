@@ -22,6 +22,7 @@ void CChameleonGlobalAnimation::Enter( CGameObject* pChameleon, const float& fTi
 
 void CChameleonGlobalAnimation::Execute( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
+	
 }
 
 void CChameleonGlobalAnimation::Exit( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
