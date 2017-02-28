@@ -6,11 +6,41 @@
 #include "Define.h"
 #include "ChameleonIdleAnimation.h"
 #include "ChameleonGlobalAnimation.h"
+#include "GameObject.h"
+#include <NxActor.h>
+#include <NxShape.h>
+#include <NxMat34.h>
 
 void CAnimationController::Update( const float& fTimeDelta )
 {
 	if( m_pPreviousAnimation ) m_pPreviousAnimation->Execute( m_pOwner, fTimeDelta, m_fTimePos );
-	if( m_pCurrentAnimation ) m_pCurrentAnimation->Execute( m_pOwner, fTimeDelta, m_fTimePos );
+	if( m_pCurrentAnimation )
+	{
+		DWORD i = 0;
+		m_pCurrentAnimation->Execute( m_pOwner, fTimeDelta, m_fTimePos );
+		XMFLOAT4X4* pWorld = new XMFLOAT4X4[ m_dwJointCnt ];
+		m_pCurrentAnimation->GetAnimationMatrix( pWorld, m_fTimePos );
+		NxActor* pActor = m_pOwner->GetActor();
+		NxU32 iShapeCnt = pActor->getNbShapes();
+		NxShape* const* dpShape = pActor->getShapes();
+
+		for( NxU32 j = 0; j < iShapeCnt; ++j )
+		{
+			for( ; i < m_dwJointCnt; ++i )
+				if( 0 == strcmp( m_pArrJointName[ i ].c_str(), dpShape[ j ]->getName() ) )
+					break;
+
+			NxMat34 mtxLocal;
+			NxF32	fLocal[ 16 ];
+			memcpy( fLocal, &pWorld[ i ], sizeof( XMFLOAT4X4 ) );
+			mtxLocal.setRowMajor44( fLocal );
+
+			dpShape[j]->setLocalPose( mtxLocal );
+			i = 0;
+		}
+
+		delete[] pWorld;
+	}
 }
 
 void CAnimationController::Change_Animation( CAnimation* pAnimation )

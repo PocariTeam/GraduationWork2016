@@ -23,6 +23,7 @@ public:
 public:
 	void			SetActor( NxActor* pActor ) { m_pActor = pActor; }
 	virtual XMFLOAT4X4 GetWorld();
+	NxActor*	GetActor() { return m_pActor; }
 protected:
 	NxActor*		m_pActor;
 	CMesh*			m_pMesh;

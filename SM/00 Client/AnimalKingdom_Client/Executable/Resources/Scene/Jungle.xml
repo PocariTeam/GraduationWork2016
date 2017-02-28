@@ -1,5 +1,5 @@
   <NXUSTREAM2>
-    <NxuPhysicsCollection id="jungle_fix.xml" sdkVersion="284" nxuVersion="103">
+    <NxuPhysicsCollection id="Jungle_fix.xml" sdkVersion="284" nxuVersion="103">
       <NxPhysicsSDKDesc id="SDK"/>
       <NxSceneDesc id="Scene_0" hasFilter="true">
         <NxGroupsMask id="groupMask0"/>
@@ -92,10 +92,10 @@
           </NxBoxShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_1" hasBody="true" name="chm">
-          <globalPose>1 0 0  0 1 0  0 0 1  -0.000000013 29.380748749 0.000000013</globalPose>
+          <globalPose>1 0 0  0 1 0  0 0 1  -0.000000013 15.641587257 0.000000013</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>0.797543764 0.015233445 -0.60306865  -0.00779599 0.999857903 0.014946284  0.603210628 -0.007218799 0.797549248  0.053782642 5.860402584 0.025768714</massLocalPose>
-            <massSpaceInertia>0.251504928 0.155698672 0.251592189</massSpaceInertia>
+            <massLocalPose>0.50070411 -0.041174766 -0.864638627  0.101321325 0.994789541 0.011301577  0.859668195 -0.093265086 0.502267122  0.055803794 7.730926037 0.129542112</massLocalPose>
+            <massSpaceInertia>0.727688551 0.203226104 0.723847032</massSpaceInertia>
             <mass>0.187662438</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
@@ -116,7 +116,7 @@
           </NxBodyDesc>
           <NxSphereShapeDesc radius="1.600000024">
             <NxShapeDesc name="Head">
-              <localPose>1 0 0  0 1 0  0 0 1  0.000000022 5.867935181 -0.000000015</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  0.000000022 8.99352169 -0.000000013</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -148,7 +148,7 @@
           </NxSphereShapeDesc>
           <NxBoxShapeDesc dimensions="0.949999988 1.450000048 0.949999988">
             <NxShapeDesc name="root">
-              <localPose>1 0 0  0 1 0  0 0 1  0.192016929 6.389438629 0.025529364</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  0.192016929 5.947548866 0.025529364</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -180,7 +180,7 @@
           </NxBoxShapeDesc>
           <NxSphereShapeDesc radius="0.600000024">
             <NxShapeDesc name="RHand">
-              <localPose>1 0 0  0 1 0  0 0 1  0.000000022 5.867935181 -0.000000015</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  -1.682926297 4.672715187 -0.000000015</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -212,7 +212,7 @@
           </NxSphereShapeDesc>
           <NxSphereShapeDesc radius="0.600000024">
             <NxShapeDesc name="LHand">
-              <localPose>1 0 0  0 1 0  0 0 1  0.000000022 5.867935181 -0.000000015</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  1.771337509 4.610976219 -0.000000015</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -244,7 +244,7 @@
           </NxSphereShapeDesc>
           <NxCapsuleShapeDesc radius="0.600000024" height="2">
             <NxShapeDesc name="Tail">
-              <localPose>0.649323225 0.048296992 -0.758977354  0.139223248 -0.988665104 0.056195788  -0.747660458 -0.142156541 -0.648687303  0.07244537 4.384937286 0.213234872</localPose>
+              <localPose>0.649323225 0.048296992 -0.758977354  0.139223248 -0.988665104 0.056195788  -0.747660458 -0.142156541 -0.648687303  0.072445311 5.542632103 1.348073959</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
