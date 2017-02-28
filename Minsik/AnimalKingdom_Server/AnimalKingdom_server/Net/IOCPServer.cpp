@@ -9,7 +9,7 @@ IOCPServer::IOCPServer()
 	}*/
 	this->initialize();
 
-	SLog(L"# Initialize network base");
+	SLog(L"# Initialize IOCP base");
 }
 
 IOCPServer::~IOCPServer()

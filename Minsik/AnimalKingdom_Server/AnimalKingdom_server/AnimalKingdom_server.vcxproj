@@ -70,11 +70,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);D:\GraduationWork\Minsik\AnimalKingdom_Server\AnimalKingdom_server\PhysX\SDKs\Physics\include;../AnimalKingdom_server/PhysX/SampleCommonCode/src/win;../AnimalKingdom_server/PhysX/SDKs/Foundation/include;../AnimalKingdom_server/PhysX/SDKs/Foundation/include/win;../AnimalKingdom_server/PhysX/SDKs/Physics/include;../AnimalKingdom_server/PhysX/SDKs/Cooking/include;../AnimalKingdom_server/PhysX/SDKs/PhysXLoader/include;../AnimalKingdom_server/PhysX/SDKs/NxCharacter/include;../AnimalKingdom_server/PhysX/NxuStream2;../AnimalKingdom_server/PhysX/SampleCommonCode/src</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);../AnimalKingdom_server/PhysX/SampleCommonCode/src/win;../AnimalKingdom_server/PhysX/SDKs/Foundation/include;../AnimalKingdom_server/PhysX/SDKs/Foundation/include/win;../AnimalKingdom_server/PhysX/SDKs/Physics/include;../AnimalKingdom_server/PhysX/SDKs/Cooking/include;../AnimalKingdom_server/PhysX/SDKs/PhysXLoader/include;../AnimalKingdom_server/PhysX/SDKs/NxCharacter/include;../AnimalKingdom_server/PhysX/NxuStream2;../AnimalKingdom_server/PhysX/SampleCommonCode/src</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);../AnimalKingdom_server/PhysX/SDKs/lib/win64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);D:\GraduationWork\Minsik\AnimalKingdom_Server\AnimalKingdom_server\PhysX\SDKs\Physics\include;../AnimalKingdom_server/PhysX/SampleCommonCode/src/win;../AnimalKingdom_server/PhysX/SDKs/Foundation/include;../AnimalKingdom_server/PhysX/SDKs/Foundation/include/win;../AnimalKingdom_server/PhysX/SDKs/Physics/include;../AnimalKingdom_server/PhysX/SDKs/Cooking/include;../AnimalKingdom_server/PhysX/SDKs/PhysXLoader/include;../AnimalKingdom_server/PhysX/SDKs/NxCharacter/include;../AnimalKingdom_server/PhysX/NxuStream2;../AnimalKingdom_server/PhysX/SampleCommonCode/src</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);../AnimalKingdom_server/PhysX/SampleCommonCode/src/win;../AnimalKingdom_server/PhysX/SDKs/Foundation/include;../AnimalKingdom_server/PhysX/SDKs/Foundation/include/win;../AnimalKingdom_server/PhysX/SDKs/Physics/include;../AnimalKingdom_server/PhysX/SDKs/Cooking/include;../AnimalKingdom_server/PhysX/SDKs/PhysXLoader/include;../AnimalKingdom_server/PhysX/SDKs/NxCharacter/include;../AnimalKingdom_server/PhysX/NxuStream2;../AnimalKingdom_server/PhysX/SampleCommonCode/src</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);../AnimalKingdom_server/PhysX/SDKs/lib/win64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
@@ -130,7 +130,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimalKingdom_server.h" />
     <ClInclude Include="Contents\PacketManager.h" />
     <ClInclude Include="Contents\Player.h" />
     <ClInclude Include="Contents\GameRoom.h" />
@@ -149,7 +150,29 @@
     <ClInclude Include="Net\IOCPServer.h" />
     <ClInclude Include="Net\Session.h" />
     <ClInclude Include="Net\SessionManager.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_Asc2Bin.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_ColladaExport.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_ColladaImport.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_cooking.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_customcopy.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_File.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_Geometry.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_GraphicsMesh.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_helper.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_hull.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_PhysicsExport.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_PhysicsInstantiator.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_ScaledCopy.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_schema.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_SchemaStream.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_SchemaTypes.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_Streaming.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_string.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_tinystr.h" />
+    <ClInclude Include="PhysX\NxuStream2\NXU_tinyxml.h" />
     <ClInclude Include="PhysX\PhysXManager.h" />
+    <ClInclude Include="PhysX\SampleCommonCode\src\cooking.h" />
+    <ClInclude Include="PhysX\SampleCommonCode\src\UserAllocator.h" />
     <ClInclude Include="Protocol\Protocol.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -182,7 +205,99 @@
     <ClCompile Include="Net\IOCPServer.cpp" />
     <ClCompile Include="Net\Session.cpp" />
     <ClCompile Include="Net\SessionManager.cpp" />
+    <ClCompile Include="PhysX\NxuStream2\NXU_Asc2Bin.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_ColladaExport.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_ColladaImport.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_cooking.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_customcopy.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_File.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_Geometry.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_GraphicsMesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_helper.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_hull.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_PhysicsExport.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_PhysicsInstantiator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_ScaledCopy.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_schema.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_SchemaStream.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_Streaming.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_string.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinystr.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinyxml.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinyxmlerror.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinyxmlparser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="PhysX\PhysXManager.cpp" />
+    <ClCompile Include="PhysX\SampleCommonCode\src\cooking.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="PhysX\SampleCommonCode\src\UserAllocator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -199,6 +314,11 @@
     <ClCompile Include="Util\tinyXml\tinyxml.cpp" />
     <ClCompile Include="Util\tinyXml\tinyxmlerror.cpp" />
     <ClCompile Include="Util\tinyXml\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PhysX\NxuStream2\TheNxuStreamFAQ.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

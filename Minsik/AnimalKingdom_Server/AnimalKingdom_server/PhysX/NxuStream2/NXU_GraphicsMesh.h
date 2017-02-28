@@ -203,6 +203,7 @@ bool NxuLoadGraphicsMesh(const char *meshName,NxuGraphicsInterface *iface);
 
 #define MAXSTRLEN 256
 
+
 class NxuBone
 {
 public:
@@ -212,7 +213,6 @@ public:
 		strcpy(mName,"");
 		Identity();
 	}
-
 	void Identity(void)
 	{
 		mPosition[0] = 0;

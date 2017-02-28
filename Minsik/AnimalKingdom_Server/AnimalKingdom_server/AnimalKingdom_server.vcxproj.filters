@@ -70,6 +70,75 @@
     <ClCompile Include="main\Shutdown.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_Geometry.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_GraphicsMesh.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_helper.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_hull.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_PhysicsExport.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_PhysicsInstantiator.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_ScaledCopy.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_schema.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_SchemaStream.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_Streaming.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_string.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinystr.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinyxml.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinyxmlerror.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_tinyxmlparser.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_Asc2Bin.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_ColladaExport.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_ColladaImport.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_cooking.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_customcopy.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxuStream2\NXU_File.cpp">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\SampleCommonCode\src\UserAllocator.cpp">
+      <Filter>PhysX\SampleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\SampleCommonCode\src\cooking.cpp">
+      <Filter>PhysX\SampleCommonCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contents\GameRoom.h">
@@ -162,6 +231,75 @@
     <ClInclude Include="main\Shutdown.h">
       <Filter>main</Filter>
     </ClInclude>
+    <ClInclude Include="AnimalKingdom_server.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_File.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_Geometry.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_GraphicsMesh.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_helper.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_hull.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_PhysicsExport.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_PhysicsInstantiator.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_ScaledCopy.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_schema.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_SchemaStream.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_SchemaTypes.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_Streaming.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_string.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_tinystr.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_tinyxml.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_Asc2Bin.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_ColladaExport.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_ColladaImport.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_cooking.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxuStream2\NXU_customcopy.h">
+      <Filter>PhysX\NxuStream2</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\SampleCommonCode\src\UserAllocator.h">
+      <Filter>PhysX\SampleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\SampleCommonCode\src\cooking.h">
+      <Filter>PhysX\SampleCommonCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -185,5 +323,16 @@
     <Filter Include="main">
       <UniqueIdentifier>{dff45c21-dd89-43c8-aa5c-de733e611c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PhysX\NxuStream2">
+      <UniqueIdentifier>{6ca7395c-8e09-485b-a389-9ec4843c7e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysX\SampleCommonCode">
+      <UniqueIdentifier>{897508da-38bb-4eb2-a058-b3724aa6b89c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PhysX\NxuStream2\TheNxuStreamFAQ.htm">
+      <Filter>PhysX\NxuStream2</Filter>
+    </None>
   </ItemGroup>
 </Project>
