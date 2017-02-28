@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Contents\GameRoom.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\PacketManager.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\Player.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\RoomManager.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\IOCPServer.cpp">
+      <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\Session.cpp">
+      <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Net\SessionManager.cpp">
+      <Filter>Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Assert.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Clock.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Config.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Lock.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Logger.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\PhysXManager.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Minidump.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Task.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Thread.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinystr.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinyxml.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinyxmlerror.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\tinyXml\tinyxmlparser.cpp">
+      <Filter>Util\tinyXml</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="main\Shutdown.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Contents\GameRoom.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\PacketManager.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Player.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\RoomManager.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\IOCPServer.h">
+      <Filter>Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\Session.h">
+      <Filter>Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Net\SessionManager.h">
+      <Filter>Net</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Assert.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Clock.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Config.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\GameObject.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Lock.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Logger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\PhysXManager.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol\Protocol.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Memory_LowFragmentationHeap.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\MemoryLeak.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Minidump.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\RandomMt.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Singleton.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Table.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Task.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Thread.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\tinyXml\tinystr.h">
+      <Filter>Util\tinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\tinyXml\tinyxml.h">
+      <Filter>Util\tinyXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Type.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Util.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="main\Shutdown.h">
+      <Filter>main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{08f53887-6bbd-404e-8ef5-0be81ebe418c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Net">
+      <UniqueIdentifier>{b38c8f37-b4a0-4666-9e58-9dc38d36df4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysX">
+      <UniqueIdentifier>{cdb94ca9-fa6b-4c86-a365-e952a275dfeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{5a363d22-daf7-455b-adb1-267c3f4f31c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{8e21393b-a305-4033-b821-4b8b18f50458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\tinyXml">
+      <UniqueIdentifier>{e67c60a0-548c-43c5-96d3-6a8ab19c4d5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{dff45c21-dd89-43c8-aa5c-de733e611c5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
