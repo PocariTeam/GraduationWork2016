@@ -6,6 +6,7 @@
 #include "Define.h"
 #include "ChameleonIdleAnimation.h"
 #include "ChameleonGlobalAnimation.h"
+#include "ChameleonRunAnimation.h"
 #include "GameObject.h"
 #include <NxActor.h>
 #include <NxShape.h>
@@ -13,6 +14,11 @@
 
 void CAnimationController::Update( const float& fTimeDelta )
 {
+	if( GetAsyncKeyState( 'R' ) & 0x8000 )
+		Change_Animation( CChameleonRunAnimation::GetInstance() );
+	if( GetAsyncKeyState( 'I' ) & 0x8000 )
+		Change_Animation( CChameleonIdleAnimation::GetInstance() );
+
 	if( m_pPreviousAnimation ) m_pPreviousAnimation->Execute( m_pOwner, fTimeDelta, m_fTimePos );
 	if( m_pCurrentAnimation )
 	{
@@ -29,10 +35,18 @@ void CAnimationController::Update( const float& fTimeDelta )
 			for( ; i < m_dwJointCnt; ++i )
 				if( 0 == strcmp( m_pArrJointName[ i ].c_str(), dpShape[ j ]->getName() ) )
 					break;
-
 			NxMat34 mtxLocal;
 			NxF32	fLocal[ 16 ];
-			memcpy( fLocal, &pWorld[ i ], sizeof( XMFLOAT4X4 ) );
+			//mtxLocal.getInverse( mtxLocal );
+			XMFLOAT4X4 mtxStoreLocal{};
+			( ( NxMat34* )dpShape[ j ]->userData )->getRowMajor44( fLocal );
+			memcpy( &mtxStoreLocal, fLocal, sizeof( XMFLOAT4X4 ) );
+			XMMATRIX mtxLoadLocal, mtxLoadAnimation{};
+			mtxLoadLocal = XMLoadFloat4x4( &mtxStoreLocal );
+			mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
+			XMMATRIX mtxResult = XMMatrixMultiply( mtxLoadAnimation, mtxLoadLocal );
+			XMStoreFloat4x4( &mtxStoreLocal, mtxResult );
+			memcpy( fLocal, &mtxStoreLocal, sizeof( XMFLOAT4X4 ) );
 			mtxLocal.setRowMajor44( fLocal );
 
 			dpShape[j]->setLocalPose( mtxLocal );

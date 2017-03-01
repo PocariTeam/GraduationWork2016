@@ -12,12 +12,17 @@ private:
 	explicit CTerrain();
 	virtual ~CTerrain();
 private:
-	HRESULT		Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture );
+	HRESULT		Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture, XMFLOAT3& vScale );
 public:
-	static CTerrain* Create( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture );
+	static CTerrain* Create( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh, CTexture* pTexture, XMFLOAT3& vScale );
+public:
+	XMFLOAT4X4 GetWorld();
 public:
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );
+private:
+	XMFLOAT3	m_vScale;
+
 };
 
 #endif // Terrain_h__

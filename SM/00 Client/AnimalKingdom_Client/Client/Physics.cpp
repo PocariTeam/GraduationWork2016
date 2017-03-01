@@ -50,7 +50,10 @@ DWORD CPhysics::Release( void )
 
 int CPhysics::Update( const float& fTimeDelta )
 {
+	m_pScene->fetchResults( NX_RIGID_BODY_FINISHED, true );
 	m_pScene->simulate( fTimeDelta );
+	m_pScene->flushStream();
+
 	return 0;
 }
 
@@ -83,7 +86,6 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 			switch( ( *dpShape )->getType() )
 			{
 			case NX_SHAPE_BOX:
-			{
 				vScale = ( ( NxBoxShape* )( *dpShape ) )->getDimensions() * 2.f;
 				mtxRealWorld = ( *dpShape )->getGlobalPose();
 				mtxScale.M.diagonal( vScale );
@@ -91,7 +93,6 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				mtxRealWorld.getRowMajor44( mtxWorld );
 				pShader->SetConstantBuffer( pContext, mtxWorld );
 				pBox->Render( pContext );
-			}
 			break;
 			case NX_SHAPE_SPHERE:
 				fRadius = ( ( NxSphereShape* )( *dpShape ) )->getRadius() * 2.f;
@@ -276,6 +277,14 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					SetCollisionGroup( pActor, COL_MINE );
 					m_pMyCharacterController = CreateCharacterController( pActor, pActor->getGlobalPosition(), 2.8f );
 
+					NxShape* const * dpShape = pActor->getShapes();
+
+					for( NxU32 i = 0; i < iActorShapeCnt; ++i )
+					{
+						dpShape[ i ]->userData = new NxMat34;
+						*( NxMat34* )dpShape[ i ]->userData = dpShape[ i ]->getLocalPose();
+					}
+
 					CGameObject* pPlayer = CPlayer::Create( pDevice, pActor, CAnimationMgr::CHARACTER_CHM );
 					pShader_Animate->Add_RenderObject( pPlayer );
 				}
@@ -296,14 +305,15 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 			else
 			{
-				if( 0 == strcmp( pActor->getName(), "Line095" ) )
+				if( 0 == strcmp( pActor->getName(), "map" ) )
 				{
 					pActor->setGroup( COL_STATIC );
 					SetCollisionGroup( pActor, COL_STATIC );
 
-					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Terrain" );
-					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Terrain" );
-					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Map" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Map" );
+					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1048.53164f, 1048.53164f, 1048.53164f ) );
 					pShader_Mesh->Add_RenderObject( pTerrain );
 				}
 
@@ -370,14 +380,14 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, const NxVec3
 	else
 	{
 		// Capsule Controller
-		NxF32	fRadius = 0.5f;
-		NxF32	fHeight = 2.0f;
+		NxF32	fRadius = 2.f;
+		NxF32	fHeight = 5.0f;
 		NxCapsuleControllerDesc		tCapsuleDesc;
 		tCapsuleDesc.radius = fRadius * fScale;
 		tCapsuleDesc.height = fHeight * fScale;
 		tCapsuleDesc.position.x = vPos.x;
 		// gSpace = ( tCapsuleDesc.height * 0.5f + tCapsuleDesc.radius );
-		tCapsuleDesc.position.y = vPos.y; //+ gSpace;
+		tCapsuleDesc.position.y = vPos.y - 8.f; //+ gSpace;
 		tCapsuleDesc.position.z = vPos.z;
 		tCapsuleDesc.upDirection = NX_Y;
 		// tCapsuleDesc.slopeLimit = cosf(NxMath::degToRad(45.0f));

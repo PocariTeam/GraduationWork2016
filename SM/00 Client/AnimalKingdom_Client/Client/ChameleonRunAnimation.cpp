@@ -19,6 +19,9 @@ void CChameleonRunAnimation::Enter( CGameObject* pChameleon, const float& fTimeD
 
 void CChameleonRunAnimation::Execute( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
 {
+	fTimePos += fTimeDelta * m_fSpeed;
+
+	if( m_dwLength <= ( DWORD )fTimePos ) fTimePos = 0.f;
 }
 
 void CChameleonRunAnimation::Exit( CGameObject* pChameleon, const float& fTimeDelta, float& fTimePos )
