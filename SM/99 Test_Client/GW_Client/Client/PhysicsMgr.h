@@ -11,6 +11,8 @@ class UserAllocator;
 class NxControllerManager;
 class NxController;
 
+#define MAX_SCENE 5
+
 class CPhysicsMgr {
 	explicit CPhysicsMgr( void );
 	~CPhysicsMgr( void ) = default;
@@ -20,15 +22,16 @@ public:
 	static CPhysicsMgr*	GetInstance( void );
 	static void			DestroyInstance( void );
 public:
-	DWORD  Get_ActorCnt() { return m_pScene->getNbActors(); }
+	DWORD  Get_ActorCnt() { return m_pScene[m_nCurrentScene]->getNbActors(); }
 	void   Connect_Actors( vector<CGameObject*>* pvecGameObject );
 private:
 	UserAllocator*			m_pAllocator;
 	NxPhysicsSDK*			m_pPhysicsSDK;
-	NxScene*				m_pScene;
+	int						m_nCurrentScene;
+	NxScene*				m_pScene[MAX_SCENE];
 	ID3D11Buffer*			m_pCBmtxWorld;
 	NxControllerManager*	m_pCCTManager;
-	NxController*			m_pMyCCT;
+	NxController*			m_pMyCCT[MAX_SCENE];
 private:
 	HRESULT			CreateContantBuffer( ID3D11Device * pDevice );
 	void			SetContantBuffer( ID3D11DeviceContext* pContext, NxF32* pMtxWorld );

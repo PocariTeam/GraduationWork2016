@@ -29,12 +29,15 @@ NxF32 GRAVITY = -9.81f;
 
 CPhysicsMgr::CPhysicsMgr(void)
 	: m_pPhysicsSDK(nullptr)
-	, m_pScene(nullptr)
 	, m_pCBmtxWorld(nullptr)
 	, m_pCCTManager(nullptr)
-	, m_pMyCCT(nullptr)
 {
-
+	m_nCurrentScene = 0;
+	for (int i = 0; i < MAX_SCENE; i++)
+	{
+		m_pScene[i] = nullptr;
+		m_pMyCCT[i] = nullptr;
+	}
 }
 
 CPhysicsMgr* CPhysicsMgr::GetInstance(void)
@@ -60,7 +63,7 @@ void CPhysicsMgr::Connect_Actors(vector<CGameObject*>* pvecGameObject)
 	if (nullptr == pvecGameObject) return;
 	// if( pvecGameObject->size() != m_dwActorCnt ) return;
 
-	NxActor** dpActor = m_pScene->getActors();
+	NxActor** dpActor = m_pScene[m_nCurrentScene]->getActors();
 
 	for (DWORD i = 0; i < 1 /*pvecGameObject->size()*/; ++i, ++dpActor)
 	{
@@ -120,7 +123,7 @@ HRESULT CPhysicsMgr::Initialize()
 	sceneDesc.groundPlane = true;
 	sceneDesc.gravity = NxVec3(0, -9.81f, 0);
 	sceneDesc.simType = NX_SIMULATION_HW;
-	m_pScene = m_pPhysicsSDK->createScene(sceneDesc);
+	m_pScene[m_nCurrentScene] = m_pPhysicsSDK->createScene(sceneDesc);
 
 	m_pCCTManager = NxCreateControllerManager(m_pAllocator);
 
@@ -138,16 +141,18 @@ HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType 
 
 		if (c)
 		{
-			if (m_pScene)
+			if (m_pScene[m_nCurrentScene])
 			{
-				m_pPhysicsSDK->releaseScene(*m_pScene);
-				m_pScene = nullptr;
+				m_pPhysicsSDK->releaseScene(*m_pScene[m_nCurrentScene]);
+				m_pScene[m_nCurrentScene] = nullptr;
 			}
 
-			success = NXU::instantiateCollection(c, *m_pPhysicsSDK, 0, 0, 0);
+			for (int i = 0; i < MAX_SCENE; i++)
+			{
+				success = NXU::instantiateCollection(c, *m_pPhysicsSDK, m_pScene[i], 0, 0);
+				m_pScene[i] = m_pPhysicsSDK->getScene(i);
+			}
 			NXU::releaseCollection(c);
-
-			m_pScene = m_pPhysicsSDK->getScene(0);
 		}
 		else
 		{
@@ -155,7 +160,7 @@ HRESULT CPhysicsMgr::LoadSceneFromFile(const char *pFilename, NXU::NXU_FileType 
 		}
 	}
 
-	if (success)
+	if (success != E_FAIL)
 		printf("Scene loaded from file %s.\n", pFilename);
 
 	return success;
@@ -185,7 +190,7 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		desc.stepOffset = 0.1f;
 		desc.userData = (NxActor*)actor;
 		desc.callback = &gControllerHitReport;
-		pCtrl = m_pCCTManager->createController(m_pScene, desc);
+		pCtrl = m_pCCTManager->createController(m_pScene[m_nCurrentScene], desc);
 	}
 	else 
 	{
@@ -207,7 +212,7 @@ NxController* CPhysicsMgr::CreateCharacterController(NxActor* actor, const NxVec
 		desc.stepOffset = InitialRadius * 0.5f * scale;
 		desc.userData = (NxActor*)actor;
 		desc.callback = &gControllerHitReport;
-		pCtrl = m_pCCTManager->createController(m_pScene, desc);
+		pCtrl = m_pCCTManager->createController(m_pScene[m_nCurrentScene], desc);
 	}
 
 	char CCTName[256] = "CCTActor of ";
@@ -233,107 +238,111 @@ void CPhysicsMgr::SetShapesCollisionGroup(NxActor* actor, NxCollisionGroup group
 
 HRESULT CPhysicsMgr::SetupScene()
 {
-	if (!m_pScene) {
-		return E_FAIL;
-	}
-
-	m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.2f);
-	m_pScene->setUserContactReport(&gContactReport);
-	m_pScene->setActorGroupPairFlags(CollGroup::MY_CHARACTER, CollGroup::DYNAMIC, NX_NOTIFY_ON_START_TOUCH);
-
-	// Create the default material
-	NxMaterial* defaultMaterial = m_pScene->getMaterialFromIndex(0);
-	defaultMaterial->setRestitution(0.0);
-	defaultMaterial->setStaticFriction(0.5);
-	defaultMaterial->setDynamicFriction(0.5);
-
-	m_pScene->simulate(0);
-
-	// 테스트용 시뮬레이션 타입 체크
-	if (m_pScene->getSimType() == NX_SIMULATION_HW)
+	for (m_nCurrentScene = 0; m_nCurrentScene < 5; m_nCurrentScene++)
 	{
-		MessageBox(NULL, "Hardware Simulate", 0, MB_OK);
-	}
-	else
-	{
-		MessageBox(NULL, "Software Simulate", 0, MB_OK);
-	}
+		if (!m_pScene[m_nCurrentScene]) {
+			continue;
+		}
 
-/* 
-	PPU를 이용한 물리계산, 해당 Compartment를 액터에 넣어주어야 함
+		m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.2f);
+		m_pScene[m_nCurrentScene]->setUserContactReport(&gContactReport);
+		m_pScene[m_nCurrentScene]->setActorGroupPairFlags(CollGroup::MY_CHARACTER, CollGroup::DYNAMIC, NX_NOTIFY_ON_START_TOUCH);
 
-	NxCompartmentDesc cdesc;
-	cdesc.type = NX_SCT_RIGIDBODY;
-	cdesc.deviceCode = NX_DC_PPU_AUTO_ASSIGN;
-	NxCompartment *c = m_pScene->createCompartment(cdesc);
-*/
+		// Create the default material
+		NxMaterial* defaultMaterial = m_pScene[m_nCurrentScene]->getMaterialFromIndex(0);
+		defaultMaterial->setRestitution(0.0);
+		defaultMaterial->setStaticFriction(0.5);
+		defaultMaterial->setDynamicFriction(0.5);
 
-	NxU32 nbActors = m_pScene->getNbActors();
-	NxActor** aList = m_pScene->getActors();
+		m_pScene[m_nCurrentScene]->simulate(0);
 
-	if (m_pScene)
-	{
-		for (NxU32 i = 0; i < nbActors; i++)
+		// 테스트용 시뮬레이션 타입 체크
+		if (m_pScene[m_nCurrentScene]->getSimType() == NX_SIMULATION_HW)
 		{
-			NxActor *a = aList[i];
-			
-			NxVec3 pos = a->getGlobalPosition();
+			MessageBox(NULL, "Hardware Simulate", 0, MB_OK);
+		}
+		else
+		{
+			MessageBox(NULL, "Software Simulate", 0, MB_OK);
+		}
 
-			printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
-			
-			// 충돌그루핑
-			if (a->isDynamic()) 
+		/*
+			PPU를 이용한 물리계산, 해당 Compartment를 액터에 넣어주어야 함
+
+			NxCompartmentDesc cdesc;
+			cdesc.type = NX_SCT_RIGIDBODY;
+			cdesc.deviceCode = NX_DC_PPU_AUTO_ASSIGN;
+			NxCompartment *c = m_pScene->createCompartment(cdesc);
+		*/
+
+		NxU32 nbActors = m_pScene[m_nCurrentScene]->getNbActors();
+		NxActor** aList = m_pScene[m_nCurrentScene]->getActors();
+
+		if (m_pScene[m_nCurrentScene])
+		{
+			for (NxU32 i = 0; i < nbActors; i++)
 			{
-				if (strcmp(a->getName(), "chm") == 0) 
+				NxActor *a = aList[i];
+
+				NxVec3 pos = a->getGlobalPosition();
+
+				printf(" - 액터 '%s'의 global: (%f, %f, %f) \n", a->getName(), pos.x, pos.y, pos.z);
+
+				// 충돌그루핑
+				if (a->isDynamic())
 				{
-					a->setGroup(CollGroup::MY_CHARACTER);
-					SetShapesCollisionGroup(a, CollGroup::MY_CHARACTER);
-					m_pMyCCT = CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
-				}
-				else if (strcmp(a->getName(), "yourPlayer") == 0) 
-				{
-					a->setGroup(CollGroup::OTHER_CHARACTER);
-					SetShapesCollisionGroup(a, CollGroup::OTHER_CHARACTER);
-					CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
+					if (strcmp(a->getName(), "chm") == 0)
+					{
+						a->setGroup(CollGroup::MY_CHARACTER);
+						SetShapesCollisionGroup(a, CollGroup::MY_CHARACTER);
+						m_pMyCCT[m_nCurrentScene] = CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
+					}
+					else if (strcmp(a->getName(), "yourPlayer") == 0)
+					{
+						a->setGroup(CollGroup::OTHER_CHARACTER);
+						SetShapesCollisionGroup(a, CollGroup::OTHER_CHARACTER);
+						CreateCharacterController(a, a->getGlobalPosition(), 2.8f);
+					}
+					else
+					{
+						a->setGroup(CollGroup::DYNAMIC);
+						SetShapesCollisionGroup(a, CollGroup::DYNAMIC);
+					}
 				}
 				else
 				{
-					a->setGroup(CollGroup::DYNAMIC);
-					SetShapesCollisionGroup(a, CollGroup::DYNAMIC);
+					a->setGroup(CollGroup::STATIC);
+					SetShapesCollisionGroup(a, CollGroup::STATIC);
 				}
-			}
-			else 
-			{
-				a->setGroup(CollGroup::STATIC);
-				SetShapesCollisionGroup(a, CollGroup::STATIC);
-			}
 
-			NxU32 nbShapes = a->getNbShapes();
-			if (nbShapes)
-			{
-				NxShape ** slist = (NxShape **)a->getShapes();
-				for (NxU32 j = 0; j < nbShapes; j++)
+				NxU32 nbShapes = a->getNbShapes();
+				if (nbShapes)
 				{
-					NxShape *s = slist[j];
-					NxVec3 spos = s->getLocalPosition();
-					printf("   [%d] %s의 local: (%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
+					NxShape ** slist = (NxShape **)a->getShapes();
+					for (NxU32 j = 0; j < nbShapes; j++)
+					{
+						NxShape *s = slist[j];
+						NxVec3 spos = s->getLocalPosition();
+						printf("   [%d] %s의 local: (%f, %f, %f) \n", j, s->getName(), spos.x, spos.y, spos.z);
+					}
 				}
 			}
 		}
-	}
-	
-	// 테스트용
-	for (int i = 0; i < 3; ++i) 
-	{
-		for (int j = 0; j < 3; ++j) 
+
+		// 테스트용
+		for (int i = 0; i < 3; ++i)
 		{
-			CreateSphere(NxVec3(-30.0f + 10 * j, 0, -30.0f + 10*i), 3.0f, 10.0f);
+			for (int j = 0; j < 3; ++j)
+			{
+				CreateSphere(NxVec3(-30.0f + 10 * j, 0, -30.0f + 10 * i), 3.0f, 10.0f);
+			}
 		}
+		CreateCube(NxVec3(-7, 0, 7), 5);
+
+		CreateCube(NxVec3(0, -100, 0), 100);
+
 	}
-	CreateCube(NxVec3(-7, 0, 7), 5); 
-
-	CreateCube(NxVec3(0, -100, 0), 100);
-
+	m_nCurrentScene = 0;
 	return S_OK;
 }
 
@@ -358,7 +367,7 @@ HRESULT CPhysicsMgr::CreateScene(ID3D11Device* pDevice)
 
 void CPhysicsMgr::Update(const float & fTimeDelta)
 {
-	m_pScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+	m_pScene[m_nCurrentScene]->fetchResults(NX_RIGID_BODY_FINISHED, true);
 
 	NxVec3 dir(0, 0, 0);
 	NxF32 fSpeed = 10.0f;
@@ -384,18 +393,24 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		jumpTime = 0.0f;
 		gJump = true;
 	}
+	if ((GetAsyncKeyState(VK_BACK) & 0x8000))
+	{
+		m_nCurrentScene = (m_nCurrentScene + 1) % MAX_SCENE;
+		printf("m_nCurrentScene = %d \t", m_nCurrentScene);
+		printf("액터수: %d \n", Get_ActorCnt());
+	}
 
 	// 회전
 	if (!dir.isZero())
 	{
 		dir.normalize();
-		NxVec3 oldLook = m_pMyCCT->getActor()->getGlobalPose().M.getColumn(2);
+		NxVec3 oldLook = m_pMyCCT[m_nCurrentScene]->getActor()->getGlobalPose().M.getColumn(2);
 		NxVec3 cross = oldLook.cross(dir);
 		NxReal rotAngle = acos(oldLook.dot(dir));
 		rotAngle *= (cross.y > 0.0f) ? 1.0f : -1.0f;
 		NxMat33 rot;
 		rot.rotY(rotAngle);
-		((NxActor*)m_pMyCCT->getUserData())->moveGlobalOrientation(rot);
+		((NxActor*)m_pMyCCT[m_nCurrentScene]->getUserData())->moveGlobalOrientation(rot);
 
 		// 이동속도
 		dir *= fTimeDelta*fSpeed;
@@ -417,7 +432,7 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 	if (!dir.isZero())
 	{
 		NxU32 collisionFlags;
-		m_pMyCCT->move(dir, COLLIDABLE_MASK, 0.0001f, collisionFlags);
+		m_pMyCCT[m_nCurrentScene]->move(dir, COLLIDABLE_MASK, 0.0001f, collisionFlags);
 		if (collisionFlags & NXCC_COLLISION_DOWN)
 		{
 			gJump = gDown = false;
@@ -428,8 +443,8 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		}
 
 		m_pCCTManager->updateControllers();
-		NxExtendedVec3 pos = m_pMyCCT->getPosition();
-		((NxActor*)m_pMyCCT->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y - gSpace, pos.z));
+		NxExtendedVec3 pos = m_pMyCCT[m_nCurrentScene]->getPosition();
+		((NxActor*)m_pMyCCT[m_nCurrentScene]->getUserData())->moveGlobalPosition(NxVec3(pos.x, pos.y - gSpace, pos.z));
 
 		/*	
 		테스트용: 플레이어 액터만 움직이기
@@ -448,8 +463,8 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		
 	}
 
-	NxActor** dpActor = m_pScene->getActors();		
-	NxU32 nbActors = m_pScene->getNbActors();
+	NxActor** dpActor = m_pScene[m_nCurrentScene]->getActors();
+	NxU32 nbActors = m_pScene[m_nCurrentScene]->getNbActors();
 
 	for (DWORD i = 0; i < nbActors; ++i, ++dpActor)
 	{
@@ -460,13 +475,13 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		}
 	}
 
-	m_pScene->simulate(fTimeDelta);
-	m_pScene->flushStream();
+	m_pScene[m_nCurrentScene]->simulate(fTimeDelta);
+	m_pScene[m_nCurrentScene]->flushStream();
 }
 
 void CPhysicsMgr::Render(ID3D11DeviceContext* pContext)
 {
-	NxActor** dpActor = m_pScene->getActors();
+	NxActor** dpActor = m_pScene[m_nCurrentScene]->getActors();
 
 	CMesh* pBox = CResourceMgr::GetInstance()->CloneMesh("Mesh_Box");
 	CMesh* pSphere = CResourceMgr::GetInstance()->CloneMesh("Mesh_Sphere");
@@ -478,7 +493,7 @@ void CPhysicsMgr::Render(ID3D11DeviceContext* pContext)
 	mtxRealWorld.zero();
 	mtxScale.zero();
 
-	DWORD nbActors = m_pScene->getNbActors();
+	DWORD nbActors = m_pScene[m_nCurrentScene]->getNbActors();
 	for (DWORD i = 0; i < nbActors; ++i, ++dpActor)
 	{
 		DWORD dwShapeCnt = (*dpActor)->getNbShapes();
@@ -535,9 +550,12 @@ void CPhysicsMgr::Release_Scene()
 	{
 		m_pCCTManager->purgeControllers();
 		NxReleaseControllerManager(m_pCCTManager);
-		m_pPhysicsSDK->releaseScene(*m_pScene);
+		for (int i = 0; i < MAX_SCENE; i++)
+		{
+			m_pPhysicsSDK->releaseScene(*m_pScene[i]);
+			m_pScene[i] = nullptr;
+		}
 		m_pCCTManager = nullptr;
-		m_pScene = nullptr;
 		
 	}
 }
@@ -563,7 +581,7 @@ void CPhysicsMgr::Release()
 
 NxActor* CPhysicsMgr::CreateCube(const NxVec3& pos, int size, const NxReal density)
 {
-	if (m_pScene == NULL) {
+	if (m_pScene[m_nCurrentScene] == NULL) {
 		printf("m_pScene is NULL! \n");
 		return nullptr;
 	}
@@ -593,12 +611,12 @@ NxActor* CPhysicsMgr::CreateCube(const NxVec3& pos, int size, const NxReal densi
 
 	actorDesc.shapes.pushBack(&boxDesc);
 
-	return m_pScene->createActor(actorDesc);
+	return m_pScene[m_nCurrentScene]->createActor(actorDesc);
 }
 
 NxActor* CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, const NxReal radius, const NxReal density)
 {
-	if (m_pScene == NULL) {
+	if (m_pScene[m_nCurrentScene] == NULL) {
 		printf("m_pScene is NULL! \n");
 		return nullptr;
 	}
@@ -628,12 +646,12 @@ NxActor* CPhysicsMgr::CreateCapsule(const NxVec3& pos, const NxReal height, cons
 
 	actorDesc.shapes.pushBack(&capsuleDesc);
 
-	return m_pScene->createActor(actorDesc);
+	return m_pScene[m_nCurrentScene]->createActor(actorDesc);
 }
 
 NxActor* CPhysicsMgr::CreateSphere(const NxVec3& pos, const NxReal radius, const NxReal density)
 {
-	if (m_pScene == NULL) {
+	if (m_pScene[m_nCurrentScene] == NULL) {
 		printf("m_pScene is NULL! \n");
 		return nullptr;
 	}
@@ -661,5 +679,5 @@ NxActor* CPhysicsMgr::CreateSphere(const NxVec3& pos, const NxReal radius, const
 	}
 	actorDesc.shapes.pushBack(&sphereDesc);
 
-	return m_pScene->createActor(actorDesc);
+	return m_pScene[m_nCurrentScene]->createActor(actorDesc);
 }
