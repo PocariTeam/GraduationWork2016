@@ -7,7 +7,7 @@ Thread::Thread(thread_t *thread, wstr_t name)
 	name_ = name;
 	thread_ = thread;
 	id_ = thread_->get_id().hash();
-
+	lock_ = nullptr;
 	ThreadManager::getInstance().put(this);
 }
 

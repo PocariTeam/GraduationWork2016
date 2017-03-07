@@ -14,7 +14,11 @@ public:
 	BOOL			enterRoom(Session* session, UINT roomNum);
 	BOOL			exitRoom(Session* session);
 	RoomInfo		*getRoomList();
-	void			sendPlayerList(UINT32 roomNum);
+
 	BOOL			setPlayerReady(Session* session, BOOL b);
 	BOOL			setPlayerCharacter(Session* session, CHARACTER c);
+	BOOL			startRoom(Session* session);
+
+	void			sendPlayerList(UINT32 roomNum);
+	void			sendStartGame(UINT32 roomNum);
 };

@@ -17,6 +17,7 @@ void recvThreadFunc(SOCKET* sock);
 
 int g_ID = -1;
 bool g_ready = false;
+bool g_master = false;
 
 int main(int argc, char *argv[])
 {
@@ -83,9 +84,9 @@ int main(int argc, char *argv[])
 
 INPUT:
 
-		printf("========================================= \n");
-		printf(" 0 방접속, 1 방나가기 2 레디 3 캐릭터선택 \n");
-		printf("========================================= \n");
+		printf("========================================================== \n");
+		printf(" 0 방접속, 1 방나가기 2 레디(게임시작) 3 캐릭터선택\n");
+		printf("========================================================== \n");
 		scanf("%d", &inputKey);
 
 		switch (inputKey)
@@ -104,17 +105,27 @@ INPUT:
 			HEADER *pExitRoom = (HEADER*)sendData;
 			pExitRoom->size = sizeof(HEADER);
 			pExitRoom->packetID = PAK_ID::PAK_REQ_ExitRoom;
-			g_ready = false;
+			g_ready = g_master = false;
 			break;
 		}
 		case 2:
 		{
-			C_RoomReady *pRoomReady = (C_RoomReady*)sendData;
-			pRoomReady->header.size = sizeof(C_RoomReady);
-			pRoomReady->header.packetID = PAK_ID::PAK_REQ_Ready;
-			g_ready = !g_ready;
-			pRoomReady->ready = g_ready;
-			printf("게임준비[%d] \n",g_ready);
+			if (g_master)
+			{
+				HEADER *pStartGame = (HEADER*)sendData;
+				pStartGame->size = sizeof(HEADER);
+				pStartGame->packetID = PAK_ID::PAK_REQ_StartGame;
+				printf("게임 시작 요청 \n");
+			}
+			else
+			{
+				C_RoomReady *pRoomReady = (C_RoomReady*)sendData;
+				pRoomReady->header.size = sizeof(C_RoomReady);
+				pRoomReady->header.packetID = PAK_ID::PAK_REQ_Ready;
+				g_ready = !g_ready;
+				pRoomReady->ready = g_ready;
+				printf("게임준비[%d] \n", g_ready);
+			}
 			break;
 		}
 		case 3:
@@ -179,6 +190,28 @@ void packetProcess(char* buf)
 		S_PlayerList* packet = (S_PlayerList*)buf;
 		printf("========================================= \n");
 		printf("\t\t [방 정보] %\t\t \n");
+		for (int i = 0; i < packet->playerCount; ++i)
+		{
+			PlayerInfo r = packet->playerInfo[i];
+			printf(" id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", r.id, r.character, r.isReady, r.isMaster);
+			if (r.id == g_ID)
+			{
+				if (r.isMaster == true && g_master == false)
+				{
+					printf(" --> 내가 방장이 되었습니다. <-- \n");
+					g_master = true;
+
+				}
+			}
+		}
+		printf("========================================= \n");
+		break;
+	}
+	case PAK_ID::PAK_ANS_StartGame:
+	{
+		S_PlayerList* packet = (S_PlayerList*)buf;
+		printf("========================================= \n");
+		printf("\t\t [게임시작] %\t\t \n");
 		for (int i = 0; i < packet->playerCount; ++i)
 		{
 			PlayerInfo r = packet->playerInfo[i];

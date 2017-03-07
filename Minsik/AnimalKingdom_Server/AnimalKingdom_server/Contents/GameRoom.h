@@ -14,9 +14,11 @@ public:
 	GameRoom(UINT roomNum);
 	~GameRoom();
 	BOOL		enter(Session* s);
+	BOOL		startGame(Session* s);
 	BOOL		exit(Session* s);
 	BOOL		setPlayerReady(Session* s, BOOL b);
 	BOOL		setPlayerCharacter(Session* s, CHARACTER c);
 	RoomInfo	getRoomInfo();
 	void		sendPlayerList();
+	void		sendStartGame();
 };

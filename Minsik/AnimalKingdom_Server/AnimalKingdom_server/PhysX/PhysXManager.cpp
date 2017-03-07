@@ -27,7 +27,8 @@ BOOL PhysXManager::initPhysX()
 
 	bool status = InitCooking(userAllocator_);
 
-	if (!status) {
+	if (!status) 
+	{
 		SLog(L"! unable to initialize the cooking library.");
 		return false;
 	}
@@ -42,7 +43,8 @@ BOOL PhysXManager::initPhysX()
 		return false;
 	}
 
-	/*NxSceneDesc sceneDesc;
+/*
+	NxSceneDesc sceneDesc;
 	sceneDesc.groundPlane = true;
 	sceneDesc.gravity = NxVec3(0, -9.81f, 0);
 	sceneDesc.simType = NX_SIMULATION_HW;

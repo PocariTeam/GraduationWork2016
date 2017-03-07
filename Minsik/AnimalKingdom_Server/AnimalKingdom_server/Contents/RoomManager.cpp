@@ -83,6 +83,13 @@ void RoomManager::sendPlayerList(UINT32 roomNum)
 	roomArray_[roomNum]->sendPlayerList();
 }
 
+void RoomManager::sendStartGame(UINT32 roomNum)
+{
+	SAFE_LOCK(lock_);
+
+	roomArray_[roomNum]->sendStartGame();
+}
+
 BOOL RoomManager::setPlayerReady(Session* session, BOOL b)
 {
 	SAFE_LOCK(lock_);
@@ -108,4 +115,18 @@ BOOL RoomManager::setPlayerCharacter(Session * session, CHARACTER c)
 	}
 
 	return roomArray_[roomNum]->setPlayerCharacter(session, c);
+}
+
+BOOL RoomManager::startRoom(Session * session)
+{
+	SAFE_LOCK(lock_);
+
+	UINT roomNum = session->getRoomNumber();
+	if (roomNum == NOT_IN_ROOM)
+	{
+		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		return false;
+	}
+
+	return roomArray_[roomNum]->startGame(session);
 }

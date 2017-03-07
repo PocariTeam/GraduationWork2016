@@ -41,6 +41,49 @@ BOOL GameRoom::enter(Session* session)
 	}
 }
 
+BOOL GameRoom::startGame(Session* session)
+{
+	SAFE_LOCK(lock_);
+
+	if (isPlaying_)
+	{
+		SLog(L"! the [%d] room is already playing now. ", roomNum_);
+		return false;
+	}
+
+	if (playerCount_ < 2 )
+	{
+		SLog(L"! the [%d] room's the number of player is under 2. ", roomNum_);
+		return false;
+	}
+		
+	bool startCheck = false;
+	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	{
+		if ((*p)->getMaster() && (*p)->getSession() == session)
+		{
+			startCheck = true;
+		}
+		else if ((*p)->getReady() == false)
+		{
+			SLog(L"! [%S] is not ready in the [%d] room. ", session->getAddress().c_str(), roomNum_);
+			return false;
+		}
+	}
+
+	if (startCheck)
+	{
+		SLog(L"* the [%d] room is starting now. ", roomNum_);
+		isPlaying_ = true;
+		return true;
+	}
+
+	SLog(L"! [%S] is not master of the [%d] room. ", session->getAddress().c_str(), roomNum_);
+	return false;
+}
+
+
+
 BOOL GameRoom::exit(Session* session)
 {
 	SAFE_LOCK(lock_);
@@ -80,6 +123,11 @@ BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 	{
 		if ((*p)->getSession() == session)
 		{
+			if ((*p)->getMaster())
+			{
+				SLog(L"! [%S] is a master of the [%d] room. so it cannot be ready. ", session->getAddress().c_str(), roomNum_);
+				return false;
+			}
 			(*p)->setReady(b);
 			SLog(L"* [%S] got ready[%d] in the [%d] room. ", session->getAddress().c_str(), b, roomNum_);
 			return true;
@@ -136,7 +184,7 @@ RoomInfo GameRoom::getRoomInfo()
 void GameRoom::sendPlayerList()
 {
 	SAFE_LOCK(lock_);
-	PlayerInfo *pList = new PlayerInfo[PLAYER_CAPACITY];
+	PlayerInfo pList[PLAYER_CAPACITY] = { 0 };
 
 	int i = 0;
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
@@ -145,12 +193,9 @@ void GameRoom::sendPlayerList()
 		i++;
 	}
 
-	PlayerInfo p;
-	ZeroMemory(&p, sizeof(PlayerInfo));
-	while (i < PLAYER_CAPACITY)
+	if (i != playerCount_)
 	{
-		pList[i] = p;
-		i++;
+		SLog(L"! the [%d] room's playerCount_ is not correct. ",roomNum_);
 	}
 
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
@@ -164,7 +209,35 @@ void GameRoom::sendPlayerList()
 		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_PlayerList);
 		session->send();
 	}
-
-	SAFE_DELETE_ARRAY(pList);
 	
+}
+
+void GameRoom::sendStartGame()
+{
+	SAFE_LOCK(lock_);
+	PlayerInfo pList[PLAYER_CAPACITY] = { 0 };
+
+	int i = 0;
+	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	{
+		pList[i] = (*iter)->getPlayerInfo();
+		i++;
+	}
+
+	if (i != playerCount_)
+	{
+		SLog(L"! the [%d] room's playerCount_ is not correct. ", roomNum_);
+	}
+
+	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	{
+		Session* session = (*iter)->getSession();
+		S_PlayerList* packet = (S_PlayerList*)session->ioData_[IO_SEND].buffer_.data();
+		packet->header.packetID = PAK_ID::PAK_ANS_StartGame;
+		packet->header.size = sizeof(S_PlayerList);
+		packet->playerCount = playerCount_;
+		memcpy(packet->playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
+		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_PlayerList);
+		session->send();
+	}
 }

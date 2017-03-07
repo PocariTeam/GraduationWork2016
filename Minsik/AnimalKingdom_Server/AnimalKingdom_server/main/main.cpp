@@ -3,7 +3,7 @@
 
 int main()
 {
-	PhysXManager::getInstance().initPhysX();
+	//PhysXManager::getInstance().initPhysX();
 	IOCPServer::getInstance().run();
 	return 0;
 }

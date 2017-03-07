@@ -7,7 +7,7 @@ class Player {
 	UINT		roomNum_;
 	BOOL		isReady_;
 	BOOL		isMaster_;
-	Lock				lock_;
+	Lock		lock_;
 
 public:
 	Player(Session* s, UINT room, BOOL master = false);
@@ -15,6 +15,7 @@ public:
 	Session*	getSession() { return session_; };
 	PlayerInfo	getPlayerInfo();
 	BOOL		getReady() { return isReady_; }
+	BOOL		getMaster() { return isMaster_; }
 	void		setMaster(BOOL b);
 	void		setReady(BOOL b);
 	void		setCharacter(CHARACTER c);

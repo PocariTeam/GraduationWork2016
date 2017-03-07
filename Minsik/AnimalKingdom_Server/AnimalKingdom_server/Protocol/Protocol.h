@@ -16,6 +16,7 @@ typedef enum {
 	PAK_ANS_LOGIN,
 	PAK_ANS_RoomList,
 	PAK_ANS_PlayerList,
+	PAK_ANS_StartGame,
 	PAK_RJT_Request
 } PAK_ID;
 

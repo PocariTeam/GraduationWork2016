@@ -95,6 +95,7 @@ void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
 		SAFE_DELETE(session);
 		return;
 	}
+
 	if (!SessionManager::getInstance().addSession(session)) {
 		SAFE_DELETE(session);
 		return;

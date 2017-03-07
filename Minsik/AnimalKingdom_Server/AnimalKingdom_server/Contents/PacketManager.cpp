@@ -36,6 +36,13 @@ void PacketManager::recvProcess(Session* session, char* buf)
 			PacketManager::sendPlayerList(session->getRoomNumber());
 		}
 		break;
+	case PAK_ID::PAK_REQ_StartGame:
+		result = RoomManager::getInstance().startRoom(session);
+		if (result)
+		{
+			PacketManager::sendStartGame(session->getRoomNumber());
+		}
+		break;
 	default:
 		SLog(L"! Unkown Packet packetID: %d", pHeader->packetID);
 	}
@@ -79,6 +86,19 @@ void PacketManager::sendPlayerList(UINT32 roomNum)
 
 	SLog(L"* the [%d] room's player list was sent. ", roomNum);
 
+}
+
+void PacketManager::sendStartGame(UINT32 roomNum)
+{
+	if (roomNum == NOT_IN_ROOM)
+	{
+		SLog(L"! bad sendStartGame request.");
+		return;
+	}
+
+	RoomManager::getInstance().sendStartGame(roomNum);
+
+	SLog(L"* the [%d] room's start request was sent. ", roomNum);
 }
 
 void PacketManager::sendRoomList(Session * session)
