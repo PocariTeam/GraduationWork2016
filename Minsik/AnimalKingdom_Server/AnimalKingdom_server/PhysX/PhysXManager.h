@@ -14,5 +14,6 @@ private:
 public:
 	PhysXManager();
 	~PhysXManager();
+	BOOL LoadSceneFromFile(const char * pFilename, NXU::NXU_FileType type, UINT32 roomNum);
 	BOOL initPhysX();
 };

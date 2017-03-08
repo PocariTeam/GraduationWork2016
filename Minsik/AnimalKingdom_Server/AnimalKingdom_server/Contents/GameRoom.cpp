@@ -20,7 +20,7 @@ BOOL GameRoom::enter(Session* session)
 
 	if (isPlaying_)
 	{
-		SLog(L"! [%d] room is playing now.", roomNum_);
+		SLog(L"! the [%d] room is playing now.", roomNum_);
 		return false;
 	}
 
@@ -98,6 +98,10 @@ BOOL GameRoom::exit(Session* session)
 			if (playerCount_ > 0)
 			{
 				(*playerList_.begin())->setMaster(true);
+			}
+			else if (playerCount_ == 0)
+			{
+				isPlaying_ = false;
 			}
 
 			PacketManager::getInstance().sendPlayerList(session->getRoomNumber());
