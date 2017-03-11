@@ -21,8 +21,8 @@ HRESULT CDebugCamera::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	m_fSpeed = 100.f;
 	m_vAt = XMFLOAT3( 0.f, 0.f, 0.f );
-	m_vEye = XMFLOAT3( 0.f, 100.f, -120.f );
-	CalculateViewMatrix( &m_mtxView, XMFLOAT3{ 0.f, 100.f, -120.f }, XMFLOAT3{ 0.f, 0.f, 0.f } );
+	m_vEye = XMFLOAT3( 0.f, 300.f, -360.f );
+	CalculateViewMatrix( &m_mtxView, XMFLOAT3{ 0.f, 300.f, -360.f }, XMFLOAT3{ 0.f, 0.f, 0.f } );
 
 	return CCamera::Initialize( pDevice );
 }
@@ -40,25 +40,25 @@ void CDebugCamera::Check_Key( XMVECTOR& vEye, XMVECTOR& vAt, const float& fTimeD
 	memcpy( &vUp, &m_mtxView.m[ 1 ], sizeof( XMVECTOR ) );
 	memcpy( &vLook, &m_mtxView.m[ 2 ], sizeof( XMVECTOR ) );
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_W ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD8 ) & 0x80 )
 	{
 		vEye += vLook * fRealSpeed;
 		vAt += vLook * fRealSpeed;
 	}
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_S ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD5 ) & 0x80 )
 	{
 		vEye -= vLook * fRealSpeed;
 		vAt -= vLook * fRealSpeed;
 	}
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_A ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD4 ) & 0x80 )
 	{
 		vEye -= vRight * fRealSpeed;
 		vAt -= vRight * fRealSpeed;
 	}
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_D ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD6 ) & 0x80 )
 	{
 		vEye += vRight * fRealSpeed;
 		vAt += vRight * fRealSpeed;

@@ -1,4 +1,6 @@
+1
+0
 3
-0 1 0 ../Executable/Resources/Animation/Chameleon/Joint.jsma
-0 0 0 ../Executable/Resources/Animation/Chameleon/Idle.jsma
-0 0 1 ../Executable/Resources/Animation/Chameleon/Run.jsma
+-1 ../Executable/Resources/Animation/Chameleon/Joint.jsma
+0 ../Executable/Resources/Animation/Chameleon/Idle.jsma
+1 ../Executable/Resources/Animation/Chameleon/Run.jsma

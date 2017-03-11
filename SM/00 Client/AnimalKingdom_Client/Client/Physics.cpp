@@ -17,12 +17,18 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include "RenderState.h"
+#include "Environment.h"
+#include "StateMachine.h"
+#include <NxController.h>
+#include <NxScene.h>
+#include <fstream>
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
-CEntityReport		CPhysics::m_EntityReport;
-CControllerReport	CPhysics::m_ControllerReport;
-CCollisionReport	CPhysics::m_CollisionReport;
+CEntityReport			CPhysics::m_EntityReport;
+CControllerReport		CPhysics::m_ControllerReport;
+CCollisionReport		CPhysics::m_CollisionReport;
+NxControllerManager*	CPhysics::m_pCharacterControllerMgr;
 
 DWORD CPhysics::Release( void )
 {
@@ -43,6 +49,9 @@ DWORD CPhysics::Release( void )
 		m_pAllocator = nullptr;
 	}
 
+	for( int i = 0; i < ( int )CHARACTER_END; ++i )
+		m_mapActorInfo[ i ].erase( m_mapActorInfo[ i ].begin(), m_mapActorInfo[ i ].end() );
+
 	delete this;
 
 	return 0;
@@ -50,9 +59,9 @@ DWORD CPhysics::Release( void )
 
 int CPhysics::Update( const float& fTimeDelta )
 {
-	m_pScene->fetchResults( NX_RIGID_BODY_FINISHED, true );
 	m_pScene->simulate( fTimeDelta );
 	m_pScene->flushStream();
+	m_pScene->fetchResults( NX_RIGID_BODY_FINISHED, true );
 
 	return 0;
 }
@@ -93,7 +102,7 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				mtxRealWorld.getRowMajor44( mtxWorld );
 				pShader->SetConstantBuffer( pContext, mtxWorld );
 				pBox->Render( pContext );
-			break;
+				break;
 			case NX_SHAPE_SPHERE:
 				fRadius = ( ( NxSphereShape* )( *dpShape ) )->getRadius() * 2.f;
 				mtxRealWorld = ( *dpShape )->getGlobalPose();
@@ -149,13 +158,13 @@ HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 #endif
 		return E_FAIL;
 	}
-	
+
 	NxPhysicsSDKDesc	tSDKDesc;
 	tSDKDesc.flags ^= NX_SDKF_NO_HARDWARE;
-	
+
 	NxSDKCreateError	eErrorCode = NXCE_NO_ERROR;
 	m_pPhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION, m_pAllocator, NULL, tSDKDesc, &eErrorCode );
-	
+
 	if( nullptr == m_pPhysicsSDK )
 	{
 #ifdef _DEBUG
@@ -171,6 +180,36 @@ HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 	m_pScene = m_pPhysicsSDK->createScene( tSceneDesc );
 
 	m_pCharacterControllerMgr = NxCreateControllerManager( m_pAllocator );
+
+	Load_Kinematic();
+
+	return S_OK;
+}
+
+HRESULT CPhysics::Load_Kinematic( void )
+{
+	ifstream	In{ "../Executable/Resources/Actor/KinematicActor.txt" };
+	int			iCharacterType{}, iActorCnt{};
+	char		szJointName[ MAX_PATH ]{ "" };
+	ACTOR_INFO	tActorInfo;
+
+	while( !In.eof() )
+	{
+		In >> iCharacterType;
+		In >> iActorCnt;
+
+		for( int i = 0; i < iActorCnt; ++i )
+		{
+			In >> szJointName;
+			In >> tActorInfo.m_dwType;
+			In >> tActorInfo.m_vGlobalPosition.x; In >> tActorInfo.m_vGlobalPosition.y; In >> tActorInfo.m_vGlobalPosition.z;
+			In >> tActorInfo.m_fRadius; In >> tActorInfo.m_fLength; In >> tActorInfo.m_fWidth; In >> tActorInfo.m_fHeight;
+
+			m_mapActorInfo[ iCharacterType ].insert( make_pair( szJointName, tActorInfo ) );
+		}
+	}
+
+	In.close();
 
 	return S_OK;
 }
@@ -212,7 +251,7 @@ HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType 
 		else
 			return E_FAIL;
 	}
-	
+
 	return E_FAIL;
 }
 
@@ -228,7 +267,9 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pDefaultMaterial->setStaticFriction( 0.5 );
 	pDefaultMaterial->setDynamicFriction( 0.5 );
 
-	m_pScene->simulate( 0 );
+	m_pScene->simulate( 0.003f );
+	m_pScene->flushStream();
+	m_pScene->fetchResults( NX_RIGID_BODY_FINISHED, true );
 
 #ifdef _DEBUG
 	if( m_pScene->getSimType() == NX_SIMULATION_HW )
@@ -257,6 +298,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pShader_Light->Add_RenderObject( pLight_Screen );
 	pShader_Blend->Add_RenderObject( pBlend_Screen );
 
+
 	if( nullptr != m_pScene )
 	{
 		for( NxU32 i = 0; i < iActorCnt; i++ )
@@ -267,34 +309,56 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 #ifdef _DEBUG
 			printf( "Actor %s's Global Position : ( %f, %f, %f )\n", pActor->getName(), vPos.x, vPos.y, vPos.z );
 #endif
-			
 			// Collision Grouping
 			if( pActor->isDynamic() )
 			{
 				if( 0 == strcmp( pActor->getName(), "chm" ) )
 				{
-					pActor->setGroup( COL_MINE );
-					SetCollisionGroup( pActor, COL_MINE );
-					m_pMyCharacterController = CreateCharacterController( pActor, pActor->getGlobalPosition(), 2.8f );
+					DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ CHARACTER_CHM ].size();
+					NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
 
-					NxShape* const * dpShape = pActor->getShapes();
+					auto iter_begin = m_mapActorInfo[ CHARACTER_CHM ].begin();
+					auto iter_end = m_mapActorInfo[ CHARACTER_CHM ].end();
 
-					for( NxU32 i = 0; i < iActorShapeCnt; ++i )
+
+					int j = 0;
+					for( ; iter_begin != iter_end; ++j, ++iter_begin )
 					{
-						dpShape[ i ]->userData = new NxMat34;
-						*( NxMat34* )dpShape[ i ]->userData = dpShape[ i ]->getLocalPose();
+						dpCameleonActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second );
+						dpCameleonActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
+						dpCameleonActors[ j ]->userData = new NxMat34;
+						*( NxMat34* )dpCameleonActors[ j ]->userData = dpCameleonActors[ j ]->getGlobalPose();
+						// Collision Grouping 은 CreateActor 함수 안에서 현재 하고 있음 ( 추후 변경도 가능 )
 					}
 
-					CGameObject* pPlayer = CPlayer::Create( pDevice, pActor, CAnimationMgr::CHARACTER_CHM );
+					NxController* pController = CreateCharacterController( pActor, dpCameleonActors, j );
+					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, CHARACTER_CHM );
 					pShader_Animate->Add_RenderObject( pPlayer );
 				}
 
-				/*else if( strcmp( pActor->getName(), "yourPlayer" ) == 0 )
+				else if( strcmp( pActor->getName(), "Test" ) == 0 )
 				{
-					pActor->setGroup( CollGroup::OTHER_CHARACTER );
-					SetShapesCollisionGroup( pActor, CollGroup::OTHER_CHARACTER );
-					CreateCharacterController( pActor, pActor->getGlobalPosition(), 2.8f );
-				}*/
+					pActor->setGroup( COL_DYNAMIC );
+					SetCollisionGroup( pActor, COL_DYNAMIC );
+
+					CMesh* pMesh_Test = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
+					CTexture* pTexture_Test = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
+
+					CGameObject* pEnvironment = CEnvironment::Create( pDevice, pActor, pMesh_Test, pTexture_Test, XMFLOAT3( 2.5f, 2.5f, 2.5f ) );
+					pShader_Mesh->Add_RenderObject( pEnvironment );
+				}
+
+				else if( strcmp( pActor->getName(), "Snowball" ) == 0 )
+				{
+					pActor->setGroup( COL_DYNAMIC );
+					SetCollisionGroup( pActor, COL_DYNAMIC );
+
+					CMesh* pMesh_Snowball = CMeshMgr::GetInstance()->Clone( "Mesh_Snowball" );
+					CTexture* pTexture_Snowball = CTextureMgr::GetInstance()->Clone( "Texture_Snowball" );
+
+					CGameObject* pEnvironment = CEnvironment::Create( pDevice, pActor, pMesh_Snowball, pTexture_Snowball, XMFLOAT3( 25.f, 25.f, 25.f ) );
+					pShader_Mesh->Add_RenderObject( pEnvironment );
+				}
 
 				else
 				{
@@ -322,19 +386,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pActor->setGroup( COL_STATIC );
 					SetCollisionGroup( pActor, COL_STATIC );
 				}
-				
-			}
 
-			
-			if( iActorShapeCnt )
-			{
-				NxShape** dpActorShapeArray = ( NxShape** )pActor->getShapes();
-				for( NxU32 j = 0; j < iActorShapeCnt; j++ )
-				{
-					NxShape* pActorShape = dpActorShapeArray[ j ];
-					NxVec3 vShapePos = pActorShape->getLocalPosition();
-					printf( "[ %d ] %s's Local Position : ( %f, %f, %f )\n", j, pActorShape->getName(), vShapePos.x, vShapePos.y, vShapePos.z );
-				}
 			}
 		}
 	}
@@ -350,7 +402,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	return S_OK;
 }
 
-NxController* CPhysics::CreateCharacterController( NxActor* pActor, const NxVec3& vPos, NxReal fScale )
+NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dpActors, int iArraySize )
 {
 	//actor->raiseActorFlag(NX_AF_DISABLE_RESPONSE);
 
@@ -362,17 +414,17 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, const NxVec3
 		// Box Controller
 		NxVec3	vScale( 0.5f, 1.0f, 0.5f );
 		NxBoxControllerDesc tBoxDesc;
-		tBoxDesc.extents = vScale * fScale;
-		tBoxDesc.position.x = vPos.x;
+		tBoxDesc.extents = vScale;
+		tBoxDesc.position.x = pActor->getGlobalPosition().x;
 		// gSpace = tBoxDesc.extents.y;
-		// tBoxDesc.position.y = vPos.y + gSpace;
-		tBoxDesc.position.z = vPos.z;
+		tBoxDesc.position.y = pActor->getGlobalPosition().y;
+		tBoxDesc.position.z = pActor->getGlobalPosition().z;
 		tBoxDesc.upDirection = NX_Y;
 		tBoxDesc.slopeLimit = 0;
 		tBoxDesc.slopeLimit = cosf( NxMath::degToRad( 45.0f ) );
 		tBoxDesc.skinWidth = fSkinWidth;
 		tBoxDesc.stepOffset = 0.1f;
-		tBoxDesc.userData = pActor;
+		tBoxDesc.userData = dpActors;
 		tBoxDesc.callback = &m_ControllerReport;
 		pOut = m_pCharacterControllerMgr->createController( m_pScene, tBoxDesc );
 	}
@@ -380,29 +432,31 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, const NxVec3
 	else
 	{
 		// Capsule Controller
-		NxF32	fRadius = 2.f;
-		NxF32	fHeight = 5.0f;
+		NxShape* pShape = pActor->getShapes()[ 0 ];
+		NxF32	fRadius = ( ( NxCapsuleShape* )( pShape ) )->getRadius();
+		NxF32	fHeight = ( ( NxCapsuleShape* )( pShape ) )->getHeight();
 		NxCapsuleControllerDesc		tCapsuleDesc;
-		tCapsuleDesc.radius = fRadius * fScale;
-		tCapsuleDesc.height = fHeight * fScale;
-		tCapsuleDesc.position.x = vPos.x;
+		tCapsuleDesc.radius = fRadius * 0.5f;
+		tCapsuleDesc.height = fHeight;
+		tCapsuleDesc.position.x = pActor->getGlobalPosition().x;
 		// gSpace = ( tCapsuleDesc.height * 0.5f + tCapsuleDesc.radius );
-		tCapsuleDesc.position.y = vPos.y - 8.f; //+ gSpace;
-		tCapsuleDesc.position.z = vPos.z;
+		tCapsuleDesc.position.y = pActor->getGlobalPosition().y;
+		tCapsuleDesc.position.z = pActor->getGlobalPosition().z;
 		tCapsuleDesc.upDirection = NX_Y;
 		// tCapsuleDesc.slopeLimit = cosf(NxMath::degToRad(45.0f));
 		tCapsuleDesc.slopeLimit = 0;
 		tCapsuleDesc.skinWidth = fSkinWidth;
 		tCapsuleDesc.stepOffset = 0.1f;
-		tCapsuleDesc.stepOffset = fRadius * 0.5f * fScale;
-		tCapsuleDesc.userData = pActor;
+		//tCapsuleDesc.stepOffset = fRadius * 0.5f * fScale;
+		tCapsuleDesc.userData = dpActors;
 		tCapsuleDesc.callback = &m_ControllerReport;
 		pOut = m_pCharacterControllerMgr->createController( m_pScene, tCapsuleDesc );
 	}
 
 	char szName[ MAX_PATH ] = "Character Controller Actor of ";
-	strcat_s( szName, MAX_PATH, pActor->getName() );
+	strcat_s( szName, MAX_PATH, dpActors[ 0 ]->getName() );
 	pOut->getActor()->setName( szName );
+	m_pScene->releaseActor( *pActor );
 
 	return pOut;
 }
@@ -414,4 +468,78 @@ void CPhysics::SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup )
 
 	while( iActorShapeCnt-- )
 		dpActorShapeArray[ iActorShapeCnt ]->setGroup( eGroup );
+}
+
+NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info )
+{
+	switch( tActor_Info.m_dwType )
+	{
+	case NX_SHAPE_SPHERE:
+	{
+		NxSphereShapeDesc	tSphereShapeDesc;
+		tSphereShapeDesc.radius = tActor_Info.m_fRadius;
+		tSphereShapeDesc.name = pActorName;
+		tSphereShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+
+		NxActorDesc tActorDesc;
+		tActorDesc.name = pActorName;
+		tActorDesc.globalPose.t.set( tActor_Info.m_vGlobalPosition.x, tActor_Info.m_vGlobalPosition.y, tActor_Info.m_vGlobalPosition.z );
+
+		NxBodyDesc bodyDesc;
+		tActorDesc.body = &bodyDesc;
+
+		tActorDesc.density = 1;
+		tActorDesc.group = COL_MINE;
+		tSphereShapeDesc.group = COL_MINE;
+
+		tActorDesc.shapes.pushBack( &tSphereShapeDesc );
+
+		return m_pScene->createActor( tActorDesc );
+	}
+	case NX_SHAPE_BOX:
+	{
+		NxBoxShapeDesc		tBoxShapeDesc;
+		tBoxShapeDesc.dimensions = NxVec3( tActor_Info.m_fLength * 0.5f, tActor_Info.m_fHeight * 0.5f, tActor_Info.m_fWidth * 0.5f );
+		tBoxShapeDesc.name = pActorName;
+		tBoxShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+
+		NxActorDesc tActorDesc;
+		tActorDesc.name = pActorName;
+		tActorDesc.globalPose.t.set( tActor_Info.m_vGlobalPosition.x, tActor_Info.m_vGlobalPosition.y, tActor_Info.m_vGlobalPosition.z );
+
+		NxBodyDesc bodyDesc;
+		tActorDesc.body = &bodyDesc;
+		tActorDesc.density = 1;
+		tActorDesc.group = COL_MINE;
+		tBoxShapeDesc.group = COL_MINE;
+
+		tActorDesc.shapes.pushBack( &tBoxShapeDesc );
+
+		return m_pScene->createActor( tActorDesc );
+	}
+	case NX_SHAPE_CAPSULE:
+	{
+		NxCapsuleShapeDesc		tCapsuleShapeDesc;
+		tCapsuleShapeDesc.radius = tActor_Info.m_fRadius;
+		tCapsuleShapeDesc.height = tActor_Info.m_fHeight;
+		tCapsuleShapeDesc.name = pActorName;
+		tCapsuleShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+
+		NxActorDesc tActorDesc;
+		tActorDesc.name = pActorName;
+		tActorDesc.globalPose.t.set( tActor_Info.m_vGlobalPosition.x, tActor_Info.m_vGlobalPosition.y, tActor_Info.m_vGlobalPosition.z );
+
+		NxBodyDesc bodyDesc;
+		tActorDesc.body = &bodyDesc;
+		tActorDesc.density = 1;
+		tActorDesc.group = COL_MINE;
+		tCapsuleShapeDesc.group = COL_MINE;
+
+		tActorDesc.shapes.pushBack( &tCapsuleShapeDesc );
+
+		return m_pScene->createActor( tActorDesc );
+	}
+	default:
+		return nullptr;
+	}
 }

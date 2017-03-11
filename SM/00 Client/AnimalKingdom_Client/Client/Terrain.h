@@ -22,7 +22,6 @@ public:
 	DWORD	Release( void );
 private:
 	XMFLOAT3	m_vScale;
-
 };
 
 #endif // Terrain_h__

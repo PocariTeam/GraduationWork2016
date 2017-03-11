@@ -1,0 +1,100 @@
+#include "stdafx.h"
+#include "State.h"
+#include "Player.h"
+#include "Animator.h"
+
+CGlobalState*	CSingleton<CGlobalState>::m_pInstance;
+CIdleState*		CSingleton<CIdleState>::m_pInstance;
+CRunState*		CSingleton<CRunState>::m_pInstance;
+CJumpState*		CSingleton<CJumpState>::m_pInstance;
+
+DWORD CState::Release( void )
+{
+	delete this;
+
+	return 0;
+}
+
+///////////////////// Global State /////////////////////
+
+void CGlobalState::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+
+}
+
+void CGlobalState::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Update( pOwner, fTImeDelta );
+}
+
+void CGlobalState::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+///////////////////// Idle State /////////////////////
+
+void CIdleState::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_IDLE );
+}
+
+void CIdleState::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+}
+
+void CIdleState::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+///////////////////// Defend State /////////////////////
+
+void CDefendState::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_DEFEND );
+}
+
+void CDefendState::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+
+}
+
+void CDefendState::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+///////////////////// Run State /////////////////////
+
+void CRunState::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_RUN );
+}
+
+void CRunState::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+
+}
+
+void CRunState::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+///////////////////// Jump State /////////////////////
+
+void CJumpState::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_JUMP );
+}
+
+void CJumpState::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+
+}
+
+void CJumpState::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}

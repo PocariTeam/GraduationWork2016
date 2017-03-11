@@ -13,13 +13,13 @@ public:
 	explicit CChameleon();
 	virtual ~CChameleon();
 private:
-	HRESULT	Initialize( ID3D11Device* pDevice, NxActor* pActor );
+	HRESULT	Initialize( ID3D11Device* pDevice, NxController* pCharacterController );
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );
 	virtual DWORD Release( void );
 public:
-	static CChameleon* Create( ID3D11Device* pDevice, NxActor* pActor );
+	static CChameleon* Create( ID3D11Device* pDevice, NxController* pCharacterController );
 };
 
 #endif // Chameleon_h__

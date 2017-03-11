@@ -7,24 +7,21 @@
 #include "Enum.h"
 
 class CGameObject;
-class CAnimationController;
+class CAnimator;
 class CAnimationMgr
 	: public CSingleton<CAnimationMgr>
 {
 public:
-	enum eCharacter_Type { CHARACTER_CHM, CHARACTER_MON, CHARACTER_END };
-	using CHARACTER_TYPE = eCharacter_Type;
-public:
-	CAnimationController* Clone( const eCharacter_Type& eType, CGameObject* pOwner );
-	CAnimationController* Find( const eCharacter_Type& eType );
+	CAnimator* Clone( const CHARACTER& eType );
+	CAnimator* Find( const CHARACTER& eType );
 public:
 	HRESULT Load( ID3D11Device* pDevice, const char* pFilePath );
 	DWORD   Release( void );
 private:
-	HRESULT Add( CHARACTER_TYPE eCharacterType, STATE eState, const char* pFilePath );
 	HRESULT Add( ID3D11Device* pDevice, const char* pFilePath );
+	HRESULT Add( CHARACTER eCharacterType, STATE eState, const char* pFilePath );
 private:
-	vector<CAnimationController*>	m_vecAnimationController;
+	vector<CAnimator*>	m_vecAnimator;
 };
 
 #endif // AnimationMgr_h__

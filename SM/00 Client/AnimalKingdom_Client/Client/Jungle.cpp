@@ -5,6 +5,7 @@
 #include "LightMgr.h"
 #include "Physics.h"
 #include "RenderTargetMgr.h"
+#include "State.h"
 
 CJungle::CJungle()
 	: CScene()
@@ -36,6 +37,11 @@ int CJungle::Update( const float& fTimeDelta )
 DWORD CJungle::Release( void )
 {
 	CScene::Release();
+
+	CGlobalState::DestroyInstance();
+	CIdleState::DestroyInstance();
+	CJumpState::DestroyInstance();
+	CRunState::DestroyInstance();
 
 	delete this;
 

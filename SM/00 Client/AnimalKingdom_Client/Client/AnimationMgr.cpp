@@ -1,53 +1,51 @@
 #include "stdafx.h"
 #include "AnimationMgr.h"
-#include "AnimationController.h"
+#include "Animator.h"
 #include <fstream>
-#include "Functor.h"
-#include "ChameleonGlobalAnimation.h"
-#include "ChameleonIdleAnimation.h"
-#include "ChameleonRunAnimation.h"
-#include "ChameleonJumpAnimation.h"
 
 CAnimationMgr*	CSingleton<CAnimationMgr>::m_pInstance;
 
-CAnimationController* CAnimationMgr::Clone( const eCharacter_Type& eType, CGameObject* pOwner )
+CAnimator* CAnimationMgr::Clone( const CHARACTER& eType )
 {
-	CAnimationController*	pController = Find( eType );
+	CAnimator*	pController = Find( eType );
 	if( nullptr == pController ) return nullptr;
 
-	return pController->Clone( pOwner );
+	return pController->Clone();
 }
 
-CAnimationController* CAnimationMgr::Find( const eCharacter_Type& eType )
+CAnimator* CAnimationMgr::Find( const CHARACTER& eType )
 {
 	if( eType < CHARACTER_END )
-		return m_vecAnimationController[ eType ];
+		return m_vecAnimator[ eType ];
+
 	return nullptr;
 }
 
 HRESULT CAnimationMgr::Load( ID3D11Device* pDevice, const char* pFilePath )
 {
-	m_vecAnimationController.reserve( ( size_t )CHARACTER_END );
+	m_vecAnimator.reserve( ( size_t )CHARACTER_END );
 
 	ifstream pIn{ pFilePath };
-	int iAllCnt{}, iCharactor{}, iState{};
-	bool bJoint{};
+	int iCharacterCnt{}, iCharacterType{}, iStateCnt{}, iState{};
 	char szPath[ MAX_PATH ]{""};
 	
-	pIn >> iAllCnt;
+	pIn >> iCharacterCnt;
 	
-	for( int i = 0; i < iAllCnt; ++i )
+	for( int i = 0; i < iCharacterCnt; ++i )
 	{
-		pIn >> iCharactor;
-		pIn >> bJoint;
-		pIn >> iState;
-		pIn >> szPath;
+		pIn >> iCharacterType;
+		pIn >> iStateCnt;
 
-		if( bJoint )
-			Add( pDevice, szPath );
-		else
-			if( FAILED( Add( ( CHARACTER_TYPE )iCharactor, ( STATE )iState, szPath ) ) )
-				return E_FAIL;
+		for( int j = 0; j < iStateCnt; ++j )
+		{
+			pIn >> iState;
+			pIn >> szPath;
+
+			if( -1 == iState )
+				Add( pDevice, szPath );
+			else
+				Add( ( CHARACTER )iCharacterType, ( STATE )iState, szPath );
+		}
 	}
 
 	return S_OK;
@@ -55,56 +53,29 @@ HRESULT CAnimationMgr::Load( ID3D11Device* pDevice, const char* pFilePath )
 
 DWORD CAnimationMgr::Release( void )
 {
-	size_t iVectorSize = m_vecAnimationController.size();
+	size_t iVectorSize = m_vecAnimator.size();
 
 	for( size_t i = 0; i < iVectorSize; ++i )
-		::Safe_Release( m_vecAnimationController[ i ] );
+		::Safe_Release( m_vecAnimator[ i ] );
 
-	m_vecAnimationController.erase( m_vecAnimationController.begin(), m_vecAnimationController.end() );
-	m_vecAnimationController.swap( vector<CAnimationController*>{} );
-
-	CChameleonGlobalAnimation::DestroyInstance();
-	CChameleonIdleAnimation::DestroyInstance();
-	CChameleonRunAnimation::DestroyInstance();
-	CChameleonJumpAnimation::DestroyInstance();
+	m_vecAnimator.erase( m_vecAnimator.begin(), m_vecAnimator.end() );
+	m_vecAnimator.swap( vector<CAnimator*>{} );
 
 	delete this;
 
 	return 0;
 }
 
-HRESULT CAnimationMgr::Add( CHARACTER_TYPE eCharacterType, STATE eState, const char* pFilePath )
+HRESULT CAnimationMgr::Add( CHARACTER eCharacterType, STATE eState, const char* pFilePath )
 {
-	switch( eCharacterType )
-	{
-	case CHARACTER_CHM :
-			switch( eState )
-			{
-			case STATE_IDLE:
-				CChameleonIdleAnimation::GetInstance()->Load( pFilePath );
-				break;
-			case STATE_RUN:
-				CChameleonRunAnimation::GetInstance()->Load( pFilePath );
-				break;
-			case STATE_JUMP:
-				CChameleonJumpAnimation::GetInstance()->Load( pFilePath );
-				break;
-			default:
-				return E_FAIL;
-			}
-		break;
-	case CHARACTER_MON :
-		break;
-	default:
-		return E_FAIL;
-	}
+	m_vecAnimator[ eCharacterType ]->Add( eState, pFilePath );
 
 	return S_OK;
 }
 
 HRESULT CAnimationMgr::Add( ID3D11Device* pDevice, const char* pFilePath )
 {
-	m_vecAnimationController.emplace_back( CAnimationController::Create( pDevice, pFilePath ) );
+	m_vecAnimator.emplace_back( CAnimator::Create( pDevice, pFilePath ) );
 
 	return S_OK;
 }

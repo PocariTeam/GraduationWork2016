@@ -103,6 +103,17 @@ typedef struct tagLoadThread
 	char			m_strPath[ MAX_PATH ];
 }THREAD_LOADING;
 
+/*                             Actor                                         */
+
+typedef struct tagActorInfo
+{
+	XMFLOAT3	m_vGlobalPosition;
+	DWORD		m_dwType;			// S : 1, B : 2, C : 3
+	float		m_fRadius;
+	float		m_fLength;
+	float		m_fWidth;
+	float		m_fHeight;
+}ACTOR_INFO;
 
 
 #endif // Struct_h__

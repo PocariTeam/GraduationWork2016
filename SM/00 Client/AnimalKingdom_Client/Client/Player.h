@@ -4,10 +4,11 @@
 #define Player_h__
 
 #include "GameObject.h"
-#include "AnimationMgr.h"
+#include "Enum.h"
 
-class CAnimationController;
-class NxActor;
+class CAnimator;
+class CStateMachine;
+class NxController;
 class CPlayer
 	: public CGameObject
 {
@@ -15,17 +16,23 @@ protected:
 	explicit CPlayer();
 	virtual ~CPlayer();
 protected:
-	virtual HRESULT Initialize( ID3D11Device* pDevice, NxActor* pActor );
+	virtual HRESULT Initialize( ID3D11Device* pDevice, NxController* pCharacterController );
 public:
 	void	Check_Key( const float& fTimeDelta );
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );
 	virtual DWORD Release( void );
+	CAnimator*	GetAnimator( void ) { return m_pAnimator; }
+	XMFLOAT4X4	GetWorld();
+	NxController* GetCharacterController( void ) { return m_pCharacterController; }
 public:
-	static CPlayer* Create( ID3D11Device* pDevice, NxActor* pActor, CAnimationMgr::CHARACTER_TYPE eType );
+	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
 protected:
-	CAnimationController*	m_pAnimationController;
+	CStateMachine*			m_pStateMachine;
+	CAnimator*				m_pAnimator;
+	NxController*			m_pCharacterController;
+	DWORD					m_dwActorCnt;
 };
 
 #endif // Player_h__

@@ -7,6 +7,10 @@
 #include "NxPhysics.h"
 #include "CollisionReport.h"
 #include "NXU_helper.h"
+#include "Enum.h"
+#include "Struct.h"
+
+#define GRAVITY -9.8f
 
 class CShader;
 class CMesh;
@@ -21,8 +25,8 @@ private:
 	UserAllocator*			m_pAllocator{ nullptr };
 	NxPhysicsSDK*			m_pPhysicsSDK{ nullptr };
 	NxScene*				m_pScene{ nullptr };
-	NxControllerManager*	m_pCharacterControllerMgr{ nullptr };
-	NxController*			m_pMyCharacterController{ nullptr };
+public:
+	static NxControllerManager*	m_pCharacterControllerMgr;
 public:
 	static CEntityReport		m_EntityReport;		// P v P ( Sweep Collision )
 	static CControllerReport	m_ControllerReport; // Controller Collision
@@ -34,16 +38,16 @@ public:
 	void		Release_Scene( void );
 public:
 	HRESULT		Initialize( ID3D11Device* pDevice );
+	HRESULT		Load_Kinematic( void );
 	HRESULT		Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader, const char* pFileName, NXU::NXU_FileType eType = NXU::FT_XML );
 private:
 	HRESULT		CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType eType );
 	HRESULT		SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader );
-	NxController* CreateCharacterController( NxActor* pActor, const NxVec3& vPos, NxReal fScale );
+	NxController* CreateCharacterController( NxActor* pActor, NxActor** dpActors, int iArraySize );
 	void		  SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup );
-	//HRESULT CreateScene( ID3D11Device* pDevice );
-	//NxActor* CreateCube( const NxVec3& pos, int size, const NxReal density = 0.0f );
-	//NxActor* CreateCapsule( const NxVec3 & pos, const NxReal height, const NxReal radius, const NxReal density = 0.0f );
-	//NxActor* CreateSphere( const NxVec3 & pos, const NxReal radius, const NxReal density = 0.0f );
+	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info );
+private:
+	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_END ];
 };
 
 #endif // Physics_h__
