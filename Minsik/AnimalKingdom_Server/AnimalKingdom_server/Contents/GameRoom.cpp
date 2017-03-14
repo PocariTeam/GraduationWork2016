@@ -99,8 +99,9 @@ BOOL GameRoom::exit(Session* session)
 			{
 				(*playerList_.begin())->setMaster(true);
 			}
-			else if (playerCount_ == 0)
+			else if (playerCount_ == 0 && isPlaying_)
 			{
+				PhysXManager::getInstance().ReleaseScene(roomNum_);
 				isPlaying_ = false;
 			}
 

@@ -139,6 +139,9 @@
     <ClCompile Include="PhysX\SampleCommonCode\src\cooking.cpp">
       <Filter>PhysX\SampleCommonCode</Filter>
     </ClCompile>
+    <ClCompile Include="PhysX\CollisionReport.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contents\GameRoom.h">
@@ -299,6 +302,9 @@
     </ClInclude>
     <ClInclude Include="PhysX\SampleCommonCode\src\cooking.h">
       <Filter>PhysX\SampleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\CollisionReport.h">
+      <Filter>PhysX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

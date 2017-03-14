@@ -37,18 +37,19 @@ private:
 	void			SetContantBuffer( ID3D11DeviceContext* pContext, NxF32* pMtxWorld );
 public:
 	HRESULT Initialize();
-	HRESULT LoadSceneFromFile(const char * pFilename, NXU::NXU_FileType type);
+	HRESULT LoadSceneFromFile(const char * pFilename, NXU::NXU_FileType type, UINT SceneNum);
 	NxController* CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale);
 	void SetShapesCollisionGroup(NxActor * actor, NxCollisionGroup group);
-	HRESULT SetupScene();
+	HRESULT SetupScene(UINT SceneNum);
 	HRESULT CreateScene( ID3D11Device* pDevice );
 	void Update( const float& fTimeDelta );
 	void Render( ID3D11DeviceContext* pContext );
 	void Release_Scene();
 	void Release();
-	NxActor* CreateCube(const NxVec3& pos, int size, const NxReal density=0.0f);
-	NxActor* CreateCapsule(const NxVec3 & pos, const NxReal height, const NxReal radius, const NxReal density = 0.0f);
-	NxActor* CreateSphere(const NxVec3 & pos, const NxReal radius, const NxReal density = 0.0f);
+	NxActor* CreateCube(UINT SceneNum, const NxVec3& pos, int size, const NxReal density=0.0f);
+	NxActor* CreateCapsule(UINT SceneNum, const NxVec3 & pos, const NxReal height, const NxReal radius, const NxReal density = 0.0f);
+	NxActor* CreateSphere(UINT SceneNum, const NxVec3 & pos, const NxReal radius, const NxReal density = 0.0f);
+	NxScene* getCurrentScene() { return m_pScene[m_nCurrentScene]; };
 };
 
 #endif

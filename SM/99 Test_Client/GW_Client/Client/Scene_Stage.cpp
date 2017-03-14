@@ -66,7 +66,8 @@ void CScene_Stage::Render( ID3D11DeviceContext * pContext )
 	pShader->Release();
 #endif
 
-	CRenderer::GetInstance()->Render( pContext );
+	CRenderer::GetInstance()->Render(pContext);
+
 }
 
 void CScene_Stage::Release( void )

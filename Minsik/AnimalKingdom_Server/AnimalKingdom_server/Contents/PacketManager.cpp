@@ -41,6 +41,7 @@ void PacketManager::recvProcess(Session* session, char* buf)
 		if (result)
 		{
 			PacketManager::sendStartGame(session->getRoomNumber());
+			PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber());
 		}
 		break;
 	default:
