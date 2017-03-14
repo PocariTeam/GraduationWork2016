@@ -486,6 +486,9 @@
     <ClInclude Include="NetworkMgr.h">
       <Filter>소스 파일\01 System\02 Network</Filter>
     </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>소스 파일\01 System\02 Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

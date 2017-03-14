@@ -6,6 +6,8 @@
 #include "MainFrm.h"
 #include "Timer.h"
 #include "Function.h"
+#include "NetworkMgr.h"
+
 
 #define MAX_LOADSTRING 100
 
@@ -189,6 +191,13 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 {
 	switch( message )
 	{
+	case WM_CREATE:
+		CNetworkMgr::GetInstance()->Initialize();
+		CNetworkMgr::GetInstance()->connectServer(hWnd);
+		break;
+	case WM_SOCKET:
+		CNetworkMgr::GetInstance()->processSocketMessage(hWnd, lParam);
+		break;
 	case WM_SIZE:
 		g_wWinsizeX = LOWORD( lParam );
 		g_wWinsizeY = HIWORD( lParam );
