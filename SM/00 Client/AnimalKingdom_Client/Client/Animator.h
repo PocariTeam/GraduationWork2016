@@ -27,6 +27,7 @@ private:
 public:
 	HRESULT Add( STATE eState, const char* pFilePath );
 	void	Change_Animation( STATE eState );
+	bool	GetCurrentAnimationFinished();
 private:
 	HRESULT CreateConstantBuffer( ID3D11Device* pDevice );
 private:

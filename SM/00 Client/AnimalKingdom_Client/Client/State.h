@@ -55,5 +55,29 @@ class CJumpState
 	void Exit( CPlayer* pOwner, const float& fTimeDelta );
 };
 
+class CAttackState
+	: public CState, public CSingleton<CAttackState>
+{
+	void Enter( CPlayer* pOwner, const float& fTImeDelta );
+	void Execute( CPlayer* pOwner, const float& fTImeDelta );
+	void Exit( CPlayer* pOwner, const float& fTimeDelta );
+};
+
+class CBeatenState
+	: public CState, public CSingleton<CBeatenState>
+{
+	void Enter( CPlayer* pOwner, const float& fTImeDelta );
+	void Execute( CPlayer* pOwner, const float& fTImeDelta );
+	void Exit( CPlayer* pOwner, const float& fTimeDelta );
+};
+
+class CDownState
+	: public CState, public CSingleton<CDownState>
+{
+	void Enter( CPlayer* pOwner, const float& fTImeDelta );
+	void Execute( CPlayer* pOwner, const float& fTImeDelta );
+	void Exit( CPlayer* pOwner, const float& fTimeDelta );
+};
+
 
 #endif // State_h__

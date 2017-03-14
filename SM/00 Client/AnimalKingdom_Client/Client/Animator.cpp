@@ -11,6 +11,7 @@
 #include <NxMat34.h>
 #include "Player.h"
 #include <NxController.h>
+#include "Mathematics.h"
 
 CAnimator::CAnimator( void )
 	: CBase()
@@ -92,29 +93,24 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 	NxController* pCharacterController = ( ( CPlayer* )pOwner)->GetCharacterController();
 	NxActor** dpActorArray = ( NxActor** )pCharacterController->getUserData();
 
-	
+	DWORD dwActorCnt = ( ( CPlayer* )pOwner )->GetActorCnt();
 
 	// 상수 6은 각 캐릭터별 액터 수 ( 변경해야할 부분 - 인자로 )
-	for( NxU32 j = 0; j < 7; ++j )
+	for( NxU32 j = 0; j < dwActorCnt; ++j )
 	{
 		for( ; i < m_dwJointCnt; ++i )
 			if( 0 == strcmp( m_pArrJointName[ i ].c_str(), dpActorArray[ j ]->getName() ) )
 				break;
+		
 		NxMat34 mtxLocal;
-		NxF32	fLocal[ 16 ];
-		XMFLOAT4X4 mtxStoreLocal{};
-		( ( NxMat34* )dpActorArray[ j ]->userData )->getRowMajor44( fLocal );
-		memcpy( &mtxStoreLocal, fLocal, sizeof( XMFLOAT4X4 ) );
-		XMMATRIX mtxLoadLocal, mtxLoadAnimation{};
-		mtxLoadLocal = XMLoadFloat4x4( &mtxStoreLocal );
+		XMFLOAT4X4 mtxTemp;
+		XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
+		
+		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( ( ( NxMat34* )dpActorArray[ j ]->userData ) );
 		mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
-		XMMATRIX mtxResult = XMMatrixMultiply( mtxLoadAnimation, mtxLoadLocal );
-		mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &pOwner->GetWorld() ), mtxResult );
-		XMStoreFloat4x4( &mtxStoreLocal, mtxResult );
-		memcpy( fLocal, &mtxStoreLocal, sizeof( XMFLOAT4X4 ) );
-		mtxLocal.setRowMajor44( fLocal );
-
-		dpActorArray[ j ]->moveGlobalPose( mtxLocal );
+		
+		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );
+		dpActorArray[ j ]->moveGlobalPose( CMathematics::ConvertToNxMat34( mtxResult ) );
 		i = 0;
 	}
 
@@ -136,6 +132,14 @@ void CAnimator::Change_Animation( STATE eState )
 	if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->ResetTimePos();
 	m_pPreviousAnimationSet = m_pCurrentAnimationSet;
 	m_pCurrentAnimationSet = m_vecAnimationSet[ eState ];
+}
+
+bool CAnimator::GetCurrentAnimationFinished()
+{
+	if( m_pCurrentAnimationSet->GetLoop() )
+		return true;
+	else
+		return m_pCurrentAnimationSet->GetFinished();
 }
 
 HRESULT CAnimator::CreateConstantBuffer( ID3D11Device* pDevice )
@@ -188,5 +192,5 @@ void CAnimator::Update( CGameObject* pOwner, const float& fTimeDelta )
 		m_pCurrentAnimationSet->Update( fTimeDelta );
 		ConnectActorShape( pOwner );
 	}
-	if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->Update( fTimeDelta );
+	// if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->Update( fTimeDelta );
 }

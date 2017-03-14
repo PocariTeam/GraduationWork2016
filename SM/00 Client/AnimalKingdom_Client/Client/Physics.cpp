@@ -59,6 +59,7 @@ DWORD CPhysics::Release( void )
 
 int CPhysics::Update( const float& fTimeDelta )
 {
+	m_pCharacterControllerMgr->updateControllers();
 	m_pScene->simulate( fTimeDelta );
 	m_pScene->flushStream();
 	m_pScene->fetchResults( NX_RIGID_BODY_FINISHED, true );

@@ -49,6 +49,8 @@
 #include <DirectXCollision.h>
 
 #define DIRECTINPUT_VERSION	0x0800
+
+#include <winsock2.h>
 #include <dinput.h>
 
 #ifdef _DEBUG
@@ -68,6 +70,8 @@
 #pragma comment( lib, "../Executable/ThirdParty/Physics/SDKs/lib/win64/PhysXCooking64.lib" )
 #pragma comment( lib, "../Executable/ThirdParty/Physics/SDKs/lib/win64/PhysXCore64.lib" )
 #pragma comment( lib, "../Executable/ThirdParty/Physics/SDKs/lib/win64/PhysXLoader64.lib" )
+
+#pragma comment( lib, "ws2_32" )
 
 using namespace std;
 using namespace DirectX;

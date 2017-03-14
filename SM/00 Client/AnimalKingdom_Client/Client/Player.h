@@ -24,6 +24,8 @@ public:
 	virtual void Render( ID3D11DeviceContext* pContext );
 	virtual DWORD Release( void );
 	CAnimator*	GetAnimator( void ) { return m_pAnimator; }
+	CStateMachine* GetFSM( void ) { return m_pStateMachine; }
+	DWORD		GetActorCnt( void ) { return m_dwActorCnt; }
 	XMFLOAT4X4	GetWorld();
 	NxController* GetCharacterController( void ) { return m_pCharacterController; }
 public:
@@ -32,6 +34,7 @@ protected:
 	CStateMachine*			m_pStateMachine;
 	CAnimator*				m_pAnimator;
 	NxController*			m_pCharacterController;
+	XMFLOAT3				m_vRotate;
 	DWORD					m_dwActorCnt;
 };
 

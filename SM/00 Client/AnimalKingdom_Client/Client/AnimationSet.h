@@ -20,12 +20,15 @@ public:
 	void	ResetTimePos( void ) { m_fTimePos = 0.f; }
 	DWORD	Release( void );
 	void	Update( const float& fTimeDelta );
+	bool	GetFinished( void ) { return ( !m_bLoop ) & ( m_fTimePos == m_dwLength ); }
+	bool	GetLoop( void ) { return m_bLoop; }
 private:
 	XMFLOAT4X4**	m_dpArrFrame;
 	DWORD			m_dwJointCnt;
 	DWORD			m_dwLength;
 	float			m_fTimePos;
 	float			m_fSpeed;
+	bool			m_bLoop;
 };
 
 #endif // Animation_h__

@@ -220,6 +220,9 @@
     <Filter Include="소스 파일\03 Resources\03 Animation\01 Manager">
       <UniqueIdentifier>{366838a8-cb1a-46b5-93de-c27b8dd7e368}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Mathematics / TypeConversion">
+      <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -477,6 +480,12 @@
     <ClInclude Include="AnimationSet.h">
       <Filter>소스 파일\03 Resources\03 Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Mathematics.h">
+      <Filter>소스 파일\02 Utility\06 Mathematics / TypeConversion</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkMgr.h">
+      <Filter>소스 파일\01 System\02 Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -688,6 +697,12 @@
     </ClCompile>
     <ClCompile Include="AnimationSet.cpp">
       <Filter>소스 파일\03 Resources\03 Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Mathematics.cpp">
+      <Filter>소스 파일\02 Utility\06 Mathematics / TypeConversion</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkMgr.cpp">
+      <Filter>소스 파일\01 System\02 Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

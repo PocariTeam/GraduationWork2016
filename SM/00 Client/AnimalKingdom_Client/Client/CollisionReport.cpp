@@ -9,7 +9,7 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
 	for( NxU32 i = 0; i < nbEntities; ++i )
 	{
-		printf( "[ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
+		printf( "E [ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
 	}
 
 	return true;
@@ -48,5 +48,5 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
-	printf( "%s 와 %s가 충돌! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	printf( "C %s 와 %s가 충돌! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 }

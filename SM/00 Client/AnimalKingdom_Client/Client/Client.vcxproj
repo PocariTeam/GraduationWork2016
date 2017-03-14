@@ -219,9 +219,11 @@
     <ClInclude Include="LightMgr.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Mathematics.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshMgr.h" />
     <ClInclude Include="MultiTexture.h" />
+    <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="NormalShader.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
@@ -364,9 +366,11 @@
     <ClCompile Include="LightMgr.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="Mathematics.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshMgr.cpp" />
     <ClCompile Include="MultiTexture.cpp" />
+    <ClCompile Include="NetworkMgr.cpp" />
     <ClCompile Include="NormalShader.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />

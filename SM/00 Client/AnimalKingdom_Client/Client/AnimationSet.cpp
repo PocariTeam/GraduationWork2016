@@ -17,6 +17,7 @@ CAnimationSet::CAnimationSet( void )
 	, m_dwLength( 0 )
 	, m_fSpeed( 0.f )
 	, m_fTimePos( 0.f )
+	, m_bLoop( false )
 {
 
 }
@@ -28,6 +29,7 @@ CAnimationSet::CAnimationSet( const CAnimationSet& Instance )
 	, m_dwLength( Instance.m_dwLength )
 	, m_fSpeed( Instance.m_fSpeed )
 	, m_fTimePos( 0.f )
+	, m_bLoop( Instance.m_bLoop )
 {
 
 }
@@ -56,6 +58,7 @@ HRESULT CAnimationSet::Load( const char* pFilePath )
 		pIn >> m_dwJointCnt;
 		pIn >> m_dwLength;
 		pIn >> m_fSpeed;
+		pIn >> m_bLoop;
 
 		m_dpArrFrame = new XMFLOAT4X4*[ m_dwLength ];
 
@@ -76,6 +79,8 @@ void CAnimationSet::GetAnimationMatrix( XMFLOAT4X4* pOut )
 {
 	if( m_fTimePos < m_dwLength )
 		memcpy_s( pOut, sizeof( XMFLOAT4X4 ) * m_dwJointCnt, m_dpArrFrame[ ( int )m_fTimePos ], sizeof( XMFLOAT4X4 ) * m_dwJointCnt );
+	else
+		memcpy_s( pOut, sizeof( XMFLOAT4X4 ) * m_dwJointCnt, m_dpArrFrame[ m_dwLength - 1 ], sizeof( XMFLOAT4X4 ) * m_dwJointCnt );
 }
 
 DWORD CAnimationSet::Release( void )
@@ -99,5 +104,8 @@ void CAnimationSet::Update( const float& fTimeDelta )
 	m_fTimePos += fTimeDelta * m_fSpeed;
 
 	if( m_fTimePos >= ( float )m_dwLength )
-		m_fTimePos = 0.f;
+	{
+		if( m_bLoop ) m_fTimePos = 0.f;
+		else m_fTimePos = ( float )m_dwLength;
+	}
 }

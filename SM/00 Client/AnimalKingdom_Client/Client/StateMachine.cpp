@@ -12,8 +12,6 @@ CStateMachine::CStateMachine()
 
 void CStateMachine::Update( const float& fTimeDelta )
 {
-
-
 	if( m_pGlobalState ) m_pGlobalState->Execute( m_pOwner, fTimeDelta );
 	if( m_pCurrentState ) m_pCurrentState->Execute( m_pOwner, fTimeDelta );
 }
@@ -62,6 +60,10 @@ void CStateMachine::Change_State( STATE eState )
 	case STATE_IDLE:
 		Change_State( CIdleState::GetInstance() );
 		break;
+	case STATE_ATT1:
+	case STATE_ATT2:
+		Change_State( CAttackState::GetInstance() );
+		break;
 	case STATE_RUN:
 		Change_State( CRunState::GetInstance() );
 		break;
@@ -69,6 +71,14 @@ void CStateMachine::Change_State( STATE eState )
 		Change_State( CJumpState::GetInstance() );
 		break;
 	case STATE_DEFEND:
+		Change_State( CDefendState::GetInstance() );
+		break;
+	case STATE_BEATEN1:
+	case STATE_BEATEN2:
+		Change_State( CBeatenState::GetInstance() );
+		break;
+	case STATE_DOWN:
+		Change_State( CDownState::GetInstance() );
 		break;
 	}
 }
