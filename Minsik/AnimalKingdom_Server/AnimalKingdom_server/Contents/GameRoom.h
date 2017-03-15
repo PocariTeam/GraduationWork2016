@@ -17,7 +17,7 @@ public:
 	BOOL		startGame(Session* s);
 	BOOL		exit(Session* s);
 	BOOL		setPlayerReady(Session* s, BOOL b);
-	BOOL		setPlayerCharacter(Session* s, CHARACTER c);
+	BOOL		setPlayerCharacter(Session* s, S_CHARACTER c);
 	RoomInfo	getRoomInfo();
 	void		sendPlayerList();
 	void		sendStartGame();

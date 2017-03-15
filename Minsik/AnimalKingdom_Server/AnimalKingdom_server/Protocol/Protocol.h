@@ -34,13 +34,13 @@ typedef enum {
 	NONE,
 	CHAMEL,
 	MONKEY
-}CHARACTER;
+}S_CHARACTER;
 #define CHARACTER_MAX     (3)
 
 struct PlayerInfo
 {
 	UINT64		id;
-	CHARACTER	character;
+	S_CHARACTER	character;
 	BOOL		isReady;
 	BOOL		isMaster;
 };
@@ -68,7 +68,7 @@ struct C_RoomReady
 struct C_RoomCharacter
 {
 	HEADER		header;
-	CHARACTER	character;
+	S_CHARACTER	character;
 };
 
 struct S_Login
@@ -89,6 +89,12 @@ struct S_PlayerList
 	UINT		roomNum;
 	UINT		playerCount;
 	PlayerInfo	playerInfo[PLAYER_CAPACITY];
+};
+
+struct S_StartGame
+{
+	HEADER		header;
+	time_t		startTick;
 };
 
 /////////////////////////////////////////////////////////////

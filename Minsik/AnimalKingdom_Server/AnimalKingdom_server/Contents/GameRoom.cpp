@@ -143,7 +143,7 @@ BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 	return false;
 }
 
-BOOL GameRoom::setPlayerCharacter(Session * session, CHARACTER ch)
+BOOL GameRoom::setPlayerCharacter(Session * session, S_CHARACTER ch)
 {
 	SAFE_LOCK(lock_);
 
@@ -221,29 +221,15 @@ void GameRoom::sendPlayerList()
 void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
-	PlayerInfo pList[PLAYER_CAPACITY] = { 0 };
-
-	int i = 0;
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
-	{
-		pList[i] = (*iter)->getPlayerInfo();
-		i++;
-	}
-
-	if (i != playerCount_)
-	{
-		SLog(L"! the [%d] room's playerCount_ is not correct. ", roomNum_);
-	}
 
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
-		S_PlayerList* packet = (S_PlayerList*)session->ioData_[IO_SEND].buffer_.data();
+		S_StartGame* packet = (S_StartGame*)session->ioData_[IO_SEND].buffer_.data();
 		packet->header.packetID = PAK_ID::PAK_ANS_StartGame;
-		packet->header.size = sizeof(S_PlayerList);
-		packet->playerCount = playerCount_;
-		memcpy(packet->playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
-		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_PlayerList);
+		packet->header.size = sizeof(S_StartGame);
+		packet->startTick = Clock::getInstance().systemTick();
+		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_StartGame);
 		session->send();
 	}
 }

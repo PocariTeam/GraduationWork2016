@@ -103,7 +103,7 @@ BOOL RoomManager::setPlayerReady(Session* session, BOOL b)
 	return roomArray_[roomNum]->setPlayerReady(session, b);
 }
 
-BOOL RoomManager::setPlayerCharacter(Session * session, CHARACTER c)
+BOOL RoomManager::setPlayerCharacter(Session * session, S_CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 

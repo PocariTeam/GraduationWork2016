@@ -3,7 +3,7 @@
 
 class Player {
 	Session*	session_;
-	CHARACTER	character_;
+	S_CHARACTER	character_;
 	UINT		roomNum_;
 	BOOL		isReady_;
 	BOOL		isMaster_;
@@ -18,5 +18,5 @@ public:
 	BOOL		getMaster() { return isMaster_; }
 	void		setMaster(BOOL b);
 	void		setReady(BOOL b);
-	void		setCharacter(CHARACTER c);
+	void		setCharacter(S_CHARACTER c);
 };

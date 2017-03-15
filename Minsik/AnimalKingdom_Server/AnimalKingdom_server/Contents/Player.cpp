@@ -2,7 +2,7 @@
 #include "Player.h"
 
 Player::Player(Session * s, UINT room, BOOL master)
-	: lock_(L"Player"), session_(s), character_(CHARACTER::NONE), roomNum_(room), isReady_(false), isMaster_(master)
+	: lock_(L"Player"), session_(s), character_(S_CHARACTER::NONE), roomNum_(room), isReady_(false), isMaster_(master)
 {
 }
 
@@ -33,7 +33,7 @@ void Player::setReady(BOOL b)
 	isReady_ = b;
 }
 
-void Player::setCharacter(CHARACTER c)
+void Player::setCharacter(S_CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 	character_ = c;

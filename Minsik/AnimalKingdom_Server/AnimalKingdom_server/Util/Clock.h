@@ -41,11 +41,12 @@ typedef system_clock::time_point timePoint;
 
 class Clock : public Singleton<Clock>
 {
+public:
+
 	tick_t	serverStartTick_;
 
 	wstr_t	tickToStr(tick_t tick, WCHAR *fmt = DATETIME_FORMAT);
 
-public:
 	Clock();
 	~Clock();
 

@@ -16,7 +16,7 @@ public:
 	RoomInfo		*getRoomList();
 
 	BOOL			setPlayerReady(Session* session, BOOL b);
-	BOOL			setPlayerCharacter(Session* session, CHARACTER c);
+	BOOL			setPlayerCharacter(Session* session, S_CHARACTER c);
 	BOOL			startRoom(Session* session);
 
 	void			sendPlayerList(UINT32 roomNum);

@@ -11,7 +11,6 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 	{
 		printf( "[ %d ]번째 충돌한 도형: %s ", i, entities[ i ].hitShape->getName() );
 	}
-
 	return true;
 }
 

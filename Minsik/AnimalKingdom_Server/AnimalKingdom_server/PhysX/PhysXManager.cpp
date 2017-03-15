@@ -232,11 +232,12 @@ void PhysXManager::ReleaseScene(UINT32 roomNum)
 
 BOOL PhysXManager::initPhysX()
 {
+
 	userAllocator_ = new UserAllocator;
 
 	bool status = InitCooking(userAllocator_);
 
-	if (!status) 
+	if (!status)
 	{
 		SLog(L"! unable to initialize the cooking library.");
 		return false;

@@ -209,14 +209,10 @@ void packetProcess(char* buf)
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		S_PlayerList* packet = (S_PlayerList*)buf;
+		S_StartGame* packet = (S_StartGame*)buf;
 		printf("========================================= \n");
 		printf("\t\t [게임시작] %\t\t \n");
-		for (int i = 0; i < packet->playerCount; ++i)
-		{
-			PlayerInfo r = packet->playerInfo[i];
-			printf(" id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", r.id, r.character, r.isReady, r.isMaster);
-		}
+		printf("시작시간: %d \n", packet->startTick);
 		printf("========================================= \n");
 		break;
 	}
