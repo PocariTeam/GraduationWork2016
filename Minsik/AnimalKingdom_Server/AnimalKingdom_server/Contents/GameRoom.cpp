@@ -210,6 +210,7 @@ void GameRoom::sendPlayerList()
 		packet->header.packetID = PAK_ID::PAK_ANS_PlayerList;
 		packet->header.size = sizeof(S_PlayerList);
 		packet->playerCount = playerCount_;
+		packet->roomNum = roomNum_;
 		memcpy(packet->playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
 		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_PlayerList);
 		session->send();

@@ -252,11 +252,10 @@ BOOL PhysXManager::initPhysX()
 		return false;
 	}
 
-	for (int i = 0; i < GAMEROOM_CAPACITY; i++)
-	{
-		LoadSceneFromFile(i);
-	}
-
+	//for (int i = 0; i < GAMEROOM_CAPACITY; i++)
+	//{
+	//	LoadSceneFromFile(i);
+	//}
 
 	SLog(L"# Initialize PhysX SDK.");
 	return true;

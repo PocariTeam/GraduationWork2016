@@ -5,11 +5,14 @@ CNetworkMgr*	CSingleton<CNetworkMgr>::m_pInstance;
 
 HRESULT CNetworkMgr::Initialize()
 {
+	ZeroMemory(m_sendBuf, sizeof(m_sendBuf));
 	ZeroMemory(m_recvBuf, sizeof(m_recvBuf));
 	ZeroMemory(m_saveBuf, sizeof(m_saveBuf));
 	m_iCurrPacketSize = 0;
 	m_iStoredPacketSize = 0;
 	m_nPlayerID = -1;
+	m_nRoomNum = -1;
+	m_bReady = false;
 	m_bMaster = false;
 
 	WSADATA	wsa;
@@ -147,11 +150,6 @@ void CNetworkMgr::processPacket()
 		printf("로그인:: 아이디는 [%d] 입니다. \n", m_nPlayerID);
 		break;
 	}
-	case PAK_ID::PAK_RJT_Request:
-	{
-		printf("\n !! 요청 실패 !! \n");
-		break;
-	}
 	case PAK_ID::PAK_ANS_RoomList:
 	{
 		S_RoomList* packet = (S_RoomList*)m_saveBuf;
@@ -159,6 +157,11 @@ void CNetworkMgr::processPacket()
 		{
 			RoomInfo r = packet->roomInfo[i];
 			printf("[%d]번 방 - 인원: %d명, 플레이 상태: %d \n", i, r.playerCount, r.playing);
+		}
+		if (m_nRoomNum >= 0)
+		{
+			m_nRoomNum = -1;
+			m_bMaster = m_bReady = false;
 		}
 		break;
 	}
@@ -173,6 +176,11 @@ void CNetworkMgr::processPacket()
 			printf(" id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", r.id, r.character, r.isReady, r.isMaster);
 			if (r.id == m_nPlayerID)
 			{
+				if (m_nRoomNum == -1)
+				{
+					m_nRoomNum = packet->roomNum;
+				}
+
 				if (r.isMaster == true && m_bMaster == false)
 				{
 					printf(" --> 내가 방장이 되었습니다. <-- \n");
@@ -197,7 +205,68 @@ void CNetworkMgr::processPacket()
 		printf("========================================= \n");
 		break;
 	}
+	case PAK_ID::PAK_RJT_Request:
+	{
+		printf("\n !! 요청 실패 !! \n");
+		break;
 	}
+	}
+}
+
+void CNetworkMgr::sendBufData()
+{
+	if (send(m_Socket, m_sendBuf, ((HEADER*)m_sendBuf)->size, 0) == SOCKET_ERROR) {
+		printf(" send() Error! \n");
+	}
+}
+
+void CNetworkMgr::sendEnterRoom(int roomNum)
+{
+	C_RoomEnter *pEnterRoom = (C_RoomEnter*)m_sendBuf;
+	pEnterRoom->header.size = sizeof(C_RoomEnter);
+	pEnterRoom->header.packetID = PAK_ID::PAK_REQ_EnterRoom;
+	pEnterRoom->roomNumber = roomNum;
+
+	sendBufData();
+}
+
+void CNetworkMgr::sendExitRoom()
+{
+	HEADER *pExitRoom = (HEADER*)m_sendBuf;
+	pExitRoom->size = sizeof(HEADER);
+	pExitRoom->packetID = PAK_ID::PAK_REQ_ExitRoom;
+
+	sendBufData();
+}
+
+void CNetworkMgr::sendReadyRoom()
+{
+	C_RoomReady *pRoomReady = (C_RoomReady*)m_sendBuf;
+	pRoomReady->header.size = sizeof(C_RoomReady);
+	pRoomReady->header.packetID = PAK_ID::PAK_REQ_Ready;
+	m_bReady = !m_bReady;
+	pRoomReady->ready = m_bReady;
+
+	sendBufData();
+}
+
+void CNetworkMgr::sendStartRoom()
+{
+	HEADER *pStartGame = (HEADER*)m_sendBuf;
+	pStartGame->size = sizeof(HEADER);
+	pStartGame->packetID = PAK_ID::PAK_REQ_StartGame;
+	
+	sendBufData();
+}
+
+void CNetworkMgr::sendSelectCharacter(CHARACTER ch)
+{
+	C_RoomCharacter* pRoomCharacter = (C_RoomCharacter*)m_sendBuf;
+	pRoomCharacter->header.size = sizeof(C_RoomCharacter);
+	pRoomCharacter->header.packetID = PAK_ID::PAK_REQ_Character;
+	pRoomCharacter->character = ch;
+
+	sendBufData();
 }
 
 DWORD CNetworkMgr::Release( void )

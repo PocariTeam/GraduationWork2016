@@ -86,6 +86,7 @@ struct S_RoomList
 struct S_PlayerList
 {
 	HEADER		header;
+	UINT		roomNum;
 	UINT		playerCount;
 	PlayerInfo	playerInfo[PLAYER_CAPACITY];
 };
