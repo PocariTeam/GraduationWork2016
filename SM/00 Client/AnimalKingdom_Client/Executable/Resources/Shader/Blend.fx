@@ -31,6 +31,8 @@ float4 PS( VS_OUT In ) : SV_Target
 	float4 vSpecular = g_SpecularTexture.Load( float3( In.vUV.x, In.vUV.y, 0.f ) );
 
 	float4 vOut = vAlbedo * vLight + vSpecular;
+	if( vOut.r == 0.f && vOut.g == 0.f && vOut.b == 0.f )
+		discard;
 	vOut.a = 1.f;
 	return vOut;
 }

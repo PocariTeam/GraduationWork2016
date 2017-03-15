@@ -125,8 +125,6 @@ DWORD CPlayer::Release( void )
 	
 	::Safe_Release( m_pAnimator );
 	::Safe_Release( m_pStateMachine );
-	::Safe_Release( m_pTexture );
-	::Safe_Release( m_pMesh );
 
 	for( DWORD i = 0; i < m_dwActorCnt; ++i )
 	{

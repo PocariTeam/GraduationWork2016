@@ -223,6 +223,9 @@
     <Filter Include="소스 파일\02 Utility\06 Mathematics / TypeConversion">
       <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\02 SkyBox">
+      <UniqueIdentifier>{addea75d-5082-4d8c-8ed2-5e52a29419dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -489,6 +492,9 @@
     <ClInclude Include="Protocol.h">
       <Filter>소스 파일\01 System\02 Network</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\02 SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -707,6 +713,9 @@
     <ClCompile Include="NetworkMgr.cpp">
       <Filter>소스 파일\01 System\02 Network</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\02 SkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -741,6 +750,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\ActorShape.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Skybox.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

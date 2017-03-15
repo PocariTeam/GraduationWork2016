@@ -22,6 +22,7 @@
 #include <NxController.h>
 #include <NxScene.h>
 #include <fstream>
+#include "Skybox.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -282,13 +283,18 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	NxU32		iActorCnt = m_pScene->getNbActors();
 	NxActor**	dpActorArray = m_pScene->getActors();
 
-	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate;
+	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skybox;
 
+	pShader_Skybox = CShaderMgr::GetInstance()->Clone( "Shader_Skybox" );
 	pShader_Mesh = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
 	pShader_Light = CShaderMgr::GetInstance()->Clone( "Shader_Light" );
 	pShader_Blend = CShaderMgr::GetInstance()->Clone( "Shader_Blend" );
 	pShader_Debug = CShaderMgr::GetInstance()->Clone( "Shader_Debug" );
 	pShader_Animate = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh" );
+
+	CMesh* pDot_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Dot" );
+	CTexture* pTexture_Skybox = CTextureMgr::GetInstance()->Clone( "Texture_Skybox" );
+	CGameObject* pSkybox = CSkybox::Create( pDot_Mesh, pTexture_Skybox );
 
 	CMesh* pLight_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Background" );
 	CGameObject* pLight_Screen = CWallpaper::Create( pDevice, pLight_Mesh );
@@ -296,6 +302,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	CMesh* pBlend_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Background" );
 	CGameObject* pBlend_Screen = CWallpaper::Create( pDevice, pBlend_Mesh );
 
+	pShader_Skybox->Add_RenderObject( pSkybox );
 	pShader_Light->Add_RenderObject( pLight_Screen );
 	pShader_Blend->Add_RenderObject( pBlend_Screen );
 
@@ -392,6 +399,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		}
 	}
 
+	plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skybox );
 	plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
 	plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
 	plistShader[ RENDER_LIGHT ].push_back( pShader_Light );

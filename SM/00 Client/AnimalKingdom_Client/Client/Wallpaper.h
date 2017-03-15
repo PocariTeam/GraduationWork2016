@@ -20,8 +20,6 @@ public:
 	XMFLOAT4X4		GetWorld();
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );
-private:
-	CMesh*		m_pMesh;
 };
 
 #endif // Wallpaper_h__

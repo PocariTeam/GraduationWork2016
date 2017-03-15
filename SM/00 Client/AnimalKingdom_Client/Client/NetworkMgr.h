@@ -6,7 +6,8 @@
 #include "Singleton.h"
 #include "Protocol.h"
 
-#define		WM_SOCKET				WM_USER +1
+#pragma warning( disable : 4996 )
+#define		WM_SOCKET				WM_USER + 1
 
 class CScene;
 class CPlayer;
@@ -15,26 +16,26 @@ class CNetworkMgr
 {
 public:
 	HRESULT Initialize();
-	HRESULT connectServer(HWND hWnd);
-	DWORD	Release(void);
+	HRESULT connectServer( HWND hWnd );
+	DWORD	Release( void );
 
-	void	processSocketMessage(HWND hwnd, LPARAM lParam);
-	void	assemblePacket(int recvByte);
+	void	processSocketMessage( HWND hwnd, LPARAM lParam );
+	void	assemblePacket( int recvByte );
 	void	processPacket();
 
 	void	sendBufData();
-	void	sendEnterRoom(int roomNum);
+	void	sendEnterRoom( int roomNum );
 	void	sendExitRoom();
 	void	sendReadyRoom();
 	void	sendStartRoom();
-	void	sendSelectCharacter(CHARACTER ch);
+	void	sendSelectCharacter( S_CHARACTER ch );
 
 private:
 	SOCKET			m_Socket;
 	SOCKADDR_IN		m_tServerAdrr;
-	char			m_sendBuf[SOCKET_BUF_SIZE];
-	char			m_recvBuf[SOCKET_BUF_SIZE];
-	char			m_saveBuf[SOCKET_BUF_SIZE];
+	char			m_sendBuf[ SOCKET_BUF_SIZE ];
+	char			m_recvBuf[ SOCKET_BUF_SIZE ];
+	char			m_saveBuf[ SOCKET_BUF_SIZE ];
 	int				m_iCurrPacketSize;
 	int				m_iStoredPacketSize;
 

@@ -60,9 +60,6 @@ DWORD CEnvironment::Release( void )
 {
 	CGameObject::Release();
 
-	::Safe_Release( m_pTexture );
-	::Safe_Release( m_pMesh );
-
 	delete this;
 
 	return 0;

@@ -102,7 +102,8 @@ void CRenderer::Render_Background( ID3D11DeviceContext* pContext )
 	else CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
-	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_WRITE );
+	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
 
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_BACKGROUND ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_BACKGROUND ].end();

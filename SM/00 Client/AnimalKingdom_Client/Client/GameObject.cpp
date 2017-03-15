@@ -4,9 +4,13 @@
 #include "Define.h"
 #include <NxSimpleTypes.h>
 #include "NxActor.h"
+#include "Texture.h"
+#include "Mesh.h"
 
 CGameObject::CGameObject()
 	: CBase()
+	, m_pMesh( nullptr )
+	, m_pTexture( nullptr )
 	, m_pActor( nullptr )
 {
 }
@@ -20,6 +24,8 @@ DWORD	CGameObject::Release()
 {
 	CBase::Release();
 
+	::Safe_Release( m_pTexture );
+	::Safe_Release( m_pMesh );
 	m_pActor = nullptr;
 
 	return 0;

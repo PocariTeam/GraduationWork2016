@@ -65,6 +65,7 @@ void CCamera::SetConstantBuffer( ID3D11DeviceContext* pContext )
 
 	pContext->Unmap( m_pConstantBufferCamera, 0 );
 	pContext->VSSetConstantBuffers( SLOT_CAMERA, 1, &m_pConstantBufferCamera );
+	pContext->GSSetConstantBuffers( SLOT_CAMERA, 1, &m_pConstantBufferCamera );
 	pContext->PSSetConstantBuffers( SLOT_CAMERA, 1, &m_pConstantBufferCamera );
 }
 

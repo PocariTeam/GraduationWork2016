@@ -1,13 +1,10 @@
 #include "stdafx.h"
 #include "Wallpaper.h"
-#include "Function.h"
 #include "Mesh.h"
-#include "Define.h"
 #include "Value.h"
 
 CWallpaper::CWallpaper()
 	: CGameObject()
-	, m_pMesh( nullptr )
 {
 }
 
@@ -52,8 +49,6 @@ void CWallpaper::Render( ID3D11DeviceContext* pContext )
 DWORD CWallpaper::Release( void )
 {
 	CGameObject::Release();
-
-	::Safe_Release( m_pMesh );
 
 	delete this;
 

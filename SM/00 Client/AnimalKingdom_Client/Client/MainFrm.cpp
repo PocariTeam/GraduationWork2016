@@ -18,6 +18,7 @@
 #include "AnimateMeshMgr.h"
 #include "AnimationMgr.h"
 #include "Physics.h"
+#include "NetworkMgr.h"
 
 HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 {
@@ -118,6 +119,7 @@ DWORD CMainFrm::Release( void )
 	CShaderMgr::DestroyInstance();
 	CThreadMgr::DestroyInstance();
 	CInputMgr::DestroyInstance();
+	CNetworkMgr::DestroyInstance();
 	::Safe_Release( m_pGraphicDev );
 	m_hWnd = nullptr;
 

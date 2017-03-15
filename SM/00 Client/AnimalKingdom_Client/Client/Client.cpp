@@ -201,7 +201,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 	case WM_SIZE:
 		g_wWinsizeX = LOWORD( lParam );
 		g_wWinsizeY = HIWORD( lParam );
-		g_pMainFrm->ResizeRenderTarget( LOWORD( lParam ), HIWORD( lParam ) );
+		g_pMainFrm->ResizeRenderTarget( g_wWinsizeX, g_wWinsizeY );
 		break;
 	case WM_KEYDOWN:
 		switch( wParam )

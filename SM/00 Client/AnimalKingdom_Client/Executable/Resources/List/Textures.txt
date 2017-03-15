@@ -1,5 +1,5 @@
 6
-Texture_Sky 1 ../Executable/Resources/Texture/Sky/Sky.png
+Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds
 Texture_Snowball 1 ../Executable/Resources/Texture/Snowball/Snowball0.png
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
 Texture_Terrain 1 ../Executable/Resources/Texture/Terrain/Terrain.png
