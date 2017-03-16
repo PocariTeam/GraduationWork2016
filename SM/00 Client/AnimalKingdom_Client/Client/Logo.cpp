@@ -39,7 +39,7 @@ HRESULT CLogo::Initialize( HWND hWnd, ID3D11Device* pDevice )
 int CLogo::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
-	if( CThreadMgr::GetInstance()->Check_EndEvent( 10 ) ) return CScene::SCENE_JUNGLE;
+	if( CThreadMgr::GetInstance()->Check_EndEvent( 10 ) ) return CScene::SCENE_LOBBY;
 
 	return 0;
 }

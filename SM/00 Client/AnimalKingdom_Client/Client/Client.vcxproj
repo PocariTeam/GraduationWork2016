@@ -217,6 +217,7 @@
     <ClInclude Include="InstancingShader.h" />
     <ClInclude Include="Jungle.h" />
     <ClInclude Include="LightMgr.h" />
+    <ClInclude Include="Lobby.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Mathematics.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="ThreadMgr.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="Wallpaper.h" />
   </ItemGroup>
@@ -366,6 +368,7 @@
     <ClCompile Include="InstancingShader.cpp" />
     <ClCompile Include="Jungle.cpp" />
     <ClCompile Include="LightMgr.cpp" />
+    <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Mathematics.cpp" />
@@ -400,6 +403,7 @@
     <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="ThreadMgr.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
     <ClCompile Include="AnimationSet.cpp" />
   </ItemGroup>

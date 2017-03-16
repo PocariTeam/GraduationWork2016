@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Logo.h"
 #include "Jungle.h"
+#include "Lobby.h"
 #include "Shader.h"
 
 CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
@@ -16,6 +17,9 @@ CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
 	{
 	case SCENE_LOGO:
 		pScene = CLogo::Create( hWnd, pDevice );
+		break;
+	case SCENE_LOBBY:
+		pScene = CLobby::Create( hWnd, pDevice );
 		break;
 	case SCENE_JUNGLE:
 		pScene = CJungle::Create( hWnd, pDevice );

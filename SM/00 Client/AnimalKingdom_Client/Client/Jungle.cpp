@@ -42,6 +42,9 @@ DWORD CJungle::Release( void )
 	CIdleState::DestroyInstance();
 	CJumpState::DestroyInstance();
 	CRunState::DestroyInstance();
+	CAttackState::DestroyInstance();
+	CBeatenState::DestroyInstance();
+	CDefendState::DestroyInstance();
 
 	delete this;
 

@@ -79,21 +79,6 @@
     <Filter Include="소스 파일\00 Client\02 Scene\00 Logo">
       <UniqueIdentifier>{08e86ef3-7954-4888-b1af-8f01f32b7c95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\00 Client\02 Scene\01 Login">
-      <UniqueIdentifier>{d66815b4-b1be-4998-8303-96305089b92b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\02 Scene\02 Lobby">
-      <UniqueIdentifier>{689610ac-afc5-412d-abe4-395f6237f889}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\02 Scene\03 Wait">
-      <UniqueIdentifier>{ba4b97dc-33a4-47f8-98f0-9fc9604c53d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\02 Scene\04 Loading">
-      <UniqueIdentifier>{616a3a11-31aa-4cec-ae1c-2061f2d981fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\02 Scene\05 Jungle">
-      <UniqueIdentifier>{9b80996f-cf50-4167-9227-306edca418f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\99 stdafx">
       <UniqueIdentifier>{132eba83-d196-4d77-9c4e-f2e114afd0e0}</UniqueIdentifier>
     </Filter>
@@ -225,6 +210,18 @@
     </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\02 SkyBox">
       <UniqueIdentifier>{addea75d-5082-4d8c-8ed2-5e52a29419dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\02 Scene\01 Lobby">
+      <UniqueIdentifier>{689610ac-afc5-412d-abe4-395f6237f889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\02 Scene\02 Room">
+      <UniqueIdentifier>{ba4b97dc-33a4-47f8-98f0-9fc9604c53d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\02 Scene\03 Jungle">
+      <UniqueIdentifier>{9b80996f-cf50-4167-9227-306edca418f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI">
+      <UniqueIdentifier>{7584729b-f50f-4688-9af0-78002d713a6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -358,7 +355,7 @@
       <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\98 StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="Jungle.h">
-      <Filter>소스 파일\00 Client\02 Scene\05 Jungle</Filter>
+      <Filter>소스 파일\00 Client\02 Scene\03 Jungle</Filter>
     </ClInclude>
     <ClInclude Include="DebugCamera.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\00 Debug</Filter>
@@ -495,6 +492,12 @@
     <ClInclude Include="Skybox.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\02 SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="Lobby.h">
+      <Filter>소스 파일\00 Client\02 Scene\01 Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -582,7 +585,7 @@
       <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\98 StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="Jungle.cpp">
-      <Filter>소스 파일\00 Client\02 Scene\05 Jungle</Filter>
+      <Filter>소스 파일\00 Client\02 Scene\03 Jungle</Filter>
     </ClCompile>
     <ClCompile Include="DebugCamera.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\00 Debug</Filter>
@@ -715,6 +718,12 @@
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\02 SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby.cpp">
+      <Filter>소스 파일\00 Client\02 Scene\01 Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

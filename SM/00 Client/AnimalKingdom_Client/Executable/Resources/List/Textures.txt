@@ -1,7 +1,8 @@
-6
+7
 Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds
 Texture_Snowball 1 ../Executable/Resources/Texture/Snowball/Snowball0.png
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
 Texture_Terrain 1 ../Executable/Resources/Texture/Terrain/Terrain.png
 Texture_Map 1 ../Executable/Resources/Texture/map/map.png
 Texture_Chameleon 1 ../Executable/Resources/Texture/Chameleon/Chameleon.png
+Texture_L_Room 3 ../Executable/Resources/Texture/UI/L_Room/L_Room%d.png

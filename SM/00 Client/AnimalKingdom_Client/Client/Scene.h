@@ -10,7 +10,7 @@ class CCamera;
 class CScene
 {
 public:
-	enum SCENE_TYPE { SCENE_LOGO, SCENE_LOGIN, SCENE_LOBBY, SCENE_WAIT, SCENE_LOADING, SCENE_JUNGLE, SCENE_END };
+	enum SCENE_TYPE { SCENE_LOGO, SCENE_LOBBY, SCENE_JUNGLE, SCENE_END };
 protected:
 	virtual HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
 public:

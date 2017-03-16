@@ -5,7 +5,6 @@
 
 #include "GameObject.h"
 
-class CMesh;
 class CWallpaper
 	: public CGameObject
 {
