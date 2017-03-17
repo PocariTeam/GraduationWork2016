@@ -13,7 +13,8 @@
 PhysXManager::PhysXManager(void)
 	: sceneSeedNum(0),
 	userAllocator_(nullptr),
-	physicsSDK_(nullptr)
+	physicsSDK_(nullptr),
+	lock_(L"PhysXManager")
 {
 	for (int i = 0; i < GAMEROOM_CAPACITY; i++)
 	{
@@ -58,6 +59,8 @@ void PhysXManager::SetCollisionGroup(NxActor* pActor, NxCollisionGroup eGroup)
 
 BOOL PhysXManager::LoadSceneFromFile(UINT32 roomNum)
 {
+	SAFE_LOCK(lock_);
+
 	BOOL success = false;
 
 	if (physicsSDK_)
@@ -144,6 +147,8 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 
 BOOL PhysXManager::SetupScene(UINT32 roomNum)
 {
+	SAFE_LOCK(lock_);
+
 	if (scenes_[roomNum] == nullptr)
 	{
 		SLog(L"! scenes_[%d] is nullptr.", roomNum);
@@ -216,6 +221,8 @@ BOOL PhysXManager::SetupScene(UINT32 roomNum)
 
 void PhysXManager::ReleaseScene(UINT32 roomNum)
 {
+	SAFE_LOCK(lock_);
+
 	if (CCTManager_[roomNum])
 	{
 		CCTManager_[roomNum]->purgeControllers();
@@ -228,6 +235,14 @@ void PhysXManager::ReleaseScene(UINT32 roomNum)
 		scenes_[roomNum] = nullptr;
 		sceneSeedNum--;
 	}
+}
+
+void PhysXManager::updateScene(UINT32 roomNum, float fTimeDelta)
+{
+	CCTManager_[roomNum]->updateControllers();
+	scenes_[roomNum]->simulate(fTimeDelta);
+	scenes_[roomNum]->flushStream();
+	scenes_[roomNum]->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
 
 BOOL PhysXManager::initPhysX()

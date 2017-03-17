@@ -2,7 +2,7 @@
 #include "GameRoom.h"
 
 GameRoom::GameRoom(UINT num)
-	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num)
+	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), timerID_(-1)
 {
 }
 
@@ -101,6 +101,7 @@ BOOL GameRoom::exit(Session* session)
 			}
 			else if (playerCount_ == 0 && isPlaying_)
 			{
+				timeKillEvent(timerID_);
 				PhysXManager::getInstance().ReleaseScene(roomNum_);
 				isPlaying_ = false;
 			}
@@ -232,4 +233,14 @@ void GameRoom::sendStartGame()
 		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_StartGame);
 		session->send();
 	}
+
+	TIMECAPS caps;
+	timeGetDevCaps(&caps, sizeof(caps));
+	timerID_ = timeSetEvent(1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+}
+
+void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
+{
+#error 1√  πŸ≤„æﬂ «‘.
+	PhysXManager::getInstance().updateScene(roomNum,1000);
 }

@@ -10,6 +10,7 @@ private:
 	UINT				playerCount_;
 	BOOL				isPlaying_;
 	Lock				lock_;
+	UINT				timerID_;
 public:
 	GameRoom(UINT roomNum);
 	~GameRoom();
@@ -21,4 +22,8 @@ public:
 	RoomInfo	getRoomInfo();
 	void		sendPlayerList();
 	void		sendStartGame();
+
+	static void updateTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);
+
+	
 };

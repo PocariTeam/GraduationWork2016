@@ -22,14 +22,16 @@ private:
 	CControllerReport			controllerReport_;  // Controller Collision
 	CCollisionReport			collisionReport_;	// Normal Collision
 
+	Lock						lock_;
+
 public:
 	PhysXManager();
 	~PhysXManager();
 	BOOL initPhysX();
-
 	BOOL LoadSceneFromFile(UINT32 roomNum);
 	BOOL SetupScene(UINT32 roomNum);
 	void ReleaseScene(UINT32 roomNum);
+	void updateScene(UINT32 roomNum, float fTimeDelta);
 
 	void SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
 	NxController* CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT32 roomNum);
