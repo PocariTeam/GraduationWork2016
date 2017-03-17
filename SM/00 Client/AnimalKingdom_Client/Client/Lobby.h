@@ -4,6 +4,7 @@
 #define Lobby_h__
 
 #include "Scene.h"
+#include "Define.h"
 
 class CShader;
 class CLobby
@@ -22,6 +23,7 @@ public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 private:
 	CShader*		m_pShader;
+	RECT			m_rcRoom[ MAX_ROOM_CNT ];
 };
 
 

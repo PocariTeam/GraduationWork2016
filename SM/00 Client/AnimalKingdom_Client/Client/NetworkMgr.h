@@ -30,6 +30,8 @@ public:
 	void	sendStartRoom();
 	void	sendSelectCharacter( S_CHARACTER ch );
 
+public:
+	bool	isMaster() { return m_bMaster; }
 private:
 	SOCKET			m_Socket;
 	SOCKADDR_IN		m_tServerAdrr;

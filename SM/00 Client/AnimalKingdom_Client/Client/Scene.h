@@ -10,13 +10,14 @@ class CCamera;
 class CScene
 {
 public:
-	enum SCENE_TYPE { SCENE_LOGO, SCENE_LOBBY, SCENE_JUNGLE, SCENE_END };
+	enum SCENE_TYPE { SCENE_LOGO, SCENE_LOBBY, SCENE_ROOM, SCENE_JUNGLE, SCENE_END };
 protected:
 	virtual HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual DWORD Release( void );
 	virtual void Render( ID3D11DeviceContext* pContext );
+	POINT	GetMousePosition( HWND hWnd );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 protected:

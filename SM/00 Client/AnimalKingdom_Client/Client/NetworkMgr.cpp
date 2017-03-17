@@ -162,6 +162,8 @@ void CNetworkMgr::processPacket()
 			m_nRoomNum = -1;
 			m_bMaster = m_bReady = false;
 		}
+
+		
 		break;
 	}
 	case PAK_ID::PAK_ANS_PlayerList:

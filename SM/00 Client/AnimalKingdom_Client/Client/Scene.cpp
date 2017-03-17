@@ -8,6 +8,7 @@
 #include "Jungle.h"
 #include "Lobby.h"
 #include "Shader.h"
+#include "Room.h"
 
 CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
 {
@@ -20,6 +21,9 @@ CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
 		break;
 	case SCENE_LOBBY:
 		pScene = CLobby::Create( hWnd, pDevice );
+		break;
+	case SCENE_ROOM:
+		pScene = CRoom::Create( hWnd, pDevice );
 		break;
 	case SCENE_JUNGLE:
 		pScene = CJungle::Create( hWnd, pDevice );
@@ -72,4 +76,13 @@ void CScene::Render( ID3D11DeviceContext* pContext )
 {
 	if( nullptr != m_pCamera )
 		m_pCamera->Render( pContext );
+}
+
+POINT CScene::GetMousePosition( HWND hWnd )
+{
+	POINT	ptMouse;
+	::GetCursorPos( &ptMouse );
+	::ScreenToClient( hWnd, &ptMouse );
+
+	return ptMouse;
 }

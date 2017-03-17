@@ -17,8 +17,8 @@ public:
 	static	CWallpaper*	Create( ID3D11Device* pDevice, CMesh* pMesh );
 public:
 	XMFLOAT4X4		GetWorld();
-	void	Render( ID3D11DeviceContext* pContext );
-	DWORD	Release( void );
+	void			Render( ID3D11DeviceContext* pContext );
+	DWORD			Release( void );
 };
 
 #endif // Wallpaper_h__
