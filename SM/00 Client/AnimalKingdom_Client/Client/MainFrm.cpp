@@ -67,7 +67,8 @@ HRESULT CMainFrm::Ready_Logo( ID3D11Device* pDevice )
 
 int CMainFrm::Update( const float& fTimeDelta )
 {
-	CInputMgr::GetInstance()->Check_Input();
+	if( ::GetActiveWindow() == m_hWnd )
+		CInputMgr::GetInstance()->Check_Input();
 
 	int iRetVal{ 0 };
 	
