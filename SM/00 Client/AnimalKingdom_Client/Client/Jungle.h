@@ -5,6 +5,7 @@
 
 #include "Scene.h"
 
+class CPlayer;
 class CJungle
 	: public CScene
 {
@@ -19,6 +20,9 @@ public:
 	void  Render( ID3D11DeviceContext* pContext );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
+private:
+	map<int, CPlayer*>		m_mapPlayer;
+	int						m_iPlayerID;
 };
 
 #endif // Jungle_h__

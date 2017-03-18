@@ -5,6 +5,7 @@
 
 #include "Scene.h"
 #include "Define.h"
+#include "Protocol.h"
 
 class CShader;
 class CLobby
@@ -23,7 +24,10 @@ public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 private:
 	CShader*		m_pShader;
-	RECT			m_rcRoom[ MAX_ROOM_CNT ];
+	RECT			m_rcRoom[ GAMEROOM_CAPACITY ];
+
+	/* Check Key */
+	bool			m_bOverlapped;
 };
 
 

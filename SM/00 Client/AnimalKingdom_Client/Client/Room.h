@@ -5,6 +5,7 @@
 
 #include "Scene.h"
 #include "Define.h"
+#include "Protocol.h"
 
 class CShader;
 class CRoom
@@ -21,9 +22,19 @@ public:
 	void	Render( ID3D11DeviceContext* pContext );
 public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
+public:
+	void	NotifyGameStart( void ) { m_bStart = true; }
+	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo ) { m_pPlayerInfo = pPlayerInfo; }
+	void	NotifyPlayerCnt( UINT* pPlayerCnt ) { m_pPlayerCnt = pPlayerCnt; }
 private:
 	CShader*		m_pShader;
-	RECT			m_rcRoom[ MAX_ROOM_CNT ];
+	RECT			m_rcRoom[ GAMEROOM_CAPACITY ];
+	bool			m_bStart;
+	PlayerInfo*		m_pPlayerInfo;
+	UINT*			m_pPlayerCnt;
+
+	/* Check Key */
+	bool			m_bOverlapped;
 };
 
 

@@ -11,6 +11,7 @@
 CLobby::CLobby()
 	: CScene()
 	, m_pShader( nullptr )
+	, m_bOverlapped( true )
 {
 }
 
@@ -40,19 +41,22 @@ int CLobby::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
 
-	if( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 )
+	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) && m_bOverlapped )
 	{
 		POINT ptMouse = CScene::GetMousePosition( m_hWnd );
-		for( int i = 0; i < MAX_ROOM_CNT; ++i )
+		m_bOverlapped = false;
+		for( int i = 0; i < 6; ++i )
 		{
 			if( PtInRect( &m_rcRoom[ i ], ptMouse ) )
 			{
 				CNetworkMgr::GetInstance()->sendEnterRoom( i );
-				return CScene::SCENE_JUNGLE;
+				return CScene::SCENE_ROOM;
 			}
 		}
 	}
-	
+
+	else if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
+		m_bOverlapped = true;
 
 	return 0;
 }

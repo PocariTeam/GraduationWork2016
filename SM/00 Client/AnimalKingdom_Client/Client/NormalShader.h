@@ -22,6 +22,8 @@ public:
 private:
 	HRESULT		Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath );
 public:
+	vector<CGameObject*>*	GetRenderObjects() { return &m_vecRenderObject; }
+public:
 	void		Add_RenderObject( CGameObject* pGameObject );
 private:
 	vector<CGameObject*>	m_vecRenderObject;

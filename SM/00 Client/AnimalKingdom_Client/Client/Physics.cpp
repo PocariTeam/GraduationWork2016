@@ -23,6 +23,11 @@
 #include <NxScene.h>
 #include <fstream>
 #include "Skybox.h"
+#include <set>
+#include <xfunctional>
+#include "NetworkMgr.h"
+#include "NormalShader.h"
+#include "Protocol.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -216,7 +221,7 @@ HRESULT CPhysics::Load_Kinematic( void )
 	return S_OK;
 }
 
-HRESULT CPhysics::Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader, const char* pFileName, NXU::NXU_FileType eType/* = NXU::FT_XML*/ )
+HRESULT CPhysics::Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer, const char* pFileName, NXU::NXU_FileType eType/* = NXU::FT_XML*/ )
 {
 	if( FAILED( CreateSceneFromFile( pFileName, eType ) ) )
 	{
@@ -226,7 +231,7 @@ HRESULT CPhysics::Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		return E_FAIL;
 	}
 
-	return SetupScene( pDevice, plistShader );
+	return SetupScene( pDevice, plistShader, pmapPlayer );
 }
 
 HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType eType )
@@ -257,7 +262,7 @@ HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType 
 	return E_FAIL;
 }
 
-HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader )
+HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer )
 {
 	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.2f );
 	m_pScene->setUserContactReport( &m_CollisionReport );
@@ -283,6 +288,12 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	NxU32		iActorCnt = m_pScene->getNbActors();
 	NxActor**	dpActorArray = m_pScene->getActors();
 
+	PlayerInfo	pPlayerInfo[ PLAYER_CAPACITY ];
+	UINT		iPlayerCnt{};
+	UINT		iCreatePlayerCnt{};
+
+	CNetworkMgr::GetInstance()->getPlayerInfo( pPlayerInfo, iPlayerCnt );
+
 	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skybox;
 
 	pShader_Skybox = CShaderMgr::GetInstance()->Clone( "Shader_Skybox" );
@@ -306,6 +317,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pShader_Light->Add_RenderObject( pLight_Screen );
 	pShader_Blend->Add_RenderObject( pBlend_Screen );
 
+	set<int, less<int> >	setReleaseActorIndex;
 
 	if( nullptr != m_pScene )
 	{
@@ -320,14 +332,20 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			// Collision Grouping
 			if( pActor->isDynamic() )
 			{
-				if( 0 == strcmp( pActor->getName(), "player00" ) )
+				if( 0 == strcmp( pActor->getName(), "player00" )
+					|| 0 == strcmp( pActor->getName(), "player01" ) 
+					|| 0 == strcmp( pActor->getName(), "player02" ) 
+					|| 0 == strcmp( pActor->getName(), "player03" ) )
 				{
+					if( iPlayerCnt == iCreatePlayerCnt ) continue;
+
 					DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ CHARACTER_CHM ].size();
 					NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
 
 					auto iter_begin = m_mapActorInfo[ CHARACTER_CHM ].begin();
 					auto iter_end = m_mapActorInfo[ CHARACTER_CHM ].end();
 
+					setReleaseActorIndex.insert( i );
 
 					int j = 0;
 					for( ; iter_begin != iter_end; ++j, ++iter_begin )
@@ -338,10 +356,13 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 						*( NxMat34* )dpCameleonActors[ j ]->userData = dpCameleonActors[ j ]->getGlobalPose();
 						// Collision Grouping 은 CreateActor 함수 안에서 현재 하고 있음 ( 추후 변경도 가능 )
 					}
+					dpActorArray = m_pScene->getActors();
 
 					NxController* pController = CreateCharacterController( pActor, dpCameleonActors, j );
 					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, CHARACTER_CHM );
 					pShader_Animate->Add_RenderObject( pPlayer );
+					pmapPlayer->insert( make_pair( ( int )pPlayerInfo[ iCreatePlayerCnt ].id, ( CPlayer* )pPlayer ) );
+					iCreatePlayerCnt++;
 				}
 
 				else if( strcmp( pActor->getName(), "Test" ) == 0 )
@@ -397,6 +418,12 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 			}
 		}
+
+		auto set_iter_begin = setReleaseActorIndex.begin();
+		auto set_iter_end = setReleaseActorIndex.end();
+
+		for( ; set_iter_begin != set_iter_end; ++set_iter_begin )
+			m_pScene->releaseActor( *dpActorArray[( *set_iter_begin )] );
 	}
 
 	plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skybox );
@@ -465,7 +492,7 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dp
 	char szName[ MAX_PATH ] = "Character Controller Actor of ";
 	strcat_s( szName, MAX_PATH, dpActors[ 0 ]->getName() );
 	pOut->getActor()->setName( szName );
-	m_pScene->releaseActor( *pActor );
+	// m_pScene->releaseActor( *pActor );
 
 	return pOut;
 }

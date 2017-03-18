@@ -99,14 +99,18 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		m_vRotate.y = rotAngle;
 	}
 
-	vDir.y += GRAVITY * -GRAVITY * fTimeDelta;
-
 	NxU32	dwCollisionFlag;
 	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 }
 
 int CPlayer::Update( const float& fTimeDelta )
 {
+	NxVec3	vDir{ 0.f, 0.f, 0.f };
+	vDir.y += GRAVITY * -GRAVITY * fTimeDelta;
+
+	NxU32	dwCollisionFlag;
+	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+
 	m_pStateMachine->Update( fTimeDelta );
 
 	return 0;

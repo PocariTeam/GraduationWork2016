@@ -499,7 +499,7 @@
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\00 Client\02 Scene\02 Room</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -729,7 +729,7 @@
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\00 Client\02 Scene\02 Room</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

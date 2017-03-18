@@ -10,7 +10,7 @@
 #define		WM_SOCKET				WM_USER + 1
 
 class CScene;
-class CPlayer;
+class CGameObject;
 class CNetworkMgr
 	: public CSingleton<CNetworkMgr>
 {
@@ -32,6 +32,9 @@ public:
 
 public:
 	bool	isMaster() { return m_bMaster; }
+	void	setScene( CScene* pScene ) { m_pScene = pScene; }
+	int		getID( void ) { return m_nPlayerID; }
+	void	getPlayerInfo( PlayerInfo* pOut, UINT& iArraySize ) { memcpy_s( pOut, sizeof( m_tPlayerInfo ), m_tPlayerInfo, sizeof( m_tPlayerInfo ) ); iArraySize = m_dwPlayerCnt; }
 private:
 	SOCKET			m_Socket;
 	SOCKADDR_IN		m_tServerAdrr;
@@ -46,8 +49,9 @@ private:
 	bool			m_bReady;
 	bool			m_bMaster;
 
-	CScene*			m_pScene;
-	CPlayer**		m_pPlayerArray;
+	PlayerInfo					m_tPlayerInfo[ PLAYER_CAPACITY ];
+	UINT						m_dwPlayerCnt;
+	CScene*						m_pScene;
 };
 
 

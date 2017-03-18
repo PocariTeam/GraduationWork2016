@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "NetworkMgr.h"
+#include "Room.h"
 
 CNetworkMgr*	CSingleton<CNetworkMgr>::m_pInstance;
 
@@ -171,26 +172,29 @@ void CNetworkMgr::processPacket()
 		S_PlayerList* packet = ( S_PlayerList* )m_saveBuf;
 		printf( "========================================= \n" );
 		printf( "\t\t [방 정보] \t\t \n" );
-		for( UINT i = 0; i < packet->playerCount; ++i )
+		m_dwPlayerCnt = packet->playerCount;
+
+		for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 		{
-			PlayerInfo r = packet->playerInfo[ i ];
-			printf( " id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", ( int )r.id, r.character, r.isReady, r.isMaster );
-			if( r.id == m_nPlayerID )
+			m_tPlayerInfo[i] = packet->playerInfo[ i ];
+			printf( " id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", ( int )m_tPlayerInfo[ i ].id, m_tPlayerInfo[ i ].character, m_tPlayerInfo[ i ].isReady, m_tPlayerInfo[ i ].isMaster );
+			if( m_tPlayerInfo[ i ].id == m_nPlayerID )
 			{
 				if( m_nRoomNum == -1 )
 				{
 					m_nRoomNum = packet->roomNum;
 				}
 
-				if( r.isMaster == TRUE && m_bMaster == false )
+				if( m_tPlayerInfo[ i ].isMaster == TRUE && m_bMaster == false )
 				{
 					printf( " --> 내가 방장이 되었습니다. <-- \n" );
 					m_bMaster = true;
-
 				}
 			}
 		}
 		printf( "========================================= \n" );
+		( ( CRoom* )m_pScene )->NotifyPlayerInfo( m_tPlayerInfo );
+		( ( CRoom* )m_pScene )->NotifyPlayerCnt( &m_dwPlayerCnt );
 		break;
 	}
 	case PAK_ID::PAK_ANS_StartGame:
@@ -200,6 +204,7 @@ void CNetworkMgr::processPacket()
 		printf( "\t\t [게임시작] \t\t \n" );
 		printf("시작시간: %d \n", packet->startTick);
 		printf( "========================================= \n" );
+		( ( CRoom* )m_pScene )->NotifyGameStart();
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:

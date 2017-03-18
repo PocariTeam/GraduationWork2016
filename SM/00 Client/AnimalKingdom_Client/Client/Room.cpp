@@ -11,6 +11,10 @@
 CRoom::CRoom()
 	: CScene()
 	, m_pShader( nullptr )
+	, m_bStart( false )
+	, m_bOverlapped( true )
+	, m_pPlayerInfo( nullptr )
+	, m_pPlayerCnt( nullptr )
 {
 }
 
@@ -32,6 +36,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 			m_rcRoom[ i * 2 + j ].right = long( ( -0.6f + float( j ) * 0.7f + 1.f ) * ( float )g_wWinsizeX * 0.5f + 0.6f * 0.5f * ( float )g_wWinsizeX );
 		}
 
+	CNetworkMgr::GetInstance()->setScene( this );
 
 	return CScene::Initialize( hWnd, pDevice );
 }
@@ -40,7 +45,7 @@ int CRoom::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
 
-	if( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 )
+	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) && m_bOverlapped )
 	{
 		POINT ptMouse = CScene::GetMousePosition( m_hWnd );
 		for( int i = 0; i < 1; ++i )
@@ -56,6 +61,11 @@ int CRoom::Update( const float& fTimeDelta )
 			}
 		}
 	}
+
+	else if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
+		m_bOverlapped = true;
+
+	if( m_bStart ) return SCENE_JUNGLE;
 
 
 	return 0;

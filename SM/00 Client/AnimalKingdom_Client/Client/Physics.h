@@ -18,6 +18,7 @@ class CTexture;
 class UserAllocator;
 class NxControllerManager;
 class NxController;
+class CPlayer;
 class CPhysics
 	: public CSingleton<CPhysics>
 {
@@ -39,10 +40,10 @@ public:
 public:
 	HRESULT		Initialize( ID3D11Device* pDevice );
 	HRESULT		Load_Kinematic( void );
-	HRESULT		Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader, const char* pFileName, NXU::NXU_FileType eType = NXU::FT_XML );
+	HRESULT		Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer, const char* pFileName, NXU::NXU_FileType eType = NXU::FT_XML );
 private:
 	HRESULT		CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType eType );
-	HRESULT		SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader );
+	HRESULT		SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer );
 	NxController* CreateCharacterController( NxActor* pActor, NxActor** dpActors, int iArraySize );
 	void		  SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup );
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info );

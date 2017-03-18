@@ -5,10 +5,13 @@
 #include "LightMgr.h"
 #include "Physics.h"
 #include "RenderTargetMgr.h"
+#include "NetworkMgr.h"
+#include "Player.h"
 #include "State.h"
 
 CJungle::CJungle()
 	: CScene()
+	, m_iPlayerID( -1 )
 {
 }
 
@@ -20,7 +23,9 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
 	m_pCamera = CDebugCamera::Create( hWnd, pDevice );
 	CLightMgr::GetInstance()->Initialize( pDevice );
-	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, "../Executable/Resources/Scene/Jungle_player4.xml" );
+	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle_player4.xml" );
+	CNetworkMgr::GetInstance()->setScene( this );
+	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 
 	return CScene::Initialize( hWnd, pDevice );
 }
@@ -28,7 +33,9 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 int CJungle::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
-
+	if( -1 != m_iPlayerID )
+		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
+		
 	CPhysics::GetInstance()->Update( fTimeDelta );
 
 	return 0;
@@ -37,6 +44,8 @@ int CJungle::Update( const float& fTimeDelta )
 DWORD CJungle::Release( void )
 {
 	CScene::Release();
+
+	m_mapPlayer.erase( m_mapPlayer.begin(), m_mapPlayer.end() );
 
 	CGlobalState::DestroyInstance();
 	CIdleState::DestroyInstance();

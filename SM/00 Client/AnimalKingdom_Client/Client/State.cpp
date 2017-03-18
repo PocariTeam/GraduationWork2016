@@ -31,7 +31,6 @@ void CGlobalState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 void CGlobalState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Update( pOwner, fTImeDelta );
-	pOwner->Check_Key( fTImeDelta );
 }
 
 void CGlobalState::Exit( CPlayer* pOwner, const float& fTimeDelta )

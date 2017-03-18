@@ -9,7 +9,4 @@
 #define SLOT_POS_SIZE	0x00
 #define SLOT_ANIMATION  0x02
 
-
-#define MAX_ROOM_CNT	6
-
 #endif // Define_h__
