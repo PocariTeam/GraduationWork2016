@@ -91,6 +91,12 @@ struct S_PlayerList
 	PlayerInfo	playerInfo[PLAYER_CAPACITY];
 };
 
+struct S_StartGame
+{
+	HEADER		header;
+	time_t		startTick;
+};
+
 /////////////////////////////////////////////////////////////
 
 #pragma pack(pop)

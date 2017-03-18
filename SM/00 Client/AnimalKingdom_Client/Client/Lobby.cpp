@@ -48,7 +48,7 @@ int CLobby::Update( const float& fTimeDelta )
 			if( PtInRect( &m_rcRoom[ i ], ptMouse ) )
 			{
 				CNetworkMgr::GetInstance()->sendEnterRoom( i );
-				return CScene::SCENE_ROOM;
+				return CScene::SCENE_JUNGLE;
 			}
 		}
 	}

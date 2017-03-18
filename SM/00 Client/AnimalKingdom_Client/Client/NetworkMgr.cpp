@@ -195,14 +195,10 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		S_PlayerList* packet = ( S_PlayerList* )m_saveBuf;
+		S_StartGame* packet = (S_StartGame* )m_saveBuf;
 		printf( "========================================= \n" );
 		printf( "\t\t [게임시작] \t\t \n" );
-		for( UINT i = 0; i < packet->playerCount; ++i )
-		{
-			PlayerInfo r = packet->playerInfo[ i ];
-			printf( " id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", ( int )r.id, r.character, r.isReady, r.isMaster );
-		}
+		printf("시작시간: %d \n", packet->startTick);
 		printf( "========================================= \n" );
 		break;
 	}

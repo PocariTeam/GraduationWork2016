@@ -189,6 +189,7 @@ CMainFrm::CMainFrm()
 	, m_fAccTime( 0.f )
 	, m_bOverlapped( true )
 {
+	
 	ZeroMemory( m_szFPS, sizeof( char ) * MAX_PATH );
 }
 

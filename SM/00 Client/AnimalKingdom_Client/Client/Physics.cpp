@@ -320,7 +320,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			// Collision Grouping
 			if( pActor->isDynamic() )
 			{
-				if( 0 == strcmp( pActor->getName(), "chm" ) )
+				if( 0 == strcmp( pActor->getName(), "player00" ) )
 				{
 					DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ CHARACTER_CHM ].size();
 					NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
