@@ -18,6 +18,11 @@ public:
 	BOOL			setPlayerReady(Session* session, BOOL b);
 	BOOL			setPlayerCharacter(Session* session, S_CHARACTER c);
 	BOOL			startRoom(Session* session);
+	BOOL			setupRoom(UINT32 roomNum);
+
+	BOOL			moveRequestRoom(Session* session, time_t tick, Vector3 vDir);
+
+	UINT			getPlayerCountRoom(UINT32 roomNum);
 
 	void			sendPlayerList(UINT32 roomNum);
 	void			sendStartGame(UINT32 roomNum);

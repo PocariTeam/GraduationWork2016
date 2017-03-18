@@ -2,7 +2,7 @@
 #include "Player.h"
 
 Player::Player(Session * s, UINT room, BOOL master)
-	: lock_(L"Player"), session_(s), character_(S_CHARACTER::NONE), roomNum_(room), isReady_(false), isMaster_(master)
+	: lock_(L"Player"), session_(s), character_(S_CHARACTER::NONE), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr)
 {
 }
 

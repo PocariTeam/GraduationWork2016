@@ -17,12 +17,21 @@ typedef enum {
 	PAK_ANS_RoomList,
 	PAK_ANS_PlayerList,
 	PAK_ANS_StartGame,
-	PAK_RJT_Request
+	PAK_RJT_Request,
+	PAK_REQ_Move,
+	PAK_ANS_Move
 } PAK_ID;
 
 #pragma pack(push, 1)
 
 /////////////////////////////////////////////////////////////
+
+struct Vector3
+{
+	float x; 
+	float y; 
+	float z;
+};
 
 struct RoomInfo
 {
@@ -95,6 +104,23 @@ struct S_StartGame
 {
 	HEADER		header;
 	time_t		startTick;
+};
+
+/////////////////////////////////////////////////////////////
+
+struct C_Move
+{
+	HEADER		header;
+	time_t		tick;
+	Vector3		vDir;
+};
+
+struct S_Move
+{
+	HEADER		header;
+	UINT		id;
+	time_t		tick;
+	Vector3		vDir;
 };
 
 /////////////////////////////////////////////////////////////

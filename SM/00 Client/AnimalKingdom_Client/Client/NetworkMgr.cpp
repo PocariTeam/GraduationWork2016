@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NetworkMgr.h"
 #include "Room.h"
+#include "Jungle.h"
 
 CNetworkMgr*	CSingleton<CNetworkMgr>::m_pInstance;
 
@@ -17,6 +18,7 @@ HRESULT CNetworkMgr::Initialize()
 	m_bMaster = false;
 
 	WSADATA	wsa;
+	
 
 	if( 0 != WSAStartup( MAKEWORD( 2, 2 ), &wsa ) )
 		return E_FAIL;
@@ -212,6 +214,12 @@ void CNetworkMgr::processPacket()
 		printf( "\n !! 요청 실패 !! \n" );
 		break;
 	}
+	case PAK_ID::PAK_ANS_Move:
+	{
+		S_Move* packet = (S_Move*)m_saveBuf;
+		((CJungle*)m_pScene)->Move(packet->id, packet->tick, XMFLOAT3(packet->vDir.x, packet->vDir.y, packet->vDir.z));
+		break;
+	}
 	}
 }
 
@@ -260,6 +268,20 @@ void CNetworkMgr::sendStartRoom()
 
 	sendBufData();
 }
+
+void CNetworkMgr::sendMoveCharacter(NxVec3 dir)
+{
+	C_Move *pMove = (C_Move*)m_sendBuf;
+	pMove->header.packetID = PAK_ID::PAK_REQ_Move;
+	pMove->header.size = sizeof(C_Move);
+	pMove->tick = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	pMove->vDir.x = dir.x;
+	pMove->vDir.y = dir.y;
+	pMove->vDir.z = dir.z;
+		
+	sendBufData();
+}
+
 
 void CNetworkMgr::sendSelectCharacter( S_CHARACTER ch )
 {

@@ -11,6 +11,8 @@
 #pragma comment( lib, "PhysXCore64.lib" )
 #pragma comment( lib, "PhysXLoader64.lib" )
 
+#pragma comment( lib, "d3dx11d.lib" )
+
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #define NOMINMAX
@@ -44,6 +46,10 @@
 #include <ctime>
 #include <random>
 #include <typeinfo>    //typeinfo
+
+#include <DirectXMath.h>
+using namespace DirectX;
+
 // TODO: 공용 매크로
 //#define CONTEXT_SWITCH     std::this_thread::sleep_for(std::chrono::nanoseconds(1))
 #if _DEBUG
@@ -85,16 +91,6 @@ typedef void(*Function)(void *);
 #include "./Util/Minidump.h"
 //
 #include "./Util/Config.h"
-//#include "./util/ProgramValidation.h"
-//
-////패킷들
-//#include "./Net/Packet/Stream.h"
-//#include "./Net/Packet/PacketHeader.h"
-//#include "./Net/Packet/PacketClass.h"
-//#include "./Net/Packet/PacketAnalyzer.h"
-//#include "./Net/Packet/PacketFactory.h"
-//#include "./Net/Packet/Package.h"
-//#include "./Net/Packet/PacketObfuscation.h"
 //
 ///컨텐츠
 //
@@ -111,15 +107,7 @@ typedef void(*Function)(void *);
 //#include "./Net/SessionMonitor.h"
 //
 //
-////터미널
-//#include "./Net/Terminal/TerminalSession.h"
-//#include "./Net/Terminal/Terminal.h"
-//#include "./Net/Terminal/TerminalManager.h"
-//
-////DB
-//#include "./Database/ADODatabase.h"
-//#include "./Database/Query.h"
-//#include "./Database/DBManager.h"
+
 
 // 전역 변수
 #include "./main/Shutdown.h"

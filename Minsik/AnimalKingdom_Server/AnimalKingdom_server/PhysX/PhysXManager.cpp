@@ -135,6 +135,7 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		desc.userData = (NxActor*)actor;
 		desc.callback = &controllerReport_;
 		pCtrl = CCTManager_[roomNum]->createController(scenes_[roomNum], desc);
+		
 #endif
 
 	char CCTName[256] = "CCTActor of ";
@@ -174,6 +175,9 @@ BOOL PhysXManager::SetupScene(UINT32 roomNum)
 	NxU32 nbActors = scenes_[roomNum]->getNbActors();
 	NxActor** aList = scenes_[roomNum]->getActors();
 
+	UINT currentPlayer = 0;
+	UINT playerCount = RoomManager::getInstance().getPlayerCountRoom(roomNum);
+
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
 		NxActor *a = aList[i];
@@ -185,11 +189,19 @@ BOOL PhysXManager::SetupScene(UINT32 roomNum)
 		// 충돌그루핑
 		if (a->isDynamic())
 		{
-			if (strcmp(a->getName(), "chm") == 0)
+			if (  0 == strcmp(a->getName(), "player00")
+				|| 0 == strcmp(a->getName(), "player01")
+				|| 0 == strcmp(a->getName(), "player02")
+				|| 0 == strcmp(a->getName(), "player03")
+				)
 			{
+				if (currentPlayer >= playerCount)
+					continue;
+
 				a->setGroup(CollGroup::COL_PLAYER);
 				SetCollisionGroup(a, CollGroup::COL_PLAYER);
-				CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
+				auto cct = CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
+				currentPlayer++;
 			}
 			else
 			{
@@ -267,11 +279,6 @@ BOOL PhysXManager::initPhysX()
 		SLog(L"! SDK create error (%d - %S).", errorCode, getNxSDKCreateError(errorCode));
 		return false;
 	}
-
-	//for (int i = 0; i < GAMEROOM_CAPACITY; i++)
-	//{
-	//	LoadSceneFromFile(i);
-	//}
 
 	SLog(L"# Initialize PhysX SDK.");
 	return true;

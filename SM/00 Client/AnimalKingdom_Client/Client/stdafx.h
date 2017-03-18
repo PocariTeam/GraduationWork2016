@@ -39,6 +39,7 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include <chrono>
 
 #include <d3d11.h>
 #include <d3dx11.h>

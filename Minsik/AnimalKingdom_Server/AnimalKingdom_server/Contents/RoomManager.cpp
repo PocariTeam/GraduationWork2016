@@ -130,3 +130,50 @@ BOOL RoomManager::startRoom(Session * session)
 
 	return roomArray_[roomNum]->startGame(session);
 }
+
+BOOL RoomManager::setupRoom(UINT32 roomNum)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		return roomArray_[roomNum]->setupGame();
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+		return false;
+	}
+}
+
+BOOL RoomManager::moveRequestRoom(Session* session, time_t tick, Vector3 vDir)
+{
+	SAFE_LOCK(lock_);
+	UINT roomNum = session->getRoomNumber();
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		return roomArray_[roomNum]->moveRequest(session, tick, vDir);
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+		return false;
+	}
+}
+
+UINT RoomManager::getPlayerCountRoom(UINT32 roomNum)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		return roomArray_[roomNum]->getPlayerCount();
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+		return false;
+	}
+
+	return 0;
+}

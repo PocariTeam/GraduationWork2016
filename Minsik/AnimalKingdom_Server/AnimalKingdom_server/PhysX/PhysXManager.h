@@ -11,7 +11,7 @@ class NxController;
 
 class PhysXManager : public Singleton<PhysXManager> {
 private:
-	const char*					fileName = "Jungle_fix.xml";
+	const char*					fileName = "Jungle_player4.xml";
 	UserAllocator*				userAllocator_;
 	NxPhysicsSDK*				physicsSDK_;
 	UINT32						sceneSeedNum;
@@ -32,6 +32,7 @@ public:
 	BOOL SetupScene(UINT32 roomNum);
 	void ReleaseScene(UINT32 roomNum);
 	void updateScene(UINT32 roomNum, float fTimeDelta);
+	NxControllerManager* getCCTManager(UINT32 roomNum) { return CCTManager_[roomNum]; };
 
 	void SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
 	NxController* CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT32 roomNum);

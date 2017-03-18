@@ -40,9 +40,13 @@ void PacketManager::recvProcess(Session* session, char* buf)
 		result = RoomManager::getInstance().startRoom(session);
 		if (result)
 		{
-			PacketManager::sendStartGame(session->getRoomNumber());
 			PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber());
+			RoomManager::getInstance().setupRoom(session->getRoomNumber());
+			PacketManager::sendStartGame(session->getRoomNumber());
 		}
+		break;
+	case PAK_ID::PAK_REQ_Move:
+		RoomManager::getInstance().moveRequestRoom(session, ((C_Move*)buf)->tick, ((C_Move*)buf)->vDir);
 		break;
 	default:
 		SLog(L"! Unkown Packet packetID: %d", pHeader->packetID);

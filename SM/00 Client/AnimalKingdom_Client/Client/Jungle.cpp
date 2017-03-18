@@ -70,6 +70,23 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render( pContext );
 }
 
+void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir)
+{
+	// FIXME: 임시로 받아와서 쓰지만 player 자체의 멤버함수에서 처리하면 더 좋을 듯 하다.
+
+	NxU32	dwCollisionFlag;
+	NxVec3	dir;
+	dir.x = vDir.x;
+	dir.y = vDir.y;
+	dir.z = vDir.z;
+
+	time_t difference = chrono::system_clock::to_time_t(chrono::system_clock::now()) - tick;
+	//dir *= difference; 일단 틱계산을 안 해보자..
+	auto cct = m_mapPlayer.find(id)->second->GetCharacterController();
+	cct->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+
+}
+
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )
 {
 	CJungle* pJungle = new CJungle;

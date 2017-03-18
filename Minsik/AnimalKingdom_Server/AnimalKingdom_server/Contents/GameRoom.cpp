@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameRoom.h"
+#include "NxControllerManager.h"
 
 GameRoom::GameRoom(UINT num)
 	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), timerID_(-1)
@@ -82,7 +83,31 @@ BOOL GameRoom::startGame(Session* session)
 	return false;
 }
 
+BOOL GameRoom::setupGame()
+{
+	if (!isPlaying_)
+	{
+		SLog(L"! the [%d] room is not playing now. setupGame() error! ", roomNum_);
+		return false;
+	}
 
+	NxControllerManager* cctManager = PhysXManager::getInstance().getCCTManager(roomNum_);
+
+	if (cctManager->getNbControllers() != playerCount_)
+	{
+		SLog(L"! nbControllers is not equal to playerCount_. ");
+		return false;
+	}
+
+	int i = 0;
+	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	{
+		(*p)->setCCT(cctManager->getController(i++));
+	}
+
+	return true;
+	
+}
 
 BOOL GameRoom::exit(Session* session)
 {
@@ -144,7 +169,7 @@ BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 	return false;
 }
 
-BOOL GameRoom::setPlayerCharacter(Session * session, S_CHARACTER ch)
+BOOL GameRoom::setPlayerCharacter(Session* session, S_CHARACTER ch)
 {
 	SAFE_LOCK(lock_);
 
@@ -187,6 +212,33 @@ RoomInfo GameRoom::getRoomInfo()
 	return r;
 }
 
+BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir)
+{
+	SAFE_LOCK(lock_);
+
+	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	{
+		if ((*p)->getSession() == session)
+		{
+			NxU32	dwCollisionFlag;
+			NxVec3	dir;
+			dir.x = vDir.x; 
+			dir.y = vDir.y; 
+			dir.z = vDir.z;
+
+			time_t difference = Clock::getInstance().systemTick() - tick;
+			//dir *= difference;
+			(*p)->getCCT()->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+			
+			sendMovePacket(session->getID(), tick, vDir);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void GameRoom::sendPlayerList()
 {
 	SAFE_LOCK(lock_);
@@ -219,6 +271,22 @@ void GameRoom::sendPlayerList()
 	
 }
 
+void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir)
+{
+	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	{
+		Session* session = (*iter)->getSession();
+		S_Move* packet = (S_Move*)session->ioData_[IO_SEND].buffer_.data();
+		packet->header.packetID = PAK_ID::PAK_ANS_Move;
+		packet->header.size = sizeof(S_Move);
+		packet->id = id;
+		packet->tick = tick;
+		packet->vDir = vDir;
+		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_Move);
+		session->send();
+	}
+}
+
 void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
@@ -236,11 +304,10 @@ void GameRoom::sendStartGame()
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
-	timerID_ = timeSetEvent(1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	timerID_ = timeSetEvent(17, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
 }
 
 void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
-#error 1√  πŸ≤„æﬂ «‘.
-	PhysXManager::getInstance().updateScene(roomNum,1000);
+	PhysXManager::getInstance().updateScene(roomNum, 17);
 }

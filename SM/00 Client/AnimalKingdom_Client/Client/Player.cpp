@@ -13,6 +13,7 @@
 #include "Mathematics.h"
 #include <NxControllerManager.h>
 #include <NxQuat.h>
+#include "NetworkMgr.h"
 
 CPlayer::CPlayer()
 	: CGameObject()
@@ -40,32 +41,30 @@ HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 void CPlayer::Check_Key( const float& fTimeDelta )
 {
 	NxVec3	vDir{ 0.f, 0.f, 0.f };
+	NxF32 fSpeed = 30.0f;
 
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_UP ) & 0x80 )
 	{
 		m_pStateMachine->Change_State( STATE_RUN );
-		vDir = NxVec3{ 0.f, 0.f, 1.f };
+		vDir += NxVec3{ 0.f, 0.f, 1.f };
 	}
-
-	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_DOWN ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_DOWN ) & 0x80 )
 	{
 		m_pStateMachine->Change_State( STATE_RUN );
-		vDir = NxVec3{ 0.f, 0.f, -1.f };
+		vDir += NxVec3{ 0.f, 0.f, -1.f };
 	}
-
-	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_LEFT ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_LEFT ) & 0x80 )
 	{
 		m_pStateMachine->Change_State( STATE_RUN );
-		vDir = NxVec3{ -1.f, 0.f, 0.f };
+		vDir += NxVec3{ -1.f, 0.f, 0.f };
 	}
-
-	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_RIGHT ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_RIGHT ) & 0x80 )
 	{
 		m_pStateMachine->Change_State( STATE_RUN );
-		vDir = NxVec3{ 1.f, 0.f, 0.f };
+		vDir += NxVec3{ 1.f, 0.f, 0.f };
 	}
 
-	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_S ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_S ) & 0x80 )
 	{
 		m_pStateMachine->Change_State( STATE_ATT1 );
 	}
@@ -85,7 +84,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		m_pStateMachine->Change_State( STATE_JUMP );
 	}
 
-	else if( m_pAnimator->GetCurrentAnimationFinished() )
+	else if( vDir.isZero() && m_pAnimator->GetCurrentAnimationFinished())
 		m_pStateMachine->Change_State( STATE_IDLE );
 
 	if( !vDir.isZero() )
@@ -97,10 +96,16 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		cross = cross.cross( vDir );
 		rotAngle *= ( cross.y >= 0.0f ) ? -1.0f : 1.0f;
 		m_vRotate.y = rotAngle;
+
+
+		vDir *= (fTimeDelta*fSpeed);
+
+		NxU32	dwCollisionFlag;
+		m_pCharacterController->move(vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+
+		CNetworkMgr::GetInstance()->sendMoveCharacter(vDir);
 	}
 
-	NxU32	dwCollisionFlag;
-	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 }
 
 int CPlayer::Update( const float& fTimeDelta )

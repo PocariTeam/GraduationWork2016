@@ -5,6 +5,7 @@
 
 #include "Singleton.h"
 #include "Protocol.h"
+#include "Physics.h"
 
 #pragma warning( disable : 4996 )
 #define		WM_SOCKET				WM_USER + 1
@@ -28,6 +29,7 @@ public:
 	void	sendExitRoom();
 	void	sendReadyRoom();
 	void	sendStartRoom();
+	void	sendMoveCharacter(NxVec3 dir);
 	void	sendSelectCharacter( S_CHARACTER ch );
 
 public:
