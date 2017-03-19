@@ -74,9 +74,17 @@ BOOL GameRoom::startGame(Session* session)
 
 	if (startCheck)
 	{
-		SLog(L"* the [%d] room is starting now. ", roomNum_);
-		isPlaying_ = true;
-		return true;
+		bool loadCheck = PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber());
+		if (loadCheck && GameRoom::setupGame())
+		{
+			isPlaying_ = true;
+			SLog(L"* the [%d] room is starting now. ", roomNum_);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	SLog(L"! [%S] is not master of the [%d] room. ", session->getAddress().c_str(), roomNum_);
@@ -85,11 +93,6 @@ BOOL GameRoom::startGame(Session* session)
 
 BOOL GameRoom::setupGame()
 {
-	if (!isPlaying_)
-	{
-		SLog(L"! the [%d] room is not playing now. setupGame() error! ", roomNum_);
-		return false;
-	}
 
 	NxControllerManager* cctManager = PhysXManager::getInstance().getCCTManager(roomNum_);
 
