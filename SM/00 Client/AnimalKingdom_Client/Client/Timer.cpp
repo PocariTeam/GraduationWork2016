@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "Timer.h"
 
-float CTimer::GetTimeDelta( void )
+double CTimer::GetTimeDelta( void )
 {
-	return m_fTime;
+	return m_dTime;
 }
 
 void CTimer::Calculate_TimeDelta( void )
@@ -21,7 +21,7 @@ void CTimer::Calculate_TimeDelta( void )
 	}
 
 	/* 시간 = ( 현재 진동수 - 지난 진동수 ) / 주기 */
-	m_fTime = float( m_FrameTime.QuadPart - m_FixTime.QuadPart ) / m_CpuTick.QuadPart;
+	m_dTime = double( m_FrameTime.QuadPart - m_FixTime.QuadPart ) / m_CpuTick.QuadPart;
 
 	m_FixTime = m_FrameTime;
 }

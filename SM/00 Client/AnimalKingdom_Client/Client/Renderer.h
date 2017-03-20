@@ -24,7 +24,7 @@ private:
 public:
 	static bool			m_bWireFrame;
 	static bool			m_bRenderTargetDebug;
-private:
+public:
 	void Render_Background( ID3D11DeviceContext* pContext );
 	void Render_DepthTest( ID3D11DeviceContext* pContext );
 	void Render_Light( ID3D11DeviceContext* pContext );

@@ -20,12 +20,12 @@ public:
 	int		Update( const float& fTimeDelta );
 	DWORD	Release( void );
 	void	Render( ID3D11DeviceContext* pContext );
+private:
+	int	Check_Key( void );
 public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 private:
-	CShader*		m_pShader;
 	RECT			m_rcRoom[ GAMEROOM_CAPACITY ];
-
 	/* Check Key */
 	bool			m_bOverlapped;
 };

@@ -53,7 +53,7 @@ HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 HRESULT CMainFrm::Ready_Logo( ID3D11Device* pDevice )
 {
 	/* Add Logo Image */
-	CTextureMgr::GetInstance()->Add( pDevice, "Texture_Logo", "../Executable/Resources/Texture/Logo/Logo.jpg" );
+	CTextureMgr::GetInstance()->Add( pDevice, "Texture_Logo", "../Executable/Resources/Texture/Background/Logo.jpg" );
 
 	/* Add Logo Mesh */
 	CMesh*	pMesh = CBackground::Create();
@@ -67,8 +67,8 @@ HRESULT CMainFrm::Ready_Logo( ID3D11Device* pDevice )
 
 int CMainFrm::Update( const float& fTimeDelta )
 {
-	if( ::GetActiveWindow() == m_hWnd )
-		CInputMgr::GetInstance()->Check_Input();
+	// 윈도우 비활성화시에는 키 체크하지 않겠다
+	if( ::GetActiveWindow() == m_hWnd )	CInputMgr::GetInstance()->Check_Input();
 
 	int iRetVal{ 0 };
 	

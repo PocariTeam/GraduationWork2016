@@ -1,4 +1,6 @@
-7
+9
+Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
+Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
 Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds
 Texture_Snowball 1 ../Executable/Resources/Texture/Snowball/Snowball0.png
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png

@@ -12,9 +12,9 @@ private:
 	explicit CWallpaper();
 	virtual ~CWallpaper();
 private:
-	HRESULT		Initialize( ID3D11Device* pDevice, CMesh* pMesh );
+	HRESULT		Initialize( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture );
 public:
-	static	CWallpaper*	Create( ID3D11Device* pDevice, CMesh* pMesh );
+	static	CWallpaper*	Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture = nullptr );
 public:
 	XMFLOAT4X4		GetWorld();
 	void			Render( ID3D11DeviceContext* pContext );

@@ -59,8 +59,9 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	/* Timer for RealTime */
 	CTimer* pRealTimer{ CTimer::Create() };
 
-	float fFrameLimit{ 1.f / 60.f };
-	float fFrameTime{ 0.f };
+	double dFrameLimit{ 1.0 / 60.0 };
+	double dFrameTime{ 0.0 };
+	double dAccumulator = 0.0;
 
 	// 기본 메시지 루프입니다.
 	while( true )
@@ -80,15 +81,18 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 		else
 		{
 			pFixedTimer->Calculate_TimeDelta();
-			fFrameTime += pFixedTimer->GetTimeDelta();
+			dFrameTime += pFixedTimer->GetTimeDelta();
+			dAccumulator += dFrameTime;	// d
 
-			if( fFrameTime >= fFrameLimit )
+			//if( dFrameTime >= dFrameLimit )
+			if( dAccumulator >= dFrameLimit )	// d
 			{
 				pRealTimer->Calculate_TimeDelta();
-				if( -1 == g_pMainFrm->Update( pRealTimer->GetTimeDelta() ) )
+				if( -1 == g_pMainFrm->Update( ( float )dFrameLimit ) )
 					break;
 				g_pMainFrm->Render();
-				fFrameTime = 0.f;
+				dAccumulator -= dFrameLimit;
+				dFrameTime = 0.f;
 			}
 		}
 	}
