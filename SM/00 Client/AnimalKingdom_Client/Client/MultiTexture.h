@@ -14,6 +14,7 @@ private:
 public:
 	CTexture* Clone( void );
 	void Render( ID3D11DeviceContext* pContext );
+	void Render( ID3D11DeviceContext* pContext, int iIndex );
 	DWORD Release();
 public:
 	static CMultiTexture* Create( ID3D11Device* pDevice, const char* pPath, DWORD dwTextureCnt );

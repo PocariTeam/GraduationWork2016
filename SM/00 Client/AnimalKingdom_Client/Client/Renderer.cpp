@@ -197,7 +197,7 @@ void CRenderer::Render_UI( ID3D11DeviceContext* pContext )
 	// 깊이버퍼에 값을 기록하지않고 그린다.
 
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
-
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_UI ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_UI ].end();
 

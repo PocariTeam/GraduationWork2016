@@ -73,6 +73,7 @@ int CMainFrm::Update( const float& fTimeDelta )
 	int iRetVal{ 0 };
 	
 	m_fAccTime += fTimeDelta;
+	++m_dwCnt;
 
 	Check_Key();
 
@@ -86,7 +87,7 @@ int CMainFrm::Update( const float& fTimeDelta )
 
 void CMainFrm::Render( void )
 {
-	++m_dwCnt;
+	
 	if( m_fAccTime >= 1.f )
 	{
 		wsprintf( m_szFPS, "Animal Kingdom - FPS : %d", m_dwCnt );

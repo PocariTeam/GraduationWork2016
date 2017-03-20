@@ -43,6 +43,18 @@ void CMultiTexture::Render( ID3D11DeviceContext* pContext )
 	}
 }
 
+void CMultiTexture::Render( ID3D11DeviceContext* pContext, int iIndex )
+{
+	pContext->DSSetShaderResources( 0, 1, &m_dpShaderResourceView[ iIndex ] );
+	pContext->DSSetSamplers( 0, 1, &m_dpSamplerState[ iIndex ] );
+
+	pContext->GSSetShaderResources( 0, 1, &m_dpShaderResourceView[ iIndex ] );
+	pContext->GSSetSamplers( 0, 1, &m_dpSamplerState[ iIndex ] );
+
+	pContext->PSSetShaderResources( 0, 1, &m_dpShaderResourceView[ iIndex ] );
+	pContext->PSSetSamplers( 0, 1, &m_dpSamplerState[ iIndex ] );
+}
+
 DWORD CMultiTexture::Release()
 {
 	DWORD dwRefCnt = CTexture::Release();

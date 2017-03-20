@@ -1,4 +1,5 @@
-9
+10
+Texture_Wnd 1 ../Executable/Resources/Texture/UI/Wnd/Wnd.png
 Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
 Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
 Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds

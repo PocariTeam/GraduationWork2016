@@ -55,17 +55,17 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 	/* Timer for Fixed Frame */
 	CTimer* pFixedTimer{ CTimer::Create() };
-
-	/* Timer for RealTime */
 	CTimer* pRealTimer{ CTimer::Create() };
 
-	double dFrameLimit{ 1.0 / 60.0 };
-	double dFrameTime{ 0.0 };
-	double dAccumulator = 0.0;
+	float fFrameLimit{ 1.f / 60.f };
+	float fFrameTime{ 0.f };
 
 	// 기본 메시지 루프입니다.
 	while( true )
 	{
+		pFixedTimer->Calculate_TimeDelta();
+		fFrameTime += pFixedTimer->GetTimeDelta();
+
 		if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )
 		{
 			if( msg.message == WM_QUIT )
@@ -80,19 +80,15 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 		else
 		{
-			pFixedTimer->Calculate_TimeDelta();
-			dFrameTime += pFixedTimer->GetTimeDelta();
-			dAccumulator += dFrameTime;	// d
-
-			//if( dFrameTime >= dFrameLimit )
-			if( dAccumulator >= dFrameLimit )	// d
+			//printf( "%f\n", fFrameTime );
+			if( fFrameTime >= fFrameLimit )	// d
 			{
 				pRealTimer->Calculate_TimeDelta();
-				if( -1 == g_pMainFrm->Update( ( float )dFrameLimit ) )
+				if( -1 == g_pMainFrm->Update( pRealTimer->GetTimeDelta() ) )
 					break;
 				g_pMainFrm->Render();
-				dAccumulator -= dFrameLimit;
-				dFrameTime = 0.f;
+				fFrameTime = 0.f;
+				//fFrameTime -= fFrameLimit;
 			}
 		}
 	}

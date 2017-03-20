@@ -41,7 +41,7 @@ HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 void CPlayer::Check_Key( const float& fTimeDelta )
 {
 	NxVec3	vDir{ 0.f, 0.f, 0.f };
-	NxF32 fSpeed = 30.0f;
+	NxF32 fSpeed = 50.0f;
 
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_UP ) & 0x80 )
 	{
@@ -98,7 +98,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		m_vRotate.y = rotAngle;
 
 
-		vDir *= (fTimeDelta*fSpeed);
+		vDir *= ( fTimeDelta * fSpeed );
 
 		NxU32	dwCollisionFlag;
 		m_pCharacterController->move(vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
