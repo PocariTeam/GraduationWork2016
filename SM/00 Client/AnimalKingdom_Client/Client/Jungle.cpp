@@ -12,6 +12,8 @@
 CJungle::CJungle()
 	: CScene()
 	, m_iPlayerID( -1 )
+	, m_pPlayerInfo( nullptr )
+	, m_dwPlayerCnt( 0 )
 {
 }
 
@@ -42,9 +44,9 @@ int CJungle::Update( const float& fTimeDelta )
 
 DWORD CJungle::Release( void )
 {
-	CScene::Release();
-
 	m_mapPlayer.erase( m_mapPlayer.begin(), m_mapPlayer.end() );
+
+	CScene::Release();
 
 	CGlobalState::DestroyInstance();
 	CIdleState::DestroyInstance();
@@ -84,6 +86,34 @@ void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir)
 	auto cct = m_mapPlayer.find(id)->second->GetCharacterController();
 	cct->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
 
+}
+
+void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo )
+{
+	m_pPlayerInfo = pPlayerInfo;
+}
+
+void CJungle::NotifyPlayerCnt( UINT& dwPlayerCnt )
+{
+	int* pTemp = new int[ dwPlayerCnt ];
+
+	m_dwPlayerCnt = dwPlayerCnt;
+
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+		pTemp[ i ] = ( int ) m_pPlayerInfo[ i ].id;
+
+	sort( &pTemp[ 0 ], &pTemp[ dwPlayerCnt - 1 ] );
+
+	auto iter_begin = m_mapPlayer.begin();
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i, ++iter_begin )
+		if( iter_begin->first != pTemp[ i ] )
+		{
+			iter_begin = m_mapPlayer.erase( iter_begin );
+			break;
+		}
+
+	delete[] pTemp;
+	pTemp = nullptr;
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )

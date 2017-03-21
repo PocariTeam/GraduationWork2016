@@ -25,7 +25,6 @@ CLobby::~CLobby()
 
 HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
-	CNetworkMgr::GetInstance()->Initialize();
 	CNetworkMgr::GetInstance()->connectServer( hWnd );
 
 	// Background
@@ -35,15 +34,14 @@ HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( CWallpaper::Create( pDevice, pMesh, pTexture ) );
 	m_listShader[ RENDER_BACKGROUND ].push_back( pShader );
 
-
 	// Mesh
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 	CWindow_UI* pWnd_UI = CWindow_UI::Create( CWindow_UI::WND_LOBBY );
 	pShader->Add_RenderObject( pWnd_UI );
 
-	m_dpBtns = new CButton_UI*[ 8 ];
-	for( int i = 0; i < 4; ++i )
-		for( int j = 0; j < 2; ++j )
+	m_dpBtns = new CButton_UI*[ GAMEROOM_CAPACITY ];
+	for( int i = 0; i < GAMEROOM_CAPACITY / 2; ++i )
+		for( int j = 0; j < GAMEROOM_CAPACITY / 4; ++j )
 			pShader->Add_RenderObject( m_dpBtns[ i * 2 + j ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_L_Room" ), XMFLOAT4( 0.08f + float( j ) * 0.67f, -0.23f - float( i ) * 0.3f, 0.42f, 0.13f ) ) );
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
@@ -89,22 +87,20 @@ void CLobby::NotifyRoomInfo( S_RoomList* pRoomlistArray )
 
 int	 CLobby::Check_Key( void )
 {
+	POINT ptMouse = CScene::GetMousePosition( m_hWnd );
+
 	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) && m_bOverlapped )
-	{
-		POINT ptMouse = CScene::GetMousePosition( m_hWnd );
 		m_bOverlapped = false;
-		for( int i = 0; i < 8; ++i )
-		{
-			if( PtInRect( &m_dpBtns[ i ]->GetCollisionRect(), ptMouse ) )
-			{
-				CNetworkMgr::GetInstance()->sendEnterRoom( i );
-				return CScene::SCENE_ROOM;
-			}
-		}
-	}
 
 	else if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
 		m_bOverlapped = true;
+
+	for( int i = 0; i < GAMEROOM_CAPACITY; ++i )
+		if( m_dpBtns[ i ]->isCollide( ptMouse, !m_bOverlapped ) )
+		{
+			CNetworkMgr::GetInstance()->sendEnterRoom( i );
+			return CScene::SCENE_ROOM;
+		}
 
 	return 0;
 }

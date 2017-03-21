@@ -48,3 +48,8 @@ DWORD CUserInterface::Release( void )
 
 	return 0;
 }
+
+void CUserInterface::SetTexture( CTexture* pTexture )
+{
+	::Safe_Release( m_pTexture ); m_pTexture = pTexture;
+}

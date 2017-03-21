@@ -19,11 +19,15 @@ public:
 	DWORD Release( void );
 	void  Render( ID3D11DeviceContext* pContext );
 	void  Move(UINT32 id, time_t tick, XMFLOAT3 vDir);
+	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo );
+	void	NotifyPlayerCnt( UINT& dwPlayerCnt );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:
 	map<int, CPlayer*>		m_mapPlayer;
 	int						m_iPlayerID;
+	PlayerInfo*				m_pPlayerInfo;
+	UINT					m_dwPlayerCnt;
 };
 
 #endif // Jungle_h__

@@ -2,10 +2,12 @@
 #include "Button_UI.h"
 #include "Window_UI.h"
 #include "Value.h"
+#include "Texture.h"
 
 CButton_UI::CButton_UI()
 	: m_pOwner( nullptr )
 	, m_vOffset( 0.f, 0.f, 0.f, 0.f )
+	, m_eState( BTN_NORMAL )
 {
 }
 
@@ -38,7 +40,8 @@ CButton_UI* CButton_UI::Create( CWindow_UI* pOwner, CTexture* pTexture, const XM
 
 void CButton_UI::Render( ID3D11DeviceContext* pContext )
 {
-	CUserInterface::Render( pContext );
+	m_pTexture->Render( pContext, m_eState );
+	pContext->Draw( 6, 0 );
 }
 
 int CButton_UI::Update( const float& fTimeDelta )
@@ -64,8 +67,9 @@ DWORD CButton_UI::Release( void )
 	return 0;
 }
 
-RECT CButton_UI::GetCollisionRect( void )
+bool CButton_UI::isCollide( POINT& ptMouse, bool bClick )
 {
+	if( m_eState == BTN_PLAYING ) return false;
 	RECT	rcCollision;
 
 	rcCollision.top = long( ( -1.f * m_mtxPosSize._21 + 1.f ) * ( float )g_wWinsizeY * 0.5f );
@@ -73,5 +77,24 @@ RECT CButton_UI::GetCollisionRect( void )
 	rcCollision.bottom = long( ( -1.f *m_mtxPosSize._21 + 1.f + m_mtxPosSize._41 ) * ( float )g_wWinsizeY * 0.5f );
 	rcCollision.right = long( ( m_mtxPosSize._11 + 1.f + m_mtxPosSize._31 ) * ( float )g_wWinsizeX * 0.5f );
 
-	return rcCollision;
+	if( PtInRect( &rcCollision, ptMouse ) )
+	{
+		if( bClick ) m_eState = BTN_PUSH;
+
+		else
+		{
+			if( m_eState == BTN_PUSH )
+			{
+				m_eState = BTN_ACTIVE;
+				return true;
+			}
+
+			m_eState = BTN_ACTIVE;
+		}
+	}
+
+	else
+		m_eState = BTN_NORMAL;
+
+	return false;
 }

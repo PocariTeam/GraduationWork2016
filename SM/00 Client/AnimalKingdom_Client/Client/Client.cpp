@@ -192,6 +192,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 	switch( message )
 	{
 	case WM_CREATE:
+		CNetworkMgr::GetInstance()->Initialize();
 		break;
 	case WM_SOCKET:
 		CNetworkMgr::GetInstance()->processSocketMessage(hWnd, lParam);

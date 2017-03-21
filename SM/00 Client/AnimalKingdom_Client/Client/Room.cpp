@@ -10,13 +10,15 @@
 #include "Renderer.h"
 #include "Wallpaper.h"
 #include "MeshMgr.h"
+#include "Window_UI.h"
+#include "Button_UI.h"
 
 CRoom::CRoom()
 	: CScene()
 	, m_bStart( false )
 	, m_bOverlapped( true )
 	, m_pPlayerInfo( nullptr )
-	, m_pPlayerCnt( nullptr )
+	, m_dwPlayerCnt( 0 )
 {
 }
 
@@ -35,17 +37,18 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	// Mesh
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
+	CWindow_UI* pWnd_UI = CWindow_UI::Create( CWindow_UI::WND_LOBBY );
+	pShader->Add_RenderObject( pWnd_UI );
 
-	/*for( int i = 0; i < 1; ++i )
-		for( int j = 0; j < 1; ++j )
-		{
-			pShader->Add_RenderObject( CUserInterface::Create( CTextureMgr::GetInstance()->Clone( "Texture_L_Room" ), XMFLOAT4( -0.6f + float( j ) * 0.7f, 0.8f - float( i ) * 0.3f, 0.6f, 0.2f ), 0.f ) );
-			m_rcRoom[ i * 2 + j ].top = long( ( -1.f * ( 0.8f - float( i ) * 0.3f ) + 1.f ) * ( float )g_wWinsizeY * 0.5f );
-			m_rcRoom[ i * 2 + j ].left = long( ( -0.6f + float( j ) * 0.7f + 1.f ) * ( float )g_wWinsizeX * 0.5f );
-			m_rcRoom[ i * 2 + j ].bottom = long( ( -1.f * ( 0.8f - float( i ) * 0.3f ) + 1.f ) * ( float )g_wWinsizeY * 0.5f + 0.2f * 0.5f * ( float )g_wWinsizeY );
-			m_rcRoom[ i * 2 + j ].right = long( ( -0.6f + float( j ) * 0.7f + 1.f ) * ( float )g_wWinsizeX * 0.5f + 0.6f * 0.5f * ( float )g_wWinsizeX );
-		}*/
+	m_dpBtns = new CButton_UI*[ 1 ];
+	for( int i = 0; i < 1; ++i )
+	{
+		pShader->Add_RenderObject( m_dpBtns[ i ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Ready" ), XMFLOAT4( 0.08f + 0.67f, -0.23f - float( i ) * 0.3f, 0.21f, 0.06f ) ) );
+	}
+			
+
 	m_listShader[ RENDER_UI ].push_back( pShader );
+
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
 
 	return CScene::Initialize( hWnd, pDevice );
@@ -58,7 +61,6 @@ int CRoom::Update( const float& fTimeDelta )
 	
 	if( m_bStart ) return SCENE_JUNGLE;
 
-
 	return 0;
 }
 
@@ -66,6 +68,8 @@ DWORD CRoom::Release( void )
 {
 	CScene::Release();
 	CRenderer::GetInstance()->Clear_RenderGroup();
+	delete[] m_dpBtns;
+	m_dpBtns = nullptr;
 
 	delete this;
 
@@ -83,26 +87,24 @@ void CRoom::Render( ID3D11DeviceContext* pContext )
 
 int CRoom::Check_Key( void )
 {
+	POINT ptMouse = CScene::GetMousePosition( m_hWnd );
+
 	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) && m_bOverlapped )
-	{
 		m_bOverlapped = false;
-		POINT ptMouse = CScene::GetMousePosition( m_hWnd );
-		for( int i = 0; i < 1; ++i )
-		{
-			if( PtInRect( &m_rcRoom[ i ], ptMouse ) )
-			{
-				CNetworkMgr::GetInstance()->sendSelectCharacter( CHAMEL );
-				if( CNetworkMgr::GetInstance()->isMaster() )
-					CNetworkMgr::GetInstance()->sendStartRoom();
-				else
-					CNetworkMgr::GetInstance()->sendReadyRoom();
-				break;
-			}
-		}
-	}
 
 	else if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
 		m_bOverlapped = true;
+
+	for( int i = 0; i < 1; ++i )
+		if( m_dpBtns[ i ]->isCollide( ptMouse, !m_bOverlapped ) )
+		{
+		CNetworkMgr::GetInstance()->sendSelectCharacter( CHAMEL );
+		if( CNetworkMgr::GetInstance()->isMaster() )
+			CNetworkMgr::GetInstance()->sendStartRoom();
+		else
+			CNetworkMgr::GetInstance()->sendReadyRoom();
+		break;
+		}
 
 	return 0;
 }
@@ -118,4 +120,11 @@ CScene* CRoom::Create( HWND hWnd, ID3D11Device* pDevice )
 	}
 
 	return pRoom;
-} 
+}
+
+void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo )
+{
+	m_pPlayerInfo = pPlayerInfo;
+	if( CNetworkMgr::GetInstance()->isMaster() )
+		m_dpBtns[ READY ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Start" ) );
+}

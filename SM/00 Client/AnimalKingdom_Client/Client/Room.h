@@ -8,9 +8,12 @@
 #include "Protocol.h"
 
 class CShader;
+class CButton_UI;
 class CRoom
 	: public CScene
 {
+private:
+	enum eBtn_Index { READY, };
 private:
 	explicit CRoom();
 	virtual ~CRoom();
@@ -26,13 +29,13 @@ public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 public:
 	void	NotifyGameStart( void ) { m_bStart = true; }
-	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo ) { m_pPlayerInfo = pPlayerInfo; }
-	void	NotifyPlayerCnt( UINT* pPlayerCnt ) { m_pPlayerCnt = pPlayerCnt; }
+	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo );
+	void	NotifyPlayerCnt( UINT& dwPlayerCnt ) { m_dwPlayerCnt = dwPlayerCnt; }
 private:
-	RECT			m_rcRoom[ GAMEROOM_CAPACITY ];
+	CButton_UI**	m_dpBtns;
 	bool			m_bStart;
 	PlayerInfo*		m_pPlayerInfo;
-	UINT*			m_pPlayerCnt;
+	UINT			m_dwPlayerCnt;
 
 	/* Check Key */
 	bool			m_bOverlapped;

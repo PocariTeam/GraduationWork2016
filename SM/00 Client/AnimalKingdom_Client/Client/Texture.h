@@ -15,6 +15,7 @@ protected:
 public:
 	virtual CTexture* Clone( void )PURE;
 	virtual void Render( ID3D11DeviceContext* pContext )PURE;
+	virtual void Render( ID3D11DeviceContext* pContext, int iIndex ) {}
 public:
 	virtual DWORD Release();
 };
