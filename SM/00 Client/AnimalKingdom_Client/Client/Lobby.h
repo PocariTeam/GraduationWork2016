@@ -5,8 +5,8 @@
 
 #include "Scene.h"
 #include "Define.h"
-#include "Protocol.h"
 
+class CButton_UI;
 class CShader;
 class CLobby
 	: public CScene
@@ -20,12 +20,15 @@ public:
 	int		Update( const float& fTimeDelta );
 	DWORD	Release( void );
 	void	Render( ID3D11DeviceContext* pContext );
+public:
+	void	NotifyRoomInfo( S_RoomList* pRoomlistArray );
 private:
-	int	Check_Key( void );
+	int		Check_Key( void );
 public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 private:
-	RECT			m_rcRoom[ GAMEROOM_CAPACITY ];
+	S_RoomList*		m_pRoomInfo;
+	CButton_UI**	m_dpBtns;
 	/* Check Key */
 	bool			m_bOverlapped;
 };

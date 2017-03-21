@@ -5,7 +5,7 @@
 #define		THREAD_COUNT			4
 
 #define		PLAYER_CAPACITY			4
-#define		GAMEROOM_CAPACITY		10
+#define		GAMEROOM_CAPACITY		8
 
 typedef enum {
 	PAK_REQ_EnterRoom,

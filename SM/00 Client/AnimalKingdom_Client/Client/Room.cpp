@@ -36,7 +36,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// Mesh
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 
-	for( int i = 0; i < 1; ++i )
+	/*for( int i = 0; i < 1; ++i )
 		for( int j = 0; j < 1; ++j )
 		{
 			pShader->Add_RenderObject( CUserInterface::Create( CTextureMgr::GetInstance()->Clone( "Texture_L_Room" ), XMFLOAT4( -0.6f + float( j ) * 0.7f, 0.8f - float( i ) * 0.3f, 0.6f, 0.2f ), 0.f ) );
@@ -44,11 +44,9 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 			m_rcRoom[ i * 2 + j ].left = long( ( -0.6f + float( j ) * 0.7f + 1.f ) * ( float )g_wWinsizeX * 0.5f );
 			m_rcRoom[ i * 2 + j ].bottom = long( ( -1.f * ( 0.8f - float( i ) * 0.3f ) + 1.f ) * ( float )g_wWinsizeY * 0.5f + 0.2f * 0.5f * ( float )g_wWinsizeY );
 			m_rcRoom[ i * 2 + j ].right = long( ( -0.6f + float( j ) * 0.7f + 1.f ) * ( float )g_wWinsizeX * 0.5f + 0.6f * 0.5f * ( float )g_wWinsizeX );
-		}
+		}*/
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
-
-	CNetworkMgr::GetInstance()->setScene( this );
 
 	return CScene::Initialize( hWnd, pDevice );
 }

@@ -4,6 +4,7 @@
 #define _SCENE_H_
 
 #include "Enum.h"
+#include "Protocol.h"
 
 class CShader;
 class CCamera;
@@ -18,6 +19,8 @@ public:
 	virtual DWORD Release( void );
 	virtual void Render( ID3D11DeviceContext* pContext );
 	POINT	GetMousePosition( HWND hWnd );
+public:
+	virtual void NotifyRoomInfo( S_RoomList* pRoomlistArray ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 protected:

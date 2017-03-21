@@ -2,6 +2,8 @@
 #include "NetworkMgr.h"
 #include "Room.h"
 #include "Jungle.h"
+#include "Lobby.h"
+#include <fstream>
 
 CNetworkMgr*	CSingleton<CNetworkMgr>::m_pInstance;
 
@@ -36,9 +38,10 @@ HRESULT CNetworkMgr::Initialize()
 HRESULT CNetworkMgr::connectServer( HWND hwnd )
 {
 	char serverAddr[ 256 ];
-	strcpy_s( serverAddr, "127.0.0.1" ); // 임시로 루프백주소 사용
-	//printf("서버주소 입력(xxx.xxx.xxx.xxx):");
-	//scanf("%s", serverAddr);
+
+	ifstream	In{ "../Executable/Resources/IP.txt" };
+	In >> serverAddr;
+	In.close();
 
 	ZeroMemory( &m_tServerAdrr, sizeof( m_tServerAdrr ) );
 	m_tServerAdrr.sin_family = AF_INET;
@@ -165,8 +168,7 @@ void CNetworkMgr::processPacket()
 			m_nRoomNum = -1;
 			m_bMaster = m_bReady = false;
 		}
-
-		
+		m_pScene->NotifyRoomInfo( packet );
 		break;
 	}
 	case PAK_ID::PAK_ANS_PlayerList:

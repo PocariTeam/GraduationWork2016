@@ -223,11 +223,11 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI">
       <UniqueIdentifier>{7584729b-f50f-4688-9af0-78002d713a6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\00 Windows_UI">
-      <UniqueIdentifier>{347bd7fd-7871-4473-833a-6cef1f46a76d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\01 Button_UI">
       <UniqueIdentifier>{08bacee4-531c-46af-bf41-df72a4e9a425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\00 Window_UI">
+      <UniqueIdentifier>{347bd7fd-7871-4473-833a-6cef1f46a76d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +246,9 @@
     </Text>
     <Text Include="..\Executable\Resources\List\Animations.txt">
       <Filter>소스 파일\03 Resources\05 List</Filter>
+    </Text>
+    <Text Include="..\Executable\Resources\IP.txt">
+      <Filter>소스 파일</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -507,6 +510,12 @@
     <ClInclude Include="Room.h">
       <Filter>소스 파일\00 Client\02 Scene\02 Room</Filter>
     </ClInclude>
+    <ClInclude Include="Window_UI.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\00 Window_UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Button_UI.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 Button_UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -736,6 +745,12 @@
     </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>소스 파일\00 Client\02 Scene\02 Room</Filter>
+    </ClCompile>
+    <ClCompile Include="Window_UI.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\00 Window_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Button_UI.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 Button_UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

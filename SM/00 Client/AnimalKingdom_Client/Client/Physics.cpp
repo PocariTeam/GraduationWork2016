@@ -337,7 +337,11 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					|| 0 == strcmp( pActor->getName(), "player02" ) 
 					|| 0 == strcmp( pActor->getName(), "player03" ) )
 				{
-					if( iPlayerCnt == iCreatePlayerCnt ) continue;
+					if( iPlayerCnt == iCreatePlayerCnt )
+					{
+						setReleaseActorIndex.insert( i );
+						continue;
+					}
 
 					DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ CHARACTER_CHM ].size();
 					NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];

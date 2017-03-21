@@ -9,6 +9,7 @@
 #include "Lobby.h"
 #include "Shader.h"
 #include "Room.h"
+#include "NetworkMgr.h"
 
 CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
 {
@@ -47,6 +48,8 @@ HRESULT CScene::Initialize( HWND hWnd, ID3D11Device * pDevice )
 	m_hWnd = hWnd;
 	if( nullptr == m_hWnd )
 		return E_FAIL;
+
+	CNetworkMgr::GetInstance()->setScene( this );
 
 	return S_OK;
 }

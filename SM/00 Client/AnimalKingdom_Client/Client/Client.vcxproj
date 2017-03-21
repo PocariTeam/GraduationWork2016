@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="..\Executable\Resources\IP.txt" />
     <Text Include="..\Executable\Resources\List\AnimateMeshes.txt" />
     <Text Include="..\Executable\Resources\List\Animations.txt" />
     <Text Include="..\Executable\Resources\List\Shaders.txt" />
@@ -200,6 +201,7 @@
     <ClInclude Include="AnimationMgr.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="Button_UI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chameleon.h" />
     <ClInclude Include="Client.h" />
@@ -256,6 +258,7 @@
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="Wallpaper.h" />
+    <ClInclude Include="Window_UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Asc2Bin.cpp">
@@ -356,6 +359,7 @@
     <ClCompile Include="AnimationMgr.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Button_UI.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chameleon.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -408,6 +412,7 @@
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
     <ClCompile Include="AnimationSet.cpp" />
+    <ClCompile Include="Window_UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />
