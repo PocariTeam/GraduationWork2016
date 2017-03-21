@@ -8,6 +8,17 @@ void PacketManager::recvProcess(Session* session, char* buf)
 
 	switch (pHeader->packetID)
 	{
+	case PAK_ID::PAK_REQ_RoomList:
+		if (session->getRoomNumber() == NOT_IN_ROOM)
+		{
+			PacketManager::sendRoomList(session);
+			result = true;
+		}
+		else
+		{
+			result = false;
+		}
+		break;
 	case PAK_ID::PAK_REQ_EnterRoom:
 		result = RoomManager::getInstance().enterRoom(session, ((C_RoomEnter*)buf)->roomNumber);
 		if (result)
@@ -59,7 +70,7 @@ void PacketManager::recvProcess(Session* session, char* buf)
 void PacketManager::sendLogin(Session * session)
 {
 	S_Login* packet = (S_Login*)session->ioData_[IO_SEND].buffer_.data();
-	packet->header.packetID = PAK_ID::PAK_ANS_LOGIN;
+	packet->header.packetID = PAK_ID::PAK_ANS_Login;
 	packet->header.size = sizeof(S_Login);
 	packet->id = session->getID();
 	session->ioData_[IO_SEND].totalBytes_ = sizeof(S_Login);

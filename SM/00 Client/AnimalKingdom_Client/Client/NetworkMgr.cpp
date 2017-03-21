@@ -148,7 +148,7 @@ void CNetworkMgr::processPacket()
 
 	switch( header->packetID )
 	{
-	case PAK_ANS_LOGIN:
+	case PAK_ANS_Login:
 	{
 		S_Login *packet = ( S_Login* )m_saveBuf;
 		m_nPlayerID = packet->id;
@@ -234,6 +234,15 @@ void CNetworkMgr::sendBufData()
 	if( send( m_Socket, m_sendBuf, ( ( HEADER* )m_sendBuf )->size, 0 ) == SOCKET_ERROR ) {
 		printf( " send() Error! \n" );
 	}
+}
+
+void CNetworkMgr::sendRequestRoomList()
+{
+	HEADER *pReqRoom = (HEADER*)m_sendBuf;
+	pReqRoom->size = sizeof(HEADER);
+	pReqRoom->packetID = PAK_ID::PAK_REQ_RoomList;
+
+	sendBufData();
 }
 
 void CNetworkMgr::sendEnterRoom( int roomNum )

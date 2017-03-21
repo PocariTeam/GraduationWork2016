@@ -86,6 +86,14 @@ void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir)
 	auto cct = m_mapPlayer.find(id)->second->GetCharacterController();
 	cct->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
 
+	dir.normalize();
+	NxVec3 oldLook = cct->getActor()->getGlobalPose().M.getColumn(2);
+	NxReal rotAngle = acos(oldLook.dot(dir));
+	NxVec3 cross = oldLook;
+	cross = cross.cross(dir);
+	rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
+	m_mapPlayer.find(id)->second->setRotateY(rotAngle);
+
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo )

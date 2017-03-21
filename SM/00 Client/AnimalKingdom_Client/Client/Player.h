@@ -28,6 +28,7 @@ public:
 	DWORD		GetActorCnt( void ) { return m_dwActorCnt; }
 	XMFLOAT4X4	GetWorld();
 	NxController* GetCharacterController( void ) { return m_pCharacterController; }
+	void		setRotateY(FLOAT y) { m_vRotate.y = y; };
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
 protected:

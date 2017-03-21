@@ -8,12 +8,13 @@
 #define		GAMEROOM_CAPACITY		8
 
 typedef enum {
+	PAK_REQ_RoomList,
 	PAK_REQ_EnterRoom,
 	PAK_REQ_Character,
 	PAK_REQ_Ready,
 	PAK_REQ_StartGame,
 	PAK_REQ_ExitRoom,
-	PAK_ANS_LOGIN,
+	PAK_ANS_Login,
 	PAK_ANS_RoomList,
 	PAK_ANS_PlayerList,
 	PAK_ANS_StartGame,

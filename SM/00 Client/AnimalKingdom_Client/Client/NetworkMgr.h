@@ -25,6 +25,7 @@ public:
 	void	processPacket();
 
 	void	sendBufData();
+	void	sendRequestRoomList();
 	void	sendEnterRoom( int roomNum );
 	void	sendExitRoom();
 	void	sendReadyRoom();
