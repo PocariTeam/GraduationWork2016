@@ -20,7 +20,9 @@ public:
 	virtual void	SetTexture( CTexture* pTexture );
 protected:
 	XMFLOAT4X4	m_mtxPosSize;
-	// 11 : posX, 12 : posY, 13 : sizeX, 14 : sizeY, 21 : Priority
+	XMFLOAT4	m_vPosSize_Dest;
+	XMFLOAT4	m_vPosSize_Src;
+	float		m_fLerpTime;
 };
 
 

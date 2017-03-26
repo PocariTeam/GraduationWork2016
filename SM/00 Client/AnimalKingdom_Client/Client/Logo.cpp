@@ -8,6 +8,7 @@
 #include "ShaderMgr.h"
 #include "Shader.h"
 #include "ThreadMgr.h"
+#include "NetworkMgr.h"
 
 CLogo::CLogo()
 	: CScene()
@@ -32,6 +33,8 @@ HRESULT CLogo::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_Shaders", "../Executable/Resources/List/Shaders.txt", pDevice, CThreadMgr::LOAD_SHADER );
 	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_AnimateMeshes", "../Executable/Resources/List/AnimateMeshes.txt", pDevice, CThreadMgr::LOAD_ANIMATEMESH );
 	CThreadMgr::GetInstance()->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_Animation", "../Executable/Resources/List/Animations.txt", pDevice, CThreadMgr::LOAD_ANIMATION );
+
+	CNetworkMgr::GetInstance()->connectServer( hWnd );
 
 	return CScene::Initialize( hWnd, pDevice );
 }

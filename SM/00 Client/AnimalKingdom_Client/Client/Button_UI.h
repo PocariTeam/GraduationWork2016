@@ -10,7 +10,7 @@ class CButton_UI
 	: public CUserInterface
 {
 public:
-	enum eButton_state { BTN_NORMAL, BTN_ACTIVE, BTN_PUSH, BTN_PLAYING, BTN_END };
+	enum eButton_state { BTN_NORMAL, BTN_ACTIVE, BTN_PUSH, BTN_DISABLE, BTN_HIDE, BTN_FIX, BTN_END };
 	using BTN_STATE = eButton_state;
 private:
 	explicit CButton_UI();
@@ -25,9 +25,12 @@ public:
 	DWORD Release( void );
 public:
 	bool isCollide( POINT& ptMouse, bool bClick );
+	void Hide() { m_eState = BTN_HIDE; }
+	void Normal() { m_eState = BTN_NORMAL; }
+	void Disable() { m_eState = BTN_DISABLE; }
+	void Fix() { m_eState = BTN_FIX; }
 private:
 	CWindow_UI*		m_pOwner;
-	XMFLOAT4		m_vOffset;
 	BTN_STATE		m_eState;
 };
 

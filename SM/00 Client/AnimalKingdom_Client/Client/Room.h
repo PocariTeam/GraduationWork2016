@@ -9,11 +9,13 @@
 
 class CShader;
 class CButton_UI;
+class CNormal_UI;
 class CRoom
 	: public CScene
 {
 private:
-	enum eBtn_Index { READY, };
+	enum eBtn_Index { BTN_READY, BTN_BACK, BTN_MAP_PREVIOUS, BTN_MAP_NEXT, BTN_CHAMELEON, BTN_MONKEY, BTN_END };
+	using BTN_INDEX = eBtn_Index;
 private:
 	explicit CRoom();
 	virtual ~CRoom();
@@ -29,10 +31,10 @@ public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 public:
 	void	NotifyGameStart( void ) { m_bStart = true; }
-	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo );
-	void	NotifyPlayerCnt( UINT& dwPlayerCnt ) { m_dwPlayerCnt = dwPlayerCnt; }
+	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 private:
 	CButton_UI**	m_dpBtns;
+	CNormal_UI**	m_dpReady;
 	bool			m_bStart;
 	PlayerInfo*		m_pPlayerInfo;
 	UINT			m_dwPlayerCnt;

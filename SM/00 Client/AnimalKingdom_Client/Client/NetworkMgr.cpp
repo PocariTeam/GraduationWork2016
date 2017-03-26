@@ -197,8 +197,7 @@ void CNetworkMgr::processPacket()
 			}
 		}
 		printf( "========================================= \n" );
-		( ( CRoom* )m_pScene )->NotifyPlayerInfo( m_tPlayerInfo );
-		( ( CRoom* )m_pScene )->NotifyPlayerCnt( m_dwPlayerCnt );
+		m_pScene->NotifyPlayerInfo( m_tPlayerInfo, m_dwPlayerCnt );
 		break;
 	}
 	case PAK_ID::PAK_ANS_StartGame:

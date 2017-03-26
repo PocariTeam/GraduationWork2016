@@ -532,14 +532,14 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>6637.250488281</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxTriangleMeshShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_1" hasBody="true" name="Snowball">
           <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -88.213821411 111.607055664 -44.315460205</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088443756</massLocalPose>
+            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.088443756 0.023605347</massLocalPose>
             <massSpaceInertia>3184.936767578 3184.936523438 3184.936523438</massSpaceInertia>
             <mass>42.312713623</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
@@ -562,7 +562,7 @@
           </NxBodyDesc>
           <NxSphereShapeDesc radius="13.717816353">
             <NxShapeDesc name="Snowball">
-              <localPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088443756</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  0 0.088443756 0.023605347</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -589,14 +589,13 @@
               <shapeDensity>0.003999998</shapeDensity>
               <shapeMass>42.312709808</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxSphereShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_2" hasBody="true" name="Test">
           <globalPose>1 0 0  0 1 0  0 0 1  104.935829163 126.503181458 -54.704910278</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 24.999992371 0</massLocalPose>
             <massSpaceInertia>5292000.5 5292000.5 5292000.5</massSpaceInertia>
             <mass>12500</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
@@ -619,7 +618,6 @@
           </NxBodyDesc>
           <NxBoxShapeDesc dimensions="25.200000763 25.200000763 25.200000763">
             <NxShapeDesc name="Box001">
-              <localPose>1 0 0  0 1 0  0 0 1  0 24.999992371 0</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -646,14 +644,14 @@
               <shapeDensity>0.100000001</shapeDensity>
               <shapeMass>12500</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxBoxShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_3" hasBody="true" name="Snowball">
           <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -121.41292572 209.971206665 95.185699463</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088439941</massLocalPose>
+            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</massLocalPose>
             <massSpaceInertia>3184.936767578 3184.936523438 3184.936523438</massSpaceInertia>
             <mass>42.312713623</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
@@ -676,7 +674,7 @@
           </NxBodyDesc>
           <NxSphereShapeDesc radius="13.717816353">
             <NxShapeDesc name="Snowball001">
-              <localPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088439941</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -703,14 +701,14 @@
               <shapeDensity>0.003999998</shapeDensity>
               <shapeMass>42.312709808</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxSphereShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_4" hasBody="true" name="Snowball">
           <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -94.116790771 111.607055664 -81.971710205</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088439941</massLocalPose>
+            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</massLocalPose>
             <massSpaceInertia>3184.936767578 3184.936523438 3184.936523438</massSpaceInertia>
             <mass>42.312713623</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
@@ -733,7 +731,7 @@
           </NxBodyDesc>
           <NxSphereShapeDesc radius="13.717816353">
             <NxShapeDesc name="Snowball002">
-              <localPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088439941</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -760,14 +758,14 @@
               <shapeDensity>0.003999998</shapeDensity>
               <shapeMass>42.312709808</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxSphereShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_5" hasBody="true" name="Snowball">
           <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -43.117263794 111.607055664 -75.848175049</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088439941</massLocalPose>
+            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</massLocalPose>
             <massSpaceInertia>3184.936767578 3184.936523438 3184.936523438</massSpaceInertia>
             <mass>42.312713623</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
@@ -790,7 +788,7 @@
           </NxBodyDesc>
           <NxSphereShapeDesc radius="13.717816353">
             <NxShapeDesc name="Snowball003">
-              <localPose>1 0 0  0 1 0  0 0 1  0 0.023605347 0.088439941</localPose>
+              <localPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -817,15 +815,15 @@
               <shapeDensity>0.003999998</shapeDensity>
               <shapeMass>42.312709808</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxSphereShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_6" hasBody="true" name="player00">
           <globalPose>1 0 0  0 1 0  0 0 1  -92.477432251 227.023681641 0.667497218</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>0.719166636 -0.000947957 0.694837034  0.01348012 0.999829888 -0.012588071  -0.694706857 0.018419407 0.719057083  0.002059937 3.548995972 2.59971571</massLocalPose>
-            <massSpaceInertia>55.556259155 52.202781677 55.556201935</massSpaceInertia>
+            <massLocalPose>0.999853432 0.01709624 -0.000936645  -0.01711059 0.999684095 -0.018410213  0.000621604 0.018423542 0.999830067  0.002059937 2.599716187 3.548995972</massLocalPose>
+            <massSpaceInertia>55.556171417 55.556171417 52.202762604</massSpaceInertia>
             <mass>1.096659303</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
@@ -847,7 +845,7 @@
           </NxBodyDesc>
           <NxCapsuleShapeDesc radius="7.272603989" height="4.007098198">
             <NxShapeDesc name="player00">
-              <localPose>-0.00103277 0.000948042 -0.999998748  0.018418657 -0.999829352 -0.000966908  -0.99982959 -0.018419638 0.001015669  0.002059937 3.548995972 2.59971571</localPose>
+              <localPose>-0.001031756 0.000947654 -0.999998331  0.999829113 0.018420815 -0.001014829  0.018419176 -0.999829173 -0.000965834  0.002059937 2.599716187 3.548995972</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -874,15 +872,15 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659303</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_7" hasBody="true" name="player01">
           <globalPose>1 0 0  0 1 0  0 0 1  -48.962867737 227.023681641 0.667497218</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>0.748016596 -0.000948046 -0.663679361  -0.011515573 0.999829888 -0.014407145  0.663580179 0.018419432 0.747878432  0.002059937 3.548995972 2.599715471</massLocalPose>
-            <massSpaceInertia>55.55620575 52.202793121 55.556259155</massSpaceInertia>
+            <massLocalPose>0.999662697 0.025954762 -0.000939489  -0.025967667 0.999493182 -0.01841275  0.000461114 0.018430937 0.999830008  0.002059937 2.599716187 3.548995972</massLocalPose>
+            <massSpaceInertia>55.556190491 55.556194305 52.202781677</massSpaceInertia>
             <mass>1.096659303</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
@@ -904,7 +902,7 @@
           </NxBodyDesc>
           <NxCapsuleShapeDesc radius="7.272603989" height="4.007098198">
             <NxShapeDesc name="player01">
-              <localPose>-0.001032889 0.000948101 -0.999998808  0.018418597 -0.999829471 -0.00096697  -0.99982965 -0.018419577 0.001015669  0.002059937 3.548995972 2.599715471</localPose>
+              <localPose>-0.001032352 0.000947714 -0.99999845  0.999829292 0.018420458 -0.001015246  0.018418998 -0.999829352 -0.000966072  0.002059937 2.599716187 3.548995972</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -931,15 +929,15 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659303</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_8" hasBody="true" name="player02">
           <globalPose>1 0 0  0 1 0  0 0 1  -2.969146729 227.023681641 0.667497218</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>0.699700594 -0.000947925 0.714435637  0.013822787 0.999829948 -0.012211104  -0.71430248 0.018419607 0.699594676  0.002060652 3.548995972 2.599715471</massLocalPose>
-            <massSpaceInertia>55.556243896 52.202735901 55.556159973</massSpaceInertia>
+            <massLocalPose>0.999981582 -0.006000046 -0.000928642  0.005981943 0.999812782 -0.018403132  0.001038888 0.018397238 0.999830246  0.002060652 2.599715948 3.548995972</massLocalPose>
+            <massSpaceInertia>55.556114197 55.556114197 52.202713013</massSpaceInertia>
             <mass>1.096659064</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
@@ -961,7 +959,7 @@
           </NxBodyDesc>
           <NxCapsuleShapeDesc radius="7.272603512" height="4.007099152">
             <NxShapeDesc name="player02">
-              <localPose>-0.001032531 0.000948028 -0.999998629  0.018418793 -0.999829113 -0.000966894  -0.999829471 -0.018419772 0.001015668  0.002060652 3.548995972 2.599715471</localPose>
+              <localPose>-0.001031101 0.000947356 -0.999997914  0.999828696 0.01842165 -0.00101465  0.018419564 -0.999828756 -0.000965059  0.002060652 2.599716187 3.548995972</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -988,15 +986,15 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659064</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_9" hasBody="true" name="player03">
           <globalPose>1 0 0  0 1 0  0 0 1  50.300964355 227.023681641 0.667497218</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>0.748016477 -0.000948046 -0.663679481  -0.011515575 0.999829888 -0.014407142  0.663580298 0.01841943 0.747878313  0.002059937 3.548995972 2.599715233</massLocalPose>
-            <massSpaceInertia>55.556190491 52.202774048 55.556243896</massSpaceInertia>
+            <massLocalPose>0.999664962 0.025867898 -0.000939489  -0.025880817 0.999495506 -0.018412489  0.000462723 0.018430635 0.999830067  0.002059937 2.599715948 3.548995972</massLocalPose>
+            <massSpaceInertia>55.556171417 55.556179047 52.202766418</massSpaceInertia>
             <mass>1.096659064</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
@@ -1018,7 +1016,7 @@
           </NxBodyDesc>
           <NxCapsuleShapeDesc radius="7.272603512" height="4.007099152">
             <NxShapeDesc name="player03">
-              <localPose>-0.001032889 0.000948101 -0.999998808  0.018418597 -0.999829471 -0.00096697  -0.99982965 -0.018419577 0.001015669  0.002059937 3.548995972 2.599715233</localPose>
+              <localPose>-0.001032352 0.000947714 -0.99999845  0.999829292 0.018420458 -0.001015246  0.018418998 -0.999829352 -0.000966072  0.002059937 2.599716187 3.548995972</localPose>
               <NxShapeFlag id="shapeFlags">
                 <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
                 <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
@@ -1045,7 +1043,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659064</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="8" bits2="8"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>

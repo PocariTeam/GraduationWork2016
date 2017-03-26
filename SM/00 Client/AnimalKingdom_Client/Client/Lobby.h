@@ -7,10 +7,22 @@
 #include "Define.h"
 
 class CButton_UI;
+class CWindow_UI;
 class CShader;
 class CLobby
 	: public CScene
 {
+	const WORD ROOM_PRESENT_CNT = 8;
+public:
+	enum eBtn_Index
+	{
+		BTN_REFRESH = 8
+		, BTN_PREVIOUS
+		, BTN_NEXT
+		, BTN_EXIT
+		, BTN_END
+	};
+	using BTN_INDEX = eBtn_Index;
 private:
 	explicit CLobby();
 	virtual ~CLobby();
@@ -21,16 +33,22 @@ public:
 	DWORD	Release( void );
 	void	Render( ID3D11DeviceContext* pContext );
 public:
-	void	NotifyRoomInfo( S_RoomList* pRoomlistArray );
+	void	NotifyRoomInfo( S_RoomList* pRoomlistPacket );
 private:
 	int		Check_Key( void );
+	void	Change_Page( void );
 public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 private:
-	S_RoomList*		m_pRoomInfo;
+	RoomInfo*		m_pRoomInfo;
+	CWindow_UI*		m_pWndUI;
 	CButton_UI**	m_dpBtns;
 	/* Check Key */
 	bool			m_bOverlapped;
+	UINT			m_dwMaxPageCnt;
+	UINT			m_dwCurrentPage;
+	UINT			m_dwMaxRoomCnt;
+
 };
 
 

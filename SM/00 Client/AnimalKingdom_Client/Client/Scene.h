@@ -21,8 +21,7 @@ public:
 	POINT	GetMousePosition( HWND hWnd );
 public:
 	virtual void NotifyRoomInfo( S_RoomList* pRoomlistArray ) {}
-	virtual void NotifyPlayerInfo( PlayerInfo* pPlayerInfo ) {}
-	virtual void NotifyPlayerCnt( UINT& dwPlayerCnt ) {}
+	virtual void NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 protected:

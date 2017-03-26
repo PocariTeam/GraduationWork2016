@@ -4,6 +4,9 @@
 
 CUserInterface::CUserInterface()
 	: CGameObject()
+	, m_vPosSize_Dest( 0.f, 0.f, 0.f, 0.f )
+	, m_vPosSize_Src( 0.f, 0.f, 0.f, 0.f )
+	, m_fLerpTime( 0.f )
 {
 	ZeroMemory( &m_mtxPosSize, sizeof( XMFLOAT4X4 ) );
 }
@@ -11,20 +14,6 @@ CUserInterface::CUserInterface()
 CUserInterface::~CUserInterface()
 {
 }
-
-//HRESULT CUserInterface::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, const float& fPriority )
-//{
-//	m_pTexture = pTexture;
-//
-//	m_mtxWolrd._11 = vPosSize.x;
-//	m_mtxWolrd._21 = vPosSize.y;
-//	m_mtxWolrd._31 = vPosSize.z;
-//	m_mtxWolrd._41 = vPosSize.w;
-//
-//	m_mtxWolrd._12 = fPriority;
-//
-//	return S_OK;
-//}
 
 XMFLOAT4X4 CUserInterface::GetWorld( void )
 {

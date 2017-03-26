@@ -24,10 +24,6 @@ public:
 	DWORD Release( void );
 public:
 	XMFLOAT4	GetPosSize( void );
-private:
-	XMFLOAT4	m_vPosSize_Dest;
-	XMFLOAT4	m_vPosSize_Src;
-	float		m_fLerpTime;
 };
 
 #endif // Window_UI_h__

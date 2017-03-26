@@ -96,19 +96,15 @@ void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir)
 
 }
 
-void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo )
+void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 {
 	m_pPlayerInfo = pPlayerInfo;
-}
 
-void CJungle::NotifyPlayerCnt( UINT& dwPlayerCnt )
-{
 	int* pTemp = new int[ dwPlayerCnt ];
-
 	m_dwPlayerCnt = dwPlayerCnt;
 
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
-		pTemp[ i ] = ( int ) m_pPlayerInfo[ i ].id;
+		pTemp[ i ] = ( int )m_pPlayerInfo[ i ].id;
 
 	sort( &pTemp[ 0 ], &pTemp[ dwPlayerCnt - 1 ] );
 

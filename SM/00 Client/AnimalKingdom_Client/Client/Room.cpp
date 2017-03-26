@@ -12,12 +12,15 @@
 #include "MeshMgr.h"
 #include "Window_UI.h"
 #include "Button_UI.h"
+#include "Normal_UI.h"
 
 CRoom::CRoom()
 	: CScene()
 	, m_bStart( false )
 	, m_bOverlapped( true )
 	, m_pPlayerInfo( nullptr )
+	, m_dpReady( nullptr )
+	, m_dpBtns( nullptr )
 	, m_dwPlayerCnt( 0 )
 {
 }
@@ -28,6 +31,8 @@ CRoom::~CRoom()
 
 HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
+	CScene::Initialize( hWnd, pDevice );
+
 	// Background
 	CShader* pShader = CShaderMgr::GetInstance()->Clone( "Shader_Background" );
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Room" );
@@ -37,31 +42,44 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	// Mesh
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
-	CWindow_UI* pWnd_UI = CWindow_UI::Create( CWindow_UI::WND_LOBBY );
+	CWindow_UI* pWnd_UI = CWindow_UI::Create( CWindow_UI::WND_ROOM );
 	pShader->Add_RenderObject( pWnd_UI );
 
-	m_dpBtns = new CButton_UI*[ 1 ];
-	for( int i = 0; i < 1; ++i )
-	{
-		pShader->Add_RenderObject( m_dpBtns[ i ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Ready" ), XMFLOAT4( 0.08f + 0.67f, -0.23f - float( i ) * 0.3f, 0.21f, 0.06f ) ) );
-	}
-			
+	m_dpBtns = new CButton_UI*[ BTN_END ];
+	m_dpReady = new CNormal_UI*[ PLAYER_CAPACITY ];
+
+	pShader->Add_RenderObject( m_dpBtns[ BTN_READY ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Ready" ), XMFLOAT4( -1.f, -0.5f, 0.6f, 0.3f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_BACK ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Back" ), XMFLOAT4( -1.f, -0.8f, 0.6f, 0.2f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_NEXT ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Back" ), XMFLOAT4( -0.4f, 0.2f, 0.2f, 0.55f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_PREVIOUS ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Back" ), XMFLOAT4( 0.8f, 0.2f, 0.2f, 0.55f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_CHAMELEON ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Select_Chameleon" ), XMFLOAT4( -0.4f, -0.35f, 0.28f, 0.65f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_MONKEY ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_Select_Monkey" ), XMFLOAT4( -0.12f, -0.35f, 0.28f, 0.65f ) ) );
+	pShader->Add_RenderObject( CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Slot" ), XMFLOAT4( -0.35f, 1.f, 0.45f, 0.8f ) ) );
+	pShader->Add_RenderObject( CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Slot" ), XMFLOAT4( 0.1f, 1.f, 0.45f, 0.8f ) ) );
+	pShader->Add_RenderObject( CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Slot" ), XMFLOAT4( 0.55f, 1.f, 0.45f, 0.8f ) ) );
+	pShader->Add_RenderObject( CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Preview_Jungle" ), XMFLOAT4( -0.2f, 0.2f, 1.f, 0.55f ) ) );
+
+	pShader->Add_RenderObject( m_dpReady[ 0 ] = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -0.95f, -0.2f, 0.5f, 0.3f ) ) );
+	pShader->Add_RenderObject( m_dpReady[ 1 ] = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -0.3f, 0.45f, 0.35f, 0.2f ) ) );
+	pShader->Add_RenderObject( m_dpReady[ 2 ] = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.15f, 0.45f, 0.35f, 0.2f ) ) );
+	pShader->Add_RenderObject( m_dpReady[ 3 ] = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.6f, 0.45f, 0.35f, 0.2f ) ) );
+
+	for( int i = 0; i < PLAYER_CAPACITY; ++i )
+		m_dpReady[ i ]->Hide();
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
 
-	return CScene::Initialize( hWnd, pDevice );
+	return S_OK;
 }
 
 int CRoom::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
-	Check_Key();
-	
 	if( m_bStart ) return SCENE_JUNGLE;
 
-	return 0;
+	return Check_Key();
 }
 
 DWORD CRoom::Release( void )
@@ -70,6 +88,8 @@ DWORD CRoom::Release( void )
 	CRenderer::GetInstance()->Clear_RenderGroup();
 	delete[] m_dpBtns;
 	m_dpBtns = nullptr;
+	delete[] m_dpReady;
+	m_dpReady = nullptr;
 
 	delete this;
 
@@ -95,15 +115,33 @@ int CRoom::Check_Key( void )
 	else if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
 		m_bOverlapped = true;
 
-	for( int i = 0; i < 1; ++i )
+	for( int i = 0; i < BTN_END; ++i )
 		if( m_dpBtns[ i ]->isCollide( ptMouse, !m_bOverlapped ) )
 		{
-		CNetworkMgr::GetInstance()->sendSelectCharacter( CHAMEL );
-		if( CNetworkMgr::GetInstance()->isMaster() )
-			CNetworkMgr::GetInstance()->sendStartRoom();
-		else
-			CNetworkMgr::GetInstance()->sendReadyRoom();
-		break;
+			switch( i )
+			{
+			case BTN_READY:
+				if( CNetworkMgr::GetInstance()->isMaster() )
+					CNetworkMgr::GetInstance()->sendStartRoom();
+				else
+					CNetworkMgr::GetInstance()->sendReadyRoom();
+				break;
+			case BTN_BACK:
+				return SCENE_LOBBY;
+			case BTN_CHAMELEON:
+				CNetworkMgr::GetInstance()->sendSelectCharacter( CHAMEL );
+				m_dpBtns[ BTN_MONKEY ]->Normal();
+				m_dpBtns[ BTN_CHAMELEON ]->Fix();
+				break;
+			case BTN_MONKEY:
+				CNetworkMgr::GetInstance()->sendSelectCharacter( CHAMEL );
+				m_dpBtns[ BTN_CHAMELEON ]->Normal();
+				m_dpBtns[ BTN_MONKEY ]->Fix();
+				break;
+			case BTN_MAP_NEXT:
+			case BTN_MAP_PREVIOUS:
+				break;
+			}
 		}
 
 	return 0;
@@ -122,9 +160,24 @@ CScene* CRoom::Create( HWND hWnd, ID3D11Device* pDevice )
 	return pRoom;
 }
 
-void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo )
+void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 {
+	m_dwPlayerCnt = dwPlayerCnt;
 	m_pPlayerInfo = pPlayerInfo;
 	if( CNetworkMgr::GetInstance()->isMaster() )
-		m_dpBtns[ READY ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Start" ) );
+		m_dpBtns[ BTN_READY ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Start" ) );
+
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+	{
+		m_dpReady[ i ]->Hide();
+
+		if( m_pPlayerInfo[ i ].isMaster )
+		{
+			m_dpReady[ i ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Master" ) );
+			m_dpReady[ i ]->Show();
+		}
+
+		else if( m_pPlayerInfo[ i ].isReady )
+			m_dpReady[ i ]->Show();
+	}
 }

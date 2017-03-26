@@ -14,8 +14,13 @@
 
 CLobby::CLobby()
 	: CScene()
-	, m_bOverlapped( true )
 	, m_dpBtns( nullptr )
+	, m_pRoomInfo( nullptr )
+	, m_bOverlapped( true )
+	, m_pWndUI( nullptr )
+	, m_dwMaxPageCnt( 1 )
+	, m_dwCurrentPage( 1 )
+	, m_dwMaxRoomCnt( 0 )
 {
 }
 
@@ -25,7 +30,8 @@ CLobby::~CLobby()
 
 HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
-	CNetworkMgr::GetInstance()->connectServer( hWnd );
+	CScene::Initialize( hWnd, pDevice );
+	CNetworkMgr::GetInstance()->sendRequestRoomList();
 
 	// Background
 	CShader* pShader = CShaderMgr::GetInstance()->Clone( "Shader_Background" );
@@ -36,19 +42,25 @@ HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	// Mesh
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
-	CWindow_UI* pWnd_UI = CWindow_UI::Create( CWindow_UI::WND_LOBBY );
-	pShader->Add_RenderObject( pWnd_UI );
+	m_pWndUI = CWindow_UI::Create( CWindow_UI::WND_LOBBY );
+	pShader->Add_RenderObject( m_pWndUI );
 
-	m_dpBtns = new CButton_UI*[ GAMEROOM_CAPACITY ];
-	for( int i = 0; i < GAMEROOM_CAPACITY / 2; ++i )
-		for( int j = 0; j < GAMEROOM_CAPACITY / 4; ++j )
-			pShader->Add_RenderObject( m_dpBtns[ i * 2 + j ] = CButton_UI::Create( pWnd_UI, CTextureMgr::GetInstance()->Clone( "Texture_L_Room" ), XMFLOAT4( 0.08f + float( j ) * 0.67f, -0.23f - float( i ) * 0.3f, 0.42f, 0.13f ) ) );
+	m_dpBtns = new CButton_UI*[ BTN_END ];
+
+	for( int i = 0; i < 4; ++i )
+		for( int j = 0; j < 2; ++j )
+			pShader->Add_RenderObject( m_dpBtns[ i * 2 + j ] = CButton_UI::Create( m_pWndUI, CTextureMgr::GetInstance()->Clone( "Texture_L_Room" ), XMFLOAT4( -0.3f + float( j ) * 0.3f, -0.1f - float( i ) * 0.15f, 0.25f, 0.12f ) ) );
+
+	pShader->Add_RenderObject( m_dpBtns[ BTN_REFRESH ] = CButton_UI::Create( m_pWndUI, CTextureMgr::GetInstance()->Clone( "Texture_Refresh" ), XMFLOAT4( -0.35f, 0.25f, 0.14f, 0.17f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_PREVIOUS ] = CButton_UI::Create( m_pWndUI, CTextureMgr::GetInstance()->Clone( "Texture_Previous" ), XMFLOAT4( -0.2f, 0.25f, 0.14f, 0.17f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_NEXT ] = CButton_UI::Create( m_pWndUI, CTextureMgr::GetInstance()->Clone( "Texture_Next" ), XMFLOAT4( -0.05f, 0.25f, 0.14f, 0.17f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_EXIT ] = CButton_UI::Create( m_pWndUI, CTextureMgr::GetInstance()->Clone( "Texture_Exit" ), XMFLOAT4( 0.1f, 0.25f, 0.23f, 0.17f ) ) );
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
 
-	return CScene::Initialize( hWnd, pDevice );
+	return S_OK;
 }
 
 int CLobby::Update( const float& fTimeDelta )
@@ -62,6 +74,7 @@ DWORD CLobby::Release( void )
 {
 	CScene::Release();
 	CRenderer::GetInstance()->Clear_RenderGroup();
+
 	delete[] m_dpBtns;
 	m_dpBtns = nullptr;
 
@@ -78,11 +91,27 @@ void CLobby::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render_UI( pContext );
 }
 
-void CLobby::NotifyRoomInfo( S_RoomList* pRoomlistArray )
+void CLobby::NotifyRoomInfo( S_RoomList* pRoomlistPacket )
 {
-	m_pRoomInfo = pRoomlistArray;
-	UINT iArraySize = sizeof( pRoomlistArray ) / sizeof( S_RoomList );
-	int i = 0;
+	m_pRoomInfo = pRoomlistPacket->roomInfo;
+	m_dwMaxRoomCnt = ( pRoomlistPacket->header.size - sizeof( HEADER ) ) / sizeof( RoomInfo );
+	m_dwMaxPageCnt = m_dwMaxRoomCnt / ( UINT )ROOM_PRESENT_CNT + ( ( m_dwMaxRoomCnt % ( UINT )ROOM_PRESENT_CNT ) ? 1 : 0 );
+	m_dwCurrentPage = 1;
+
+	for( int i = 0; i < ( int )m_dwMaxRoomCnt; ++i )
+	{
+		if( i < ROOM_PRESENT_CNT )
+		{
+			if( m_pRoomInfo[ i ].playing || PLAYER_CAPACITY == m_pRoomInfo[ i ].playerCount ) m_dpBtns[ i ]->Disable();
+		}
+		else
+			m_dpBtns[ i ]->Hide();
+	}
+		
+
+	m_dpBtns[ BTN_PREVIOUS ]->Disable();
+	if( 1 == m_dwMaxPageCnt ) m_dpBtns[ BTN_NEXT ]->Disable();
+	else m_dpBtns[ BTN_NEXT ]->Normal();
 }
 
 int	 CLobby::Check_Key( void )
@@ -95,14 +124,52 @@ int	 CLobby::Check_Key( void )
 	else if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
 		m_bOverlapped = true;
 
-	for( int i = 0; i < GAMEROOM_CAPACITY; ++i )
+	for( int i = 0; i < BTN_END; ++i )
 		if( m_dpBtns[ i ]->isCollide( ptMouse, !m_bOverlapped ) )
 		{
-			CNetworkMgr::GetInstance()->sendEnterRoom( i );
-			return CScene::SCENE_ROOM;
+			switch( i )
+			{
+			case BTN_REFRESH:
+				CNetworkMgr::GetInstance()->sendRequestRoomList();
+				break;
+			case BTN_PREVIOUS:
+				m_dwCurrentPage--;
+				if( 1 == m_dwCurrentPage ) m_dpBtns[ BTN_PREVIOUS ]->Disable();
+				m_dpBtns[ BTN_NEXT ]->Normal();
+				Change_Page();
+				break;
+			case BTN_NEXT:
+				m_dwCurrentPage++;
+				if( 0 == m_dwMaxPageCnt - m_dwCurrentPage ) m_dpBtns[ BTN_NEXT ]->Disable();
+				m_dpBtns[ BTN_PREVIOUS ]->Normal();
+				Change_Page();
+				break;
+			case BTN_EXIT:
+				PostQuitMessage( 1 );
+				break;
+			default:
+				if( PLAYER_CAPACITY == m_pRoomInfo[ i + ( ( int )m_dwCurrentPage - 1 ) * ( int )ROOM_PRESENT_CNT ].playerCount
+					|| m_pRoomInfo[ i + ( ( int )m_dwCurrentPage - 1 ) * ( int )ROOM_PRESENT_CNT ].playing )
+					break;
+				CNetworkMgr::GetInstance()->sendEnterRoom( i );
+				return CScene::SCENE_ROOM;
+			}
 		}
 
 	return 0;
+}
+
+void CLobby::Change_Page( void )
+{
+	int iPresent_Start = int( ( m_dwCurrentPage - 1 ) * ROOM_PRESENT_CNT );
+	for( int i = iPresent_Start; i < iPresent_Start + ( int )ROOM_PRESENT_CNT; ++i )
+	{
+		if( i < ( signed )m_dwMaxRoomCnt )
+		{
+			if( m_pRoomInfo[ i ].playing || PLAYER_CAPACITY == m_pRoomInfo[ i ].playerCount ) m_dpBtns[ i ]->Disable();
+		}
+		else m_dpBtns[ i ]->Hide();
+	}
 }
 
 CScene* CLobby::Create( HWND hWnd, ID3D11Device* pDevice )

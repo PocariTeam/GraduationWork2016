@@ -4,8 +4,6 @@
 
 CWindow_UI::CWindow_UI()
 	: CUserInterface()
-	, m_vPosSize_Dest( 0.f, 0.f, 0.f, 0.f )
-	, m_fLerpTime( 0.f )
 {
 }
 
@@ -19,10 +17,13 @@ HRESULT CWindow_UI::Initialize( WND_TYPE eWndType )
 	{
 	case WND_LOBBY:
 		m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Wnd" );
-		m_vPosSize_Dest = XMFLOAT4( -0.7f, 0.9f, 1.5f, 1.7f );
+		m_vPosSize_Dest = XMFLOAT4( -0.75f, 0.9f, 1.5f, 2.f );
 		m_vPosSize_Src = XMFLOAT4( 0.05f, 0.05f, 0.f, 0.f );
 		break;
 	case WND_ROOM:
+		m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Wnd" );
+		m_vPosSize_Dest = XMFLOAT4( -0.75f, 0.9f, 1.5f, 2.f );
+		m_vPosSize_Src = XMFLOAT4( 0.05f, 0.05f, 0.f, 0.f );
 		break;
 	}
 
@@ -54,7 +55,7 @@ int CWindow_UI::Update( const float& fTimeDelta )
 	if( m_fLerpTime == 1.f )
 		return 0;
 
-	m_fLerpTime += 2.f * fTimeDelta;
+	m_fLerpTime += 4.f * fTimeDelta;
 	if( m_fLerpTime > 1.f )	m_fLerpTime = 1.f;
 
 	XMVECTOR vLerp = DirectX::XMVectorLerp( XMLoadFloat4( &m_vPosSize_Src ), XMLoadFloat4( &m_vPosSize_Dest ), m_fLerpTime );

@@ -228,6 +228,8 @@
     <ClInclude Include="MultiTexture.h" />
     <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="NormalShader.h" />
+    <ClInclude Include="Normal_UI.h" />
+    <ClInclude Include="OrthoCamera.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Protocol.h" />
@@ -254,6 +256,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="ThreadMgr.h" />
+    <ClInclude Include="ThreeD_UI.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
@@ -382,6 +385,8 @@
     <ClCompile Include="MultiTexture.cpp" />
     <ClCompile Include="NetworkMgr.cpp" />
     <ClCompile Include="NormalShader.cpp" />
+    <ClCompile Include="Normal_UI.cpp" />
+    <ClCompile Include="OrthoCamera.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -408,6 +413,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="ThreadMgr.cpp" />
+    <ClCompile Include="ThreeD_UI.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
