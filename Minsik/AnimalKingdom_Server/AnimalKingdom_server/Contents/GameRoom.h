@@ -29,5 +29,5 @@ public:
 
 	static void updateTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);
 
-	
+	void	    update( float fTimeDelta );
 };

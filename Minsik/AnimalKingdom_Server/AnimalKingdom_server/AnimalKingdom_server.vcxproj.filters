@@ -142,6 +142,24 @@
     <ClCompile Include="PhysX\CollisionReport.cpp">
       <Filter>PhysX</Filter>
     </ClCompile>
+    <ClCompile Include="Contents\Animation\Animator.cpp">
+      <Filter>Contents\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\Animation\AnimationMgr.cpp">
+      <Filter>Contents\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Mathematics.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\Animation\AnimationSet.cpp">
+      <Filter>Contents\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\Animation\State.cpp">
+      <Filter>Contents\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Contents\Animation\StateMachine.cpp">
+      <Filter>Contents\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contents\GameRoom.h">
@@ -306,6 +324,28 @@
     <ClInclude Include="PhysX\CollisionReport.h">
       <Filter>PhysX</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationSet.h" />
+    <ClInclude Include="Contents\Animation\AnimationMgr.h">
+      <Filter>Contents\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Animation\AnimationSet.h">
+      <Filter>Contents\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Animation\Animator.h">
+      <Filter>Contents\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Mathematics.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Animation\Base.h">
+      <Filter>Contents\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Animation\State.h">
+      <Filter>Contents\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Contents\Animation\StateMachine.h">
+      <Filter>Contents\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -334,6 +374,9 @@
     </Filter>
     <Filter Include="PhysX\SampleCommonCode">
       <UniqueIdentifier>{897508da-38bb-4eb2-a058-b3724aa6b89c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Animation">
+      <UniqueIdentifier>{7329967c-de15-4e4c-b7e8-a7c2d027c1e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

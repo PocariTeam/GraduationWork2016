@@ -95,12 +95,18 @@ typedef void(*Function)(void *);
 //
 #include "./Util/Config.h"
 //
+#include "./Util/Mathematics.h"
+//
 ///ÄÁÅÙÃ÷
 //
 #include "./Contents/RoomManager.h"
 #include "./Contents/GameRoom.h"
 #include "./Contents/Player.h"
 #include "./Contents/PacketManager.h"
+#include "./Contents/Animation/AnimationMgr.h"
+#include "./Contents/Animation/Animator.h"
+#include "./Contents/Animation/State.h"
+#include "./Contents/Animation/StateMachine.h"
 #include "./PhysX/PhysXManager.h"
 //
 ////¼­¹ö

@@ -15,6 +15,8 @@ public:
 	BOOL			exitRoom(Session* session);
 	RoomInfo		*getRoomList();
 
+	void			update( UINT roomNum, float fTimeDelta );
+
 	BOOL			setPlayerReady(Session* session, BOOL b);
 	BOOL			setPlayerCharacter(Session* session, S_CHARACTER c);
 	BOOL			startRoom(Session* session);

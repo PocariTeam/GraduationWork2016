@@ -1,0 +1,13 @@
+1
+0
+10
+-1 Resources/Animation/Chameleon/Joint.jsma
+0 Resources/Animation/Chameleon/Idle.jsma
+1 Resources/Animation/Chameleon/Attack1.jsma
+2 Resources/Animation/Chameleon/Attack2.jsma
+3 Resources/Animation/Chameleon/Run.jsma
+4 Resources/Animation/Chameleon/Jump.jsma
+5 Resources/Animation/Chameleon/Defend.jsma
+6 Resources/Animation/Chameleon/Beaten1.jsma
+7 Resources/Animation/Chameleon/Beaten2.jsma
+8 Resources/Animation/Chameleon/Down.jsma

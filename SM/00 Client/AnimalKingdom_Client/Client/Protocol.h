@@ -41,11 +41,10 @@ struct RoomInfo
 };
 
 typedef enum {
-	NONE,
 	CHAMEL,
 	MONKEY
 }S_CHARACTER;
-#define CHARACTER_MAX     (3)
+#define CHARACTER_MAX     (2)
 
 struct PlayerInfo
 {

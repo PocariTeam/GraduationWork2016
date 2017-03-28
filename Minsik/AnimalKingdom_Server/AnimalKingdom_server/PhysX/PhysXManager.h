@@ -9,6 +9,16 @@ class UserAllocator;
 class NxControllerManager;
 class NxController;
 
+typedef struct tagActorInfo
+{
+	XMFLOAT3	m_vGlobalPosition;
+	DWORD		m_dwType;			// S : 1, B : 2, C : 3
+	float		m_fRadius;
+	float		m_fLength;
+	float		m_fWidth;
+	float		m_fHeight;
+}ACTOR_INFO;
+
 class PhysXManager : public Singleton<PhysXManager> {
 private:
 	const char*					fileName = "Jungle_player4.xml";
@@ -29,6 +39,12 @@ private:
 public:
 	PhysXManager();
 	~PhysXManager();
+	BOOL Load_Kinematic( void );
+
+	/* dsf */
+	NxActor** CreateCharacterActors( S_CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
+	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
+
 	BOOL initPhysX();
 	BOOL LoadSceneFromFile(UINT32 roomNum);
 	BOOL SetupScene(UINT32 roomNum);
@@ -38,4 +54,6 @@ public:
 
 	void SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
 	NxController* CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT32 roomNum);
+private:
+	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_MAX ];
 };

@@ -76,7 +76,12 @@ RoomInfo* RoomManager::getRoomList()
 	return pRoomList;
 }
 
-void RoomManager::sendPlayerList(UINT32 roomNum)
+void RoomManager::update( UINT roomNum, float fTimeDelta )
+{
+	roomArray_[ roomNum ]->update( fTimeDelta );
+}
+
+void RoomManager::sendPlayerList( UINT32 roomNum )
 {
 	SAFE_LOCK(lock_);
 

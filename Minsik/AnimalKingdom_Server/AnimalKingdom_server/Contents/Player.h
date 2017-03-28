@@ -2,7 +2,9 @@
 #include "stdafx.h"
 
 class NxController;
-
+class NxActor;
+class CAnimator;
+class CStateMachine;
 class Player {
 	Session*		session_;
 	S_CHARACTER		character_;
@@ -11,12 +13,18 @@ class Player {
 	BOOL			isMaster_;
 
 	NxController*	cct_;
-
+	NxActor**		actorArray_;
+	UINT			actorCount_;
+	/* 애니메이션 재생기 */
+	CAnimator*		animator_;
+	/* 상태 머신 */
+	CStateMachine*	stateMachine_;
 	Lock			lock_;
 
 public:
 	Player(Session* s, UINT room, BOOL master = false);
 	~Player();
+	void			update( float fTimeDelta );
 	Session*		getSession() { return session_; };
 	PlayerInfo		getPlayerInfo();
 	BOOL			getReady() { return isReady_; }
@@ -24,6 +32,12 @@ public:
 	void			setMaster(BOOL b);
 	void			setReady(BOOL b);
 	void			setCharacter(S_CHARACTER c);
-	void			setCCT(NxController* cct) { cct_ = cct; };
+	void			setCCT(NxController* cct) { cct_ = cct; }
+	void			setActorArray( NxActor** dpActorArray, UINT actorcnt ) { actorArray_ = dpActorArray; actorCount_ = actorcnt; }
+	void			setAnimator( CAnimator* pAnimator ) { animator_ = pAnimator; }
 	NxController*	getCCT() { return cct_; }
+	NxActor**		getActors() { return actorArray_; }
+	CAnimator*		getAnimator() { return animator_; }
+	UINT			getActorCount() { return actorCount_; }
+	CStateMachine*  getFSM() { return stateMachine_; }
 };

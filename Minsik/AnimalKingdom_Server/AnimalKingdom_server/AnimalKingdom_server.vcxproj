@@ -99,6 +99,7 @@
       <SDLCheck>false</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +133,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimalKingdom_server.h" />
+    <ClInclude Include="AnimationSet.h" />
+    <ClInclude Include="Contents\Animation\AnimationMgr.h" />
+    <ClInclude Include="Contents\Animation\AnimationSet.h" />
+    <ClInclude Include="Contents\Animation\Animator.h" />
+    <ClInclude Include="Contents\Animation\Base.h" />
+    <ClInclude Include="Contents\Animation\State.h" />
+    <ClInclude Include="Contents\Animation\StateMachine.h" />
     <ClInclude Include="Contents\PacketManager.h" />
     <ClInclude Include="Contents\Player.h" />
     <ClInclude Include="Contents\GameRoom.h" />
@@ -183,6 +192,7 @@
     <ClInclude Include="Util\GameObject.h" />
     <ClInclude Include="Util\Lock.h" />
     <ClInclude Include="Util\Logger.h" />
+    <ClInclude Include="Util\Mathematics.h" />
     <ClInclude Include="Util\MemoryLeak.h" />
     <ClInclude Include="Util\Memory_LowFragmentationHeap.h" />
     <ClInclude Include="Util\Minidump.h" />
@@ -197,6 +207,11 @@
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Contents\Animation\AnimationMgr.cpp" />
+    <ClCompile Include="Contents\Animation\AnimationSet.cpp" />
+    <ClCompile Include="Contents\Animation\Animator.cpp" />
+    <ClCompile Include="Contents\Animation\State.cpp" />
+    <ClCompile Include="Contents\Animation\StateMachine.cpp" />
     <ClCompile Include="Contents\PacketManager.cpp" />
     <ClCompile Include="Contents\Player.cpp" />
     <ClCompile Include="Contents\GameRoom.cpp" />
@@ -309,6 +324,7 @@
     <ClCompile Include="Util\Config.cpp" />
     <ClCompile Include="Util\Lock.cpp" />
     <ClCompile Include="Util\Logger.cpp" />
+    <ClCompile Include="Util\Mathematics.cpp" />
     <ClCompile Include="Util\Minidump.cpp" />
     <ClCompile Include="Util\Task.cpp" />
     <ClCompile Include="Util\Thread.cpp" />

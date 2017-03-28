@@ -281,5 +281,132 @@ BOOL PhysXManager::initPhysX()
 	}
 
 	SLog(L"# Initialize PhysX SDK.");
+
+	Load_Kinematic();
+
 	return true;
+}
+
+BOOL PhysXManager::Load_Kinematic( void )
+{
+	ifstream	In{ "KinematicActor.txt" };
+	int			iCharacterType{}, iActorCnt{};
+	char		szJointName[ MAX_PATH ]{ "" };
+	ACTOR_INFO	tActorInfo;
+
+	while( !In.eof() )
+	{
+		In >> iCharacterType;
+		In >> iActorCnt;
+
+		for( int i = 0; i < iActorCnt; ++i )
+		{
+			In >> szJointName;
+			In >> tActorInfo.m_dwType;
+			In >> tActorInfo.m_vGlobalPosition.x; In >> tActorInfo.m_vGlobalPosition.y; In >> tActorInfo.m_vGlobalPosition.z;
+			In >> tActorInfo.m_fRadius; In >> tActorInfo.m_fLength; In >> tActorInfo.m_fWidth; In >> tActorInfo.m_fHeight;
+
+			m_mapActorInfo[ iCharacterType ].insert( make_pair( szJointName, tActorInfo ) );
+		}
+	}
+
+	In.close();
+
+	return TRUE;
+}
+
+NxActor** PhysXManager::CreateCharacterActors( S_CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt )
+{
+	DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ eCharacterType ].size();
+	NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
+
+	auto iter_begin = m_mapActorInfo[ eCharacterType ].begin();
+	auto iter_end = m_mapActorInfo[ eCharacterType ].end();
+
+	UINT j = 0;
+	for( ; iter_begin != iter_end; ++j, ++iter_begin )
+	{
+		dpCameleonActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second, iSceneNum );
+		dpCameleonActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
+		dpCameleonActors[ j ]->userData = new NxMat34;
+		*( NxMat34* )dpCameleonActors[ j ]->userData = dpCameleonActors[ j ]->getGlobalPose();
+	}
+
+	iActorCnt = j;
+
+	return dpCameleonActors;
+}
+
+NxActor* PhysXManager::CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum )
+{
+	switch( tActor_Info.m_dwType )
+	{
+	case NX_SHAPE_SPHERE:
+	{
+		NxSphereShapeDesc	tSphereShapeDesc;
+		tSphereShapeDesc.radius = tActor_Info.m_fRadius;
+		tSphereShapeDesc.name = pActorName;
+		tSphereShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+
+		NxActorDesc tActorDesc;
+		tActorDesc.name = pActorName;
+		tActorDesc.globalPose.t.set( tActor_Info.m_vGlobalPosition.x, tActor_Info.m_vGlobalPosition.y, tActor_Info.m_vGlobalPosition.z );
+
+		NxBodyDesc bodyDesc;
+		tActorDesc.body = &bodyDesc;
+
+		tActorDesc.density = 1;
+		tActorDesc.group = COL_PLAYER;
+		tSphereShapeDesc.group = COL_PLAYER;
+
+		tActorDesc.shapes.pushBack( &tSphereShapeDesc );
+
+		return scenes_[ iSceneNum ]->createActor( tActorDesc );
+	}
+	case NX_SHAPE_BOX:
+	{
+		NxBoxShapeDesc		tBoxShapeDesc;
+		tBoxShapeDesc.dimensions = NxVec3( tActor_Info.m_fLength * 0.5f, tActor_Info.m_fHeight * 0.5f, tActor_Info.m_fWidth * 0.5f );
+		tBoxShapeDesc.name = pActorName;
+		tBoxShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+
+		NxActorDesc tActorDesc;
+		tActorDesc.name = pActorName;
+		tActorDesc.globalPose.t.set( tActor_Info.m_vGlobalPosition.x, tActor_Info.m_vGlobalPosition.y, tActor_Info.m_vGlobalPosition.z );
+
+		NxBodyDesc bodyDesc;
+		tActorDesc.body = &bodyDesc;
+		tActorDesc.density = 1;
+		tActorDesc.group = COL_PLAYER;
+		tBoxShapeDesc.group = COL_PLAYER;
+
+		tActorDesc.shapes.pushBack( &tBoxShapeDesc );
+
+		return scenes_[ iSceneNum ]->createActor( tActorDesc );
+	}
+	case NX_SHAPE_CAPSULE:
+	{
+		NxCapsuleShapeDesc		tCapsuleShapeDesc;
+		tCapsuleShapeDesc.radius = tActor_Info.m_fRadius;
+		tCapsuleShapeDesc.height = tActor_Info.m_fHeight;
+		tCapsuleShapeDesc.name = pActorName;
+		tCapsuleShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+
+		NxActorDesc tActorDesc;
+		tActorDesc.name = pActorName;
+		tActorDesc.globalPose.t.set( tActor_Info.m_vGlobalPosition.x, tActor_Info.m_vGlobalPosition.y, tActor_Info.m_vGlobalPosition.z );
+
+		NxBodyDesc bodyDesc;
+		tActorDesc.body = &bodyDesc;
+		tActorDesc.density = 1;
+		tActorDesc.group = COL_PLAYER;
+		tCapsuleShapeDesc.group = COL_PLAYER;
+
+		tActorDesc.shapes.pushBack( &tCapsuleShapeDesc );
+
+		return scenes_[ iSceneNum ]->createActor( tActorDesc );
+	}
+	default:
+		return nullptr;
+	}
 }

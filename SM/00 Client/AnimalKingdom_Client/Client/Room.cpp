@@ -127,6 +127,7 @@ int CRoom::Check_Key( void )
 					CNetworkMgr::GetInstance()->sendReadyRoom();
 				break;
 			case BTN_BACK:
+				CNetworkMgr::GetInstance()->sendExitRoom();
 				return SCENE_LOBBY;
 			case BTN_CHAMELEON:
 				CNetworkMgr::GetInstance()->sendSelectCharacter( CHAMEL );

@@ -41,11 +41,13 @@ struct RoomInfo
 };
 
 typedef enum {
-	NONE,
 	CHAMEL,
 	MONKEY
 }S_CHARACTER;
-#define CHARACTER_MAX     (3)
+#define CHARACTER_MAX     (2)
+
+enum eState_Animation { STATE_IDLE, STATE_ATT1, STATE_ATT2, STATE_RUN, STATE_JUMP, STATE_DEFEND, STATE_BEATEN1, STATE_BEATEN2, /*STATE_SPECIAL, */STATE_DOWN, /*STATE_STANDUP, STATE_DIE, */STATE_END };
+using STATE = eState_Animation;
 
 struct PlayerInfo
 {

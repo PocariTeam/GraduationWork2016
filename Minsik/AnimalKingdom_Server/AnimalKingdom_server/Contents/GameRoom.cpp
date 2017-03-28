@@ -93,7 +93,6 @@ BOOL GameRoom::startGame(Session* session)
 
 BOOL GameRoom::setupGame()
 {
-
 	NxControllerManager* cctManager = PhysXManager::getInstance().getCCTManager(roomNum_);
 
 	if (cctManager->getNbControllers() != playerCount_)
@@ -105,8 +104,14 @@ BOOL GameRoom::setupGame()
 	int i = 0;
 	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
 	{
-		(*p)->setCCT(cctManager->getController(i++));
+		NxController* pController = cctManager->getController( i++ );
+		UINT iActorCnt{};
+		S_CHARACTER character = ( *p )->getPlayerInfo().character;
 
+		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors( character, roomNum_, iActorCnt );
+		( *p )->setActorArray( dpActors, iActorCnt );
+		( *p )->setCCT( pController );
+		( *p )->setAnimator( CAnimationMgr::getInstance().Clone( character ) );
 	}
 
 	return true;
@@ -314,4 +319,14 @@ void GameRoom::sendStartGame()
 void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
 	PhysXManager::getInstance().updateScene(roomNum, 17);
+	RoomManager::getInstance().update( roomNum, 17.f );
+}
+
+void GameRoom::update( float fTimeDelta )
+{
+	auto iter_begin = playerList_.begin();
+	auto iter_end = playerList_.end();
+
+	for( ; iter_begin != iter_end; ++iter_begin )
+		(*iter_begin)->update( fTimeDelta );
 }
