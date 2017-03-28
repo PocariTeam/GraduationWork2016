@@ -164,20 +164,37 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 {
 	m_dwPlayerCnt = dwPlayerCnt;
 	m_pPlayerInfo = pPlayerInfo;
+
 	if( CNetworkMgr::GetInstance()->isMaster() )
 		m_dpBtns[ BTN_READY ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Start" ) );
+
+	PlayerInfo* pTempArray = new PlayerInfo[ m_dwPlayerCnt ];
+
+	for( UINT i = 0, j = 1; i < m_dwPlayerCnt; ++i )
+	{
+		if( CNetworkMgr::GetInstance()->getID() == m_pPlayerInfo[ i ].id )
+			memcpy_s( &pTempArray[ 0 ], sizeof( PlayerInfo ), &m_pPlayerInfo[ i ], sizeof( PlayerInfo ) );
+		else
+		{
+			memcpy_s( &pTempArray[ j ], sizeof( PlayerInfo ), &m_pPlayerInfo[ i ], sizeof( PlayerInfo ) );
+			j++;
+		}
+	}
 
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 	{
 		m_dpReady[ i ]->Hide();
 
-		if( m_pPlayerInfo[ i ].isMaster )
+		if( pTempArray[ i ].isMaster )
 		{
 			m_dpReady[ i ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Master" ) );
 			m_dpReady[ i ]->Show();
 		}
 
-		else if( m_pPlayerInfo[ i ].isReady )
+		else if( pTempArray[ i ].isReady )
 			m_dpReady[ i ]->Show();
 	}
+
+	delete[] pTempArray;
+	pTempArray = nullptr;
 }
