@@ -22,6 +22,8 @@ private:
 	CControllerReport			controllerReport_;  // Controller Collision
 	CCollisionReport			collisionReport_;	// Normal Collision
 
+	
+
 	Lock						lock_;
 
 public:

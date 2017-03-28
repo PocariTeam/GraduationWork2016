@@ -201,11 +201,8 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 		Session			*session = nullptr;
 		DWORD			transferSize;
 
-		BOOL retval = GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
-		/*if (!retval) 
-		{
-			continue;
-		}*/
+		GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
+
 		if (session == nullptr) {
 			SLog(L"! socket data broken");
 			return 0;

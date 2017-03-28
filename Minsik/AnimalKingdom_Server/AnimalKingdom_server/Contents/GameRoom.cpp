@@ -106,6 +106,7 @@ BOOL GameRoom::setupGame()
 	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
 	{
 		(*p)->setCCT(cctManager->getController(i++));
+
 	}
 
 	return true;

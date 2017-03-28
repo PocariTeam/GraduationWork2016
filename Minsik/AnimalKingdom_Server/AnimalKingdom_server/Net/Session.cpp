@@ -109,37 +109,6 @@ void Session::onRecv(size_t recvSize)
 	// 다시 Recv()호출
 	this->recv();
 
-	//while (0 < recvSize) 
-	//{
-	//	//현재 처리하는 패킷이 없을 경우 recvBuf의 첫번째 바이트를 사이즈로 설정
-	//	if (0 == ioData->totalBytes_) {
-	//		// FIX: 항상 2바이트 이상 읽는다는 가정하에 짜여진 코드
-	//		HEADER* pHeader = (HEADER*)recvBuf;
-	//		ioData->totalBytes_ = pHeader->size;
-	//	}
-
-	//	// 패킷을 만들기 위해 필요한 남은 사이즈 = 
-	//	//	현재 받아야할 패킷사이즈 - 현재까지 저장한 패킷사이즈
-	//	UINT restSize = ioData->totalBytes_ - ioData->currentBytes_;
-
-	//	char *packetBuffer = ioData->packetBuffer_.data() + ioData->currentBytes_;
-
-	//	if (restSize <= recvSize)			// 패킷 조립
-	//	{
-	//		memcpy(packetBuffer, recvBuf, restSize);
-
-	//		PacketManager::getInstance().recvProcess(this, ioData->packetBuffer_.data());
-	//		
-	//		recvBuf += restSize;
-	//		recvSize -= restSize;
-	//	}
-	//	else								// 패킷 저장
-	//	{								
-	//		memcpy(packetBuffer, recvBuf, recvSize);
-	//		ioData->currentBytes_ += recvSize;
-	//		recvSize = 0;
-	//	}
-	//}
 }
 
 

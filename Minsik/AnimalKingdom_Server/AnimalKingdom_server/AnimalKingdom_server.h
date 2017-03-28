@@ -47,7 +47,10 @@
 #include <random>
 #include <typeinfo>    //typeinfo
 
+#include <map>
+
 #include <DirectXMath.h>
+using namespace std;
 using namespace DirectX;
 
 // TODO: 공용 매크로

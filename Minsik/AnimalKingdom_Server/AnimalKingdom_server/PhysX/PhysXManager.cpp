@@ -200,7 +200,7 @@ BOOL PhysXManager::SetupScene(UINT32 roomNum)
 
 				a->setGroup(CollGroup::COL_PLAYER);
 				SetCollisionGroup(a, CollGroup::COL_PLAYER);
-				auto cct = CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
+				CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
 				currentPlayer++;
 			}
 			else
