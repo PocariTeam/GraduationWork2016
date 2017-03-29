@@ -26,22 +26,27 @@ HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 	m_pGraphicDev = CGraphicDev::Create( CGraphicDev::MODE_WIN, hWnd, g_wWinsizeX, g_wWinsizeY );
 	if( nullptr == m_pGraphicDev ) return E_FAIL;
 
-	ID3D11Device*	pDevice = m_pGraphicDev->Get_Device();
+	m_pDevice = m_pGraphicDev->Get_Device();
+	m_pContext = m_pGraphicDev->Get_Context();
 
-	if( FAILED( CRenderTargetMgr::GetInstance()->Initialize( pDevice, m_pGraphicDev->Get_SwapChain(), g_wWinsizeX, g_wWinsizeY ) ) )
+	m_pRenderTargetMgr = CRenderTargetMgr::GetInstance();
+	m_pInputMgr = CInputMgr::GetInstance();
+	m_pRenderer = CRenderer::GetInstance();
+
+	if( FAILED( m_pRenderTargetMgr->Initialize( m_pDevice, m_pGraphicDev->Get_SwapChain(), g_wWinsizeX, g_wWinsizeY ) ) )
 		return E_FAIL;
-	CRenderTargetMgr::GetInstance()->SetRenderTargetView( m_pGraphicDev->Get_Context(), CRenderTargetMgr::RT_BACK, 1 );
+	m_pRenderTargetMgr->SetRenderTargetView( m_pContext, CRenderTargetMgr::RT_BACK, 1 );
 
-	if( FAILED( CInputMgr::GetInstance()->Initialize( hInst, hWnd ) ) )
+	if( FAILED( m_pInputMgr->Initialize( hInst, hWnd ) ) )
 		return E_FAIL;
 
 	if( FAILED( CThreadMgr::GetInstance()->Initialize( hWnd ) ) )
 		return E_FAIL;
 
-	if( FAILED( CRenderer::GetInstance()->Initialize( pDevice ) ) )
+	if( FAILED( m_pRenderer->Initialize( m_pDevice ) ) )
 		return E_FAIL;
 
-	if( FAILED( Ready_Logo( pDevice ) ) )
+	if( FAILED( Ready_Logo( m_pDevice ) ) )
 		return E_FAIL;
 	
 	if( FAILED( Change_Scene() ) )
@@ -68,7 +73,7 @@ HRESULT CMainFrm::Ready_Logo( ID3D11Device* pDevice )
 int CMainFrm::Update( const float& fTimeDelta )
 {
 	// 윈도우 비활성화시에는 키 체크하지 않겠다
-	if( ::GetActiveWindow() == m_hWnd )	CInputMgr::GetInstance()->Check_Input();
+	if( ::GetActiveWindow() == m_hWnd )	m_pInputMgr->Check_Input();
 
 	int iRetVal{ 0 };
 	
@@ -87,7 +92,6 @@ int CMainFrm::Update( const float& fTimeDelta )
 
 void CMainFrm::Render( void )
 {
-	
 	if( m_fAccTime >= 1.f )
 	{
 		wsprintf( m_szFPS, "Animal Kingdom - FPS : %d", m_dwCnt );
@@ -96,18 +100,20 @@ void CMainFrm::Render( void )
 		m_dwCnt = 0;
 	}
 
-	ID3D11DeviceContext* pContext = m_pGraphicDev->Get_Context();
+	m_pRenderTargetMgr->ClearRenderTargetView( m_pContext );
+	m_pRenderTargetMgr->ClearDepthStencilView( m_pContext );
 
-	CRenderTargetMgr::GetInstance()->ClearRenderTargetView( pContext );
-	CRenderTargetMgr::GetInstance()->ClearDepthStencilView( pContext );
-
-	m_pScene->Render( pContext );
+	m_pScene->Render( m_pContext );
 
 	m_pGraphicDev->EndScene();
 }
 
 DWORD CMainFrm::Release( void )
 {
+	m_pInputMgr = nullptr;
+	m_pRenderTargetMgr = nullptr;
+	m_pRenderer = nullptr;
+	
 	::Safe_Release( m_pScene );
 
 	CPhysics::DestroyInstance();
@@ -122,18 +128,19 @@ DWORD CMainFrm::Release( void )
 	CThreadMgr::DestroyInstance();
 	CInputMgr::DestroyInstance();
 	CNetworkMgr::DestroyInstance();
+
 	::Safe_Release( m_pGraphicDev );
 	m_hWnd = nullptr;
 
 	delete this;
+
 	return 0;
 }
 
 void CMainFrm::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY )
 {
-	CRenderTargetMgr::GetInstance()->ResizeRenderTarget( m_pGraphicDev->Get_Device(), m_pGraphicDev->Get_Context(), m_pGraphicDev->Get_SwapChain(), wSizeX, wSizeY );
-	CRenderTargetMgr::GetInstance()->SetRenderTargetView( m_pGraphicDev->Get_Context(), 0, 1 );
-
+	m_pRenderTargetMgr->ResizeRenderTarget( m_pDevice, m_pContext, m_pGraphicDev->Get_SwapChain(), wSizeX, wSizeY );
+	m_pRenderTargetMgr->SetRenderTargetView( m_pContext, 0, 1 );
 }
 
 CMainFrm* CMainFrm::Create( const HINSTANCE hInst, const HWND hWnd )
@@ -153,7 +160,7 @@ HRESULT CMainFrm::Change_Scene( void )
 {
 	::Safe_Release( m_pScene );
 
-	m_pScene = CScene::Create( m_hWnd, m_pGraphicDev->Get_Device(), m_bySceneNum );
+	m_pScene = CScene::Create( m_hWnd, m_pDevice, m_bySceneNum );
 
 	if( nullptr == m_pScene )
 		return E_FAIL;
@@ -164,32 +171,37 @@ HRESULT CMainFrm::Change_Scene( void )
 void CMainFrm::Check_Key( void )
 {
 	/* Wireframe */
-	if( ( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F1 ) & 0x80 ) && m_bOverlapped )
+	if( ( m_pInputMgr->Get_KeyboardState( DIK_F1 ) & 0x80 ) && m_bOverlapped )
 	{
-		CRenderer::GetInstance()->SetWireframe();
+		m_pRenderer->SetWireframe();
 		m_bOverlapped = false;
 	}
 
 	/* Debug RenderTarget */
-	else if( ( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F2 ) & 0x80 ) && m_bOverlapped )
+	else if( ( m_pInputMgr->Get_KeyboardState( DIK_F2 ) & 0x80 ) && m_bOverlapped )
 	{
-		CRenderer::GetInstance()->SetRenderTargetDebug();
+		m_pRenderer->SetRenderTargetDebug();
 		m_bOverlapped = false;
 	}
 
-	else if( !( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F1 ) & 0x80 ) 
-		&& !( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F2 ) & 0x80 ) )
+	else if( !( m_pInputMgr->Get_KeyboardState( DIK_F1 ) & 0x80 )
+		&& !( m_pInputMgr->Get_KeyboardState( DIK_F2 ) & 0x80 ) )
 		m_bOverlapped = true;
 }
 
 CMainFrm::CMainFrm()
 	: m_pGraphicDev( nullptr )
+	, m_pDevice( nullptr )
+	, m_pContext( nullptr )
 	, m_pScene( nullptr )
 	, m_bySceneNum( CScene::SCENE_LOGO )
 	, m_dwCnt( 0 )
 	, m_dwFrameCnt( 0 )
 	, m_fAccTime( 0.f )
 	, m_bOverlapped( true )
+	, m_pInputMgr( nullptr )
+	, m_pRenderTargetMgr( nullptr )
+	, m_pRenderer( nullptr )
 {
 	
 	ZeroMemory( m_szFPS, sizeof( char ) * MAX_PATH );

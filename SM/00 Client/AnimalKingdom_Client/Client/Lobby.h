@@ -7,8 +7,8 @@
 #include "Define.h"
 
 class CButton_UI;
-class CWindow_UI;
-class CShader;
+class CInputMgr;
+class CRenderer;
 class CLobby
 	: public CScene
 {
@@ -40,15 +40,18 @@ private:
 public:
 	static	CScene*	Create( HWND hWnd, ID3D11Device* pDevice );
 private:
+	/* Room */
 	RoomInfo*		m_pRoomInfo;
-	CWindow_UI*		m_pWndUI;
-	CButton_UI**	m_dpBtns;
-	/* Check Key */
-	bool			m_bOverlapped;
 	UINT			m_dwMaxPageCnt;
 	UINT			m_dwCurrentPage;
 	UINT			m_dwMaxRoomCnt;
-
+	/* Button */
+	CButton_UI**	m_dpBtns;
+	/* Check Key */
+	bool			m_bOverlapped;
+	/* Singleton */
+	CRenderer*		m_pRenderer;
+	CInputMgr*		m_pInputMgr;
 };
 
 

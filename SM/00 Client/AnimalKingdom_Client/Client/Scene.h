@@ -22,6 +22,7 @@ public:
 public:
 	virtual void NotifyRoomInfo( S_RoomList* pRoomlistArray ) {}
 	virtual void NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt ) {}
+	virtual void NotifyGameStart( void ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 protected:
@@ -32,7 +33,6 @@ protected:
 	CCamera*			 m_pCamera;
 	using SHADERLIST = list<CShader*>;
 	SHADERLIST		m_listShader[ RENDER_END ];
-
 };
 
 #endif

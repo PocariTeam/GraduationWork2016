@@ -10,6 +10,9 @@
 class CShader;
 class CButton_UI;
 class CNormal_UI;
+class CRenderer;
+class CNetworkMgr;
+class CInputMgr;
 class CRoom
 	: public CScene
 {
@@ -33,14 +36,22 @@ public:
 	void	NotifyGameStart( void ) { m_bStart = true; }
 	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 private:
+	/* UI */
 	CButton_UI**	m_dpBtns;
 	CNormal_UI**	m_dpReady;
-	bool			m_bStart;
+	/* Player Information */
 	PlayerInfo*		m_pPlayerInfo;
 	UINT			m_dwPlayerCnt;
-
+	/* Game Start */
+	bool			m_bStart;
 	/* Check Key */
 	bool			m_bOverlapped;
+	/* Select */
+	int				m_iSelectCharacter;
+	/* Singleton */
+	CRenderer*		m_pRenderer;
+	CInputMgr*		m_pInputMgr;
+	CNetworkMgr*	m_pNetworkMgr;
 };
 
 

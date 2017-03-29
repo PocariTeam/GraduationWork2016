@@ -1,12 +1,10 @@
 #include "stdafx.h"
 #include "Button_UI.h"
-#include "Window_UI.h"
 #include "Value.h"
 #include "Texture.h"
 
 CButton_UI::CButton_UI()
-	: m_pOwner( nullptr )
-	, m_eState( BTN_NORMAL )
+	: m_eState( BTN_NORMAL )
 {
 }
 
@@ -15,21 +13,20 @@ CButton_UI::~CButton_UI()
 {
 }
 
-HRESULT CButton_UI::Initialize( CWindow_UI* pOwner, CTexture* pTexture, const XMFLOAT4& vOffset )
+HRESULT CButton_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize )
 {
-	m_pOwner = pOwner;
 	m_pTexture = pTexture;
-	m_vPosSize_Dest = vOffset;
-	m_vPosSize_Src = XMFLOAT4( vOffset.x + vOffset.z * 0.5f, vOffset.y - vOffset.w * 0.5f, 0.f, 0.f );
+	m_vPosSize_Dest = vPosSize;
+	m_vPosSize_Src = XMFLOAT4( vPosSize.x + vPosSize.z * 0.5f, vPosSize.y - vPosSize.w * 0.5f, 0.f, 0.f );
 
 	return S_OK;
 }
 
-CButton_UI* CButton_UI::Create( CWindow_UI* pOwner, CTexture* pTexture, const XMFLOAT4& vOffset )
+CButton_UI* CButton_UI::Create( CTexture* pTexture, const XMFLOAT4& vPosSize )
 {
 	CButton_UI*	pButton_UI = new CButton_UI;
 
-	if( FAILED( pButton_UI->Initialize( pOwner, pTexture, vOffset ) ) )
+	if( FAILED( pButton_UI->Initialize( pTexture, vPosSize ) ) )
 	{
 		pButton_UI->Release();
 		pButton_UI = nullptr;
@@ -41,6 +38,7 @@ CButton_UI* CButton_UI::Create( CWindow_UI* pOwner, CTexture* pTexture, const XM
 void CButton_UI::Render( ID3D11DeviceContext* pContext )
 {
 	if( m_eState == BTN_HIDE ) return;
+
 	if( m_eState == BTN_FIX )
 		m_pTexture->Render( pContext, BTN_ACTIVE );
 	else
@@ -84,6 +82,7 @@ bool CButton_UI::isCollide( POINT& ptMouse, bool bClick )
 	if( m_eState == BTN_DISABLE
 		|| m_eState == BTN_HIDE
 		|| m_eState == BTN_FIX ) return false;
+
 	RECT	rcCollision;
 
 	rcCollision.top = long( ( -1.f * m_mtxPosSize._21 + 1.f ) * ( float )g_wWinsizeY * 0.5f );

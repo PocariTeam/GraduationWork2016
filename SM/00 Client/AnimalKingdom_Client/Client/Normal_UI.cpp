@@ -2,9 +2,9 @@
 #include "Normal_UI.h"
 #include "Texture.h"
 
-
 CNormal_UI::CNormal_UI()
-	:m_bHide( false )
+	: m_bHide( false )
+	, m_fSpeed( 0.f )
 {
 }
 
@@ -13,20 +13,21 @@ CNormal_UI::~CNormal_UI()
 {
 }
 
-HRESULT CNormal_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vOffset )
+HRESULT CNormal_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, float fSpeed )
 {
 	m_pTexture = pTexture;
-	m_vPosSize_Dest = vOffset;
-	m_vPosSize_Src = XMFLOAT4( vOffset.x + vOffset.z * 0.5f, vOffset.y - vOffset.w * 0.5f, 0.f, 0.f );
+	m_vPosSize_Dest = vPosSize;
+	m_fSpeed = fSpeed;
+	m_vPosSize_Src = XMFLOAT4( vPosSize.x + vPosSize.z * 0.5f, vPosSize.y - vPosSize.w * 0.5f, 0.f, 0.f );
 
 	return S_OK;
 }
 
-CNormal_UI* CNormal_UI::Create( CTexture* pTexture, const XMFLOAT4& vOffset )
+CNormal_UI* CNormal_UI::Create( CTexture* pTexture, const XMFLOAT4& vPosSize, float fSpeed )
 {
 	CNormal_UI*	pNormal_UI = new CNormal_UI;
 
-	if( FAILED( pNormal_UI->Initialize( pTexture, vOffset ) ) )
+	if( FAILED( pNormal_UI->Initialize( pTexture, vPosSize, fSpeed ) ) )
 	{
 		pNormal_UI->Release();
 		pNormal_UI = nullptr;
@@ -50,7 +51,7 @@ int CNormal_UI::Update( const float& fTimeDelta )
 	if( m_fLerpTime == 1.f )
 		return 0;
 
-	m_fLerpTime += 2.f * fTimeDelta;
+	m_fLerpTime += m_fSpeed * fTimeDelta;
 	if( m_fLerpTime > 1.f )	m_fLerpTime = 1.f;
 
 	XMVECTOR vLerp = DirectX::XMVectorLerp( XMLoadFloat4( &m_vPosSize_Src ), XMLoadFloat4( &m_vPosSize_Dest ), m_fLerpTime );

@@ -261,7 +261,6 @@
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="Wallpaper.h" />
-    <ClInclude Include="Window_UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Asc2Bin.cpp">
@@ -418,7 +417,6 @@
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
     <ClCompile Include="AnimationSet.cpp" />
-    <ClCompile Include="Window_UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

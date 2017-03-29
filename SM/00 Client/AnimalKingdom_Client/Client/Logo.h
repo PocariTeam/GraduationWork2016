@@ -8,6 +8,7 @@
 class CMesh;
 class CTexture;
 class CShader;
+class CThreadMgr;
 class CLogo
 	: public CScene
 {
@@ -24,6 +25,7 @@ private:
 	CTexture*	m_pTexture;
 	CMesh*		m_pMesh;
 	CShader*	m_pShader;
+	CThreadMgr* m_pThreadMgr;
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 };

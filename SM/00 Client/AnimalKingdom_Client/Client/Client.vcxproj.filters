@@ -223,20 +223,17 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI">
       <UniqueIdentifier>{7584729b-f50f-4688-9af0-78002d713a6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\01 Button_UI">
-      <UniqueIdentifier>{08bacee4-531c-46af-bf41-df72a4e9a425}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\00 Window_UI">
-      <UniqueIdentifier>{347bd7fd-7871-4473-833a-6cef1f46a76d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\02 3D_UI">
-      <UniqueIdentifier>{93874465-e14b-41b5-a6fe-8205cc3462cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\03 Normal_UI">
-      <UniqueIdentifier>{09981906-a8a2-414a-a701-c9a737d08d45}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\01 Ortho">
       <UniqueIdentifier>{dcb80692-4c0d-446c-8846-8de6a49d2bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\00 Button_UI">
+      <UniqueIdentifier>{08bacee4-531c-46af-bf41-df72a4e9a425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\01 3D_UI">
+      <UniqueIdentifier>{93874465-e14b-41b5-a6fe-8205cc3462cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\02 Normal_UI">
+      <UniqueIdentifier>{09981906-a8a2-414a-a701-c9a737d08d45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -519,17 +516,14 @@
     <ClInclude Include="Room.h">
       <Filter>소스 파일\00 Client\02 Scene\02 Room</Filter>
     </ClInclude>
-    <ClInclude Include="Window_UI.h">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\00 Window_UI</Filter>
-    </ClInclude>
     <ClInclude Include="Button_UI.h">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 Button_UI</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\00 Button_UI</Filter>
     </ClInclude>
     <ClInclude Include="Normal_UI.h">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\03 Normal_UI</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\02 Normal_UI</Filter>
     </ClInclude>
     <ClInclude Include="ThreeD_UI.h">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\02 3D_UI</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 3D_UI</Filter>
     </ClInclude>
     <ClInclude Include="OrthoCamera.h">
       <Filter>헤더 파일</Filter>
@@ -764,17 +758,14 @@
     <ClCompile Include="Room.cpp">
       <Filter>소스 파일\00 Client\02 Scene\02 Room</Filter>
     </ClCompile>
-    <ClCompile Include="Window_UI.cpp">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\00 Window_UI</Filter>
-    </ClCompile>
     <ClCompile Include="Button_UI.cpp">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 Button_UI</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\00 Button_UI</Filter>
     </ClCompile>
     <ClCompile Include="Normal_UI.cpp">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\03 Normal_UI</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\02 Normal_UI</Filter>
     </ClCompile>
     <ClCompile Include="ThreeD_UI.cpp">
-      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\02 3D_UI</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 3D_UI</Filter>
     </ClCompile>
     <ClCompile Include="OrthoCamera.cpp">
       <Filter>소스 파일</Filter>

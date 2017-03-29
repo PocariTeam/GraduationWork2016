@@ -5,7 +5,6 @@
 
 #include "UserInterface.h"
 
-class CWindow_UI;
 class CButton_UI
 	: public CUserInterface
 {
@@ -16,9 +15,9 @@ private:
 	explicit CButton_UI();
 	virtual ~CButton_UI();
 private:
-	HRESULT		Initialize( CWindow_UI* pOwner, CTexture* pTexture, const XMFLOAT4& vOffset );
+	HRESULT		Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize );
 public:
-	static CButton_UI*	Create( CWindow_UI* pOwner, CTexture* pTexture, const XMFLOAT4& vOffset );
+	static CButton_UI*	Create( CTexture* pTexture, const XMFLOAT4& vPosSize );
 public:
 	void Render( ID3D11DeviceContext* pContext );
 	int Update( const float& fTimeDelta );
@@ -30,7 +29,6 @@ public:
 	void Disable() { m_eState = BTN_DISABLE; }
 	void Fix() { m_eState = BTN_FIX; }
 private:
-	CWindow_UI*		m_pOwner;
 	BTN_STATE		m_eState;
 };
 

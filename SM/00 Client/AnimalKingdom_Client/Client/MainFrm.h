@@ -3,10 +3,11 @@
 #ifndef _MAINFRAME_H_
 #define _MAINFRAME_H_
 
-// #include "Define.h"
-
 class CGraphicDev;
 class CScene;
+class CRenderer;
+class CInputMgr;
+class CRenderTargetMgr;
 /* Client MainFrame */
 class CMainFrm
 {
@@ -31,22 +32,25 @@ private:
 	HRESULT	Change_Scene( void );
 	void	Check_Key( void );
 private:
-	CGraphicDev*	m_pGraphicDev;
+	/* Device */
+	CGraphicDev*			m_pGraphicDev;
+	ID3D11Device*			m_pDevice;
+	ID3D11DeviceContext*	m_pContext;
 	HWND			m_hWnd;
-
 	/* Scene */
 	CScene*				m_pScene;
 	BYTE				m_bySceneNum;
-
 	/* For FPS */
 	DWORD		m_dwCnt;
 	char		m_szFPS[ MAX_PATH ];
 	DWORD		m_dwFrameCnt;
 	float		m_fAccTime;
-
 	/* Check Key */
 	bool		m_bOverlapped;
-
+	/* Singleton */
+	CInputMgr*			m_pInputMgr;
+	CRenderTargetMgr*	m_pRenderTargetMgr;
+	CRenderer*			m_pRenderer;
 private:
 	CMainFrm();
 	~CMainFrm();

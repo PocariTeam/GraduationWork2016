@@ -20,7 +20,7 @@ HRESULT CNetworkMgr::Initialize()
 	m_bMaster = false;
 
 	WSADATA	wsa;
-	
+
 
 	if( 0 != WSAStartup( MAKEWORD( 2, 2 ), &wsa ) )
 		return E_FAIL;
@@ -180,7 +180,7 @@ void CNetworkMgr::processPacket()
 
 		for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 		{
-			m_tPlayerInfo[i] = packet->playerInfo[ i ];
+			m_tPlayerInfo[ i ] = packet->playerInfo[ i ];
 			printf( " id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", ( int )m_tPlayerInfo[ i ].id, m_tPlayerInfo[ i ].character, m_tPlayerInfo[ i ].isReady, m_tPlayerInfo[ i ].isMaster );
 			if( m_tPlayerInfo[ i ].id == m_nPlayerID )
 			{
@@ -202,12 +202,12 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		S_StartGame* packet = (S_StartGame* )m_saveBuf;
+		S_StartGame* packet = ( S_StartGame* )m_saveBuf;
 		printf( "========================================= \n" );
 		printf( "\t\t [게임시작] \t\t \n" );
-		printf("시작시간: %d \n", packet->startTick);
+		printf( "시작시간: %d \n", ( int )packet->startTick );
 		printf( "========================================= \n" );
-		( ( CRoom* )m_pScene )->NotifyGameStart();
+		m_pScene->NotifyGameStart();
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:
@@ -217,12 +217,12 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_Move:
 	{
-		S_Move* packet = (S_Move*)m_saveBuf;
-		if (m_nPlayerID == packet->id)
+		S_Move* packet = ( S_Move* )m_saveBuf;
+		if( m_nPlayerID == packet->id )
 		{
 			break;
 		}
-		((CJungle*)m_pScene)->Move(packet->id, packet->tick, XMFLOAT3(packet->vDir.x, packet->vDir.y, packet->vDir.z));
+		( ( CJungle* )m_pScene )->Move( packet->id, packet->tick, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ) );
 		break;
 	}
 	}
@@ -237,8 +237,8 @@ void CNetworkMgr::sendBufData()
 
 void CNetworkMgr::sendRequestRoomList()
 {
-	HEADER *pReqRoom = (HEADER*)m_sendBuf;
-	pReqRoom->size = sizeof(HEADER);
+	HEADER *pReqRoom = ( HEADER* )m_sendBuf;
+	pReqRoom->size = sizeof( HEADER );
 	pReqRoom->packetID = PAK_ID::PAK_REQ_RoomList;
 
 	sendBufData();
@@ -283,16 +283,16 @@ void CNetworkMgr::sendStartRoom()
 	sendBufData();
 }
 
-void CNetworkMgr::sendMoveCharacter(NxVec3 dir)
+void CNetworkMgr::sendMoveCharacter( NxVec3 dir )
 {
-	C_Move *pMove = (C_Move*)m_sendBuf;
+	C_Move *pMove = ( C_Move* )m_sendBuf;
 	pMove->header.packetID = PAK_ID::PAK_REQ_Move;
-	pMove->header.size = sizeof(C_Move);
-	pMove->tick = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	pMove->header.size = sizeof( C_Move );
+	pMove->tick = chrono::system_clock::to_time_t( chrono::system_clock::now() );
 	pMove->vDir.x = dir.x;
 	pMove->vDir.y = dir.y;
 	pMove->vDir.z = dir.z;
-		
+
 	sendBufData();
 }
 
