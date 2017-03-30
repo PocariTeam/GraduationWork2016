@@ -20,7 +20,7 @@ public:
 protected:
 	void		CreateConstantBuffer( ID3D11Device* pDevice );
 	void		SetConstantBuffer( ID3D11DeviceContext* pContext );
-	void	CalculateViewMatrix( XMFLOAT4X4* pOut, const XMFLOAT3& vEye, const XMFLOAT3& vAt );
+	void		CalculateViewMatrix( XMFLOAT4X4* pOut, const XMFLOAT3& vEye, const XMFLOAT3& vAt );
 protected:
 	ID3D11Buffer*	m_pConstantBufferCamera;
 

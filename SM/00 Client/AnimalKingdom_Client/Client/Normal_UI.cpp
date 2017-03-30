@@ -3,11 +3,11 @@
 #include "Texture.h"
 
 CNormal_UI::CNormal_UI()
-	: m_bHide( false )
+	: CUserInterface()
+	, m_bHide( false )
 	, m_fSpeed( 0.f )
 {
 }
-
 
 CNormal_UI::~CNormal_UI()
 {

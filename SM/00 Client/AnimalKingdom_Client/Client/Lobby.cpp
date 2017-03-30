@@ -48,19 +48,19 @@ HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// Mesh
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 
-	CNormal_UI* pWnd_UI = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Wnd" ), XMFLOAT4( -0.75f, 0.9f, 1.5f, 2.f ), 4.f );
+	CNormal_UI* pWnd_UI = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Wnd" ), XMFLOAT4( -0.63f, 0.9f, 1.26f, 2.24f ), 4.f );
 	pShader->Add_RenderObject( pWnd_UI );
 
 	m_dpBtns = new CButton_UI*[ BTN_END ];
 
 	for( int i = 0; i < 4; ++i )
 		for( int j = 0; j < 2; ++j )
-			pShader->Add_RenderObject( m_dpBtns[ i * 2 + j ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_L_Room" ), XMFLOAT4( -0.3f + float( j ) * 0.3f, -0.1f - float( i ) * 0.15f, 0.25f, 0.12f ) ) );
+			pShader->Add_RenderObject( m_dpBtns[ i * 2 + j ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_L_Room" ), XMFLOAT4( -0.3f + float( j ) * 0.3f, -0.2f - float( i ) * 0.17f, 0.28f, 0.16f ) ) );
 
-	pShader->Add_RenderObject( m_dpBtns[ BTN_REFRESH ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Refresh" ), XMFLOAT4( -0.35f, 0.25f, 0.14f, 0.17f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_PREVIOUS ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Previous" ), XMFLOAT4( -0.2f, 0.25f, 0.14f, 0.17f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_NEXT ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Next" ), XMFLOAT4( -0.05f, 0.25f, 0.14f, 0.17f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_EXIT ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Exit" ), XMFLOAT4( 0.1f, 0.25f, 0.23f, 0.17f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_REFRESH ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Refresh" ), XMFLOAT4( -0.25f, 0.18f, 0.09f, 0.16f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_PREVIOUS ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Previous" ), XMFLOAT4( -0.15f, 0.18f, 0.09f, 0.16f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_NEXT ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Next" ), XMFLOAT4( -0.05f, 0.18f, 0.09f, 0.16f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_EXIT ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Exit" ), XMFLOAT4( 0.05f, 0.18f, 0.18f, 0.16f ) ) );
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	m_pRenderer->Copy_RenderGroup( m_listShader );

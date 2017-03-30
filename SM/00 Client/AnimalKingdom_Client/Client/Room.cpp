@@ -12,6 +12,10 @@
 #include "MeshMgr.h"
 #include "Button_UI.h"
 #include "Normal_UI.h"
+#include "OrthoCamera.h"
+#include "AnimateMeshMgr.h"
+#include "AnimationMgr.h"
+#include "ThreeD_UI.h"
 
 CRoom::CRoom()
 	: CScene()
@@ -41,6 +45,8 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_pInputMgr = CInputMgr::GetInstance();
 	CTextureMgr*	pTextureMgr = CTextureMgr::GetInstance();
 
+	m_pCamera = COrthoCamera::Create( hWnd, pDevice );
+
 	// Background
 	CShader* pShader = CShaderMgr::GetInstance()->Clone( "Shader_Background" );
 	CTexture* pTexture = pTextureMgr->Clone( "Texture_Room" );
@@ -66,6 +72,21 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( CNormal_UI::Create( pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( 0.55f, 1.f, 0.45f, 0.8f ) ) );
 	pShader->Add_RenderObject( CNormal_UI::Create( pTextureMgr->Clone( "Texture_Preview_Jungle" ), XMFLOAT4( -0.2f, 0.2f, 1.f, 0.55f ) ) );
 
+	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	// 3D_UI
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_3D_UI" );
+	
+	pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" );
+	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" );
+	CAnimator* pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM );
+	
+	pShader->Add_RenderObject( CThreeD_UI::Create( pMesh, pTexture, pAnimator, XMFLOAT4( -0.73f, 0.1f, 0.0415f, 0.072f ) ) );
+	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	/* Ready */
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
+
 	pShader->Add_RenderObject( m_dpReady[ 0 ] = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -0.95f, -0.2f, 0.5f, 0.3f ) ) );
 	pShader->Add_RenderObject( m_dpReady[ 1 ] = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -0.3f, 0.45f, 0.35f, 0.2f ) ) );
 	pShader->Add_RenderObject( m_dpReady[ 2 ] = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.15f, 0.45f, 0.35f, 0.2f ) ) );
@@ -75,7 +96,6 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 		m_dpReady[ i ]->Hide();
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
-
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
 
 	return S_OK;

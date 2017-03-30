@@ -526,7 +526,7 @@
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 3D_UI</Filter>
     </ClInclude>
     <ClInclude Include="OrthoCamera.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\01 Ortho</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -768,7 +768,7 @@
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\01 3D_UI</Filter>
     </ClCompile>
     <ClCompile Include="OrthoCamera.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\01 Ortho</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -810,6 +810,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\UI.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\3D_UI.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

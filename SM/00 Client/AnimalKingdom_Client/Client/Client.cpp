@@ -18,8 +18,8 @@ WCHAR szWindowClass[ MAX_LOADSTRING ];            // 기본 창 클래스 이름입니다.
 
 /* Client MainFrame Object */
 CMainFrm*	g_pMainFrm{ nullptr };
-WORD g_wWinsizeX = 1024;
-WORD g_wWinsizeY = 768;
+WORD g_wWinsizeX = 1280;
+WORD g_wWinsizeY = 720;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass( HINSTANCE hInstance );

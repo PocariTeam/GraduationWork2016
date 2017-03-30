@@ -190,7 +190,7 @@ void CAnimator::Update( CGameObject* pOwner, const float& fTimeDelta )
 	if( m_pCurrentAnimationSet )
 	{
 		m_pCurrentAnimationSet->Update( fTimeDelta );
-		ConnectActorShape( pOwner );
+		if( pOwner ) ConnectActorShape( pOwner );
 	}
 	// if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->Update( fTimeDelta );
 }

@@ -25,5 +25,5 @@ VS_OUT VS( uint iVertexNum : SV_VertexID )
 
 float4 PS( VS_OUT In ) : SV_Target
 {
-	return g_Texture.Sample( g_SamplerState, In.vUV );
+	return float4( g_Texture.Sample( g_SamplerState, In.vUV ).xyz, 1.f );
 }
