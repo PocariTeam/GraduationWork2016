@@ -25,7 +25,11 @@ public:
 	void SetAnimator( CAnimator* pAnimator );
 	XMFLOAT4X4 GetWorld();
 private:
+	bool			m_bHide;
 	CAnimator*		m_pAnimator;
+public:
+	void Hide() { m_bHide = true; }
+	void Show() { m_bHide = false; }
 };
 
 #endif // ThreeD_UI_h__

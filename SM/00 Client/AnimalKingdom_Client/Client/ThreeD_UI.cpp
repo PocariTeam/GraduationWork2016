@@ -3,10 +3,12 @@
 #include "Texture.h"
 #include "Mesh.h"
 #include "Animator.h"
+#include "RenderState.h"
 
 CThreeD_UI::CThreeD_UI()
 	: CUserInterface()
 	, m_pAnimator( nullptr )
+	, m_bHide( false )
 {
 }
 
@@ -41,10 +43,19 @@ CThreeD_UI* CThreeD_UI::Create( CMesh* pMesh, CTexture* pTexture, CAnimator* pAn
 
 void CThreeD_UI::Render( ID3D11DeviceContext* pContext )
 {
-	if( nullptr == m_pTexture ) return;
-	m_pTexture->Render( pContext );
-	m_pAnimator->Render( pContext );
-	m_pMesh->Render( pContext );
+	if( m_bHide ) return;
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
+
+	if( nullptr != m_pTexture )
+	{
+		m_pTexture->Render( pContext );
+		m_pAnimator->Render( pContext );
+		m_pMesh->Render( pContext );
+	}
+	
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
 }
 
 int CThreeD_UI::Update( const float& fTimeDelta )

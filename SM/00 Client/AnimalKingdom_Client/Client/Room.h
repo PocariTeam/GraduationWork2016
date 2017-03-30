@@ -10,6 +10,7 @@
 class CShader;
 class CButton_UI;
 class CNormal_UI;
+class CThreeD_UI;
 class CRenderer;
 class CNetworkMgr;
 class CInputMgr;
@@ -39,6 +40,7 @@ private:
 	/* UI */
 	CButton_UI**	m_dpBtns;
 	CNormal_UI**	m_dpReady;
+	CThreeD_UI**	m_dpThreeD;
 	/* Player Information */
 	PlayerInfo*		m_pPlayerInfo;
 	UINT			m_dwPlayerCnt;
@@ -46,8 +48,6 @@ private:
 	bool			m_bStart;
 	/* Check Key */
 	bool			m_bOverlapped;
-	/* Select */
-	int				m_iSelectCharacter;
 	/* Singleton */
 	CRenderer*		m_pRenderer;
 	CInputMgr*		m_pInputMgr;

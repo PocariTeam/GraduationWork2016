@@ -24,11 +24,11 @@ CRoom::CRoom()
 	, m_pPlayerInfo( nullptr )
 	, m_dpReady( nullptr )
 	, m_dpBtns( nullptr )
+	, m_dpThreeD( nullptr )
 	, m_dwPlayerCnt( 0 )
 	, m_pInputMgr( nullptr )
 	, m_pNetworkMgr( nullptr )
 	, m_pRenderer( nullptr )
-	, m_iSelectCharacter( -1 )
 {
 }
 
@@ -59,6 +59,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	m_dpBtns = new CButton_UI*[ BTN_END ];
 	m_dpReady = new CNormal_UI*[ PLAYER_CAPACITY ];
+	m_dpThreeD = new CThreeD_UI*[ PLAYER_CAPACITY ];
 
 	pShader->Add_RenderObject( m_dpBtns[ BTN_READY ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Ready" ), XMFLOAT4( -1.f, -0.5f, 0.6f, 0.3f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_BACK ] = CButton_UI::Create( pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -1.f, -0.8f, 0.6f, 0.2f ) ) );
@@ -77,11 +78,11 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// 3D_UI
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_3D_UI" );
 	
-	pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" );
-	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" );
-	CAnimator* pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM );
-	
-	pShader->Add_RenderObject( CThreeD_UI::Create( pMesh, pTexture, pAnimator, XMFLOAT4( -0.73f, 0.1f, 0.0415f, 0.072f ) ) );
+	pShader->Add_RenderObject( m_dpThreeD[ 0 ] = CThreeD_UI::Create( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ), CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ), CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ), XMFLOAT4( -0.73f, 0.1f, 0.0415f, 0.072f ) ) );
+	pShader->Add_RenderObject( m_dpThreeD[ 1 ] = CThreeD_UI::Create( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ), CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ), CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ), XMFLOAT4( -0.13f, 0.5f, 0.0103f, 0.018f ) ) );
+	pShader->Add_RenderObject( m_dpThreeD[ 2 ] = CThreeD_UI::Create( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ), CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ), CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ), XMFLOAT4( 0.33f, 0.5f, 0.0103f, 0.018f ) ) );
+	pShader->Add_RenderObject( m_dpThreeD[ 3 ] = CThreeD_UI::Create( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ), CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ), CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ), XMFLOAT4( 0.78f, 0.5f, 0.0103f, 0.018f ) ) );
+
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	/* Ready */
@@ -92,8 +93,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( m_dpReady[ 2 ] = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.15f, 0.45f, 0.35f, 0.2f ) ) );
 	pShader->Add_RenderObject( m_dpReady[ 3 ] = CNormal_UI::Create( pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.6f, 0.45f, 0.35f, 0.2f ) ) );
 
-	for( int i = 0; i < PLAYER_CAPACITY; ++i )
-		m_dpReady[ i ]->Hide();
+	m_dpBtns[ BTN_CHAMELEON ]->Fix();
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
@@ -120,6 +120,9 @@ DWORD CRoom::Release( void )
 
 	delete[] m_dpReady;
 	m_dpReady = nullptr;
+
+	delete[] m_dpThreeD;
+	m_dpThreeD = nullptr;
 
 	m_pRenderer = nullptr;
 	m_pInputMgr = nullptr;
@@ -154,9 +157,9 @@ int CRoom::Check_Key( void )
 			switch( i )
 			{
 			case BTN_READY:
-				if( m_pNetworkMgr->isMaster() && -1 != m_iSelectCharacter )
+				if( m_pNetworkMgr->isMaster()  )
 					m_pNetworkMgr->sendStartRoom();
-				else if( -1 != m_iSelectCharacter )
+				else
 					m_pNetworkMgr->sendReadyRoom();
 				break;
 			case BTN_BACK:
@@ -166,13 +169,17 @@ int CRoom::Check_Key( void )
 				m_pNetworkMgr->sendSelectCharacter( CHAMEL );
 				m_dpBtns[ BTN_MONKEY ]->Normal();
 				m_dpBtns[ BTN_CHAMELEON ]->Fix();
-				m_iSelectCharacter = CHARACTER_CHM;
+				m_dpThreeD[ 0 ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ) );
+				m_dpThreeD[ 0 ]->SetMesh( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ) );
+				m_dpThreeD[ 0 ]->SetAnimator( CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ) );
 				break;
 			case BTN_MONKEY:
 				m_pNetworkMgr->sendSelectCharacter( CHAMEL );
 				m_dpBtns[ BTN_CHAMELEON ]->Normal();
 				m_dpBtns[ BTN_MONKEY ]->Fix();
-				m_iSelectCharacter = CHARACTER_CHM;
+				m_dpThreeD[ 0 ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ) );
+				m_dpThreeD[ 0 ]->SetMesh( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ) );
+				m_dpThreeD[ 0 ]->SetAnimator( CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ) );
 				break;
 			case BTN_MAP_NEXT:
 			case BTN_MAP_PREVIOUS:
@@ -199,7 +206,10 @@ CScene* CRoom::Create( HWND hWnd, ID3D11Device* pDevice )
 void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 {
 	for( int i = 0; i < PLAYER_CAPACITY; ++i )
+	{
 		m_dpReady[ i ]->Hide();
+		m_dpThreeD[ i ]->Hide();
+	}
 
 	m_dwPlayerCnt = dwPlayerCnt;
 	m_pPlayerInfo = pPlayerInfo;
@@ -219,7 +229,24 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 	{
-		m_dpReady[ i ]->Hide();
+		if( 0 < i )
+		{
+			switch( pTempArray[ i ].character )
+			{
+			case CHARACTER_CHM:
+				m_dpThreeD[ i ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ) );
+				m_dpThreeD[ i ]->SetMesh( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ) );
+				m_dpThreeD[ i ]->SetAnimator( CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ) );
+				break;
+			case CHARACTER_MON:
+				m_dpThreeD[ i ]->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" ) );
+				m_dpThreeD[ i ]->SetMesh( CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" ) );
+				m_dpThreeD[ i ]->SetAnimator( CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM ) );
+				break;
+			}
+		}
+
+		m_dpThreeD[ i ]->Show();
 
 		if( pTempArray[ i ].isMaster )
 		{

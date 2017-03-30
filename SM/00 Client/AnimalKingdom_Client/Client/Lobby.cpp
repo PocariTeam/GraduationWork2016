@@ -109,7 +109,8 @@ void CLobby::NotifyRoomInfo( S_RoomList* pRoomlistPacket )
 	{
 		if( i < ROOM_PRESENT_CNT )
 		{
-			if( m_pRoomInfo[ i ].playing || PLAYER_CAPACITY == m_pRoomInfo[ i ].playerCount ) m_dpBtns[ i ]->Disable();
+			if( TRUE == m_pRoomInfo[ i ].playing || PLAYER_CAPACITY == m_pRoomInfo[ i ].playerCount ) m_dpBtns[ i ]->Disable();
+			else	m_dpBtns[ i ]->Normal();
 		}
 		else
 			m_dpBtns[ i ]->Hide();
@@ -173,7 +174,8 @@ void CLobby::Change_Page( void )
 	{
 		if( i < ( signed )m_dwMaxRoomCnt )
 		{
-			if( m_pRoomInfo[ i ].playing || PLAYER_CAPACITY == m_pRoomInfo[ i ].playerCount ) m_dpBtns[ i ]->Disable();
+			if( TRUE == m_pRoomInfo[ i ].playing || PLAYER_CAPACITY == m_pRoomInfo[ i ].playerCount ) m_dpBtns[ i ]->Disable();
+			else	m_dpBtns[ i ]->Normal();
 		}
 
 		else m_dpBtns[ i ]->Hide();
