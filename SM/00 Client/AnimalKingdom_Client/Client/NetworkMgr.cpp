@@ -12,6 +12,10 @@ HRESULT CNetworkMgr::Initialize()
 	ZeroMemory( m_sendBuf, sizeof( m_sendBuf ) );
 	ZeroMemory( m_recvBuf, sizeof( m_recvBuf ) );
 	ZeroMemory( m_saveBuf, sizeof( m_saveBuf ) );
+	m_wsaSendBuf.buf = m_sendBuf;
+	m_wsaSendBuf.len = sizeof(m_sendBuf);
+	m_wsaRecvBuf.buf = m_recvBuf;
+	m_wsaRecvBuf.len = sizeof(m_recvBuf);
 	m_iCurrPacketSize = 0;
 	m_iStoredPacketSize = 0;
 	m_nPlayerID = -1;
@@ -77,12 +81,13 @@ void CNetworkMgr::processSocketMessage( HWND hWnd, LPARAM lParam )
 	{
 	case FD_READ:
 	{
-		int retval = recv( m_Socket, m_recvBuf, sizeof( m_recvBuf ), 0 );
-		if( GetLastError() == WSAEWOULDBLOCK )
+		DWORD iobyte, ioflag = 0;
+		int retval = WSARecv(m_Socket, &m_wsaRecvBuf, 1, &iobyte, &ioflag, NULL, NULL);
+		if (GetLastError() == WSAEWOULDBLOCK)
 		{
-			PostMessage( hWnd, WM_SOCKET, m_Socket, FD_READ );
+			PostMessage(hWnd, WM_SOCKET, m_Socket, FD_READ);
 		}
-		CNetworkMgr::assemblePacket( retval );
+		CNetworkMgr::assemblePacket(iobyte);
 		break;
 	}
 	case FD_WRITE:
@@ -230,8 +235,12 @@ void CNetworkMgr::processPacket()
 
 void CNetworkMgr::sendBufData()
 {
-	if( send( m_Socket, m_sendBuf, ( ( HEADER* )m_sendBuf )->size, 0 ) == SOCKET_ERROR ) {
-		printf( " send() Error! \n" );
+	m_wsaSendBuf.len = ((HEADER*)m_wsaSendBuf.buf)->size;
+
+	DWORD iobyte;
+	if (WSASend(m_Socket, &m_wsaSendBuf, 1, &iobyte, 0, NULL, NULL) == SOCKET_ERROR)
+	{
+		printf(" send() Error! \n");
 	}
 }
 

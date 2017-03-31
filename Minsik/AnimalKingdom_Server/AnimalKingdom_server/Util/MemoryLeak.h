@@ -56,7 +56,7 @@ public:
         _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
         _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDOUT);
 
-     //   _CrtSetBreakAlloc(388); // <- 메모리 릭 검출 지점 브레이킹
+        //_CrtSetBreakAlloc(53559); // <- 메모리 릭 검출 지점 브레이킹
     }
 
     ~MemoryLeckDetct()

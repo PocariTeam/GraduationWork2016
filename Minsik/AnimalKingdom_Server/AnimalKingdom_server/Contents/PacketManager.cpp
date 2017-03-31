@@ -67,25 +67,23 @@ void PacketManager::recvProcess(Session* session, char* buf)
 	}
 }
 
-void PacketManager::sendLogin(Session * session)
+void PacketManager::sendLogin(Session *session)
 {
-	S_Login* packet = (S_Login*)session->ioData_[IO_SEND].buffer_.data();
-	packet->header.packetID = PAK_ID::PAK_ANS_Login;
-	packet->header.size = sizeof(S_Login);
-	packet->id = session->getID();
-	session->ioData_[IO_SEND].totalBytes_ = sizeof(S_Login);
+	S_Login packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_Login;
+	packet.header.size = sizeof(S_Login);
+	packet.id = session->getID();
 
-	session->send();
+	session->send((char*)&packet);
 }
 
 void PacketManager::sendRejectRequest(Session* session)
 {
-	HEADER* packet = (HEADER*)session->ioData_[IO_SEND].buffer_.data();
-	packet->packetID = PAK_ID::PAK_RJT_Request;
-	packet->size = sizeof(HEADER);
-	session->ioData_[IO_SEND].totalBytes_ = sizeof(HEADER);
+	HEADER packet;
+	packet.packetID = PAK_ID::PAK_RJT_Request;
+	packet.size = sizeof(HEADER);
 
-	session->send();
+	session->send((char*)&packet);
 }
 
 void PacketManager::sendPlayerList(UINT32 roomNum)
@@ -117,15 +115,14 @@ void PacketManager::sendStartGame(UINT32 roomNum)
 
 void PacketManager::sendRoomList(Session * session)
 {
-	S_RoomList* packet = (S_RoomList*)session->ioData_[IO_SEND].buffer_.data();
-	packet->header.packetID = PAK_ID::PAK_ANS_RoomList;
-	packet->header.size = sizeof(S_RoomList);
+	S_RoomList packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_RoomList;
+	packet.header.size = sizeof(S_RoomList);
 	RoomInfo *p = RoomManager::getInstance().getRoomList();
-	memcpy(packet->roomInfo, p, sizeof(RoomInfo)*GAMEROOM_CAPACITY);
+	memcpy(packet.roomInfo, p, sizeof(RoomInfo)*GAMEROOM_CAPACITY);
 	SAFE_DELETE_ARRAY(p);
-	session->ioData_[IO_SEND].totalBytes_ = sizeof(S_RoomList);
 
-	session->send();
+	session->send((char*)&packet);
 
 	SLog(L"* room list was sent to [%S]", session->getAddress().c_str());
 

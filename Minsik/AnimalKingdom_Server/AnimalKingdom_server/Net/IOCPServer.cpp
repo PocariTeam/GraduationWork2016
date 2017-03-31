@@ -14,7 +14,10 @@ IOCPServer::IOCPServer()
 
 IOCPServer::~IOCPServer()
 {
-	::closesocket(listenSocket_);
+	if (listenSocket_)
+	{
+		::closesocket(listenSocket_);
+	}
 	WSACleanup();
 	SLog(L"# ~IOCPServer()");
 }
@@ -75,12 +78,14 @@ bool IOCPServer::run()
 		workerThread_[i] = MAKE_THREAD(IOCPServer, workerThread);
 	}
 
-	while (!_shutdown) {
+	while (!_shutdown) 
+	{
 		wstring cmdLine;
 		std::getline(std::wcin, cmdLine);
 		SLog(L"Input was: %s", cmdLine.c_str());
 		command(cmdLine);
 	}
+
 	return true;
 }
 
@@ -184,7 +189,7 @@ DWORD IOCPServer::acceptThread(LPVOID serverPtr)
 		acceptSocket = WSAAccept(server->listenSocket_, (struct sockaddr *)&recvAddr, &addrLen, NULL, 0);
 		if (acceptSocket == SOCKET_ERROR) {
 			SLog(L"! Accept fail");
-			break;
+			return 0;
 		}
 		server->onAccept(acceptSocket, recvAddr);
 	}
@@ -197,17 +202,19 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 
 	while (!_shutdown) {
 
-		IoData			*ioData = nullptr;
+		overlappedEx	*ioData = nullptr;
 		Session			*session = nullptr;
 		DWORD			transferSize;
 
 		GetQueuedCompletionStatus(server->iocp_, &transferSize, (PULONG_PTR)&session, (LPOVERLAPPED *)&ioData, INFINITE);
-
-		if (session == nullptr) {
+		
+		if (session == nullptr) 
+		{
 			SLog(L"! socket data broken");
 			return 0;
 		}
-		if (transferSize == 0) {
+		if (transferSize == 0) 
+		{
 			if (session->getRoomNumber() != NOT_IN_ROOM)
 			{
 				RoomManager::getInstance().exitRoom(session);
@@ -215,12 +222,11 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			SessionManager::getInstance().closeSession(session);
 			continue;
 		}
-
 		switch (ioData->ioType_)
 		{
 		case IO_SEND:
 		{
-			// send Ã³¸®
+			delete ioData;
 			continue;
 		}
 		case IO_RECV:
@@ -243,7 +249,16 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 void IOCPServer::command(wstr_t cmd)
 {
 	shutdownServer();
-	/*if (strcmp((const char*)cmd.c_str(), "shutdown") == 0) {
+
+	/*
+	overlappedEx over;
+	for (int i = 0; i < THREAD_COUNT; ++i)
+	{
+		PostQueuedCompletionStatus(iocp_, sizeof(over), NULL, (LPOVERLAPPED)&over);
+	}
+
+	if (strcmp((const char*)cmd.c_str(), "shutdown") == 0) {
 		shutdownServer();
-	}*/
+	}
+	*/
 }

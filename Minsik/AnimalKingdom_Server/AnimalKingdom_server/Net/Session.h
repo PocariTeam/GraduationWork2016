@@ -11,21 +11,17 @@
 typedef enum {
 	IO_RECV,
 	IO_SEND,
-	IO_ERROR,
+	IO_ERROR
 } IO_OPERATION;
-#define IO_DATA_MAX     (2)
 
-struct IoData
+struct overlappedEx
 {
 	OVERLAPPED		overlapped_;
+	WSABUF			wsaBuf_;
 	IO_OPERATION	ioType_;
-	size_t  		totalBytes_;
-	size_t			currentBytes_;
-	array<char, SOCKET_BUF_SIZE> buffer_;
-	array<char, SOCKET_BUF_SIZE> packetBuffer_;
+	char			buffer_[SOCKET_BUF_SIZE];
 
-	IoData();
-	void clear();
+	overlappedEx();
 };
 
 
@@ -41,18 +37,23 @@ class Session
 {
 	SOCKET				socket_;
 	SOCKADDR_IN			addrInfo_;
+	char				packetBuffer_[PACKET_BUF_SIZE];
+
 	oid_t				id_;
 	INT32				roomNum_;
 
 public:
-	array<IoData, IO_DATA_MAX> ioData_;
+	size_t  			totalBytes_;
+	size_t				storedBytes_;
+	overlappedEx		recvOver_;
 
+public:
 	Session();
 	void			initialize();
 	bool			onAccept(SOCKET socket, SOCKADDR_IN addrInfo);
 	void			onRecv(size_t recvSize);
 	void			recv();
-	void			send();
+	void			send(char *sendBuf);
 
 	str_t			getAddress();
 	oid_t			getID()				{ return id_; };

@@ -7,20 +7,10 @@
 
 //////////////////////////////////////////////////////////////////////
 
-IoData::IoData()
+overlappedEx::overlappedEx()
 {
 	ZeroMemory(&overlapped_, sizeof(overlapped_));
 	ioType_ = IO_ERROR;
-
-	this->clear();
-}
-
-void IoData::clear()
-{
-	packetBuffer_.fill(0);
-	buffer_.fill(0);
-	totalBytes_ = 0;
-	currentBytes_ = 0;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -38,8 +28,12 @@ void Session::initialize()
 {
 	ZeroMemory(&socket_, sizeof(socket_));
 	ZeroMemory(&addrInfo_, sizeof(addrInfo_));
-	ioData_[IO_RECV].ioType_ = IO_RECV;
-	ioData_[IO_SEND].ioType_ = IO_SEND;
+	ZeroMemory(packetBuffer_, sizeof(packetBuffer_));
+	recvOver_.wsaBuf_.buf = recvOver_.buffer_;
+	recvOver_.wsaBuf_.len = sizeof(recvOver_.buffer_);
+	recvOver_.ioType_ = IO_OPERATION::IO_RECV;
+	totalBytes_ = storedBytes_ = 0;
+	id_ = -1;
 	roomNum_ = NOT_IN_ROOM;
 }
 
@@ -56,52 +50,54 @@ bool Session::onAccept(SOCKET socket, SOCKADDR_IN addrInfo)
 void Session::onRecv(size_t recvSize)
 {
 	// 패킷조립 및 실행
-	IoData *ioData = &ioData_[IO_RECV];
-	char *recvBuf = ioData->buffer_.data();
+	char *recvBuf = recvOver_.buffer_;
 
 	while (0 < recvSize)
 	{
-		char* packetBuffer = ioData->packetBuffer_.data() + ioData->currentBytes_;
-
-		if (0 == ioData->totalBytes_)
+		if (0 == totalBytes_)
 		{
-			if (recvSize + ioData->currentBytes_ >= sizeof(HEADER))
+			if (recvSize + storedBytes_ >= sizeof(HEADER))
 			{
-				int restHeaderSize = sizeof(HEADER) - ioData->currentBytes_;
-				memcpy(packetBuffer, recvBuf, restHeaderSize);
+				int restHeaderSize = sizeof(HEADER) - storedBytes_;
+				memcpy(packetBuffer_ + storedBytes_, recvBuf, restHeaderSize);
 				recvBuf += restHeaderSize;
-				ioData->currentBytes_ += restHeaderSize; 
-				packetBuffer += ioData->currentBytes_;
+				storedBytes_ += restHeaderSize; 
 				recvSize -= restHeaderSize;
-				ioData->totalBytes_ = ((HEADER*)ioData->packetBuffer_.data())->size;
+				totalBytes_ = ((HEADER*)packetBuffer_)->size;
+
+				if (totalBytes_ <= 0)
+				{
+					SErrLog(L" totalBytes is under 0 !");
+					break;
+				}
 			}
 			else
 			{
-				memcpy(packetBuffer, recvBuf, recvSize);
-				ioData->currentBytes_ += recvSize;
+				memcpy(packetBuffer_ + storedBytes_, recvBuf, recvSize);
+				storedBytes_ += recvSize;
 				recvSize = 0;
 				break;
 			}
 		}
 
-		int restSize = ioData->totalBytes_ - ioData->currentBytes_;
+		int restSize = totalBytes_ - storedBytes_;
 
 		if (restSize <= recvSize)
 		{
-			memcpy(packetBuffer, recvBuf, restSize);
+			memcpy(packetBuffer_ + storedBytes_, recvBuf, restSize);
 
-			PacketManager::getInstance().recvProcess(this, ioData->packetBuffer_.data());
+			PacketManager::getInstance().recvProcess(this, packetBuffer_);
 
-			ioData->totalBytes_ = ioData->currentBytes_ = 0;
+			totalBytes_ = storedBytes_ = 0;
 
 			recvBuf += restSize;
 			recvSize -= restSize;
 		}
 		else
 		{
-			memcpy(packetBuffer, recvBuf, recvSize);
+			memcpy(packetBuffer_ + storedBytes_, recvBuf, recvSize);
 
-			ioData->currentBytes_ += recvSize;
+			storedBytes_ += recvSize;
 			recvSize = 0;
 		}
 	}
@@ -114,33 +110,30 @@ void Session::onRecv(size_t recvSize)
 
 void Session::recv()
 {
-	ioData_[IO_RECV].clear();
-
-	WSABUF wsaBuf;
-	wsaBuf.buf = ioData_[IO_RECV].buffer_.data();
-	wsaBuf.len = SOCKET_BUF_SIZE;
-
 	DWORD flags = 0;
 	DWORD recvBytes;
-	DWORD retval = WSARecv(socket_, &wsaBuf, 1, &recvBytes, &flags, &ioData_[IO_RECV].overlapped_, NULL);
-	if (retval == SOCKET_ERROR) {
-		if (WSAGetLastError() != ERROR_IO_PENDING) {
+	DWORD retval = WSARecv(socket_, &recvOver_.wsaBuf_, 1, &recvBytes, &flags, &recvOver_.overlapped_, NULL);
+	if (retval == SOCKET_ERROR) 
+	{
+		if (WSAGetLastError() != ERROR_IO_PENDING) 
+		{
 			SLog(L"! socket error: %d", WSAGetLastError());
 		}
 	}
 }
 
-void Session::send()
+void Session::send(char *sendBuf)
 {
-	WSABUF wsaBuf;
-	wsaBuf.buf = ioData_[IO_SEND].buffer_.data();
-	wsaBuf.len = ioData_[IO_SEND].totalBytes_;
-
-	DWORD flags = 0;
-	DWORD sendBytes;
-	DWORD errorCode = WSASend(socket_, &wsaBuf, 1, &sendBytes, flags, &ioData_[IO_SEND].overlapped_, NULL);
-	if (errorCode == SOCKET_ERROR) {
-		if (WSAGetLastError() != WSA_IO_PENDING) {
+	overlappedEx *sendOver = new overlappedEx;
+	sendOver->ioType_ = IO_OPERATION::IO_SEND;
+	sendOver->wsaBuf_.buf = sendOver->buffer_;
+	sendOver->wsaBuf_.len = ((HEADER*)sendBuf)->size;
+	memcpy(sendOver->buffer_, sendBuf, sendOver->wsaBuf_.len);
+	DWORD errorCode = WSASend(socket_, &sendOver->wsaBuf_, 1, NULL, 0, &sendOver->overlapped_, NULL);
+	if (errorCode == SOCKET_ERROR) 
+	{
+		if (WSAGetLastError() != WSA_IO_PENDING) 
+		{
 			SLog(L"! socket error: %d", WSAGetLastError());
 			return;
 		}

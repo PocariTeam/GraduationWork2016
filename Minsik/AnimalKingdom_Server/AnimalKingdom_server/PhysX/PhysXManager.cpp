@@ -233,7 +233,6 @@ BOOL PhysXManager::SetupScene(UINT32 roomNum)
 
 void PhysXManager::ReleaseScene(UINT32 roomNum)
 {
-	SAFE_LOCK(lock_);
 
 	if (CCTManager_[roomNum])
 	{

@@ -8,6 +8,7 @@ class CAnimationMgr
 	: public Singleton<CAnimationMgr>
 {
 public:
+	~CAnimationMgr();
 	CAnimator* Clone( const S_CHARACTER& eType );
 	CAnimator* Find( const S_CHARACTER& eType );
 public:

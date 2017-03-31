@@ -268,14 +268,13 @@ void GameRoom::sendPlayerList()
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
-		S_PlayerList* packet = (S_PlayerList*)session->ioData_[IO_SEND].buffer_.data();
-		packet->header.packetID = PAK_ID::PAK_ANS_PlayerList;
-		packet->header.size = sizeof(S_PlayerList);
-		packet->playerCount = playerCount_;
-		packet->roomNum = roomNum_;
-		memcpy(packet->playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
-		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_PlayerList);
-		session->send();
+		S_PlayerList packet;
+		packet.header.packetID = PAK_ID::PAK_ANS_PlayerList;
+		packet.header.size = sizeof(S_PlayerList);
+		packet.playerCount = playerCount_;
+		packet.roomNum = roomNum_;
+		memcpy(packet.playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
+		session->send((char*)&packet);
 	}
 	
 }
@@ -285,14 +284,13 @@ void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir)
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
-		S_Move* packet = (S_Move*)session->ioData_[IO_SEND].buffer_.data();
-		packet->header.packetID = PAK_ID::PAK_ANS_Move;
-		packet->header.size = sizeof(S_Move);
-		packet->id = id;
-		packet->tick = tick;
-		packet->vDir = vDir;
-		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_Move);
-		session->send();
+		S_Move packet;
+		packet.header.packetID = PAK_ID::PAK_ANS_Move;
+		packet.header.size = sizeof(S_Move);
+		packet.id = id;
+		packet.tick = tick;
+		packet.vDir = vDir;
+		session->send((char*)&packet);
 	}
 }
 
@@ -303,12 +301,11 @@ void GameRoom::sendStartGame()
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
-		S_StartGame* packet = (S_StartGame*)session->ioData_[IO_SEND].buffer_.data();
-		packet->header.packetID = PAK_ID::PAK_ANS_StartGame;
-		packet->header.size = sizeof(S_StartGame);
-		packet->startTick = Clock::getInstance().systemTick();
-		session->ioData_[IO_SEND].totalBytes_ = sizeof(S_StartGame);
-		session->send();
+		S_StartGame packet;
+		packet.header.packetID = PAK_ID::PAK_ANS_StartGame;
+		packet.header.size = sizeof(S_StartGame);
+		packet.startTick = Clock::getInstance().systemTick();
+		session->send((char*)&packet);
 	}
 
 	TIMECAPS caps;

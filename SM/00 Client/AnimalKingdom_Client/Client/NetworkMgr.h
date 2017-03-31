@@ -41,9 +41,11 @@ public:
 private:
 	SOCKET			m_Socket;
 	SOCKADDR_IN		m_tServerAdrr;
-	char			m_sendBuf[ SOCKET_BUF_SIZE ];
-	char			m_recvBuf[ SOCKET_BUF_SIZE ];
-	char			m_saveBuf[ SOCKET_BUF_SIZE ];
+	WSABUF			m_wsaSendBuf;
+	WSABUF			m_wsaRecvBuf;
+	char			m_sendBuf[PACKET_BUF_SIZE];
+	char			m_recvBuf[PACKET_BUF_SIZE];
+	char			m_saveBuf[PACKET_BUF_SIZE];
 	int				m_iCurrPacketSize;
 	int				m_iStoredPacketSize;
 

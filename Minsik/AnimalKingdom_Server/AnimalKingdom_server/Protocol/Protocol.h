@@ -1,6 +1,7 @@
 #pragma once
 
 #define		SOCKET_BUF_SIZE			1024*10
+#define		PACKET_BUF_SIZE			1024
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 

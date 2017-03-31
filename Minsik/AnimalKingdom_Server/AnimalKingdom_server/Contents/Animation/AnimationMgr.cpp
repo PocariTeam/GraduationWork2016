@@ -3,6 +3,11 @@
 #include "Animator.h"
 #include <fstream>
 
+CAnimationMgr::~CAnimationMgr()
+{
+	this->Release();
+}
+
 CAnimator* CAnimationMgr::Clone( const S_CHARACTER& eType )
 {
 	CAnimator*	pController = Find( eType );
