@@ -121,8 +121,8 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 
 int CPlayer::Update( const float& fTimeDelta )
 {
-	NxVec3	vDir = m_vMoveDir;
-	vDir.y += -GRAVITY * GRAVITY * m_fSpeed * fTimeDelta;
+	NxVec3	vDir = m_vMoveDir * m_fSpeed * fTimeDelta;
+	vDir.y += -GRAVITY * GRAVITY * fTimeDelta;
 
 	NxU32	dwCollisionFlag;
 	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );

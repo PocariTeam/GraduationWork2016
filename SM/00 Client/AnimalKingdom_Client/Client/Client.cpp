@@ -80,15 +80,16 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 		else
 		{
-			//printf( "%f\n", fFrameTime );
 			if( fFrameTime >= fFrameLimit )	// d
 			{
-				pRealTimer->Calculate_TimeDelta();
-				if( -1 == g_pMainFrm->Update( pRealTimer->GetTimeDelta() ) )
+				//printf( "%f\n", fFrameTime );
+				//pRealTimer->Calculate_TimeDelta();
+				//if( -1 == g_pMainFrm->Update( pRealTimer->GetTimeDelta() ) )
+				if (-1 == g_pMainFrm->Update(fFrameTime)) // 축척된 프레임(델타)타임을 넣어주도록 수정했음
 					break;
-				g_pMainFrm->Render();
 				fFrameTime = 0.f;
 				//fFrameTime -= fFrameLimit;
+				g_pMainFrm->Render();
 			}
 		}
 	}
