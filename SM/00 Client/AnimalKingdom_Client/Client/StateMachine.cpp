@@ -43,6 +43,27 @@ HRESULT CStateMachine::Initialize( CPlayer* pOwner )
 	return S_OK;
 }
 
+STATE CStateMachine::GetCurrentState()
+{
+	if (m_pCurrentState == CIdleState::GetInstance())
+		return STATE_IDLE;
+	else if (m_pCurrentState == CAttackState::GetInstance())
+		return STATE_ATT1;
+	else if (m_pCurrentState == CRunState::GetInstance())
+		return STATE_RUN;
+	else if (m_pCurrentState == CJumpState::GetInstance())
+		return STATE_JUMP; 
+	else if (m_pCurrentState == CDefendState::GetInstance())
+		return STATE_DEFEND;
+	else if (m_pCurrentState == CBeatenState::GetInstance())
+		return STATE_BEATEN1;
+	else if (m_pCurrentState == CDownState::GetInstance())
+		return STATE_DOWN;
+
+	printf(" wrong current state! \n");
+	return STATE_IDLE;
+}
+
 void CStateMachine::Change_State( CState* pState )
 {
 	if( m_pCurrentState == pState ) return;

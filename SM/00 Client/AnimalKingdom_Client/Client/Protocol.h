@@ -5,6 +5,7 @@
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 
+#define		MINIMUM_START_COUNT		2
 #define		PLAYER_CAPACITY			4
 #define		GAMEROOM_CAPACITY		8
 
@@ -47,8 +48,8 @@ typedef enum {
 }S_CHARACTER;
 #define CHARACTER_MAX     (2)
 
-// enum eState_Animation { STATE_IDLE, STATE_ATT1, STATE_ATT2, STATE_RUN, STATE_JUMP, STATE_DEFEND, STATE_BEATEN1, STATE_BEATEN2, /*STATE_SPECIAL, */STATE_DOWN, /*STATE_STANDUP, STATE_DIE, */STATE_END };
-// using STATE = eState_Animation;
+enum eState_Animation { STATE_IDLE, STATE_ATT1, STATE_ATT2, STATE_RUN, STATE_JUMP, STATE_DEFEND, STATE_BEATEN1, STATE_BEATEN2, /*STATE_SPECIAL, */STATE_DOWN, /*STATE_STANDUP, STATE_DIE, */STATE_END };
+using STATE = eState_Animation;
 
 struct PlayerInfo
 {
@@ -117,6 +118,7 @@ struct C_Move
 	HEADER		header;
 	time_t		tick;
 	Vector3		vDir;
+	STATE		state;
 };
 
 struct S_Move
@@ -125,6 +127,7 @@ struct S_Move
 	UINT		id;
 	time_t		tick;
 	Vector3		vDir;
+	STATE		state;
 };
 
 /////////////////////////////////////////////////////////////

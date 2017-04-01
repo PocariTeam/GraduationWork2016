@@ -3,12 +3,14 @@
 #ifndef Player_h__
 #define Player_h__
 
+#include "Physics.h"
 #include "GameObject.h"
 #include "Enum.h"
 
 class CAnimator;
 class CStateMachine;
 class NxController;
+
 class CPlayer
 	: public CGameObject
 {
@@ -29,8 +31,12 @@ public:
 	XMFLOAT4X4	GetWorld();
 	NxController* GetCharacterController( void ) { return m_pCharacterController; }
 	void		setRotateY(FLOAT y) { m_vRotate.y = y; };
+	void		ChangeState(STATE state);
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
+public:
+	float					m_fSpeed;
+	NxVec3					m_vMoveDir;
 protected:
 	CStateMachine*			m_pStateMachine;
 	CAnimator*				m_pAnimator;

@@ -55,7 +55,7 @@ void PacketManager::recvProcess(Session* session, char* buf)
 		}
 		break;
 	case PAK_ID::PAK_REQ_Move:
-		result = RoomManager::getInstance().moveRequestRoom(session, ((C_Move*)buf)->tick, ((C_Move*)buf)->vDir);
+		result = RoomManager::getInstance().moveRequestRoom(session, ((C_Move*)buf)->tick, ((C_Move*)buf)->vDir, ((C_Move*)buf)->state);
 		break;
 	default:
 		SLog(L"! Unkown Packet packetID: %d", pHeader->packetID);

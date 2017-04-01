@@ -30,8 +30,9 @@ public:
 	void	sendExitRoom();
 	void	sendReadyRoom();
 	void	sendStartRoom();
-	void	sendMoveCharacter(NxVec3 dir);
+	void	sendMoveCharacter(NxVec3 dir, STATE state);
 	void	sendSelectCharacter( S_CHARACTER ch );
+	void	sendCharacterState(STATE s);
 
 public:
 	bool	isMaster() { return m_bMaster; }

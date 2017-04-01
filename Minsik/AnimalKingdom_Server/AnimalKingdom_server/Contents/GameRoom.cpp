@@ -52,7 +52,7 @@ BOOL GameRoom::startGame(Session* session)
 		return false;
 	}
 
-	if (playerCount_ < 2 )
+	if (playerCount_ < MINIMUM_START_COUNT)
 	{
 		SLog(L"! the [%d] room's the number of player is under 2. ", roomNum_);
 		return false;
@@ -221,7 +221,7 @@ RoomInfo GameRoom::getRoomInfo()
 	return r;
 }
 
-BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir)
+BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir, STATE state)
 {
 	SAFE_LOCK(lock_);
 
@@ -238,8 +238,9 @@ BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir)
 			time_t difference = Clock::getInstance().systemTick() - tick;
 			//dir *= difference;
 			(*p)->getCCT()->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-			
-			sendMovePacket(session->getID(), tick, vDir);
+			// 받은 상태값을 서버에서도 처리하는 코드를 추가해야 함
+
+			sendMovePacket(session->getID(), tick, vDir, state);
 
 			return true;
 		}
@@ -279,7 +280,7 @@ void GameRoom::sendPlayerList()
 	
 }
 
-void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir)
+void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir, STATE state)
 {
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
@@ -290,6 +291,7 @@ void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir)
 		packet.id = id;
 		packet.tick = tick;
 		packet.vDir = vDir;
+		packet.state = state;
 		session->send((char*)&packet);
 	}
 }

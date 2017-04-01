@@ -71,7 +71,7 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render( pContext );
 }
 
-void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir)
+void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir, STATE state)
 {
 	// FIXME: 임시로 받아와서 쓰지만 player 자체의 멤버함수에서 처리하면 더 좋을 듯 하다.
 
@@ -81,19 +81,24 @@ void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir)
 	dir.y = vDir.y;
 	dir.z = vDir.z;
 
-	time_t difference = chrono::system_clock::to_time_t(chrono::system_clock::now()) - tick;
+	//time_t difference = chrono::system_clock::to_time_t(chrono::system_clock::now()) - tick;
 	//dir *= difference; 일단 틱계산을 안 해보자..
 	auto cct = m_mapPlayer.find(id)->second->GetCharacterController();
-	cct->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
 
 	dir.normalize();
-	NxVec3 oldLook = cct->getActor()->getGlobalPose().M.getColumn(2);
-	NxReal rotAngle = acos(oldLook.dot(dir));
-	NxVec3 cross = oldLook;
-	cross = cross.cross(dir);
-	rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
-	m_mapPlayer.find(id)->second->setRotateY(rotAngle);
-
+	if (false == dir.isZero())
+	{
+		NxVec3 oldLook = cct->getActor()->getGlobalPose().M.getColumn(2);
+		NxReal rotAngle = acos(oldLook.dot(dir));
+		NxVec3 cross = oldLook;
+		cross = cross.cross(dir);
+		rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
+		m_mapPlayer.find(id)->second->setRotateY(rotAngle);
+	}
+	m_mapPlayer.find(id)->second->m_vMoveDir = dir;
+	m_mapPlayer.find(id)->second->ChangeState(state);
+	
+	
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )

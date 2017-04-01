@@ -151,13 +151,13 @@ BOOL RoomManager::setupRoom(UINT32 roomNum)
 	}
 }
 
-BOOL RoomManager::moveRequestRoom(Session* session, time_t tick, Vector3 vDir)
+BOOL RoomManager::moveRequestRoom(Session* session, time_t tick, Vector3 vDir, STATE state)
 {
 	SAFE_LOCK(lock_);
 	UINT roomNum = session->getRoomNumber();
 	if (roomNum < GAMEROOM_CAPACITY)
 	{
-		return roomArray_[roomNum]->moveRequest(session, tick, vDir);
+		return roomArray_[roomNum]->moveRequest(session, tick, vDir, state);
 	}
 	else
 	{

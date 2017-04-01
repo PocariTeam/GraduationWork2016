@@ -9,7 +9,6 @@
 #include "StateMachine.h"
 #include "InputMgr.h"
 #include <NxVec3.h>
-#include "Physics.h"
 #include "Mathematics.h"
 #include <NxControllerManager.h>
 #include <NxQuat.h>
@@ -31,6 +30,8 @@ CPlayer::~CPlayer()
 
 HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterController )
 {
+	m_fSpeed = 50.0f;
+	m_vMoveDir = NxVec3(0.0f, 0.0f, 0.0f);
 	m_pCharacterController = pCharacterController;
 	m_pActor = ( NxActor* )m_pCharacterController->getUserData();
 	m_pStateMachine = CStateMachine::Create( this );
@@ -40,78 +41,88 @@ HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 
 void CPlayer::Check_Key( const float& fTimeDelta )
 {
-	NxVec3	vDir{ 0.f, 0.f, 0.f };
-	NxF32 fSpeed = 50.0f;
-
+	NxVec3 vDir{ 0.0f,0.0f,0.0f };
+	
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_UP ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_RUN );
 		vDir += NxVec3{ 0.f, 0.f, 1.f };
 	}
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_DOWN ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_RUN );
 		vDir += NxVec3{ 0.f, 0.f, -1.f };
 	}
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_LEFT ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_RUN );
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
 	}
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_RIGHT ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_RUN );
 		vDir += NxVec3{ 1.f, 0.f, 0.f };
 	}
 
+	STATE newState = m_pStateMachine->GetCurrentState();
+
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_S ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_ATT1 );
+		newState = STATE_ATT1;
 	}
-
 	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_D ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_BEATEN1 );
+		newState = STATE_BEATEN1;
 	}
-
 	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_A ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_DEFEND );
+		newState = STATE_DEFEND;
 	}
-
 	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_F ) & 0x80 )
 	{
-		m_pStateMachine->Change_State( STATE_JUMP );
+		newState = STATE_JUMP;
+	}
+	else if (false == vDir.isZero())
+	{
+		newState = STATE_RUN;
+	}
+	else if (m_pAnimator->GetCurrentAnimationFinished())
+	{
+		newState = STATE_IDLE;
 	}
 
-	else if( vDir.isZero() && m_pAnimator->GetCurrentAnimationFinished())
-		m_pStateMachine->Change_State( STATE_IDLE );
+	bool bNeedToSendPacket = false;
 
-	if( !vDir.isZero() )
+	if (newState != m_pStateMachine->GetCurrentState())
 	{
-		vDir.normalize();
-		NxVec3 oldLook = m_pCharacterController->getActor()->getGlobalPose().M.getColumn( 2 );
-		NxReal rotAngle = acos( oldLook.dot( vDir ) );
-		NxVec3 cross = oldLook;
-		cross = cross.cross( vDir );
-		rotAngle *= ( cross.y >= 0.0f ) ? -1.0f : 1.0f;
-		m_vRotate.y = rotAngle;
+		bNeedToSendPacket = true;
+		m_pStateMachine->Change_State(newState);
+	}
 
+	vDir.normalize();
+	if (m_vMoveDir != vDir)
+	{
+		bNeedToSendPacket = true;
+		m_vMoveDir = vDir;
+		if (false == vDir.isZero())
+		{
+			NxVec3 oldLook = m_pCharacterController->getActor()->getGlobalPose().M.getColumn(2);
+			NxReal rotAngle = acos(oldLook.dot(vDir));
+			NxVec3 cross = oldLook;
+			cross = cross.cross(vDir);
+			rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
+			m_vRotate.y = rotAngle;
+		}
+	}
 
-		vDir *= ( fTimeDelta * fSpeed );
-
-		NxU32	dwCollisionFlag;
-		m_pCharacterController->move(vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-
-		CNetworkMgr::GetInstance()->sendMoveCharacter(vDir);
+	if (bNeedToSendPacket)
+	{
+		CNetworkMgr::GetInstance()->sendMoveCharacter(m_vMoveDir, newState);
+		// printf("[time:%d] 이동패킷 전송 \n", chrono::system_clock::now());
 	}
 
 }
 
 int CPlayer::Update( const float& fTimeDelta )
 {
-	NxVec3	vDir{ 0.f, 0.f, 0.f };
-	vDir.y += GRAVITY * -GRAVITY * fTimeDelta;
+	NxVec3	vDir = m_vMoveDir;
+	vDir.y += -GRAVITY * GRAVITY * m_fSpeed * fTimeDelta;
 
 	NxU32	dwCollisionFlag;
 	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
@@ -153,6 +164,13 @@ XMFLOAT4X4 CPlayer::GetWorld()
 	XMStoreFloat4x4( &Out, mtxWorld );
 
 	return Out;
+}
+
+void CPlayer::ChangeState(STATE state)
+{
+	if (m_pStateMachine->GetCurrentState() == state)
+		return;
+	m_pStateMachine->Change_State(state);
 }
 
 CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType )

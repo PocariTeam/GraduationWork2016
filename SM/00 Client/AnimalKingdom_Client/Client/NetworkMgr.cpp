@@ -227,7 +227,7 @@ void CNetworkMgr::processPacket()
 		{
 			break;
 		}
-		( ( CJungle* )m_pScene )->Move( packet->id, packet->tick, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ) );
+		( ( CJungle* )m_pScene )->Move( packet->id, packet->tick, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
 		break;
 	}
 	}
@@ -292,7 +292,7 @@ void CNetworkMgr::sendStartRoom()
 	sendBufData();
 }
 
-void CNetworkMgr::sendMoveCharacter( NxVec3 dir )
+void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state)
 {
 	C_Move *pMove = ( C_Move* )m_sendBuf;
 	pMove->header.packetID = PAK_ID::PAK_REQ_Move;
@@ -301,6 +301,7 @@ void CNetworkMgr::sendMoveCharacter( NxVec3 dir )
 	pMove->vDir.x = dir.x;
 	pMove->vDir.y = dir.y;
 	pMove->vDir.z = dir.z;
+	pMove->state = state;
 
 	sendBufData();
 }
@@ -314,6 +315,11 @@ void CNetworkMgr::sendSelectCharacter( S_CHARACTER ch )
 	pRoomCharacter->character = ch;
 
 	sendBufData();
+}
+
+void CNetworkMgr::sendCharacterState(STATE s)
+{
+
 }
 
 DWORD CNetworkMgr::Release( void )

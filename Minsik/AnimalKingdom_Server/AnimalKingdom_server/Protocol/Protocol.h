@@ -5,6 +5,7 @@
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 
+#define		MINIMUM_START_COUNT		2
 #define		PLAYER_CAPACITY			4
 #define		GAMEROOM_CAPACITY		8
 
@@ -30,8 +31,8 @@ typedef enum {
 
 struct Vector3
 {
-	float x; 
-	float y; 
+	float x;
+	float y;
 	float z;
 };
 
@@ -117,6 +118,7 @@ struct C_Move
 	HEADER		header;
 	time_t		tick;
 	Vector3		vDir;
+	STATE		state;
 };
 
 struct S_Move
@@ -125,6 +127,7 @@ struct S_Move
 	UINT		id;
 	time_t		tick;
 	Vector3		vDir;
+	STATE		state;
 };
 
 /////////////////////////////////////////////////////////////
