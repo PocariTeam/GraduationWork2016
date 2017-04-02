@@ -99,6 +99,7 @@ typedef void(*Function)(void *);
 //
 ///ÄÁÅÙÃ÷
 //
+#include "./PhysX/PhysXManager.h"
 #include "./Contents/RoomManager.h"
 #include "./Contents/GameRoom.h"
 #include "./Contents/Player.h"
@@ -107,7 +108,6 @@ typedef void(*Function)(void *);
 #include "./Contents/Animation/Animator.h"
 #include "./Contents/Animation/State.h"
 #include "./Contents/Animation/StateMachine.h"
-#include "./PhysX/PhysXManager.h"
 //
 ////¼­¹ö
 #include "./Net/IOCPServer.h"

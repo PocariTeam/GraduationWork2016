@@ -5,6 +5,8 @@ Player::Player(Session * s, UINT room, BOOL master)
 	: lock_(L"Player"), session_(s), character_(S_CHARACTER::CHAMEL), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
 {
 	stateMachine_ = CStateMachine::Create( this );
+	speed_ = 50.0f;
+	moveDir_ = NxVec3(0.0f, 0.0f, 0.0f);
 }
 
 Player::~Player()
@@ -30,6 +32,12 @@ Player::~Player()
 
 void Player::update( float fTimeDelta )
 {
+	NxVec3	vDir = moveDir_ * speed_ * fTimeDelta;
+	vDir.y += -9.81f * 9.81f * fTimeDelta;
+
+	NxU32	dwCollisionFlag;
+	cct_->move(vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+
 	if( stateMachine_ )	stateMachine_->Update( fTimeDelta );
 }
 
@@ -60,4 +68,42 @@ void Player::setCharacter(S_CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 	character_ = c;
+}
+
+void Player::setMoveDir_State(time_t tick, Vector3 vDir, STATE state)
+{
+	NxVec3	newDir;
+	newDir.x = vDir.x;
+	newDir.y = vDir.y;
+	newDir.z = vDir.z;
+
+	newDir.normalize();
+	if (false == newDir.isZero()) // 방향전환
+	{
+		NxVec3 oldLook = cct_->getActor()->getGlobalPose().M.getColumn(2);
+		NxReal rotAngle = acos(oldLook.dot(newDir));
+		NxVec3 cross = oldLook;
+		cross = cross.cross(newDir);
+		rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
+		//player->setRotateY(rotAngle);
+		//FIX ME!! 캐릭터 회전해줘야 함
+	}
+
+	//system_clock::time_point packetTick = system_clock::from_time_t(tick);
+	//duration<double> lagTick = system_clock::now() - packetTick;
+	//printf("지연시간: %lf 초\n", lagTick.count());
+
+	//NxU32	dwCollisionFlag;
+	//// 방향이 바뀌었던 시간차만큼 되돌아간다.
+	//NxVec3 pastDir = player->m_vMoveDir * player->m_fSpeed * lagTick.count();
+	////pastDir.y += -GRAVITY * GRAVITY * lagTick.count();
+	//cct->move(-pastDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+
+	//// 시간차만큼 다시 원래 위치로 돌아간다.
+	//NxVec3 curDir = newDir * player->m_fSpeed * lagTick.count();
+	////curDir.y += -GRAVITY * GRAVITY * lagTick.count();
+	//cct->move(curDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+
+	moveDir_ = newDir;
+	stateMachine_->Change_State(state);
 }

@@ -229,19 +229,8 @@ BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir, STATE st
 	{
 		if ((*p)->getSession() == session)
 		{
-			NxU32	dwCollisionFlag;
-			NxVec3	dir;
-			dir.x = vDir.x; 
-			dir.y = vDir.y; 
-			dir.z = vDir.z;
-
-			time_t difference = Clock::getInstance().systemTick() - tick;
-			//dir *= difference;
-			(*p)->getCCT()->move(dir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-			// 받은 상태값을 서버에서도 처리하는 코드를 추가해야 함
-
+			(*p)->setMoveDir_State(tick, vDir, state);
 			sendMovePacket(session->getID(), tick, vDir, state);
-
 			return true;
 		}
 	}
@@ -282,6 +271,7 @@ void GameRoom::sendPlayerList()
 
 void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir, STATE state)
 {
+
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
@@ -323,9 +313,7 @@ void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, D
 
 void GameRoom::update( float fTimeDelta )
 {
-	auto iter_begin = playerList_.begin();
-	auto iter_end = playerList_.end();
 
-	for( ; iter_begin != iter_end; ++iter_begin )
-		(*iter_begin)->update( fTimeDelta );
+	for(auto iter = playerList_.begin(); iter != playerList_.end(); ++iter )
+		(*iter)->update( fTimeDelta );
 }

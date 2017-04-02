@@ -16,7 +16,7 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 
 NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& hit )
 {
-	//printf("컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
+	//printf(" [NxControllerAction]컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
 
 	if( 1 && hit.shape )
 	{
@@ -47,5 +47,5 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
-	printf( "%s 와 %s가 충돌! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	printf( " [CCollisionReport] %s 와 %s가 충돌! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 }

@@ -297,11 +297,11 @@ void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state)
 	C_Move *pMove = ( C_Move* )m_sendBuf;
 	pMove->header.packetID = PAK_ID::PAK_REQ_Move;
 	pMove->header.size = sizeof( C_Move );
-	pMove->tick = chrono::system_clock::to_time_t( chrono::system_clock::now() );
 	pMove->vDir.x = dir.x;
 	pMove->vDir.y = dir.y;
 	pMove->vDir.z = dir.z;
 	pMove->state = state;
+	pMove->tick = chrono::system_clock::to_time_t(chrono::system_clock::now());
 
 	sendBufData();
 }

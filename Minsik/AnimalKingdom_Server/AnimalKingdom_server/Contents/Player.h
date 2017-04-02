@@ -5,21 +5,29 @@ class NxController;
 class NxActor;
 class CAnimator;
 class CStateMachine;
+
 class Player {
 	Session*		session_;
 	S_CHARACTER		character_;
+
 	UINT			roomNum_;
 	BOOL			isReady_;
 	BOOL			isMaster_;
 
+	FLOAT			speed_;
+	NxVec3			moveDir_;
+
 	NxController*	cct_;
+
 	NxActor**		actorArray_;
 	UINT			actorCount_;
 	/* 애니메이션 재생기 */
 	CAnimator*		animator_;
 	/* 상태 머신 */
 	CStateMachine*	stateMachine_;
+
 	Lock			lock_;
+
 
 public:
 	Player(Session* s, UINT room, BOOL master = false);
@@ -40,4 +48,6 @@ public:
 	CAnimator*		getAnimator() { return animator_; }
 	UINT			getActorCount() { return actorCount_; }
 	CStateMachine*  getFSM() { return stateMachine_; }
+
+	void			setMoveDir_State(time_t tick, Vector3 vDir, STATE state);
 };

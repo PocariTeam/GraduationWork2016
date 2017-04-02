@@ -144,7 +144,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimalKingdom_server.h" />
-    <ClInclude Include="AnimationSet.h" />
     <ClInclude Include="Contents\Animation\AnimationMgr.h" />
     <ClInclude Include="Contents\Animation\AnimationSet.h" />
     <ClInclude Include="Contents\Animation\Animator.h" />

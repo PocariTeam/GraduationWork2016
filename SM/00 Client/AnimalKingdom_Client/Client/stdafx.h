@@ -76,4 +76,5 @@
 #pragma comment( lib, "ws2_32" )
 
 using namespace std;
+using namespace std::chrono;
 using namespace DirectX;

@@ -324,7 +324,6 @@
     <ClInclude Include="PhysX\CollisionReport.h">
       <Filter>PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationSet.h" />
     <ClInclude Include="Contents\Animation\AnimationMgr.h">
       <Filter>Contents\Animation</Filter>
     </ClInclude>
