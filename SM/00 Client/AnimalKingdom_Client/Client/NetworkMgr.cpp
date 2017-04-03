@@ -13,9 +13,9 @@ HRESULT CNetworkMgr::Initialize()
 	ZeroMemory( m_recvBuf, sizeof( m_recvBuf ) );
 	ZeroMemory( m_saveBuf, sizeof( m_saveBuf ) );
 	m_wsaSendBuf.buf = m_sendBuf;
-	m_wsaSendBuf.len = sizeof(m_sendBuf);
+	m_wsaSendBuf.len = sizeof( m_sendBuf );
 	m_wsaRecvBuf.buf = m_recvBuf;
-	m_wsaRecvBuf.len = sizeof(m_recvBuf);
+	m_wsaRecvBuf.len = sizeof( m_recvBuf );
 	m_iCurrPacketSize = 0;
 	m_iStoredPacketSize = 0;
 	m_nPlayerID = -1;
@@ -82,12 +82,12 @@ void CNetworkMgr::processSocketMessage( HWND hWnd, LPARAM lParam )
 	case FD_READ:
 	{
 		DWORD iobyte, ioflag = 0;
-		int retval = WSARecv(m_Socket, &m_wsaRecvBuf, 1, &iobyte, &ioflag, NULL, NULL);
-		if (GetLastError() == WSAEWOULDBLOCK)
+		int retval = WSARecv( m_Socket, &m_wsaRecvBuf, 1, &iobyte, &ioflag, NULL, NULL );
+		if( GetLastError() == WSAEWOULDBLOCK )
 		{
-			PostMessage(hWnd, WM_SOCKET, m_Socket, FD_READ);
+			PostMessage( hWnd, WM_SOCKET, m_Socket, FD_READ );
 		}
-		CNetworkMgr::assemblePacket(iobyte);
+		CNetworkMgr::assemblePacket( iobyte );
 		break;
 	}
 	case FD_WRITE:
@@ -231,12 +231,12 @@ void CNetworkMgr::processPacket()
 
 void CNetworkMgr::sendBufData()
 {
-	m_wsaSendBuf.len = ((HEADER*)m_wsaSendBuf.buf)->size;
+	m_wsaSendBuf.len = ( ( HEADER* )m_wsaSendBuf.buf )->size;
 
 	DWORD iobyte;
-	if (WSASend(m_Socket, &m_wsaSendBuf, 1, &iobyte, 0, NULL, NULL) == SOCKET_ERROR)
+	if( WSASend( m_Socket, &m_wsaSendBuf, 1, &iobyte, 0, NULL, NULL ) == SOCKET_ERROR )
 	{
-		printf(" send() Error! \n");
+		printf( " send() Error! \n" );
 	}
 }
 
@@ -288,7 +288,7 @@ void CNetworkMgr::sendStartRoom()
 	sendBufData();
 }
 
-void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state)
+void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state )
 {
 	C_Move *pMove = ( C_Move* )m_sendBuf;
 	pMove->header.packetID = PAK_ID::PAK_REQ_Move;
@@ -297,7 +297,7 @@ void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state)
 	pMove->vDir.y = dir.y;
 	pMove->vDir.z = dir.z;
 	pMove->state = state;
-	pMove->tick = chrono::system_clock::to_time_t(chrono::system_clock::now());
+	pMove->tick = chrono::system_clock::to_time_t( chrono::system_clock::now() );
 
 	sendBufData();
 }
@@ -313,7 +313,7 @@ void CNetworkMgr::sendSelectCharacter( CHARACTER ch )
 	sendBufData();
 }
 
-void CNetworkMgr::sendCharacterState(STATE s)
+void CNetworkMgr::sendCharacterState( STATE s )
 {
 
 }

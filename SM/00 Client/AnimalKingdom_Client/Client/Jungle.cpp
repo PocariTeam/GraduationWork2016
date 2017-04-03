@@ -36,7 +36,7 @@ int CJungle::Update( const float& fTimeDelta )
 	CScene::Update( fTimeDelta );
 	if( -1 != m_iPlayerID )
 		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
-		
+
 	CPhysics::GetInstance()->Update( fTimeDelta );
 
 	return 0;
@@ -71,7 +71,7 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render( pContext );
 }
 
-void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir, STATE state)
+void CJungle::Move( UINT32 id, time_t tick, XMFLOAT3 vDir, STATE state )
 {
 	// FIX ME: 임시로 받아와서 쓰지만 player 자체의 멤버함수에서 처리하면 더 좋을 듯 하다.
 	NxVec3	newDir;
@@ -79,17 +79,17 @@ void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir, STATE state)
 	newDir.y = vDir.y;
 	newDir.z = vDir.z;
 
-	CPlayer* player = m_mapPlayer.find(id)->second;
+	CPlayer* player = m_mapPlayer.find( id )->second;
 	auto cct = player->GetCharacterController();
 	newDir.normalize();
-	if (false == newDir.isZero()) // 방향전환
+	if( false == newDir.isZero() ) // 방향전환
 	{
-		NxVec3 oldLook = cct->getActor()->getGlobalPose().M.getColumn(2);
-		NxReal rotAngle = acos(oldLook.dot(newDir));
+		NxVec3 oldLook = cct->getActor()->getGlobalPose().M.getColumn( 2 );
+		NxReal rotAngle = acos( oldLook.dot( newDir ) );
 		NxVec3 cross = oldLook;
-		cross = cross.cross(newDir);
-		rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
-		player->setRotateY(rotAngle);
+		cross = cross.cross( newDir );
+		rotAngle *= ( cross.y >= 0.0f ) ? -1.0f : 1.0f;
+		player->setRotateY( rotAngle );
 	}
 
 	//system_clock::time_point packetTick = system_clock::from_time_t(tick);
@@ -108,10 +108,9 @@ void CJungle::Move(UINT32 id, time_t tick, XMFLOAT3 vDir, STATE state)
 	////curDir.y += -GRAVITY * GRAVITY * lagTick.count();
 	//cct->move(curDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
 	//CPhysics::GetInstance()->UpdateCharactercontrollerMgr();
-	
-	player->m_vMoveDir = newDir;
-	player->ChangeState(state);
-	
+
+	player->m_vDir = newDir;
+	player->ChangeState( state );
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )

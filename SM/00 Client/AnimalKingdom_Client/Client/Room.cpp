@@ -123,6 +123,9 @@ DWORD CRoom::Release( void )
 	m_pRenderer = nullptr;
 	m_pInputMgr = nullptr;
 	m_pNetworkMgr = nullptr;
+	m_pTextureMgr = nullptr;
+	m_pAnimateMeshMgr = nullptr;
+	m_pAnimationMgr = nullptr;
 
 	delete this;
 

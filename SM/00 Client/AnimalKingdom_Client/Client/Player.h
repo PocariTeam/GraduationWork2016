@@ -10,7 +10,7 @@
 class CAnimator;
 class CStateMachine;
 class NxController;
-
+class CInputMgr;
 class CPlayer
 	: public CGameObject
 {
@@ -25,24 +25,27 @@ public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );
 	virtual DWORD Release( void );
+public:
 	CAnimator*	GetAnimator( void ) { return m_pAnimator; }
 	CStateMachine* GetFSM( void ) { return m_pStateMachine; }
 	DWORD		GetActorCnt( void ) { return m_dwActorCnt; }
-	XMFLOAT4X4	GetWorld();
 	NxController* GetCharacterController( void ) { return m_pCharacterController; }
-	void		setRotateY(FLOAT y) { m_vRotate.y = y; };
-	void		ChangeState(STATE state);
+	XMFLOAT4X4	GetWorld();
+public:
+	void		setRotateY( FLOAT y ) { m_vRotate.y = y; };
+	void		ChangeState( STATE state );
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
-public:
-	float					m_fSpeed;
-	NxVec3					m_vMoveDir;
 protected:
 	CStateMachine*			m_pStateMachine;
 	CAnimator*				m_pAnimator;
 	NxController*			m_pCharacterController;
 	XMFLOAT3				m_vRotate;
 	DWORD					m_dwActorCnt;
+	CInputMgr*				m_pInputMgr;
+public:
+	float					m_fSpeed;
+	NxVec3					m_vDir;
 };
 
 #endif // Player_h__
