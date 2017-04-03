@@ -153,6 +153,11 @@ void CPhysics::Release_Scene( void )
 	}
 }
 
+void CPhysics::UpdateCharactercontrollerMgr()
+{
+	m_pCharacterControllerMgr->updateControllers();
+}
+
 HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 {
 	m_pAllocator = new UserAllocator;

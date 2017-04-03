@@ -47,7 +47,7 @@ bool Session::onAccept(SOCKET socket, SOCKADDR_IN addrInfo)
 	return true;
 }
 
-void Session::onRecv(size_t recvSize)
+void Session::onRecv(UINT recvSize)
 {
 	// 패킷조립 및 실행
 	char *recvBuf = recvOver_.buffer_;
@@ -58,7 +58,7 @@ void Session::onRecv(size_t recvSize)
 		{
 			if (recvSize + storedBytes_ >= sizeof(HEADER))
 			{
-				int restHeaderSize = sizeof(HEADER) - storedBytes_;
+				UINT restHeaderSize = sizeof(HEADER) - storedBytes_;
 				memcpy(packetBuffer_ + storedBytes_, recvBuf, restHeaderSize);
 				recvBuf += restHeaderSize;
 				storedBytes_ += restHeaderSize; 
@@ -80,7 +80,7 @@ void Session::onRecv(size_t recvSize)
 			}
 		}
 
-		int restSize = totalBytes_ - storedBytes_;
+		UINT restSize = totalBytes_ - storedBytes_;
 
 		if (restSize <= recvSize)
 		{

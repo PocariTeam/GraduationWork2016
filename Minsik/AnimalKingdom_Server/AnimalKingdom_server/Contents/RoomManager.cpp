@@ -24,7 +24,7 @@ BOOL RoomManager::enterRoom(Session* session,UINT roomNum)
 
 	if (session->getRoomNumber() != NOT_IN_ROOM)
 	{
-		SLog(L"! [%S] is in already in the [%d] room.", session->getAddress().c_str(), session->getRoomNumber());
+		SLog(L"! id[%d] is in already in the [%d] room.", session->getID(), session->getRoomNumber());
 		return false;
 	}
 
@@ -47,7 +47,7 @@ BOOL RoomManager::exitRoom(Session* session)
 
 	if (roomNum == NOT_IN_ROOM)
 	{
-		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		SLog(L"! id[%d] is NOT in room.", session->getID());
 		return false;
 	}
 
@@ -57,7 +57,7 @@ BOOL RoomManager::exitRoom(Session* session)
 	}
 	else
 	{
-		SLog(L"! [%S]'s roomNum_ is over GAMEROOM_CAPACITY. ", session->getAddress().c_str());
+		SLog(L"! id[%d]'s roomNum_ is over GAMEROOM_CAPACITY. ", session->getID());
 		return false;
 	}
 
@@ -102,7 +102,7 @@ BOOL RoomManager::setPlayerReady(Session* session, BOOL b)
 	UINT roomNum = session->getRoomNumber();
 	if (roomNum == NOT_IN_ROOM)
 	{
-		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		SLog(L"! id[%d] is NOT in room.", session->getID());
 		return false;
 	}
 	return roomArray_[roomNum]->setPlayerReady(session, b);
@@ -115,7 +115,7 @@ BOOL RoomManager::setPlayerCharacter(Session * session, S_CHARACTER c)
 	UINT roomNum = session->getRoomNumber();
 	if (roomNum == NOT_IN_ROOM)
 	{
-		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		SLog(L"! id[%d] is NOT in room.", session->getID());
 		return false;
 	}
 
@@ -129,7 +129,7 @@ BOOL RoomManager::startRoom(Session * session)
 	UINT roomNum = session->getRoomNumber();
 	if (roomNum == NOT_IN_ROOM)
 	{
-		SLog(L"! [%S] is NOT in room.", session->getAddress().c_str());
+		SLog(L"! id[%d] is NOT in room.", session->getID());
 		return false;
 	}
 

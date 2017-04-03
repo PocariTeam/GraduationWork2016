@@ -24,15 +24,13 @@ private:
 	const char*					fileName = "Jungle_player4.xml";
 	UserAllocator*				userAllocator_;
 	NxPhysicsSDK*				physicsSDK_;
-	UINT32						sceneSeedNum;
+	UINT						sceneSeedNum;
 	NxScene*					scenes_[GAMEROOM_CAPACITY];
 	NxControllerManager*		CCTManager_[GAMEROOM_CAPACITY];
 	// 엔티티와 컨트롤러는 도형충돌그룹, 충돌리포트는 액터그룹
 	CEntityReport				entityReport_;		// P v P ( Sweep Collision )
 	CControllerReport			controllerReport_;  // Controller Collision
 	CCollisionReport			collisionReport_;	// Normal Collision
-
-	
 
 	Lock						lock_;
 
@@ -46,14 +44,15 @@ public:
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
 
 	BOOL initPhysX();
-	BOOL LoadSceneFromFile(UINT32 roomNum);
-	BOOL SetupScene(UINT32 roomNum);
-	void ReleaseScene(UINT32 roomNum);
-	void updateScene(UINT32 roomNum, float fTimeDelta);
-	NxControllerManager* getCCTManager(UINT32 roomNum) { return CCTManager_[roomNum]; };
+	BOOL LoadSceneFromFile(UINT roomNum);
+	BOOL SetupScene(UINT roomNum);
+	void ReleaseScene(UINT roomNum);
+	void updateScene(UINT roomNum, float fTimeDelta);
+	NxControllerManager* getCCTManager(UINT roomNum) { return CCTManager_[roomNum]; };
+	void updateCCT(UINT roomNum);
 
 	void SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
-	NxController* CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT32 roomNum);
+	NxController* CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT roomNum);
 private:
 	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_MAX ];
 };

@@ -37,6 +37,8 @@ public:
 	int			Update( const float& fTimeDelta );
 	void		Render( ID3D11DeviceContext* pContext );
 	void		Release_Scene( void );
+
+	void		UpdateCharactercontrollerMgr();
 public:
 	HRESULT		Initialize( ID3D11Device* pDevice );
 	HRESULT		Load_Kinematic( void );

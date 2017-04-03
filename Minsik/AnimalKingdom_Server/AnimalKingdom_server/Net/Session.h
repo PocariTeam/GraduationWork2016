@@ -39,27 +39,27 @@ class Session
 	SOCKADDR_IN			addrInfo_;
 	char				packetBuffer_[PACKET_BUF_SIZE];
 
-	oid_t				id_;
-	INT32				roomNum_;
+	UINT				id_;
+	INT				roomNum_;
 
 public:
-	size_t  			totalBytes_;
-	size_t				storedBytes_;
+	UINT  				totalBytes_;
+	UINT				storedBytes_;
 	overlappedEx		recvOver_;
 
 public:
 	Session();
 	void			initialize();
 	bool			onAccept(SOCKET socket, SOCKADDR_IN addrInfo);
-	void			onRecv(size_t recvSize);
+	void			onRecv(UINT recvSize);
 	void			recv();
 	void			send(char *sendBuf);
 
 	str_t			getAddress();
-	oid_t			getID()				{ return id_; };
-	void			setID(oid_t id)		{ id_ = id; };
+	UINT			getID()				{ return id_; };
+	void			setID(UINT id)		{ id_ = id; };
 	SOCKET&			getSocket()			{ return socket_; };
-	INT32			getRoomNumber()		{ return roomNum_; };
+	INT				getRoomNumber()		{ return roomNum_; };
 	void			setRoomNumber(INT32 n) { roomNum_ = n; };
 
 };

@@ -7,7 +7,7 @@ class Session;
 
 class SessionManager : public Singleton<SessionManager>{
 	list<Session*>				sessionList_;
-	oid_t						idSeed_;
+	UINT						idSeed_;
 	int						    sessionCount_;
 	Lock                        lock_;
 

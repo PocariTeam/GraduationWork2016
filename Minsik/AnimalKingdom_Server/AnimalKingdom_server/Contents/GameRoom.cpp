@@ -32,7 +32,7 @@ BOOL GameRoom::enter(Session* session)
 		playerList_.push_back(new Player(session, roomNum_, isMaster));
 		++playerCount_;
 		session->setRoomNumber(roomNum_);
-		SLog(L"* [%S] enters the [%d] room. ", session->getAddress().c_str(),roomNum_ );
+		SLog(L"* id[%d] enters the [%d] room. ", session->getID(),roomNum_ );
 		return true;
 	}
 	else
@@ -54,7 +54,7 @@ BOOL GameRoom::startGame(Session* session)
 
 	if (playerCount_ < MINIMUM_START_COUNT)
 	{
-		SLog(L"! the [%d] room's the number of player is under 2. ", roomNum_);
+		SLog(L"! the [%d] room's the number of player is under %d(minimum). ", roomNum_, MINIMUM_START_COUNT);
 		return false;
 	}
 		
@@ -67,14 +67,14 @@ BOOL GameRoom::startGame(Session* session)
 		}
 		else if ((*p)->getReady() == false)
 		{
-			SLog(L"! [%S] is not ready in the [%d] room. ", session->getAddress().c_str(), roomNum_);
+			SLog(L"! id[%d] is not ready in the [%d] room. ", session->getID(), roomNum_);
 			return false;
 		}
 	}
 
 	if (startCheck)
 	{
-		bool loadCheck = PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber());
+		BOOL loadCheck = PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber());
 		if (loadCheck && GameRoom::setupGame())
 		{
 			isPlaying_ = true;
@@ -87,7 +87,7 @@ BOOL GameRoom::startGame(Session* session)
 		}
 	}
 
-	SLog(L"! [%S] is not master of the [%d] room. ", session->getAddress().c_str(), roomNum_);
+	SLog(L"! id[%d] is not master of the [%d] room. ", session->getID(), roomNum_);
 	return false;
 }
 
@@ -125,7 +125,7 @@ BOOL GameRoom::exit(Session* session)
 	{
 		if ((*p)->getSession() == session)
 		{
-			SLog(L"* [%S] exits from the [%d] room. ", session->getAddress().c_str(), roomNum_);
+			SLog(L"* id[%d] exits from the [%d] room. ", session->getID(), roomNum_);
 			playerList_.remove(*p);
 			--playerCount_;
 
@@ -165,15 +165,15 @@ BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 		{
 			if ((*p)->getMaster())
 			{
-				SLog(L"! [%S] is a master of the [%d] room. so it cannot be ready. ", session->getAddress().c_str(), roomNum_);
+				SLog(L"! id[%d] is a master of the [%d] room. so it cannot be ready. ", session->getID(), roomNum_);
 				return false;
 			}
 			(*p)->setReady(b);
-			SLog(L"* [%S] got ready[%d] in the [%d] room. ", session->getAddress().c_str(), b, roomNum_);
+			SLog(L"* id[%d] got ready[%d] in the [%d] room. ", session->getID(), b, roomNum_);
 			return true;
 		}
 	}
-	SLog(L"! [%S] is not in the [%d] room. ", session->getAddress().c_str(), roomNum_);
+	SLog(L"! id[%d] is not in the [%d] room. ", session->getID(), roomNum_);
 
 	return false;
 }
@@ -194,7 +194,7 @@ BOOL GameRoom::setPlayerCharacter(Session* session, S_CHARACTER ch)
 		{
 			if ((*p)->getReady())
 			{
-				SLog(L"! [%S] is ready now. so it cannot be changed.", session->getAddress().c_str());
+				SLog(L"! id[%d] is ready now. so it cannot be changed.", session->getID());
 				return false;
 			}
 			if (ch < 0 || ch > CHARACTER_MAX)
@@ -203,11 +203,11 @@ BOOL GameRoom::setPlayerCharacter(Session* session, S_CHARACTER ch)
 				return false;
 			}
 			(*p)->setCharacter(ch);
-			SLog(L"* [%S] chose character[%d] in the [%d] room. ", session->getAddress().c_str(), ch, roomNum_);
+			SLog(L"* id[%d] chose character[%d] in the [%d] room. ", session->getID(), ch, roomNum_);
 			return true;
 		}
 	}
-	SLog(L"! [%S] is not in the [%d] room. ", session->getAddress().c_str(), roomNum_);
+	SLog(L"! id[%d] is not in the [%d] room. ", session->getID(), roomNum_);
 
 	return false;
 }
@@ -271,7 +271,6 @@ void GameRoom::sendPlayerList()
 
 void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir, STATE state)
 {
-
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
@@ -307,8 +306,8 @@ void GameRoom::sendStartGame()
 
 void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
-	PhysXManager::getInstance().updateScene(roomNum, 17);
-	RoomManager::getInstance().update( roomNum, 17.f );
+	PhysXManager::getInstance().updateScene((UINT)roomNum, 17);
+	RoomManager::getInstance().update( (UINT)roomNum, 17.f );
 }
 
 void GameRoom::update( float fTimeDelta )

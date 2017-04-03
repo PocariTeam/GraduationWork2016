@@ -124,6 +124,6 @@ void PacketManager::sendRoomList(Session * session)
 
 	session->send((char*)&packet);
 
-	SLog(L"* room list was sent to [%S]", session->getAddress().c_str());
+	SLog(L"* room list was sent to id[%d]", session->getID());
 
 }

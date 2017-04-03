@@ -24,7 +24,7 @@ public:
 	BOOL		moveRequest(Session * session, time_t tick, Vector3 vDir, STATE state);
 	void		sendPlayerList();
 	void		sendStartGame();
-	void		sendMovePacket(UINT32 id, time_t tick, Vector3 vDir, STATE state);
+	void		sendMovePacket(UINT id, time_t tick, Vector3 vDir, STATE state);
 	UINT		getPlayerCount() { return playerCount_; }
 
 	static void updateTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);

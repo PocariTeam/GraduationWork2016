@@ -223,10 +223,6 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_ANS_Move:
 	{
 		S_Move* packet = ( S_Move* )m_saveBuf;
-		if( m_nPlayerID == packet->id )
-		{
-			break;
-		}
 		( ( CJungle* )m_pScene )->Move( packet->id, packet->tick, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
 		break;
 	}

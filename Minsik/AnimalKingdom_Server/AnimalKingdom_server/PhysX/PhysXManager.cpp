@@ -57,7 +57,7 @@ void PhysXManager::SetCollisionGroup(NxActor* pActor, NxCollisionGroup eGroup)
 		dpActorShapeArray[iActorShapeCnt]->setGroup(eGroup);
 }
 
-BOOL PhysXManager::LoadSceneFromFile(UINT32 roomNum)
+BOOL PhysXManager::LoadSceneFromFile(UINT roomNum)
 {
 	SAFE_LOCK(lock_);
 
@@ -93,7 +93,7 @@ BOOL PhysXManager::LoadSceneFromFile(UINT32 roomNum)
 	return success;
 }
 
-NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale, UINT32 roomNum)
+NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVec3& startPos, NxReal scale, UINT roomNum)
 {
 	//actor->raiseActorFlag(NX_AF_DISABLE_RESPONSE);
 
@@ -146,7 +146,7 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 }
 
 
-BOOL PhysXManager::SetupScene(UINT32 roomNum)
+BOOL PhysXManager::SetupScene(UINT roomNum)
 {
 	SAFE_LOCK(lock_);
 
@@ -231,7 +231,7 @@ BOOL PhysXManager::SetupScene(UINT32 roomNum)
 	return true;
 }
 
-void PhysXManager::ReleaseScene(UINT32 roomNum)
+void PhysXManager::ReleaseScene(UINT roomNum)
 {
 
 	if (CCTManager_[roomNum])
@@ -248,12 +248,17 @@ void PhysXManager::ReleaseScene(UINT32 roomNum)
 	}
 }
 
-void PhysXManager::updateScene(UINT32 roomNum, float fTimeDelta)
+void PhysXManager::updateScene(UINT roomNum, float fTimeDelta)
 {
 	CCTManager_[roomNum]->updateControllers();
 	scenes_[roomNum]->simulate(fTimeDelta);
 	scenes_[roomNum]->flushStream();
 	scenes_[roomNum]->fetchResults(NX_RIGID_BODY_FINISHED, true);
+}
+
+void PhysXManager::updateCCT(UINT roomNum)
+{
+	CCTManager_[roomNum]->updateControllers();
 }
 
 BOOL PhysXManager::initPhysX()

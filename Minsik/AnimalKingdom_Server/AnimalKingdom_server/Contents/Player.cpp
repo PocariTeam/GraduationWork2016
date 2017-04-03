@@ -95,14 +95,16 @@ void Player::setMoveDir_State(time_t tick, Vector3 vDir, STATE state)
 
 	//NxU32	dwCollisionFlag;
 	//// 방향이 바뀌었던 시간차만큼 되돌아간다.
-	//NxVec3 pastDir = player->m_vMoveDir * player->m_fSpeed * lagTick.count();
+	//NxVec3 pastDir = moveDir_ * speed_ * (FLOAT)lagTick.count();
 	////pastDir.y += -GRAVITY * GRAVITY * lagTick.count();
-	//cct->move(-pastDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-
+	//cct_->move(-pastDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+	//PhysXManager::getInstance().updateCCT(roomNum_);
+	//
 	//// 시간차만큼 다시 원래 위치로 돌아간다.
-	//NxVec3 curDir = newDir * player->m_fSpeed * lagTick.count();
+	//NxVec3 curDir = newDir * speed_ * (FLOAT)lagTick.count();
 	////curDir.y += -GRAVITY * GRAVITY * lagTick.count();
-	//cct->move(curDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+	//cct_->move(curDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
+	//PhysXManager::getInstance().updateCCT(roomNum_);
 
 	moveDir_ = newDir;
 	stateMachine_->Change_State(state);
