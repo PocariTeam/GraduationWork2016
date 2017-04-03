@@ -319,7 +319,7 @@ BOOL PhysXManager::Load_Kinematic( void )
 	return TRUE;
 }
 
-NxActor** PhysXManager::CreateCharacterActors( S_CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt )
+NxActor** PhysXManager::CreateCharacterActors( CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt )
 {
 	DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ eCharacterType ].size();
 	NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];

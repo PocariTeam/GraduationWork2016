@@ -12,6 +12,9 @@ class CButton_UI;
 class CNormal_UI;
 class CThreeD_UI;
 class CRenderer;
+class CTextureMgr;
+class CAnimationMgr;
+class CAnimateMeshMgr;
 class CNetworkMgr;
 class CInputMgr;
 class CRoom
@@ -49,9 +52,12 @@ private:
 	/* Check Key */
 	bool			m_bOverlapped;
 	/* Singleton */
-	CRenderer*		m_pRenderer;
-	CInputMgr*		m_pInputMgr;
-	CNetworkMgr*	m_pNetworkMgr;
+	CRenderer*			m_pRenderer;
+	CInputMgr*			m_pInputMgr;
+	CNetworkMgr*		m_pNetworkMgr;
+	CTextureMgr*		m_pTextureMgr;
+	CAnimateMeshMgr*	m_pAnimateMeshMgr;
+	CAnimationMgr*		m_pAnimationMgr;
 };
 
 

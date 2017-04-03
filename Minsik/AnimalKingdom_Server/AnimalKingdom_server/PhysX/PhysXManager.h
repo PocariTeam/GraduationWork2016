@@ -40,7 +40,7 @@ public:
 	BOOL Load_Kinematic( void );
 
 	/* dsf */
-	NxActor** CreateCharacterActors( S_CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
+	NxActor** CreateCharacterActors( CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
 
 	BOOL initPhysX();

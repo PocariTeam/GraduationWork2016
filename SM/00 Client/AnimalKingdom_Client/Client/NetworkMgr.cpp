@@ -303,7 +303,7 @@ void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state)
 }
 
 
-void CNetworkMgr::sendSelectCharacter( S_CHARACTER ch )
+void CNetworkMgr::sendSelectCharacter( CHARACTER ch )
 {
 	C_RoomCharacter* pRoomCharacter = ( C_RoomCharacter* )m_sendBuf;
 	pRoomCharacter->header.size = sizeof( C_RoomCharacter );

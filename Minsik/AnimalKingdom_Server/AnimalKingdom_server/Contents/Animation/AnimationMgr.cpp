@@ -8,7 +8,7 @@ CAnimationMgr::~CAnimationMgr()
 	this->Release();
 }
 
-CAnimator* CAnimationMgr::Clone( const S_CHARACTER& eType )
+CAnimator* CAnimationMgr::Clone( const CHARACTER& eType )
 {
 	CAnimator*	pController = Find( eType );
 	if( nullptr == pController ) return nullptr;
@@ -16,7 +16,7 @@ CAnimator* CAnimationMgr::Clone( const S_CHARACTER& eType )
 	return pController->Clone();
 }
 
-CAnimator* CAnimationMgr::Find( const S_CHARACTER& eType )
+CAnimator* CAnimationMgr::Find( const CHARACTER& eType )
 {
 	if( eType < CHARACTER_MAX )
 		return m_vecAnimator[ eType ];
@@ -47,7 +47,7 @@ HRESULT CAnimationMgr::Load( const char* pFilePath )
 			if( -1 == iState )
 				Add( szPath );
 			else
-				Add( ( S_CHARACTER )iCharacterType, ( STATE )iState, szPath );
+				Add( ( CHARACTER )iCharacterType, ( STATE )iState, szPath );
 		}
 	}
 
@@ -75,7 +75,7 @@ DWORD CAnimationMgr::Release( void )
 	return 0;
 }
 
-HRESULT CAnimationMgr::Add( S_CHARACTER eCharacterType, STATE eState, const char* pFilePath )
+HRESULT CAnimationMgr::Add( CHARACTER eCharacterType, STATE eState, const char* pFilePath )
 {
 	m_vecAnimator[ eCharacterType ]->Add( eState, pFilePath );
 

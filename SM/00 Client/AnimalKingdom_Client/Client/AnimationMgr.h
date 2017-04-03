@@ -4,7 +4,7 @@
 #define AnimationMgr_h__
 
 #include "Singleton.h"
-#include "Enum.h"
+#include "Protocol.h"
 
 class CGameObject;
 class CAnimator;

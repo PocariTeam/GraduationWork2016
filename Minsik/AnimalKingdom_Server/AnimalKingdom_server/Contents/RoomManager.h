@@ -18,7 +18,7 @@ public:
 	void			update( UINT roomNum, float fTimeDelta );
 
 	BOOL			setPlayerReady(Session* session, BOOL b);
-	BOOL			setPlayerCharacter(Session* session, S_CHARACTER c);
+	BOOL			setPlayerCharacter(Session* session, CHARACTER c);
 	BOOL			startRoom(Session* session);
 	BOOL			setupRoom(UINT32 roomNum);
 

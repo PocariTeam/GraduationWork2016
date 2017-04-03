@@ -42,19 +42,18 @@ struct RoomInfo
 	BOOL		playing;
 };
 
-typedef enum {
-	CHAMEL,
-	MONKEY
-}S_CHARACTER;
 #define CHARACTER_MAX     (2)
 
 enum eState_Animation { STATE_IDLE, STATE_ATT1, STATE_ATT2, STATE_RUN, STATE_JUMP, STATE_DEFEND, STATE_BEATEN1, STATE_BEATEN2, /*STATE_SPECIAL, */STATE_DOWN, /*STATE_STANDUP, STATE_DIE, */STATE_END };
 using STATE = eState_Animation;
 
+enum eCharacter_Type { CHRACTER_NONE = -1, CHARACTER_CHM, CHARACTER_MON, CHARACTER_END };
+using CHARACTER = eCharacter_Type;
+
 struct PlayerInfo
 {
 	UINT64		id;
-	S_CHARACTER	character;
+	CHARACTER	character;
 	BOOL		isReady;
 	BOOL		isMaster;
 };
@@ -82,7 +81,7 @@ struct C_RoomReady
 struct C_RoomCharacter
 {
 	HEADER		header;
-	S_CHARACTER	character;
+	CHARACTER	character;
 };
 
 struct S_Login

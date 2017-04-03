@@ -3,9 +3,6 @@
 #ifndef Enum_h__
 #define Enum_h__
 
-enum eCharacter_Type { CHARACTER_CHM, CHARACTER_MON, CHARACTER_END };
-using CHARACTER = eCharacter_Type;
-
 enum eCollision_Group{ COL_STATIC, COL_DYNAMIC, COL_MINE, COL_OTHERS, COL_END };
 using COL_GROUP = eCollision_Group;
 

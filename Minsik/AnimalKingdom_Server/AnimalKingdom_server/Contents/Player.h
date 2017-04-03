@@ -8,7 +8,7 @@ class CStateMachine;
 
 class Player {
 	Session*		session_;
-	S_CHARACTER		character_;
+	CHARACTER		character_;
 
 	UINT			roomNum_;
 	BOOL			isReady_;
@@ -39,7 +39,7 @@ public:
 	BOOL			getMaster() { return isMaster_; }
 	void			setMaster(BOOL b);
 	void			setReady(BOOL b);
-	void			setCharacter(S_CHARACTER c);
+	void			setCharacter( CHARACTER c);
 	void			setCCT(NxController* cct) { cct_ = cct; }
 	void			setActorArray( NxActor** dpActorArray, UINT actorcnt ) { actorArray_ = dpActorArray; actorCount_ = actorcnt; }
 	void			setAnimator( CAnimator* pAnimator ) { animator_ = pAnimator; }

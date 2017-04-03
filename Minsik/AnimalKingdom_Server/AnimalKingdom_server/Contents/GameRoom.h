@@ -19,7 +19,7 @@ public:
 	BOOL		setupGame();
 	BOOL		exit(Session* s);
 	BOOL		setPlayerReady(Session* s, BOOL b);
-	BOOL		setPlayerCharacter(Session* s, S_CHARACTER c);
+	BOOL		setPlayerCharacter(Session* s, CHARACTER c);
 	RoomInfo	getRoomInfo();
 	BOOL		moveRequest(Session * session, time_t tick, Vector3 vDir, STATE state);
 	void		sendPlayerList();

@@ -31,7 +31,7 @@ public:
 	void	sendReadyRoom();
 	void	sendStartRoom();
 	void	sendMoveCharacter(NxVec3 dir, STATE state);
-	void	sendSelectCharacter( S_CHARACTER ch );
+	void	sendSelectCharacter( CHARACTER ch );
 	void	sendCharacterState(STATE s);
 
 public:

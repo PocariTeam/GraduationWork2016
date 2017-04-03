@@ -106,7 +106,7 @@ BOOL GameRoom::setupGame()
 	{
 		NxController* pController = cctManager->getController( i++ );
 		UINT iActorCnt{};
-		S_CHARACTER character = ( *p )->getPlayerInfo().character;
+		CHARACTER character = ( *p )->getPlayerInfo().character;
 
 		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors( character, roomNum_, iActorCnt );
 		( *p )->setActorArray( dpActors, iActorCnt );
@@ -178,7 +178,7 @@ BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 	return false;
 }
 
-BOOL GameRoom::setPlayerCharacter(Session* session, S_CHARACTER ch)
+BOOL GameRoom::setPlayerCharacter(Session* session, CHARACTER ch)
 {
 	SAFE_LOCK(lock_);
 

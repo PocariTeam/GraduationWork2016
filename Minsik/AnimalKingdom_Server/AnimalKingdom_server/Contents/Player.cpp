@@ -2,7 +2,7 @@
 #include "Player.h"
 
 Player::Player(Session * s, UINT room, BOOL master)
-	: lock_(L"Player"), session_(s), character_(S_CHARACTER::CHAMEL), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
+	: lock_(L"Player"), session_(s), character_( CHARACTER::CHRACTER_NONE), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 50.0f;
@@ -64,7 +64,7 @@ void Player::setReady(BOOL b)
 	isReady_ = b;
 }
 
-void Player::setCharacter(S_CHARACTER c)
+void Player::setCharacter( CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 	character_ = c;
