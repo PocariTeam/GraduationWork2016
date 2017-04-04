@@ -49,5 +49,5 @@ public:
 	UINT			getActorCount() { return actorCount_; }
 	CStateMachine*  getFSM() { return stateMachine_; }
 
-	void			setMoveDir_State(time_t tick, Vector3 vDir, STATE state);
+	void			setMoveDir_State(Vector3 vDir, STATE state);
 };

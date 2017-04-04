@@ -55,7 +55,7 @@ void PacketManager::recvProcess(Session* session, char* buf)
 		}
 		break;
 	case PAK_ID::PAK_REQ_Move:
-		result = RoomManager::getInstance().moveRequestRoom(session, ((C_Move*)buf)->tick, ((C_Move*)buf)->vDir, ((C_Move*)buf)->state);
+		result = RoomManager::getInstance().moveRequestRoom(session, ((C_Move*)buf)->vDir, ((C_Move*)buf)->state);
 		break;
 	default:
 		SLog(L"! Unkown Packet packetID: %d", pHeader->packetID);
@@ -71,7 +71,7 @@ void PacketManager::sendLogin(Session *session)
 {
 	S_Login packet;
 	packet.header.packetID = PAK_ID::PAK_ANS_Login;
-	packet.header.size = sizeof(S_Login);
+	packet.header.size = sizeof(packet);
 	packet.id = session->getID();
 
 	session->send((char*)&packet);
@@ -81,7 +81,7 @@ void PacketManager::sendRejectRequest(Session* session)
 {
 	HEADER packet;
 	packet.packetID = PAK_ID::PAK_RJT_Request;
-	packet.size = sizeof(HEADER);
+	packet.size = sizeof(packet);
 
 	session->send((char*)&packet);
 }
@@ -117,7 +117,7 @@ void PacketManager::sendRoomList(Session * session)
 {
 	S_RoomList packet;
 	packet.header.packetID = PAK_ID::PAK_ANS_RoomList;
-	packet.header.size = sizeof(S_RoomList);
+	packet.header.size = sizeof(packet);
 	RoomInfo *p = RoomManager::getInstance().getRoomList();
 	memcpy(packet.roomInfo, p, sizeof(RoomInfo)*GAMEROOM_CAPACITY);
 	SAFE_DELETE_ARRAY(p);

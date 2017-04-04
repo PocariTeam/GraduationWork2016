@@ -70,7 +70,7 @@ void Player::setCharacter( CHARACTER c)
 	character_ = c;
 }
 
-void Player::setMoveDir_State(time_t tick, Vector3 vDir, STATE state)
+void Player::setMoveDir_State(Vector3 vDir, STATE state)
 {
 	NxVec3	newDir;
 	newDir.x = vDir.x;

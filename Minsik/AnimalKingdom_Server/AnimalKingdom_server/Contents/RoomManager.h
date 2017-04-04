@@ -22,7 +22,7 @@ public:
 	BOOL			startRoom(Session* session);
 	BOOL			setupRoom(UINT32 roomNum);
 
-	BOOL			moveRequestRoom(Session* session, time_t tick, Vector3 vDir, STATE state);
+	BOOL			moveRequestRoom(Session* session, Vector3 vDir, STATE state);
 
 	UINT			getPlayerCountRoom(UINT32 roomNum);
 

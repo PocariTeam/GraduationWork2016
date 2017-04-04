@@ -221,7 +221,7 @@ RoomInfo GameRoom::getRoomInfo()
 	return r;
 }
 
-BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir, STATE state)
+BOOL GameRoom::moveRequest(Session* session, Vector3 vDir, STATE state)
 {
 	SAFE_LOCK(lock_);
 
@@ -229,8 +229,8 @@ BOOL GameRoom::moveRequest(Session* session, time_t tick, Vector3 vDir, STATE st
 	{
 		if ((*p)->getSession() == session)
 		{
-			(*p)->setMoveDir_State(tick, vDir, state);
-			sendMovePacket(session->getID(), tick, vDir, state);
+			(*p)->setMoveDir_State(vDir, state);
+			sendMovePacket(session->getID(), vDir, state);
 			return true;
 		}
 	}
@@ -269,7 +269,7 @@ void GameRoom::sendPlayerList()
 	
 }
 
-void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir, STATE state)
+void GameRoom::sendMovePacket(UINT32 id, Vector3 vDir, STATE state)
 {
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
@@ -278,7 +278,6 @@ void GameRoom::sendMovePacket(UINT32 id, time_t tick, Vector3 vDir, STATE state)
 		packet.header.packetID = PAK_ID::PAK_ANS_Move;
 		packet.header.size = sizeof(S_Move);
 		packet.id = id;
-		packet.tick = tick;
 		packet.vDir = vDir;
 		packet.state = state;
 		session->send((char*)&packet);
@@ -292,10 +291,9 @@ void GameRoom::sendStartGame()
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
 		Session* session = (*iter)->getSession();
-		S_StartGame packet;
-		packet.header.packetID = PAK_ID::PAK_ANS_StartGame;
-		packet.header.size = sizeof(S_StartGame);
-		packet.startTick = Clock::getInstance().systemTick();
+		HEADER packet;
+		packet.packetID = PAK_ID::PAK_ANS_StartGame;
+		packet.size = sizeof(packet);
 		session->send((char*)&packet);
 	}
 

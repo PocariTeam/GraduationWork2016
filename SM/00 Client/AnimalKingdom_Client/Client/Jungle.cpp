@@ -71,7 +71,7 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render( pContext );
 }
 
-void CJungle::Move( UINT32 id, time_t tick, XMFLOAT3 vDir, STATE state )
+void CJungle::Move( UINT32 id, XMFLOAT3 vDir, STATE state )
 {
 	// FIX ME: 임시로 받아와서 쓰지만 player 자체의 멤버함수에서 처리하면 더 좋을 듯 하다.
 	NxVec3	newDir;

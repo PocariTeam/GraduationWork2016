@@ -207,10 +207,9 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		S_StartGame* packet = ( S_StartGame* )m_saveBuf;
+		HEADER* packet = (HEADER* )m_saveBuf;
 		printf( "========================================= \n" );
 		printf( "\t\t [게임시작] \t\t \n" );
-		printf( "시작시간: %d \n", ( int )packet->startTick );
 		printf( "========================================= \n" );
 		m_pScene->NotifyGameStart();
 		break;
@@ -223,7 +222,7 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_ANS_Move:
 	{
 		S_Move* packet = ( S_Move* )m_saveBuf;
-		( ( CJungle* )m_pScene )->Move( packet->id, packet->tick, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
+		( ( CJungle* )m_pScene )->Move( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
 		break;
 	}
 	}
@@ -297,7 +296,6 @@ void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state )
 	pMove->vDir.y = dir.y;
 	pMove->vDir.z = dir.z;
 	pMove->state = state;
-	pMove->tick = chrono::system_clock::to_time_t( chrono::system_clock::now() );
 
 	sendBufData();
 }

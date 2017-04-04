@@ -163,7 +163,7 @@ void packetProcess(char* buf)
 
 	switch (header->packetID)
 	{
-	case PAK_ANS_LOGIN:
+	case PAK_ID::PAK_ANS_Login:
 	{
 		S_Login *packet = (S_Login*)buf;
 		g_ID = packet->id;
@@ -209,10 +209,9 @@ void packetProcess(char* buf)
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		S_StartGame* packet = (S_StartGame*)buf;
+		HEADER* packet = (HEADER*)buf;
 		printf("========================================= \n");
-		printf("\t\t [게임시작] %\t\t \n");
-		printf("시작시간: %d \n", packet->startTick);
+		printf("\t\t [게임시작] \t\t \n");
 		printf("========================================= \n");
 		break;
 	}

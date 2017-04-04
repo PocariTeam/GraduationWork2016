@@ -104,18 +104,11 @@ struct S_PlayerList
 	PlayerInfo	playerInfo[PLAYER_CAPACITY];
 };
 
-struct S_StartGame
-{
-	HEADER		header;
-	time_t		startTick;
-};
-
 /////////////////////////////////////////////////////////////
 
 struct C_Move
 {
 	HEADER		header;
-	time_t		tick;
 	Vector3		vDir;
 	STATE		state;
 };
@@ -124,7 +117,6 @@ struct S_Move
 {
 	HEADER		header;
 	UINT		id;
-	time_t		tick;
 	Vector3		vDir;
 	STATE		state;
 };
