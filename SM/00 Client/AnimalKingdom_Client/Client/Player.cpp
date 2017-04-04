@@ -148,11 +148,30 @@ XMFLOAT4X4 CPlayer::GetWorld()
 	return Out;
 }
 
-void CPlayer::ChangeState( STATE state )
+void CPlayer::Move( NxVec3& vDir, STATE eState )
 {
-	if( m_pStateMachine->GetCurrentState() == state )
-		return;
-	m_pStateMachine->Change_State( state );
+	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
+		
+	if( false == vDir.isZero() )
+	{
+		NxReal fRotateY = acos( vDefault_Dir.dot( vDir ) );
+		NxVec3 vCross = vDefault_Dir;
+		vCross = vCross.cross( vDir );
+		fRotateY *= ( vCross.y >= 0.0f ) ? -1.0f : 1.0f;
+		m_vRotate.y = fRotateY;
+	}
+
+	m_vDir = vDir;
+	m_pStateMachine->Change_State( eState );
+}
+
+void CPlayer::Sync( NxVec3& vPos, float fRotateY )
+{
+	vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
+
+	NxU32	dwCollisionFlag;
+	m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	m_vRotate.y = fRotateY;
 }
 
 CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType )

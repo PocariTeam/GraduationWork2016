@@ -18,8 +18,9 @@ public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
 	void  Render( ID3D11DeviceContext* pContext );
-	void  Move(UINT32 id, XMFLOAT3 vDir, STATE state);
-	void	NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
+	void  Move( UINT id, XMFLOAT3 vDir, STATE eState );
+	void  Sync( UINT id, XMFLOAT3 vPos, float fRotateY );
+	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:

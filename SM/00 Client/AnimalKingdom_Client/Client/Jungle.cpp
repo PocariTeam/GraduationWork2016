@@ -71,46 +71,17 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render( pContext );
 }
 
-void CJungle::Move( UINT32 id, XMFLOAT3 vDir, STATE state )
+void CJungle::Move( UINT id, XMFLOAT3 vDir, STATE eState )
 {
-	// FIX ME: 임시로 받아와서 쓰지만 player 자체의 멤버함수에서 처리하면 더 좋을 듯 하다.
-	NxVec3	newDir;
-	newDir.x = vDir.x;
-	newDir.y = vDir.y;
-	newDir.z = vDir.z;
+	NxVec3	vDirection{ vDir.x, vDir.y, vDir.z };
+	vDirection.normalize();
+	m_mapPlayer.find( id )->second->Move( vDirection, eState );
+}
 
-	CPlayer* player = m_mapPlayer.find( id )->second;
-	auto cct = player->GetCharacterController();
-	newDir.normalize();
-	if( false == newDir.isZero() ) // 방향전환
-	{
-		NxVec3 oldLook = cct->getActor()->getGlobalPose().M.getColumn( 2 );
-		NxReal rotAngle = acos( oldLook.dot( newDir ) );
-		NxVec3 cross = oldLook;
-		cross = cross.cross( newDir );
-		rotAngle *= ( cross.y >= 0.0f ) ? -1.0f : 1.0f;
-		player->setRotateY( rotAngle );
-	}
-
-	//system_clock::time_point packetTick = system_clock::from_time_t(tick);
-	//duration<double> lagTick = system_clock::now() - packetTick;
-	////printf("지연시간: %lf 초\n", lagTick.count());
-
-	//NxU32	dwCollisionFlag;
-	//// 방향이 바뀌었던 시간차만큼 되돌아간다.
-	//NxVec3 pastDir = player->m_vMoveDir * player->m_fSpeed * lagTick.count();
-	////pastDir.y += -GRAVITY * GRAVITY * lagTick.count();
-	//cct->move(-pastDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-	//CPhysics::GetInstance()->UpdateCharactercontrollerMgr();
-
-	//// 시간차만큼 다시 원래 위치로 돌아간다.
-	//NxVec3 curDir = newDir * player->m_fSpeed * lagTick.count();
-	////curDir.y += -GRAVITY * GRAVITY * lagTick.count();
-	//cct->move(curDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-	//CPhysics::GetInstance()->UpdateCharactercontrollerMgr();
-
-	player->m_vDir = newDir;
-	player->ChangeState( state );
+void CJungle::Sync( UINT id, XMFLOAT3 vPos, float fRotateY )
+{
+	NxVec3	vPosition{ vPos.x, vPos.y, vPos.z };
+	m_mapPlayer.find( id )->second->Sync( vPosition, fRotateY );
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )

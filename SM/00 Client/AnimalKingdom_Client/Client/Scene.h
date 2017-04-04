@@ -23,6 +23,8 @@ public:
 	virtual void NotifyRoomInfo( S_RoomList* pRoomlistArray ) {}
 	virtual void NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt ) {}
 	virtual void NotifyGameStart( void ) {}
+	virtual void Move( UINT id, XMFLOAT3 vDir, STATE eState ) {}
+	virtual void Sync( UINT id, XMFLOAT3 vDir, float fRotateY ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 protected:

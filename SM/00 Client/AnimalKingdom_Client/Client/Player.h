@@ -31,9 +31,8 @@ public:
 	DWORD		GetActorCnt( void ) { return m_dwActorCnt; }
 	NxController* GetCharacterController( void ) { return m_pCharacterController; }
 	XMFLOAT4X4	GetWorld();
-public:
-	void		setRotateY( FLOAT y ) { m_vRotate.y = y; };
-	void		ChangeState( STATE state );
+	void		Move( NxVec3& vDir, STATE eState );
+	void		Sync( NxVec3& vPos, float fRotateY );
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
 protected:
@@ -43,7 +42,6 @@ protected:
 	XMFLOAT3				m_vRotate;
 	DWORD					m_dwActorCnt;
 	CInputMgr*				m_pInputMgr;
-public:
 	float					m_fSpeed;
 	NxVec3					m_vDir;
 };

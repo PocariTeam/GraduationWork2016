@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "NetworkMgr.h"
-#include "Room.h"
-#include "Jungle.h"
-#include "Lobby.h"
+#include "Scene.h"
 #include <fstream>
 
 CNetworkMgr*	CSingleton<CNetworkMgr>::m_pInstance;
@@ -222,7 +220,7 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_ANS_Move:
 	{
 		S_Move* packet = ( S_Move* )m_saveBuf;
-		( ( CJungle* )m_pScene )->Move( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
+		m_pScene->Move( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
 		break;
 	}
 	}
