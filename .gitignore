@@ -12,3 +12,8 @@
 *.suo
 *.obj
 *.exe
+*.idb
+*.pch
+*.tlog
+*.cso
+*.ilk
