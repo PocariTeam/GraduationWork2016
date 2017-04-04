@@ -98,7 +98,6 @@ void Player::setMoveDir_State( Vector3 vDir, STATE state )
 		cross = cross.cross(newDir);
 		rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
 		m_vRotate.y = rotAngle;
-		//FIX ME!! 캐릭터 회전해줘야 함
 	}
 
 	moveDir_ = newDir;

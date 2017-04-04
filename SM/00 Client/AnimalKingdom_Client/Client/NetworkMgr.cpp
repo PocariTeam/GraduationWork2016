@@ -223,6 +223,16 @@ void CNetworkMgr::processPacket()
 		m_pScene->Move( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
 		break;
 	}
+	case PAK_ID::PAK_ANS_Sync:
+	{
+		S_Sync* packet = (S_Sync*)m_saveBuf;
+		for (unsigned int i = 0; i < m_dwPlayerCnt; ++i)
+		{
+			XMFLOAT3 position;
+			memcpy_s(&position, sizeof(position), &packet->playerPosition[i].position, sizeof(position));
+			m_pScene->Sync(packet->playerPosition[i].id, position, packet->playerPosition[i].rotY);
+		}
+	}
 	}
 }
 

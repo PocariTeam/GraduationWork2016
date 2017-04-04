@@ -86,7 +86,7 @@ void PacketManager::sendRejectRequest(Session* session)
 	session->send((char*)&packet);
 }
 
-void PacketManager::sendPlayerList(UINT32 roomNum)
+void PacketManager::sendPlayerList(UINT roomNum)
 {
 	if (roomNum == NOT_IN_ROOM)
 	{
@@ -100,7 +100,7 @@ void PacketManager::sendPlayerList(UINT32 roomNum)
 
 }
 
-void PacketManager::sendStartGame(UINT32 roomNum)
+void PacketManager::sendStartGame(UINT roomNum)
 {
 	if (roomNum == NOT_IN_ROOM)
 	{

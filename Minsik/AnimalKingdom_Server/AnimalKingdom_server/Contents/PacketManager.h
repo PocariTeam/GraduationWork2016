@@ -9,6 +9,6 @@ public:
 	void	sendLogin(Session* session);
 	void	sendRoomList(Session* session);
 	void	sendRejectRequest(Session* session);
-	void	sendPlayerList(UINT32 roomNum);
-	void	sendStartGame(UINT32 roomNum);
+	void	sendPlayerList(UINT roomNum);
+	void	sendStartGame(UINT roomNum);
 };

@@ -31,6 +31,7 @@ class Player {
 	XMFLOAT3				m_vRotate;
 public:
 	void		setRotateY( FLOAT y ) { m_vRotate.y = y; };
+	float		getRotateY() { return (float)m_vRotate.y; }
 public:
 	Player(Session* s, UINT room, BOOL master = false);
 	~Player();

@@ -5,7 +5,7 @@
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 
-#define		MINIMUM_START_COUNT		2
+#define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4
 #define		GAMEROOM_CAPACITY		8
 
@@ -22,7 +22,8 @@ typedef enum {
 	PAK_ANS_StartGame,
 	PAK_RJT_Request,
 	PAK_REQ_Move,
-	PAK_ANS_Move
+	PAK_ANS_Move,
+	PAK_ANS_Sync
 } PAK_ID;
 
 #pragma pack(push, 1)
@@ -34,6 +35,8 @@ struct Vector3
 	float x;
 	float y;
 	float z;
+	Vector3() : x(0), y(0), z(0) {};
+	Vector3(float x, float y, float z) : x(x), y(y), z(z) {};
 };
 
 struct RoomInfo
@@ -52,10 +55,17 @@ using CHARACTER = eCharacter_Type;
 
 struct PlayerInfo
 {
-	UINT64		id;
+	UINT		id;
 	CHARACTER	character;
 	BOOL		isReady;
 	BOOL		isMaster;
+};
+
+struct PlayerPosition
+{
+	UINT		id;
+	Vector3		position;
+	FLOAT		rotY;
 };
 
 /////////////////////////////////////////////////////////////
@@ -119,6 +129,12 @@ struct S_Move
 	UINT		id;
 	Vector3		vDir;
 	STATE		state;
+};
+
+struct S_Sync
+{
+	HEADER			header;
+	PlayerPosition	playerPosition[PLAYER_CAPACITY];
 };
 
 /////////////////////////////////////////////////////////////

@@ -81,6 +81,11 @@ void RoomManager::update( UINT roomNum, float fTimeDelta )
 	roomArray_[ roomNum ]->update( fTimeDelta );
 }
 
+void RoomManager::sendSync(UINT roomNum)
+{
+	roomArray_[roomNum]->sendSync();
+}
+
 void RoomManager::sendPlayerList( UINT32 roomNum )
 {
 	SAFE_LOCK(lock_);

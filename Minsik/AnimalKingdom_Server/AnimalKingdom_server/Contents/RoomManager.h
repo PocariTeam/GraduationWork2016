@@ -16,6 +16,7 @@ public:
 	RoomInfo		*getRoomList();
 
 	void			update( UINT roomNum, float fTimeDelta );
+	void			sendSync(UINT roomNum);
 
 	BOOL			setPlayerReady(Session* session, BOOL b);
 	BOOL			setPlayerCharacter(Session* session, CHARACTER c);

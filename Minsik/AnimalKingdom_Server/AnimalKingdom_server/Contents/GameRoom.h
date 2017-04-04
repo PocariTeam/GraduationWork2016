@@ -10,7 +10,9 @@ private:
 	UINT				playerCount_;
 	BOOL				isPlaying_;
 	Lock				lock_;
-	UINT				timerID_;
+	UINT				updateTimerID_;
+	UINT				syncTimerID_;
+
 public:
 	GameRoom(UINT roomNum);
 	~GameRoom();
@@ -28,6 +30,8 @@ public:
 	UINT		getPlayerCount() { return playerCount_; }
 
 	static void updateTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);
+	static void syncTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);
 
 	void	    update( float fTimeDelta );
+	void		sendSync();
 };

@@ -3,7 +3,7 @@
 #include "NxControllerManager.h"
 
 GameRoom::GameRoom(UINT num)
-	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), timerID_(-1)
+	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), updateTimerID_(-1)
 {
 }
 
@@ -91,32 +91,14 @@ BOOL GameRoom::startGame(Session* session)
 	return false;
 }
 
-BOOL GameRoom::setupGame()
+class SyncPacket : public Work
 {
-	NxControllerManager* cctManager = PhysXManager::getInstance().getCCTManager(roomNum_);
-
-	if (cctManager->getNbControllers() != playerCount_)
+	void tick()
 	{
-		SLog(L"! nbControllers is not equal to playerCount_. ");
-		return false;
+		
 	}
+};
 
-	int i = 0;
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
-	{
-		NxController* pController = cctManager->getController( i++ );
-		UINT iActorCnt{};
-		CHARACTER character = ( *p )->getPlayerInfo().character;
-
-		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors( character, roomNum_, iActorCnt );
-		( *p )->setActorArray( dpActors, iActorCnt );
-		( *p )->setCCT( pController );
-		( *p )->setAnimator( CAnimationMgr::getInstance().Clone( character ) );
-	}
-
-	return true;
-	
-}
 
 BOOL GameRoom::exit(Session* session)
 {
@@ -135,7 +117,8 @@ BOOL GameRoom::exit(Session* session)
 			}
 			else if (playerCount_ == 0 && isPlaying_)
 			{
-				timeKillEvent(timerID_);
+				timeKillEvent(updateTimerID_);
+				timeKillEvent(syncTimerID_);
 				PhysXManager::getInstance().ReleaseScene(roomNum_);
 				isPlaying_ = false;
 			}
@@ -269,7 +252,7 @@ void GameRoom::sendPlayerList()
 	
 }
 
-void GameRoom::sendMovePacket(UINT32 id, Vector3 vDir, STATE state)
+void GameRoom::sendMovePacket(UINT id, Vector3 vDir, STATE state)
 {
 	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
 	{
@@ -296,21 +279,77 @@ void GameRoom::sendStartGame()
 		packet.size = sizeof(packet);
 		session->send((char*)&packet);
 	}
+}
+
+BOOL GameRoom::setupGame()
+{
+	NxControllerManager* cctManager = PhysXManager::getInstance().getCCTManager(roomNum_);
+
+	if (cctManager->getNbControllers() != playerCount_)
+	{
+		SLog(L"! nbControllers is not equal to playerCount_. ");
+		return false;
+	}
+
+	int i = 0;
+	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	{
+		NxController* pController = cctManager->getController(i++);
+		UINT iActorCnt{};
+		CHARACTER character = (*p)->getPlayerInfo().character;
+
+		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors(character, roomNum_, iActorCnt);
+		(*p)->setActorArray(dpActors, iActorCnt);
+		(*p)->setCCT(pController);
+		(*p)->setAnimator(CAnimationMgr::getInstance().Clone(character));
+	}
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
-	timerID_ = timeSetEvent(17, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	updateTimerID_ = timeSetEvent(17, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	syncTimerID_ = timeSetEvent(50, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
+
+	return true;
 }
 
 void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
-	PhysXManager::getInstance().updateScene((UINT)roomNum, 17);
-	RoomManager::getInstance().update( (UINT)roomNum, 17.f );
+	PhysXManager::getInstance().updateScene((UINT)roomNum, 17.0f);
+	RoomManager::getInstance().update( (UINT)roomNum, 17.0f );
+}
+
+void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
+{
+	RoomManager::getInstance().sendSync((UINT)roomNum);
 }
 
 void GameRoom::update( float fTimeDelta )
 {
-
 	for(auto iter = playerList_.begin(); iter != playerList_.end(); ++iter )
 		(*iter)->update( fTimeDelta );
+}
+
+void GameRoom::sendSync()
+{
+//	static int check = 0;
+//	printf("[%d] Sync \n", check++);
+
+	S_Sync packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_Sync;
+	packet.header.size = sizeof(packet);
+	int i = 0;
+	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	{
+		packet.playerPosition[i].id = (*iter)->getSession()->getID();
+		NxVec3 p = (*iter)->getCCT()->getActor()->getGlobalPosition();
+		printf("(%f, %f, %f) \n", p.x, p.y, p.z);
+		packet.playerPosition[i].position = Vector3(p.x, p.y, p.z);
+		packet.playerPosition[i].rotY = (*iter)->getRotateY();
+	}
+	
+	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	{
+		Session* session = (*iter)->getSession();
+		session->send((char*)&packet);
+	}
 }

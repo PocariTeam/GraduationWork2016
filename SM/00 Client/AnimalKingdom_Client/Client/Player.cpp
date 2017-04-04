@@ -110,7 +110,10 @@ int CPlayer::Update( const float& fTimeDelta )
 
 	NxU32	dwCollisionFlag;
 	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
-
+	
+	auto p = m_pCharacterController->getActor()->getGlobalPosition();
+	printf("%f %f %f \n", p.x,p.y,p.z);
+	
 	m_pStateMachine->Update( fTimeDelta );
 
 	return 0;

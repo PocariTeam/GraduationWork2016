@@ -189,7 +189,7 @@ void packetProcess(char* buf)
 	{
 		S_PlayerList* packet = (S_PlayerList*)buf;
 		printf("========================================= \n");
-		printf("\t\t [방 정보] %\t\t \n");
+		printf("\t\t [방 정보] \t\t \n");
 		for (int i = 0; i < packet->playerCount; ++i)
 		{
 			PlayerInfo r = packet->playerInfo[i];
