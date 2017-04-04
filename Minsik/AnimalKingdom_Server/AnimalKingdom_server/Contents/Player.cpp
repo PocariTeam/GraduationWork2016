@@ -78,7 +78,6 @@ XMFLOAT4X4 Player::GetWorld()
 	XMFLOAT4X4 Out;
 
 	XMStoreFloat4x4( &Out, mtxWorld );
-
 	return Out;
 }
 

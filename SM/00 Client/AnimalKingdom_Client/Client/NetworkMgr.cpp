@@ -205,7 +205,7 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		HEADER* packet = (HEADER* )m_saveBuf;
+		HEADER* packet = ( HEADER* )m_saveBuf;
 		printf( "========================================= \n" );
 		printf( "\t\t [게임시작] \t\t \n" );
 		printf( "========================================= \n" );
@@ -225,13 +225,14 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_Sync:
 	{
-		S_Sync* packet = (S_Sync*)m_saveBuf;
-		for (unsigned int i = 0; i < m_dwPlayerCnt; ++i)
+		S_Sync* packet = ( S_Sync* )m_saveBuf;
+		for( unsigned int i = 0; i < m_dwPlayerCnt; ++i )
 		{
 			XMFLOAT3 position;
-			memcpy_s(&position, sizeof(position), &packet->playerPosition[i].position, sizeof(position));
-			m_pScene->Sync(packet->playerPosition[i].id, position, packet->playerPosition[i].rotY);
+			memcpy_s( &position, sizeof( position ), &packet->playerPosition[ i ].position, sizeof( position ) );
+			m_pScene->Sync( packet->playerPosition[ i ].id, position, packet->playerPosition[ i ].rotY );
 		}
+		break;
 	}
 	}
 }

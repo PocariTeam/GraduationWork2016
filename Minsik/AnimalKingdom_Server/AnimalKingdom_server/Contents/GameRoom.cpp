@@ -314,8 +314,8 @@ BOOL GameRoom::setupGame()
 
 void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
-	PhysXManager::getInstance().updateScene((UINT)roomNum, 17.0f);
-	RoomManager::getInstance().update( (UINT)roomNum, 17.0f );
+	PhysXManager::getInstance().updateScene((UINT)roomNum, 1.f / 60.0f);
+	RoomManager::getInstance().update( (UINT)roomNum, 1.f / 60.0f );
 }
 
 void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
@@ -338,7 +338,7 @@ void GameRoom::sendSync()
 	packet.header.packetID = PAK_ID::PAK_ANS_Sync;
 	packet.header.size = sizeof(packet);
 	int i = 0;
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++, i++)
 	{
 		packet.playerPosition[i].id = (*iter)->getSession()->getID();
 		NxVec3 p = (*iter)->getCCT()->getActor()->getGlobalPosition();

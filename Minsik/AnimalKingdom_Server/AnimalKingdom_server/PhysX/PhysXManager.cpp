@@ -8,6 +8,7 @@
 #include "NxBoxController.h"
 #include "NxCapsuleController.h"
 #include "NxControllerManager.h"
+#include <NxCapsuleShape.h>
 
 
 PhysXManager::PhysXManager(void)
@@ -118,11 +119,11 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		pCtrl = CCTManager_[roomNum]->createController(scenes_[roomNum], desc);
 #else
 		// Ä¸½¶ ÄÁÆ®·Ñ·¯
-		NxF32	InitialRadius = 0.5f;
-		NxF32	InitialHeight = 2.0f;
+		// NxF32	InitialRadius = 0.5f;
+		// NxF32	InitialHeight = 2.0f;
 		NxCapsuleControllerDesc desc;
-		desc.radius = InitialRadius * scale;
-		desc.height = InitialHeight * scale;
+		desc.radius = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getRadius() * 0.5f;
+		desc.height = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getHeight();
 		desc.position.x = startPos.x;
 		desc.position.y = startPos.y; //+ gSpace;
 		desc.position.z = startPos.z;
@@ -131,8 +132,8 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		desc.slopeLimit = 0;
 		desc.skinWidth = fSKINWIDTH;
 		desc.stepOffset = 0.1f;
-		desc.stepOffset = InitialRadius * 0.5f * scale;
-		desc.userData = (NxActor*)actor;
+		// desc.stepOffset = InitialRadius * 0.5f * scale;
+		// desc.userData = (NxActor*)actor;
 		desc.callback = &controllerReport_;
 		pCtrl = CCTManager_[roomNum]->createController(scenes_[roomNum], desc);
 		
@@ -195,12 +196,18 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 				|| 0 == strcmp(a->getName(), "player03")
 				)
 			{
-				if (currentPlayer >= playerCount)
+				if( currentPlayer >= playerCount )
+				{
+					scenes_[ roomNum ]->releaseActor( *a );
+					aList = scenes_[ roomNum ]->getActors();
 					continue;
+				}
 
 				a->setGroup(CollGroup::COL_PLAYER);
 				SetCollisionGroup(a, CollGroup::COL_PLAYER);
 				CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
+				scenes_[ roomNum ]->releaseActor( *a );
+				aList = scenes_[ roomNum ]->getActors();
 				currentPlayer++;
 			}
 			else

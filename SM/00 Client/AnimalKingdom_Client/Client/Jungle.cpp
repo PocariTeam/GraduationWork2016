@@ -81,7 +81,10 @@ void CJungle::Move( UINT id, XMFLOAT3 vDir, STATE eState )
 void CJungle::Sync( UINT id, XMFLOAT3 vPos, float fRotateY )
 {
 	NxVec3	vPosition{ vPos.x, vPos.y, vPos.z };
-	m_mapPlayer.find( id )->second->Sync( vPosition, fRotateY );
+	auto find_iter = m_mapPlayer.find( id );
+	if( find_iter == m_mapPlayer.end() ) return;
+
+	find_iter->second->Sync( vPosition, fRotateY );
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
