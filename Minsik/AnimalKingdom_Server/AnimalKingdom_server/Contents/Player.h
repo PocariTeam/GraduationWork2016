@@ -27,8 +27,10 @@ class Player {
 	CStateMachine*	stateMachine_;
 
 	Lock			lock_;
-
-
+	/* 플레이어 회전각 */
+	XMFLOAT3				m_vRotate;
+public:
+	void		setRotateY( FLOAT y ) { m_vRotate.y = y; };
 public:
 	Player(Session* s, UINT room, BOOL master = false);
 	~Player();
@@ -48,6 +50,7 @@ public:
 	CAnimator*		getAnimator() { return animator_; }
 	UINT			getActorCount() { return actorCount_; }
 	CStateMachine*  getFSM() { return stateMachine_; }
+	XMFLOAT4X4		GetWorld();
 
 	void			setMoveDir_State(Vector3 vDir, STATE state);
 };

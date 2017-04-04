@@ -258,7 +258,7 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 	if( m_pNetworkMgr->isMaster() )
 	{
 		m_dpBtns[ BTN_READY ]->SetTexture( m_pTextureMgr->Clone( "Texture_Start" ) );
-		if( dwReadyCnt + 1 == m_dwPlayerCnt && CHRACTER_NONE != pTempArray[ 0 ].character ) m_dpBtns[ BTN_READY ]->Normal();
+		if( MINIMUM_START_COUNT <= m_dwPlayerCnt && dwReadyCnt + 1 == m_dwPlayerCnt && CHRACTER_NONE != pTempArray[ 0 ].character ) m_dpBtns[ BTN_READY ]->Normal();
 	}
 
 	else

@@ -2,7 +2,8 @@
 #include "Player.h"
 
 Player::Player(Session * s, UINT room, BOOL master)
-	: lock_(L"Player"), session_(s), character_( CHARACTER::CHRACTER_NONE), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
+	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
+	, m_vRotate( 0.f, 0.f, 0.f )
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 50.0f;
@@ -70,7 +71,18 @@ void Player::setCharacter( CHARACTER c)
 	character_ = c;
 }
 
-void Player::setMoveDir_State(Vector3 vDir, STATE state)
+XMFLOAT4X4 Player::GetWorld()
+{
+	XMMATRIX mtxWorld = CMathematics::ConvertToXMMatrix( &cct_->getActor()->getGlobalPose() );
+	mtxWorld = XMMatrixMultiply( mtxWorld, XMMatrixRotationY( m_vRotate.y ) );
+	XMFLOAT4X4 Out;
+
+	XMStoreFloat4x4( &Out, mtxWorld );
+
+	return Out;
+}
+
+void Player::setMoveDir_State( Vector3 vDir, STATE state )
 {
 	NxVec3	newDir;
 	newDir.x = vDir.x;
@@ -85,26 +97,9 @@ void Player::setMoveDir_State(Vector3 vDir, STATE state)
 		NxVec3 cross = oldLook;
 		cross = cross.cross(newDir);
 		rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
-		//player->setRotateY(rotAngle);
+		m_vRotate.y = rotAngle;
 		//FIX ME!! 캐릭터 회전해줘야 함
 	}
-
-	//system_clock::time_point packetTick = system_clock::from_time_t(tick);
-	//duration<double> lagTick = system_clock::now() - packetTick;
-	//printf("지연시간: %lf 초\n", lagTick.count());
-
-	//NxU32	dwCollisionFlag;
-	//// 방향이 바뀌었던 시간차만큼 되돌아간다.
-	//NxVec3 pastDir = moveDir_ * speed_ * (FLOAT)lagTick.count();
-	////pastDir.y += -GRAVITY * GRAVITY * lagTick.count();
-	//cct_->move(-pastDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-	//PhysXManager::getInstance().updateCCT(roomNum_);
-	//
-	//// 시간차만큼 다시 원래 위치로 돌아간다.
-	//NxVec3 curDir = newDir * speed_ * (FLOAT)lagTick.count();
-	////curDir.y += -GRAVITY * GRAVITY * lagTick.count();
-	//cct_->move(curDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-	//PhysXManager::getInstance().updateCCT(roomNum_);
 
 	moveDir_ = newDir;
 	stateMachine_->Change_State(state);
