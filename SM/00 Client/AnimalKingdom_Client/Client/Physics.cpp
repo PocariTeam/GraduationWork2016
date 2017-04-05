@@ -160,19 +160,19 @@ void CPhysics::UpdateCharactercontrollerMgr()
 
 void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 {
-	NxU32 nbActors = m_pScene->getNbActors();
 	NxActor** ppActors = m_pScene->getActors();
 	
-	UINT dynamicActorCount = packet->dynamicActorCount;
-	for (unsigned int i = 0; i < dynamicActorCount; ++i)
+	for (unsigned int i = 0; i < packet->dynamicActorCount; ++i)
 	{
 		unsigned int j = packet->dynamicActors[i].index;
 
-		if (j >= nbActors)
+		if (j >= m_pScene->getNbActors())
 		{
 			printf(" 받은 동적 객체의 인덱스가 총 액터수보다 많습니다!! \n");
 			break;
 		}
+
+		//printf("[index:%d] %s \n", j, ppActors[j]->getName());
 
 		Vector3 p = packet->dynamicActors[i].position;
 		Vector3 l = packet->dynamicActors[i].linear;

@@ -240,6 +240,7 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 
 void PhysXManager::ReleaseScene(UINT roomNum)
 {
+	SAFE_LOCK(lock_);
 
 	if (CCTManager_[roomNum])
 	{
@@ -257,6 +258,8 @@ void PhysXManager::ReleaseScene(UINT roomNum)
 
 void PhysXManager::updateScene(UINT roomNum, float fTimeDelta)
 {
+	SAFE_LOCK(lock_);
+
 	CCTManager_[roomNum]->updateControllers();
 	scenes_[roomNum]->simulate(fTimeDelta);
 	scenes_[roomNum]->flushStream();
@@ -434,14 +437,17 @@ S_SyncDynamic PhysXManager::getDynamicInfo(UINT roomNum)
 	unsigned int j = 0;
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
-		if (aList[i]->isDynamic())
+		if (true == aList[i] ->isDynamic() && 
+			false == aList[i]->readBodyFlag(NX_BF_KINEMATIC))
 		{
 			if (i >= DYNAMIC_CAPACITY)
 			{
 				SLog(L"! DYNAMIC_CAPACITY is overflow! index: %d",i);
 				break;
 			}
-			// aList[i]->getName;
+
+			//printf("[index:%d] %s \n", i, aList[i]->getName());
+
 			NxVec3 p = aList[i]->getGlobalPosition();
 			NxVec3 l = aList[i]->getLinearVelocity();
 			NxVec3 a = aList[i]->getAngularVelocity();

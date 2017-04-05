@@ -313,7 +313,7 @@ BOOL GameRoom::setupGame()
 	timeGetDevCaps(&caps, sizeof(caps));
 	updateTimerID_ = timeSetEvent(UPDATE_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
 	syncTimerID_ = timeSetEvent(SYNC_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
-
+	
 	return true;
 }
 
@@ -351,11 +351,12 @@ void GameRoom::sendSync()
 	}
 	
 	S_SyncDynamic dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);
+
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
 		Session* session = (iter->second)->getSession();
 		session->send((char*)&playerPacket);
-		//session->send((char*)&dynamicPacket);
+		session->send((char*)&dynamicPacket);
 	}
 
 

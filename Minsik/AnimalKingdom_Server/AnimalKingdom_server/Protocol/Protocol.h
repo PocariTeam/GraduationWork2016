@@ -6,7 +6,7 @@
 #define		THREAD_COUNT			4
 
 #define		UPDATE_TIME_SEC			(1.0f/60.0f)
-#define		SYNC_TIME_SEC			(2.0f/60.0f)
+#define		SYNC_TIME_SEC			(1.0f/10.0f)
 
 #define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4

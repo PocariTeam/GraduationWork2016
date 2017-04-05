@@ -47,5 +47,5 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
-	printf( " [CCollisionReport] %s 客 %s啊 面倒! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	// printf( " [CCollisionReport] %s 客 %s啊 面倒! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 }
