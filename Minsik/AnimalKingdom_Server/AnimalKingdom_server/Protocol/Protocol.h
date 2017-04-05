@@ -1,7 +1,7 @@
 #pragma once
 
 #define		SOCKET_BUF_SIZE			1024*10
-#define		PACKET_BUF_SIZE			512
+#define		PACKET_BUF_SIZE			1024
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 
@@ -11,6 +11,7 @@
 #define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4
 #define		GAMEROOM_CAPACITY		8
+#define		DYNAMIC_CAPACITY		64
 
 typedef enum {
 	PAK_REQ_RoomList,
@@ -26,7 +27,8 @@ typedef enum {
 	PAK_RJT_Request,
 	PAK_REQ_Move,
 	PAK_ANS_Move,
-	PAK_ANS_Sync
+	PAK_ANS_SyncPlayer,
+	PAK_ANS_SyncDynamic,
 } PAK_ID;
 
 #pragma pack(push, 1)
@@ -69,6 +71,13 @@ struct PlayerPosition
 	UINT		id;
 	Vector3		position;
 	FLOAT		rotY;
+};
+
+struct DynamicActor
+{
+	Vector3		position;
+	Vector3		linear;
+	Vector3		angular;
 };
 
 /////////////////////////////////////////////////////////////
@@ -134,10 +143,17 @@ struct S_Move
 	STATE		state;
 };
 
-struct S_Sync
+struct S_SyncPlayer
 {
 	HEADER			header;
-	PlayerPosition	playerPosition[PLAYER_CAPACITY];
+	PlayerPosition	playerPositions[PLAYER_CAPACITY];
+};
+
+struct S_SyncDynamic
+{
+	HEADER			header;
+	UINT			dynamicActorCount;
+	DynamicActor	dynamicActors[DYNAMIC_CAPACITY];
 };
 
 /////////////////////////////////////////////////////////////

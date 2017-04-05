@@ -339,21 +339,25 @@ void GameRoom::sendSync()
 {
 	SAFE_LOCK(lock_);
 
-	S_Sync packet;
-	packet.header.packetID = PAK_ID::PAK_ANS_Sync;
-	packet.header.size = sizeof(packet);
+	S_SyncPlayer playerPacket;
+	playerPacket.header.packetID = PAK_ID::PAK_ANS_SyncPlayer;
+	playerPacket.header.size = sizeof(playerPacket);
 	int i = 0;
 	for (auto iter = players_.begin(); iter != players_.end(); iter++, i++)
 	{
-		packet.playerPosition[i].id = (iter->second)->getSession()->getID();
+		playerPacket.playerPositions[i].id = (iter->second)->getSession()->getID();
 		NxVec3 p = (iter->second)->getCCT()->getActor()->getGlobalPosition();
-		packet.playerPosition[i].position = Vector3(p.x, p.y, p.z);
-		packet.playerPosition[i].rotY = (iter->second)->getRotateY();
+		playerPacket.playerPositions[i].position = Vector3(p.x, p.y, p.z);
+		playerPacket.playerPositions[i].rotY = (iter->second)->getRotateY();
 	}
 	
+	S_SyncDynamic dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
 		Session* session = (iter->second)->getSession();
-		session->send((char*)&packet);
+		session->send((char*)&playerPacket);
+		session->send((char*)&dynamicPacket);
 	}
+
+
 }

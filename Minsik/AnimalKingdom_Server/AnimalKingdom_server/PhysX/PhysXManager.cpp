@@ -421,3 +421,34 @@ NxActor* PhysXManager::CreateActor( const char* pActorName, const ACTOR_INFO& tA
 		return nullptr;
 	}
 }
+
+S_SyncDynamic PhysXManager::getDynamicInfo(UINT roomNum)
+{
+	NxU32 nbActors = scenes_[roomNum]->getNbActors();
+	NxActor** aList = scenes_[roomNum]->getActors();
+
+	S_SyncDynamic packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_SyncDynamic;
+	packet.header.size = sizeof(packet);
+	packet.dynamicActorCount = 0;
+
+	for (NxU32 i = 0; i < nbActors; i++)
+	{
+		if (aList[i]->isDynamic())
+		{
+			// aList[i]->getName;
+			NxVec3 p = aList[i]->getGlobalPosition();
+			NxVec3 l = aList[i]->getLinearVelocity();
+			NxVec3 a = aList[i]->getAngularVelocity();
+
+			packet.dynamicActorCount++;
+			packet.dynamicActors[i].position = Vector3(p.x, p.y, p.z);
+			packet.dynamicActors[i].linear = Vector3(l.x, l.y, l.z);
+			packet.dynamicActors[i].angular = Vector3(a.x, a.y, a.z);
+		}
+	}
+
+	return packet;
+}
+
+

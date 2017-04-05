@@ -32,27 +32,31 @@ private:
 	CControllerReport			controllerReport_;  // Controller Collision
 	CCollisionReport			collisionReport_;	// Normal Collision
 
+	map<string, ACTOR_INFO>		m_mapActorInfo[CHARACTER_MAX];
+
 	Lock						lock_;
 
 public:
 	PhysXManager();
 	~PhysXManager();
-	BOOL Load_Kinematic( void );
+
+	BOOL					Load_Kinematic( void );
 
 	/* dsf */
-	NxActor** CreateCharacterActors( CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
-	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
+	NxActor**				CreateCharacterActors( CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
+	NxActor*				CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
 
-	BOOL initPhysX();
-	BOOL LoadSceneFromFile(UINT roomNum);
-	BOOL SetupScene(UINT roomNum);
-	void ReleaseScene(UINT roomNum);
-	void updateScene(UINT roomNum, float fTimeDelta);
-	NxControllerManager* getCCTManager(UINT roomNum) { return CCTManager_[roomNum]; };
-	void updateCCT(UINT roomNum);
+	BOOL					initPhysX();
+	BOOL					LoadSceneFromFile(UINT roomNum);
+	BOOL					SetupScene(UINT roomNum);
+	void					ReleaseScene(UINT roomNum);
+	void					updateScene(UINT roomNum, float fTimeDelta);
+	NxControllerManager*	getCCTManager(UINT roomNum) { return CCTManager_[roomNum]; };
+	void					updateCCT(UINT roomNum);
 
-	void SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
-	NxController* CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT roomNum);
-private:
-	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_MAX ];
+	void					SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
+	NxController*			CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT roomNum);
+
+	S_SyncDynamic			getDynamicInfo(UINT roomNum);
+
 };
