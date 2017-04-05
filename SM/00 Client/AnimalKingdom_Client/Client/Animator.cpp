@@ -142,6 +142,11 @@ bool CAnimator::GetCurrentAnimationFinished()
 		return m_pCurrentAnimationSet->GetFinished();
 }
 
+float CAnimator::GetPerFinish()
+{
+	return m_pCurrentAnimationSet->GetPerFinish();
+}
+
 HRESULT CAnimator::CreateConstantBuffer( ID3D11Device* pDevice )
 {
 	D3D11_BUFFER_DESC Buffer_Desc;

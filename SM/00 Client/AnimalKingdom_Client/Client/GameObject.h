@@ -6,6 +6,7 @@
 #include "Struct.h"
 #include "Function.h"
 #include "Base.h"
+#include <NxVec3.h>
 
 class NxActor;
 class CMesh;
@@ -21,13 +22,16 @@ public:
 	virtual void	Render( ID3D11DeviceContext* pContext )PURE;
 	virtual DWORD	Release( void );
 public:
-	void			SetActor( NxActor* pActor ) { m_pActor = pActor; }
-	virtual XMFLOAT4X4 GetWorld();
-	NxActor*	GetActor() { return m_pActor; }
+	void				SetActor( NxActor* pActor ) { m_pActor = pActor; }
+	void				SetDir( NxVec3 vDir );
+public:
+	virtual XMFLOAT4X4  GetWorld();
+	NxActor*			GetActor();
 protected:
 	NxActor*		m_pActor;
 	CMesh*			m_pMesh;
 	CTexture*		m_pTexture;
+	NxVec3			m_vDir;
 };
 
 #endif

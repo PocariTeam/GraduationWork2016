@@ -8,7 +8,6 @@
 #include "Animator.h"
 #include "StateMachine.h"
 #include "InputMgr.h"
-#include <NxVec3.h>
 #include "Mathematics.h"
 #include <NxControllerManager.h>
 #include <NxQuat.h>
@@ -23,7 +22,7 @@ CPlayer::CPlayer()
 	, m_vRotate( 0.f, 0.f, 0.f )
 	, m_pInputMgr( CInputMgr::GetInstance() )
 	, m_fSpeed( 50.f )
-	, m_vDir( 0.f, 0.f, 0.f )
+	, m_fJumpTime( 0.f )
 {
 }
 
@@ -42,27 +41,17 @@ HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 
 void CPlayer::Check_Key( const float& fTimeDelta )
 {
+	STATE eState = m_pStateMachine->GetCurrentState();
 	NxVec3 vDir{ 0.f, 0.f, 0.f };
-
-	/*if( ( m_pInputMgr->Get_KeyboardState( DIK_UP ) )
-		|| m_pInputMgr->Get_KeyboardState( DIK_DOWN )
-		|| m_pInputMgr->Get_KeyboardState( DIK_LEFT )
-		|| m_pInputMgr->Get_KeyboardState( DIK_RIGHT ) )
-		eState = STATE_RUN;*/
 
 	if( m_pInputMgr->Get_KeyboardState( DIK_UP ) )
 		vDir += NxVec3{ 0.f, 0.f, 1.f };
-
 	if( m_pInputMgr->Get_KeyboardState( DIK_DOWN ) )
 		vDir += NxVec3{ 0.f, 0.f, -1.f };
-
-	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
-		vDir += NxVec3{ -1.f, 0.f, 0.f };
-
 	if( m_pInputMgr->Get_KeyboardState( DIK_RIGHT ) )
 		vDir += NxVec3{ 1.f, 0.f, 0.f };
-
-	STATE eState = m_pStateMachine->GetCurrentState();
+	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
+		vDir += NxVec3{ -1.f, 0.f, 0.f };
 
 	if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 		eState = STATE_ATT1;
@@ -72,55 +61,34 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		eState = STATE_DEFEND;
 	else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 		eState = STATE_JUMP;
-	else if( false == vDir.isZero() )
+	else if( !vDir.isZero() )
 		eState = STATE_RUN;
 	else if( m_pAnimator->GetCurrentAnimationFinished() )
 		eState = STATE_IDLE;
 
-	bool bNeedToSendPacket = false;
-
-	if( eState != m_pStateMachine->GetCurrentState() )
+	if( eState != m_pStateMachine->GetCurrentState()
+		|| !m_vDir.equals( vDir, 1.f ) )
 	{
-		bNeedToSendPacket = true;
-		m_pStateMachine->Change_State( eState );
-	}
-
-	vDir.normalize();
-	if( m_vDir != vDir )
-	{
-		bNeedToSendPacket = true;
 		m_vDir = vDir;
-		if( false == vDir.isZero() )
-		{
-			NxVec3 oldLook = m_pCharacterController->getActor()->getGlobalPose().M.getColumn( 2 );
-			NxReal rotAngle = acos( oldLook.dot( vDir ) );
-			NxVec3 cross = oldLook;
-			cross = cross.cross( vDir );
-			rotAngle *= ( cross.y >= 0.0f ) ? -1.0f : 1.0f;
-			m_vRotate.y = rotAngle;
-		}
-	}
-
-	if( bNeedToSendPacket )
-	{
+		m_pStateMachine->Change_State( eState );
 		CNetworkMgr::GetInstance()->sendMoveCharacter( m_vDir, eState );
-		// printf("[time:%d] 이동패킷 전송 \n", chrono::system_clock::now());
 	}
-
 }
 
 void CPlayer::Jump( const float& fTimeDelta )
 {
+	m_fJumpTime += fTimeDelta;
+	m_vDir.y += 5.f * m_fJumpTime;
 }
 
 int CPlayer::Update( const float& fTimeDelta )
 {
-	NxVec3	vDir = m_vDir * m_fSpeed * fTimeDelta;
-	vDir.y += -GRAVITY * GRAVITY * fTimeDelta;
+	m_pStateMachine->Update( fTimeDelta );
+
+	m_vDir.y += -GRAVITY * GRAVITY * fTimeDelta;
 
 	NxU32	dwCollisionFlag;
-	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
-	m_pStateMachine->Update( fTimeDelta );
+	m_pCharacterController->move( m_vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 
 	return 0;
 }
@@ -160,21 +128,24 @@ XMFLOAT4X4 CPlayer::GetWorld()
 	return Out;
 }
 
-void CPlayer::Move( NxVec3& vDir, STATE eState )
+void CPlayer::Change_State( STATE eState )
 {
+	m_pStateMachine->Change_State( eState );
+}
+
+void CPlayer::Move( const float& fTimeDelta )
+{
+	if( m_vDir.isZero() ) return;
+
 	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
 
-	if( false == vDir.isZero() )
-	{
-		NxReal fRotateY = acos( vDefault_Dir.dot( vDir ) );
-		NxVec3 vCross = vDefault_Dir;
-		vCross = vCross.cross( vDir );
-		fRotateY *= ( vCross.y >= 0.0f ) ? -1.0f : 1.0f;
-		m_vRotate.y = fRotateY;
-	}
+	NxReal fRotateY = acos( vDefault_Dir.dot( m_vDir ) );
+	NxVec3 vCross = vDefault_Dir;
+	vCross = vCross.cross( m_vDir );
+	fRotateY *= ( vCross.y >= 0.0f ) ? -1.0f : 1.0f;
+	m_vRotate.y = fRotateY;
 
-	m_vDir = vDir;
-	m_pStateMachine->Change_State( eState );
+	m_vDir = m_vDir * m_fSpeed * fTimeDelta;
 }
 
 void CPlayer::Sync( NxVec3& vPos, float fRotateY )

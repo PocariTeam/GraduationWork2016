@@ -20,20 +20,24 @@ protected:
 protected:
 	virtual HRESULT Initialize( ID3D11Device* pDevice, NxController* pCharacterController );
 public:
-	void	Check_Key( const float& fTimeDelta );
-	void	Jump( const float& fTimeDelta );
+	void			Check_Key( const float& fTimeDelta );
+	void			Jump( const float& fTimeDelta );
 public:
-	virtual int Update( const float& fTimeDelta );
-	virtual void Render( ID3D11DeviceContext* pContext );
-	virtual DWORD Release( void );
+	void			Move( const float& fTimeDelta );
+	void			Sync( NxVec3& vPos, float fRotateY );
 public:
-	CAnimator*	GetAnimator( void ) { return m_pAnimator; }
-	CStateMachine* GetFSM( void ) { return m_pStateMachine; }
-	DWORD		GetActorCnt( void ) { return m_dwActorCnt; }
-	NxController* GetCharacterController( void ) { return m_pCharacterController; }
-	XMFLOAT4X4	GetWorld();
-	void		Move( NxVec3& vDir, STATE eState );
-	void		Sync( NxVec3& vPos, float fRotateY );
+	virtual int		Update( const float& fTimeDelta );
+	virtual void	Render( ID3D11DeviceContext* pContext );
+	virtual DWORD	Release( void );
+public:
+	CAnimator*		GetAnimator( void ) { return m_pAnimator; }
+	CStateMachine*	GetFSM( void ) { return m_pStateMachine; }
+	DWORD			GetActorCnt( void ) { return m_dwActorCnt; }
+	NxController*	GetCharacterController( void ) { return m_pCharacterController; }
+	XMFLOAT4X4		GetWorld();
+public:
+	void			Change_State( STATE eState );
+	void			ResetJumpTime( void ) { m_fJumpTime = 0.f; }
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
 protected:
@@ -44,7 +48,7 @@ protected:
 	DWORD					m_dwActorCnt;
 	CInputMgr*				m_pInputMgr;
 	float					m_fSpeed;
-	NxVec3					m_vDir;
+	float					m_fJumpTime;
 };
 
 #endif // Player_h__
