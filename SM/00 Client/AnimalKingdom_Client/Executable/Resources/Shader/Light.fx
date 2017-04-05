@@ -75,15 +75,15 @@ PS_OUT	PS( VS_OUT	In )
 	PS_OUT		Out = ( PS_OUT )0;
 
 	float3		vNormal = g_NormalTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).xyz;
-	float3		vWorldNormal = vNormal.xyz * 2.f - 1.f;
+	float3		vWorldNormal = mad( vNormal.xyz, 2.f, -1.f );
 
 	float3		vDepth = g_DepthTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).xyz;
 	float		fViewZ = vDepth.y * 1000.f;
 
 	float4		vPos = ( float4 )0;
 
-	vPos.x = ( In.vUV.x * 2.f - 1.f ) * fViewZ;
-	vPos.y = ( In.vUV.y * -2.f + 1.f ) * fViewZ;
+	vPos.x = mad( In.vUV.x, 2.f, -1.f ) * fViewZ;
+	vPos.y = mad( In.vUV.y, -2.f, 1.f ) * fViewZ;
 	vPos.z = vDepth.x * fViewZ;
 	vPos.w = fViewZ;
 
@@ -101,7 +101,7 @@ PS_OUT	PS( VS_OUT	In )
 		switch( g_tLight[ i ].fType )
 		{
 		case DIRECTIONAL :
-			vLight += saturate( max( dot( -g_tLight[ i ].vDir, vWorldNormal ), 0.f ) * g_tLight[ i ].vDiffuse + g_tLight[ i ].vAmbient );
+			vLight += saturate( mad( max( dot( -g_tLight[ i ].vDir, vWorldNormal ), 0.f ), g_tLight[ i ].vDiffuse, g_tLight[ i ].vAmbient ) );
 			vSpecular += Directional_Specular( g_tLight[ i ], float4( vWorldNormal, 0.f ), vLookInv );
 			break;
 		case POINT :

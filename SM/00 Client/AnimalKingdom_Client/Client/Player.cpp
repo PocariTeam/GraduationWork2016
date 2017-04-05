@@ -110,10 +110,6 @@ int CPlayer::Update( const float& fTimeDelta )
 
 	NxU32	dwCollisionFlag;
 	m_pCharacterController->move( vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
-	
-	auto p = m_pCharacterController->getActor()->getGlobalPosition();
-	// printf("%f %f %f \n", p.x,p.y,p.z);
-	
 	m_pStateMachine->Update( fTimeDelta );
 
 	return 0;
@@ -142,8 +138,11 @@ DWORD CPlayer::Release( void )
 
 XMFLOAT4X4 CPlayer::GetWorld()
 {
-	XMMATRIX mtxWorld = CMathematics::ConvertToXMMatrix( &m_pCharacterController->getActor()->getGlobalPose() );
-	mtxWorld = XMMatrixMultiply( mtxWorld, XMMatrixRotationY( m_vRotate.y ) );
+	XMMATRIX mtxWorld;
+	XMFLOAT4X4 mtxStoreWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+	mtxStoreWorld._24 += 2.f;
+	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &mtxStoreWorld ), XMMatrixRotationY( m_vRotate.y ) );
+
 	XMFLOAT4X4 Out;
 
 	XMStoreFloat4x4( &Out, mtxWorld );
@@ -154,7 +153,7 @@ XMFLOAT4X4 CPlayer::GetWorld()
 void CPlayer::Move( NxVec3& vDir, STATE eState )
 {
 	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
-		
+
 	if( false == vDir.isZero() )
 	{
 		NxReal fRotateY = acos( vDefault_Dir.dot( vDir ) );
