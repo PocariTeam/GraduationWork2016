@@ -117,7 +117,7 @@ void Session::recv()
 	{
 		if (WSAGetLastError() != ERROR_IO_PENDING) 
 		{
-			SLog(L"! socket error: %d", WSAGetLastError());
+			SLog(L"! socket error code: %d", WSAGetLastError());
 		}
 	}
 }

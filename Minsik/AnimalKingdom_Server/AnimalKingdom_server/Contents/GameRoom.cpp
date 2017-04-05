@@ -9,10 +9,11 @@ GameRoom::GameRoom(UINT num)
 
 GameRoom::~GameRoom()
 {
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		SAFE_DELETE(*iter);
+		SAFE_DELETE(iter->second);
 	}
+	players_.clear();
 }
 
 BOOL GameRoom::enter(Session* session)
@@ -29,7 +30,7 @@ BOOL GameRoom::enter(Session* session)
 	{
 		BOOL isMaster;
 		isMaster = (playerCount_ == 0) ? true : false;
-		playerList_.push_back(new Player(session, roomNum_, isMaster));
+		players_.insert(make_pair(session->getID(), new Player(session, roomNum_, isMaster)));
 		++playerCount_;
 		session->setRoomNumber(roomNum_);
 		SLog(L"* id[%d] enters the [%d] room. ", session->getID(),roomNum_ );
@@ -59,13 +60,15 @@ BOOL GameRoom::startGame(Session* session)
 	}
 		
 	bool startCheck = false;
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	auto findPlayer = players_[session->getID()];
+
+	for (auto p = players_.begin(); p != players_.end(); p++)
 	{
-		if ((*p)->getMaster() && (*p)->getSession() == session)
+		if ( (p->second)->getMaster() && p->first == session->getID())
 		{
 			startCheck = true;
 		}
-		else if ((*p)->getReady() == false)
+		else if ((p->second)->getReady() == false)
 		{
 			SLog(L"! id[%d] is not ready in the [%d] room. ", session->getID(), roomNum_);
 			return false;
@@ -91,74 +94,69 @@ BOOL GameRoom::startGame(Session* session)
 	return false;
 }
 
-class SyncPacket : public Work
-{
-	void tick()
-	{
-		
-	}
-};
-
-
 BOOL GameRoom::exit(Session* session)
 {
 	SAFE_LOCK(lock_);
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+
+	auto find_iter = players_.find(session->getID());
+	if (find_iter == players_.end())
 	{
-		if ((*p)->getSession() == session)
-		{
-			SLog(L"* id[%d] exits from the [%d] room. ", session->getID(), roomNum_);
-			playerList_.remove(*p);
-			--playerCount_;
-
-			if (playerCount_ > 0)
-			{
-				(*playerList_.begin())->setMaster(true);
-			}
-			else if (playerCount_ == 0 && isPlaying_)
-			{
-				timeKillEvent(updateTimerID_);
-				timeKillEvent(syncTimerID_);
-				PhysXManager::getInstance().ReleaseScene(roomNum_);
-				isPlaying_ = false;
-			}
-
-			PacketManager::getInstance().sendPlayerList(session->getRoomNumber());
-			session->setRoomNumber(NOT_IN_ROOM);
-
-			return true;
-		}
+		SLog(L"! id[%d] doens't exists in the [%d] room. ", session->getID(), roomNum_);
+		return false;
 	}
-	return false;
+
+	SAFE_DELETE(find_iter->second);
+	players_.erase(find_iter);
+	--playerCount_;
+
+	if (playerCount_ > 0)
+	{
+		(players_.begin()->second)->setMaster(true);
+	}
+	else if (playerCount_ == 0 && isPlaying_)
+	{
+		timeKillEvent(updateTimerID_);
+		timeKillEvent(syncTimerID_);
+		PhysXManager::getInstance().ReleaseScene(roomNum_);
+		isPlaying_ = false;
+	}
+
+	PacketManager::getInstance().sendPlayerList(session->getRoomNumber());
+	session->setRoomNumber(NOT_IN_ROOM);
+
+
+	SLog(L"* id[%d] exits from the [%d] room. ", session->getID(), roomNum_);
+
+	return true;
+
 }
 
 BOOL GameRoom::setPlayerReady(Session* session, BOOL b)
 {
 	SAFE_LOCK(lock_);
-
+	
 	if (isPlaying_)
 	{
 		SLog(L"! the [%d] room is playing now. ", roomNum_);
 		return false;
 	}
 
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	auto find_iter = players_.find(session->getID());
+	if (find_iter == players_.end())
 	{
-		if ((*p)->getSession() == session)
-		{
-			if ((*p)->getMaster())
-			{
-				SLog(L"! id[%d] is a master of the [%d] room. so it cannot be ready. ", session->getID(), roomNum_);
-				return false;
-			}
-			(*p)->setReady(b);
-			SLog(L"* id[%d] got ready[%d] in the [%d] room. ", session->getID(), b, roomNum_);
-			return true;
-		}
+		SLog(L"! id[%d] doens't exists in the [%d] room. ", session->getID(), roomNum_);
+		return false;
 	}
-	SLog(L"! id[%d] is not in the [%d] room. ", session->getID(), roomNum_);
 
-	return false;
+	if ((find_iter->second)->getMaster())
+	{
+		SLog(L"! id[%d] is a master of the [%d] room. so it cannot be ready. ", session->getID(), roomNum_);
+		return false;
+	}
+	(find_iter->second)->setReady(b);
+	SLog(L"* id[%d] got ready[%d] in the [%d] room. ", session->getID(), b, roomNum_);
+	return true;
+
 }
 
 BOOL GameRoom::setPlayerCharacter(Session* session, CHARACTER ch)
@@ -171,28 +169,29 @@ BOOL GameRoom::setPlayerCharacter(Session* session, CHARACTER ch)
 		return false;
 	}
 
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	auto find_iter = players_.find(session->getID());
+	if (find_iter == players_.end())
 	{
-		if ((*p)->getSession() == session)
-		{
-			if ((*p)->getReady())
-			{
-				SLog(L"! id[%d] is ready now. so it cannot be changed.", session->getID());
-				return false;
-			}
-			if (ch < 0 || ch > CHARACTER_MAX)
-			{
-				SLog(L"! wrong character. inputCharacter: %d", ch);
-				return false;
-			}
-			(*p)->setCharacter(ch);
-			SLog(L"* id[%d] chose character[%d] in the [%d] room. ", session->getID(), ch, roomNum_);
-			return true;
-		}
+		SLog(L"! id[%d] doens't exists in the [%d] room. ", session->getID(), roomNum_);
+		return false;
 	}
-	SLog(L"! id[%d] is not in the [%d] room. ", session->getID(), roomNum_);
 
-	return false;
+
+	if ((find_iter->second)->getReady())
+	{
+		SLog(L"! id[%d] is ready now. so it cannot be changed.", session->getID());
+		return false;
+	}
+
+	if (ch < 0 || ch > CHARACTER_MAX)
+	{
+		SLog(L"! wrong character. inputCharacter: %d", ch);
+		return false;
+	}
+
+	(find_iter->second)->setCharacter(ch);
+	SLog(L"* id[%d] chose character[%d] in the [%d] room. ", session->getID(), ch, roomNum_);
+	return true;
 }
 
 RoomInfo GameRoom::getRoomInfo()
@@ -208,15 +207,17 @@ BOOL GameRoom::moveRequest(Session* session, Vector3 vDir, STATE state)
 {
 	SAFE_LOCK(lock_);
 
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	auto find_iter = players_.find(session->getID());
+	if (find_iter == players_.end())
 	{
-		if ((*p)->getSession() == session)
-		{
-			(*p)->setMoveDir_State(vDir, state);
-			sendMovePacket(session->getID(), vDir, state);
-			return true;
-		}
+		SLog(L"! id[%d] doens't exists in the [%d] room. ", session->getID(), roomNum_);
+		return false;
 	}
+
+	((find_iter->second))->setMoveDir_State(vDir, state);
+	sendMovePacket(session->getID(), vDir, state);
+	return true;
+
 
 	return false;
 }
@@ -227,9 +228,9 @@ void GameRoom::sendPlayerList()
 	PlayerInfo pList[PLAYER_CAPACITY] = { 0 };
 
 	int i = 0;
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		pList[i] = (*iter)->getPlayerInfo();
+		pList[i] = (iter->second)->getPlayerInfo();
 		i++;
 	}
 
@@ -238,9 +239,9 @@ void GameRoom::sendPlayerList()
 		SLog(L"! the [%d] room's playerCount_ is not correct. ",roomNum_);
 	}
 
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (*iter)->getSession();
+		Session* session = (iter->second)->getSession();
 		S_PlayerList packet;
 		packet.header.packetID = PAK_ID::PAK_ANS_PlayerList;
 		packet.header.size = sizeof(S_PlayerList);
@@ -254,9 +255,11 @@ void GameRoom::sendPlayerList()
 
 void GameRoom::sendMovePacket(UINT id, Vector3 vDir, STATE state)
 {
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	SAFE_LOCK(lock_);
+
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (*iter)->getSession();
+		Session* session = (iter->second)->getSession();
 		S_Move packet;
 		packet.header.packetID = PAK_ID::PAK_ANS_Move;
 		packet.header.size = sizeof(S_Move);
@@ -271,9 +274,9 @@ void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
 
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (*iter)->getSession();
+		Session* session = (iter->second)->getSession();
 		HEADER packet;
 		packet.packetID = PAK_ID::PAK_ANS_StartGame;
 		packet.size = sizeof(packet);
@@ -283,6 +286,8 @@ void GameRoom::sendStartGame()
 
 BOOL GameRoom::setupGame()
 {
+	SAFE_LOCK(lock_);
+
 	NxControllerManager* cctManager = PhysXManager::getInstance().getCCTManager(roomNum_);
 
 	if (cctManager->getNbControllers() != playerCount_)
@@ -292,30 +297,31 @@ BOOL GameRoom::setupGame()
 	}
 
 	int i = 0;
-	for (auto p = playerList_.begin(); p != playerList_.end(); p++)
+	for (auto p = players_.begin(); p != players_.end(); p++)
 	{
 		NxController* pController = cctManager->getController(i++);
 		UINT iActorCnt{};
-		CHARACTER character = (*p)->getPlayerInfo().character;
+		CHARACTER character = (p->second)->getPlayerInfo().character;
 
 		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors(character, roomNum_, iActorCnt);
-		(*p)->setActorArray(dpActors, iActorCnt);
-		(*p)->setCCT(pController);
-		(*p)->setAnimator(CAnimationMgr::getInstance().Clone(character));
+		(p->second)->setActorArray(dpActors, iActorCnt);
+		(p->second)->setCCT(pController);
+		(p->second)->setAnimator(CAnimationMgr::getInstance().Clone(character));
 	}
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
-	updateTimerID_ = timeSetEvent(17, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
-	syncTimerID_ = timeSetEvent(50, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
+
+	updateTimerID_ = timeSetEvent((UINT)UPDATE_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	syncTimerID_ = timeSetEvent((UINT)SYNC_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
 
 	return true;
 }
 
 void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
-	PhysXManager::getInstance().updateScene((UINT)roomNum, 1.f / 60.0f);
-	RoomManager::getInstance().update( (UINT)roomNum, 1.f / 60.0f );
+	PhysXManager::getInstance().updateScene((UINT)roomNum, UPDATE_TIME_SEC);
+	RoomManager::getInstance().update( (UINT)roomNum, UPDATE_TIME_SEC);
 }
 
 void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
@@ -325,31 +331,29 @@ void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWOR
 
 void GameRoom::update( float fTimeDelta )
 {
-	for(auto iter = playerList_.begin(); iter != playerList_.end(); ++iter )
-		(*iter)->update( fTimeDelta );
+	for(auto iter = players_.begin(); iter != players_.end(); ++iter )
+		(iter->second)->update( fTimeDelta );
 }
 
 void GameRoom::sendSync()
 {
-//	static int check = 0;
-//	printf("[%d] Sync \n", check++);
+	SAFE_LOCK(lock_);
 
 	S_Sync packet;
 	packet.header.packetID = PAK_ID::PAK_ANS_Sync;
 	packet.header.size = sizeof(packet);
 	int i = 0;
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++, i++)
+	for (auto iter = players_.begin(); iter != players_.end(); iter++, i++)
 	{
-		packet.playerPosition[i].id = (*iter)->getSession()->getID();
-		NxVec3 p = (*iter)->getCCT()->getActor()->getGlobalPosition();
-		printf("(%f, %f, %f) \n", p.x, p.y, p.z);
+		packet.playerPosition[i].id = (iter->second)->getSession()->getID();
+		NxVec3 p = (iter->second)->getCCT()->getActor()->getGlobalPosition();
 		packet.playerPosition[i].position = Vector3(p.x, p.y, p.z);
-		packet.playerPosition[i].rotY = (*iter)->getRotateY();
+		packet.playerPosition[i].rotY = (iter->second)->getRotateY();
 	}
 	
-	for (auto iter = playerList_.begin(); iter != playerList_.end(); iter++)
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (*iter)->getSession();
+		Session* session = (iter->second)->getSession();
 		session->send((char*)&packet);
 	}
 }

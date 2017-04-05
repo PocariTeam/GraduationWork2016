@@ -1,9 +1,12 @@
 #pragma once
 
 #define		SOCKET_BUF_SIZE			1024*10
-#define		PACKET_BUF_SIZE			1024
+#define		PACKET_BUF_SIZE			512
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
+
+#define		UPDATE_TIME_SEC			(1.0f/60.0f)
+#define		SYNC_TIME_SEC			(2.0f/60.0f)
 
 #define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4
@@ -72,7 +75,7 @@ struct PlayerPosition
 
 struct HEADER
 {
-	UINT16		size;
+	USHORT		size;
 	PAK_ID		packetID;
 };
 

@@ -5,7 +5,7 @@ class Player;
 
 class GameRoom {
 private:
-	list<Player*>		playerList_;
+	map<UINT, Player*>	players_;
 	UINT				roomNum_;
 	UINT				playerCount_;
 	BOOL				isPlaying_;
