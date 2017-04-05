@@ -1,7 +1,7 @@
 #pragma once
 
 #define		SOCKET_BUF_SIZE			1024*10
-#define		PACKET_BUF_SIZE			1024
+#define		PACKET_BUF_SIZE			2048
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 
@@ -11,7 +11,7 @@
 #define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4
 #define		GAMEROOM_CAPACITY		8
-#define		DYNAMIC_CAPACITY		64
+#define		DYNAMIC_CAPACITY		32
 
 typedef enum {
 	PAK_REQ_RoomList,
@@ -75,6 +75,7 @@ struct PlayerPosition
 
 struct DynamicActor
 {
+	UINT		index;
 	Vector3		position;
 	Vector3		linear;
 	Vector3		angular;

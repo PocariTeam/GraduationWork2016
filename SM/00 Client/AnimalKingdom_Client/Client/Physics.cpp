@@ -158,6 +158,33 @@ void CPhysics::UpdateCharactercontrollerMgr()
 	m_pCharacterControllerMgr->updateControllers();
 }
 
+void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
+{
+	NxU32 nbActors = m_pScene->getNbActors();
+	NxActor** ppActors = m_pScene->getActors();
+	
+	UINT dynamicActorCount = packet->dynamicActorCount;
+	for (unsigned int i = 0; i < dynamicActorCount; ++i)
+	{
+		unsigned int j = packet->dynamicActors[i].index;
+
+		if (j >= nbActors)
+		{
+			printf(" 받은 동적 객체의 인덱스가 총 액터수보다 많습니다!! \n");
+			break;
+		}
+
+		Vector3 p = packet->dynamicActors[i].position;
+		Vector3 l = packet->dynamicActors[i].linear;
+		Vector3 a = packet->dynamicActors[i].angular;
+
+		ppActors[j]->setGlobalPosition(NxVec3(p.x,p.y,p.z));
+		ppActors[j]->setLinearVelocity(NxVec3(l.x, l.y, l.z));
+		ppActors[j]->setAngularVelocity(NxVec3(a.x, a.y, a.z));
+
+	}
+}
+
 HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 {
 	m_pAllocator = new UserAllocator;

@@ -34,29 +34,11 @@ void IOCPServer::initialize()
 	port_ = SERVER_PORT;
 	workerThreadCount_ = THREAD_COUNT;
 
-	//테스크 설정
-	//TaskManager::getInstance();
-
-	//서버 설정
-	//xmlNode_t *root = config->FirstChildElement("App")->FirstChildElement("Server");
-	//if (!root) {
-	//	SLog(L"@ not exist server setting");
-	//	return;
-	//}
-	//xmlNode_t *elem = root->FirstChildElement("IP");
-	////strcpy_s(ip_, elem->GetText());
-
-	//elem = root->FirstChildElement("Port");
-	//sscanf_s(elem->GetText(), "%d", &port_);
-
-	//elem = root->FirstChildElement("ThreadCount");
-	//sscanf_s(elem->GetText(), "%d", &workerThreadCount_);
-	//SLog(L"* IO worker thread count : %d", workerThreadCount_);
-
-	//root = config->FirstChildElement("App");
-	//elem = root->FirstChildElement("Name");
-
-	//SLog(L"### %S start!!! ###", elem->GetText());
+	if (sizeof(S_SyncDynamic) >= PACKET_BUF_SIZE)
+	{
+		SLog(L"! S_SyncDynamic is over PACKET_BUF_SIZE!! ");
+		exit(-1);
+	}
 }
 
 bool IOCPServer::run()

@@ -234,6 +234,13 @@ void CNetworkMgr::processPacket()
 		}
 		break;
 	}
+	case PAK_ID::PAK_ANS_SyncDynamic:
+	{
+		CPhysics::GetInstance()->UpdateDynamicActors((S_SyncDynamic*)m_saveBuf);
+		break;
+	}
+	default:
+		printf("Unknown packet ID : %d \n", header->packetID);
 	}
 }
 

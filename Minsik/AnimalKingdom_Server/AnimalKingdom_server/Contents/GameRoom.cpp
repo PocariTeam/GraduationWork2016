@@ -311,9 +311,8 @@ BOOL GameRoom::setupGame()
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
-
-	updateTimerID_ = timeSetEvent((UINT)UPDATE_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
-	syncTimerID_ = timeSetEvent((UINT)SYNC_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
+	updateTimerID_ = timeSetEvent(UPDATE_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	syncTimerID_ = timeSetEvent(SYNC_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
 
 	return true;
 }
@@ -356,7 +355,7 @@ void GameRoom::sendSync()
 	{
 		Session* session = (iter->second)->getSession();
 		session->send((char*)&playerPacket);
-		session->send((char*)&dynamicPacket);
+		//session->send((char*)&dynamicPacket);
 	}
 
 

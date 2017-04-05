@@ -430,23 +430,30 @@ S_SyncDynamic PhysXManager::getDynamicInfo(UINT roomNum)
 	S_SyncDynamic packet;
 	packet.header.packetID = PAK_ID::PAK_ANS_SyncDynamic;
 	packet.header.size = sizeof(packet);
-	packet.dynamicActorCount = 0;
 
+	unsigned int j = 0;
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
 		if (aList[i]->isDynamic())
 		{
+			if (i >= DYNAMIC_CAPACITY)
+			{
+				SLog(L"! DYNAMIC_CAPACITY is overflow! index: %d",i);
+				break;
+			}
 			// aList[i]->getName;
 			NxVec3 p = aList[i]->getGlobalPosition();
 			NxVec3 l = aList[i]->getLinearVelocity();
 			NxVec3 a = aList[i]->getAngularVelocity();
 
-			packet.dynamicActorCount++;
-			packet.dynamicActors[i].position = Vector3(p.x, p.y, p.z);
-			packet.dynamicActors[i].linear = Vector3(l.x, l.y, l.z);
-			packet.dynamicActors[i].angular = Vector3(a.x, a.y, a.z);
+			packet.dynamicActors[j].index = i;
+			packet.dynamicActors[j].position = Vector3(p.x, p.y, p.z);
+			packet.dynamicActors[j].linear = Vector3(l.x, l.y, l.z);
+			packet.dynamicActors[j].angular = Vector3(a.x, a.y, a.z);
+			++j;
 		}
 	}
+	packet.dynamicActorCount = j;
 
 	return packet;
 }
