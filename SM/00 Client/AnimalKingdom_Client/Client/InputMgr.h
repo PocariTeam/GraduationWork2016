@@ -14,8 +14,8 @@ public:
 	using MOVE_TYPE = eMove_Type;
 
 public:
-	BYTE Get_KeyboardState( BYTE KeyFlag );
-	BYTE Get_MouseState( CLICK_TYPE KeyFlag );
+	bool Get_KeyboardState( BYTE KeyFlag );
+	bool Get_MouseState( CLICK_TYPE KeyFlag );
 	long Get_MouseMove( MOVE_TYPE KeyFlag );
 public:
 	void Check_Input( void );

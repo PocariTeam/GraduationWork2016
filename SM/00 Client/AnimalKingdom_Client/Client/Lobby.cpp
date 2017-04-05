@@ -126,10 +126,10 @@ int	 CLobby::Check_Key( void )
 {
 	POINT ptMouse = CScene::GetMousePosition( m_hWnd );
 
-	if( ( m_pInputMgr->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) && m_bOverlapped )
+	if( m_pInputMgr->Get_MouseState( CInputMgr::CLICK_LBUTTON ) && m_bOverlapped )
 		m_bOverlapped = false;
 
-	else if( !( m_pInputMgr->Get_MouseState( CInputMgr::CLICK_LBUTTON ) & 0x80 ) )
+	else if( !m_pInputMgr->Get_MouseState( CInputMgr::CLICK_LBUTTON ) )
 		m_bOverlapped = true;
 
 	for( int i = 0; i < BTN_END; ++i )

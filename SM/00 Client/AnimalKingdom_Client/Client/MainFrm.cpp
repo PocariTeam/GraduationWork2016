@@ -171,21 +171,21 @@ HRESULT CMainFrm::Change_Scene( void )
 void CMainFrm::Check_Key( void )
 {
 	/* Wireframe */
-	if( ( m_pInputMgr->Get_KeyboardState( DIK_F1 ) & 0x80 ) && m_bOverlapped )
+	if( ( m_pInputMgr->Get_KeyboardState( DIK_F1 ) ) && m_bOverlapped )
 	{
 		m_pRenderer->SetWireframe();
 		m_bOverlapped = false;
 	}
 
 	/* Debug RenderTarget */
-	else if( ( m_pInputMgr->Get_KeyboardState( DIK_F2 ) & 0x80 ) && m_bOverlapped )
+	else if( ( m_pInputMgr->Get_KeyboardState( DIK_F2 ) ) && m_bOverlapped )
 	{
 		m_pRenderer->SetRenderTargetDebug();
 		m_bOverlapped = false;
 	}
 
-	else if( !( m_pInputMgr->Get_KeyboardState( DIK_F1 ) & 0x80 )
-		&& !( m_pInputMgr->Get_KeyboardState( DIK_F2 ) & 0x80 ) )
+	else if( !( m_pInputMgr->Get_KeyboardState( DIK_F1 ) )
+		&& !( m_pInputMgr->Get_KeyboardState( DIK_F2 ) ) )
 		m_bOverlapped = true;
 }
 

@@ -21,6 +21,7 @@ protected:
 	virtual HRESULT Initialize( ID3D11Device* pDevice, NxController* pCharacterController );
 public:
 	void	Check_Key( const float& fTimeDelta );
+	void	Jump( const float& fTimeDelta );
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );

@@ -4,14 +4,14 @@
 
 CInputMgr* CSingleton<CInputMgr>::m_pInstance;
 
-BYTE CInputMgr::Get_KeyboardState( BYTE KeyFlag )
+bool CInputMgr::Get_KeyboardState( BYTE KeyFlag )
 {
-	return m_byKeyboardState[ KeyFlag ];
+	return ( m_byKeyboardState[ KeyFlag ] & 0x80 ) ? true : false;
 }
 
-BYTE CInputMgr::Get_MouseState( CLICK_TYPE KeyFlag )
+bool CInputMgr::Get_MouseState( CLICK_TYPE KeyFlag )
 {
-	return m_tMouseState.rgbButtons[ KeyFlag ];
+	return ( m_tMouseState.rgbButtons[ KeyFlag ] & 0x80 ) ? true : false;
 }
 
 long CInputMgr::Get_MouseMove( MOVE_TYPE KeyFlag )

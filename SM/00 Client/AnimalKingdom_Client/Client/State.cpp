@@ -99,6 +99,8 @@ void CJumpState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 {
 	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
 		pOwner->GetFSM()->Change_State( STATE_IDLE );
+
+	pOwner->Jump( fTImeDelta );
 }
 
 void CJumpState::Exit( CPlayer* pOwner, const float& fTimeDelta )

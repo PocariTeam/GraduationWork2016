@@ -44,27 +44,33 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 {
 	NxVec3 vDir{ 0.f, 0.f, 0.f };
 
-	if( m_pInputMgr->Get_KeyboardState( DIK_UP ) & 0x80 )
+	/*if( ( m_pInputMgr->Get_KeyboardState( DIK_UP ) )
+		|| m_pInputMgr->Get_KeyboardState( DIK_DOWN )
+		|| m_pInputMgr->Get_KeyboardState( DIK_LEFT )
+		|| m_pInputMgr->Get_KeyboardState( DIK_RIGHT ) )
+		eState = STATE_RUN;*/
+
+	if( m_pInputMgr->Get_KeyboardState( DIK_UP ) )
 		vDir += NxVec3{ 0.f, 0.f, 1.f };
 
-	if( m_pInputMgr->Get_KeyboardState( DIK_DOWN ) & 0x80 )
+	if( m_pInputMgr->Get_KeyboardState( DIK_DOWN ) )
 		vDir += NxVec3{ 0.f, 0.f, -1.f };
 
-	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) & 0x80 )
+	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
 
-	if( m_pInputMgr->Get_KeyboardState( DIK_RIGHT ) & 0x80 )
+	if( m_pInputMgr->Get_KeyboardState( DIK_RIGHT ) )
 		vDir += NxVec3{ 1.f, 0.f, 0.f };
 
 	STATE eState = m_pStateMachine->GetCurrentState();
 
-	if( m_pInputMgr->Get_KeyboardState( DIK_S ) & 0x80 )
+	if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 		eState = STATE_ATT1;
-	else if( m_pInputMgr->Get_KeyboardState( DIK_D ) & 0x80 )
+	else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
 		eState = STATE_BEATEN1;
-	else if( m_pInputMgr->Get_KeyboardState( DIK_A ) & 0x80 )
+	else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
 		eState = STATE_DEFEND;
-	else if( m_pInputMgr->Get_KeyboardState( DIK_F ) & 0x80 )
+	else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 		eState = STATE_JUMP;
 	else if( false == vDir.isZero() )
 		eState = STATE_RUN;
@@ -101,6 +107,10 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		// printf("[time:%d] 이동패킷 전송 \n", chrono::system_clock::now());
 	}
 
+}
+
+void CPlayer::Jump( const float& fTimeDelta )
+{
 }
 
 int CPlayer::Update( const float& fTimeDelta )

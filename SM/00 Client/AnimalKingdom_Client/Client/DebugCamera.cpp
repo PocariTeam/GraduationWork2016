@@ -40,31 +40,31 @@ void CDebugCamera::Check_Key( XMVECTOR& vEye, XMVECTOR& vAt, const float& fTimeD
 	memcpy( &vUp, &m_mtxView.m[ 1 ], sizeof( XMVECTOR ) );
 	memcpy( &vLook, &m_mtxView.m[ 2 ], sizeof( XMVECTOR ) );
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD8 ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD8 ) )
 	{
 		vEye += vLook * fRealSpeed;
 		vAt += vLook * fRealSpeed;
 	}
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD5 ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD5 ) )
 	{
 		vEye -= vLook * fRealSpeed;
 		vAt -= vLook * fRealSpeed;
 	}
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD4 ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD4 ) )
 	{
 		vEye -= vRight * fRealSpeed;
 		vAt -= vRight * fRealSpeed;
 	}
 
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD6 ) & 0x80 )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_NUMPAD6 ) )
 	{
 		vEye += vRight * fRealSpeed;
 		vAt += vRight * fRealSpeed;
 	}
 
-	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) & 0x80 ) && false == m_bClicked )
+	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) ) && false == m_bClicked )
 	{
 		m_ptMouse.x = g_wWinsizeX / 2;
 		m_ptMouse.y = g_wWinsizeY / 2;
@@ -75,7 +75,7 @@ void CDebugCamera::Check_Key( XMVECTOR& vEye, XMVECTOR& vAt, const float& fTimeD
 		m_bClicked = true;
 	}
 
-	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) & 0x80 ) && true == m_bClicked )
+	if( ( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) ) && true == m_bClicked )
 	{
 		POINT	ptUpdateMouse;
 		::GetCursorPos( &ptUpdateMouse );
@@ -94,7 +94,7 @@ void CDebugCamera::Check_Key( XMVECTOR& vEye, XMVECTOR& vAt, const float& fTimeD
 		::SetCursorPos( m_ptMouse.x, m_ptMouse.y );
 	}
 
-	if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) & 0x80 ) && true == m_bClicked )
+	if( !( CInputMgr::GetInstance()->Get_MouseState( CInputMgr::CLICK_RBUTTON ) ) && true == m_bClicked )
 	{
 		m_bClicked = false;
 		::ShowCursor( true );
