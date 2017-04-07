@@ -27,6 +27,7 @@ public:
 	HRESULT Add( STATE eState, const char* pFilePath );
 	void	Change_Animation( STATE eState );
 	bool	GetCurrentAnimationFinished();
+	float	GetPerFinish();
 private:
 	CAnimationSet*			m_pCurrentAnimationSet;
 	CAnimationSet*			m_pPreviousAnimationSet;

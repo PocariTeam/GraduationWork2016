@@ -132,6 +132,11 @@ bool CAnimator::GetCurrentAnimationFinished()
 		return m_pCurrentAnimationSet->GetFinished();
 }
 
+float CAnimator::GetPerFinish()
+{
+	return m_pCurrentAnimationSet->GetPerFinish();
+}
+
 class ReleaseElement
 {
 public:

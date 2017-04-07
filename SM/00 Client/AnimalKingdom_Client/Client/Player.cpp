@@ -69,9 +69,9 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	if( eState != m_pStateMachine->GetCurrentState()
 		|| !m_vDir.equals( vDir, 1.f ) )
 	{
-		m_vDir = vDir;
-		m_pStateMachine->Change_State( eState );
-		CNetworkMgr::GetInstance()->sendMoveCharacter( m_vDir, eState );
+		// m_vDir = vDir;
+		// m_pStateMachine->Change_State( eState );
+		CNetworkMgr::GetInstance()->sendMoveCharacter( vDir, eState );
 	}
 }
 
@@ -89,6 +89,7 @@ int CPlayer::Update( const float& fTimeDelta )
 
 	NxU32	dwCollisionFlag;
 	m_pCharacterController->move( m_vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	m_vDir = NxVec3{ 0.f, 0.f, 0.f };
 
 	return 0;
 }

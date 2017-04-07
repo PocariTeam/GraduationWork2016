@@ -70,11 +70,12 @@ void CRunState::Enter( Player* pOwner, const float& fTImeDelta )
 
 void CRunState::Execute( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->Move( fTImeDelta );
 }
 
 void CRunState::Exit( Player* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->ResetDir();
 }
 
 ///////////////////// Jump State /////////////////////
@@ -88,11 +89,15 @@ void CJumpState::Execute( Player* pOwner, const float& fTImeDelta )
 {
 	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
 		pOwner->getFSM()->Change_State( STATE_IDLE );
+	else if( pOwner->getAnimator()->GetPerFinish() >= 0.5f )
+		pOwner->Jump( -2.f * fTImeDelta );
+	else
+		pOwner->Jump( fTImeDelta );
 }
 
 void CJumpState::Exit( Player* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->ResetJumpTime();
 }
 
 ///////////////////// Attack State /////////////////////

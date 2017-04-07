@@ -29,9 +29,15 @@ class Player {
 	Lock			lock_;
 	/* 플레이어 회전각 */
 	XMFLOAT3				m_vRotate;
+	float					m_fJumpTime;
+public:
+	void			Jump( const float& fTimeDelta );
+	void			Move( const float& fTimeDelta );
+	void			ResetJumpTime( void ) { m_fJumpTime = 0.f; }
+	void			ResetDir( void ) { moveDir_ = NxVec3{ 0.f, 0.f, 0.f }; }
 public:
 	void		setRotateY( FLOAT y ) { m_vRotate.y = y; };
-	float		getRotateY() { return (float)m_vRotate.y; }
+	float		getRotateY() { return m_vRotate.y; }
 public:
 	Player(Session* s, UINT room, BOOL master = false);
 	~Player();

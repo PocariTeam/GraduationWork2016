@@ -4,6 +4,7 @@
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
 	, m_vRotate( 0.f, 0.f, 0.f )
+	, m_fJumpTime( 0.f )
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 50.0f;
@@ -33,13 +34,12 @@ Player::~Player()
 
 void Player::update( float fTimeDelta )
 {
-	NxVec3	vDir = moveDir_ * speed_ * fTimeDelta;
-	vDir.y += -9.81f * 9.81f * fTimeDelta;
+	if( stateMachine_ ) stateMachine_->Update( fTimeDelta );
+
+	moveDir_.y += -9.81f * 9.81f * fTimeDelta;
 
 	NxU32	dwCollisionFlag;
-	cct_->move(vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag);
-
-	if( stateMachine_ )	stateMachine_->Update( fTimeDelta );
+	cct_->move( moveDir_, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 }
 
 PlayerInfo Player::getPlayerInfo()
@@ -83,22 +83,31 @@ XMFLOAT4X4 Player::GetWorld()
 
 void Player::setMoveDir_State( Vector3 vDir, STATE state )
 {
-	NxVec3	newDir;
-	newDir.x = vDir.x;
-	newDir.y = vDir.y;
-	newDir.z = vDir.z;
+	moveDir_.x = vDir.x;
+	moveDir_.y = vDir.y;
+	moveDir_.z = vDir.z;
 
-	newDir.normalize();
-	if (false == newDir.isZero()) // 방향전환
-	{
-		NxVec3 oldLook = cct_->getActor()->getGlobalPose().M.getColumn(2);
-		NxReal rotAngle = acos(oldLook.dot(newDir));
-		NxVec3 cross = oldLook;
-		cross = cross.cross(newDir);
-		rotAngle *= (cross.y >= 0.0f) ? -1.0f : 1.0f;
-		m_vRotate.y = rotAngle;
-	}
-
-	moveDir_ = newDir;
 	stateMachine_->Change_State(state);
+}
+
+void Player::Jump( const float& fTimeDelta )
+{
+	m_fJumpTime += fTimeDelta;
+	moveDir_.y += 5.f * m_fJumpTime;
+}
+
+
+void Player::Move( const float& fTimeDelta )
+{
+	if( moveDir_.isZero() ) return;
+
+	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
+
+	NxReal fRotateY = acos( vDefault_Dir.dot( moveDir_ ) );
+	NxVec3 vCross = vDefault_Dir;
+	vCross = vCross.cross( moveDir_ );
+	fRotateY *= ( vCross.y >= 0.0f ) ? -1.0f : 1.0f;
+	m_vRotate.y = fRotateY;
+
+	moveDir_ = moveDir_ * speed_ * fTimeDelta;
 }
