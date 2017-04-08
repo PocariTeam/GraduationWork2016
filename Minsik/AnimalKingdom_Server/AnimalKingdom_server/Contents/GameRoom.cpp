@@ -217,9 +217,6 @@ BOOL GameRoom::moveRequest(Session* session, Vector3 vDir, STATE state)
 	((find_iter->second))->setMoveDir_State(vDir, state);
 	sendMovePacket(session->getID(), vDir, state);
 	return true;
-
-
-	return false;
 }
 
 void GameRoom::sendPlayerList()
@@ -336,7 +333,7 @@ void GameRoom::update( float fTimeDelta )
 
 void GameRoom::sendSync()
 {
-	SAFE_LOCK(lock_);
+	//SAFE_LOCK(lock_);
 
 	S_SyncPlayer playerPacket;
 	playerPacket.header.packetID = PAK_ID::PAK_ANS_SyncPlayer;

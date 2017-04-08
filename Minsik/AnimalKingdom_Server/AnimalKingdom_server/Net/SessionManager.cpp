@@ -43,6 +43,7 @@ bool SessionManager::addSession(Session * session)
 bool SessionManager::closeSession(Session *session)
 {
 	SAFE_LOCK(lock_);
+
 	if (session == nullptr) {
 		return false;
 	}
@@ -64,6 +65,7 @@ bool SessionManager::closeSession(Session *session)
 void SessionManager::forceCloseSession(Session *session)
 {
 	SAFE_LOCK(lock_);
+
 	if (!session) {
 		return;
 	}

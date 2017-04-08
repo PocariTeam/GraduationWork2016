@@ -258,7 +258,7 @@ void PhysXManager::ReleaseScene(UINT roomNum)
 
 void PhysXManager::updateScene(UINT roomNum, float fTimeDelta)
 {
-	SAFE_LOCK(lock_);
+	//SAFE_LOCK(lock_);
 
 	CCTManager_[roomNum]->updateControllers();
 	scenes_[roomNum]->simulate(fTimeDelta);

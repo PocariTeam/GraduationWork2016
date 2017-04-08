@@ -229,7 +229,9 @@ void CNetworkMgr::processPacket()
 		for( unsigned int i = 0; i < m_dwPlayerCnt; ++i )
 		{
 			XMFLOAT3 position;
-			memcpy_s( &position, sizeof( position ), &packet->playerPositions[ i ].position, sizeof( position ) );
+			position.x = packet->playerPositions[i].position.x;
+			position.y = packet->playerPositions[i].position.y;
+			position.z = packet->playerPositions[i].position.z;
 			m_pScene->Sync( packet->playerPositions[ i ].id, position, packet->playerPositions[ i ].rotY );
 		}
 		break;

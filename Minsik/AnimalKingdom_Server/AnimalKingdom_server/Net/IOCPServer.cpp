@@ -140,6 +140,15 @@ bool IOCPServer::createListenSocket()
 	BOOL optval = TRUE;
 	setsockopt(listenSocket_, IPPROTO_TCP, TCP_NODELAY, (char*)&optval, sizeof(optval));
 
+	// 송신버퍼 크기조정
+	int nSendSize = 0;
+	int nIntSize = sizeof(int);
+	getsockopt(listenSocket_, SOL_SOCKET, SO_SNDBUF, (char*)&nSendSize, &nIntSize);
+	printf("original send buffer size: bytes %d \n", nSendSize);
+	nSendSize = 65536*10;
+	setsockopt(listenSocket_, SOL_SOCKET, SO_SNDBUF, (char*)&nSendSize, nIntSize);
+	printf("new send buffer size: %d bytes \n", nSendSize);
+
 
 	int retval = ::bind(listenSocket_, (SOCKADDR *)&serverAddr, sizeof(serverAddr));
 	if (retval == SOCKET_ERROR) {
@@ -193,7 +202,7 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 		if (session == nullptr) 
 		{
 			SLog(L"! socket data broken");
-			return 0;
+			continue;
 		}
 		if (transferSize == 0) 
 		{

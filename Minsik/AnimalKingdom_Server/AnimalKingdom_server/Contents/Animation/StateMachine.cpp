@@ -54,30 +54,30 @@ void CStateMachine::Change_State( CState* pState )
 
 void CStateMachine::Change_State( STATE eState )
 {
-	switch( eState )
+	switch (eState)
 	{
 	case STATE_IDLE:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CIdleState::getInstance());
 		break;
 	case STATE_ATT1:
 	case STATE_ATT2:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CAttackState::getInstance());
 		break;
 	case STATE_RUN:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CRunState::getInstance());
 		break;
 	case STATE_JUMP:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CJumpState::getInstance());
 		break;
 	case STATE_DEFEND:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CDefendState::getInstance());
 		break;
 	case STATE_BEATEN1:
 	case STATE_BEATEN2:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CBeatenState::getInstance());
 		break;
 	case STATE_DOWN:
-		Change_State( &CIdleState::getInstance() );
+		Change_State(&CDownState::getInstance());
 		break;
 	}
 }

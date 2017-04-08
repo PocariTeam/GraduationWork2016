@@ -1,12 +1,12 @@
 #pragma once
 
-#define		SOCKET_BUF_SIZE			1024*10
+#define		SOCKET_BUF_SIZE			1024*64
 #define		PACKET_BUF_SIZE			2048
 #define		SERVER_PORT				9000
-#define		THREAD_COUNT			4
+#define		THREAD_COUNT			8
 
 #define		UPDATE_TIME_SEC			(1.0f/60.0f)
-#define		SYNC_TIME_SEC			(1.0f/10.0f)
+#define		SYNC_TIME_SEC			(1.0f/60.0f)
 
 #define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4

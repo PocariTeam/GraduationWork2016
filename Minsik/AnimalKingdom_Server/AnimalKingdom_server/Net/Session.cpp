@@ -115,9 +115,10 @@ void Session::recv()
 	DWORD retval = WSARecv(socket_, &recvOver_.wsaBuf_, 1, &recvBytes, &flags, &recvOver_.overlapped_, NULL);
 	if (retval == SOCKET_ERROR) 
 	{
-		if (WSAGetLastError() != ERROR_IO_PENDING) 
+		retval = WSAGetLastError();
+		if (retval != ERROR_IO_PENDING)
 		{
-			SLog(L"! socket error code: %d", WSAGetLastError());
+			SLog(L"! socket error code: %d", retval);
 		}
 	}
 }
@@ -132,9 +133,10 @@ void Session::send(char *sendBuf)
 	DWORD errorCode = WSASend(socket_, &sendOver->wsaBuf_, 1, NULL, 0, &sendOver->overlapped_, NULL);
 	if (errorCode == SOCKET_ERROR) 
 	{
-		if (WSAGetLastError() != WSA_IO_PENDING) 
+		errorCode = WSAGetLastError();
+		if (errorCode != WSA_IO_PENDING)
 		{
-			SLog(L"! socket error: %d", WSAGetLastError());
+			SLog(L"! socket error: %d", errorCode);
 			return;
 		}
 	}
