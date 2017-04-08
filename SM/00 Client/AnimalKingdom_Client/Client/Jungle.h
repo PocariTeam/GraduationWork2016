@@ -18,7 +18,8 @@ public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
 	void  Render( ID3D11DeviceContext* pContext );
-	void  Move( UINT id, XMFLOAT3 vDir, STATE eState );
+	void  ChangeMoveDir( UINT id, XMFLOAT3 vDir);
+	void  ChangeState(UINT id, STATE state);
 	void  Sync( UINT id, XMFLOAT3 vPos, float fRotateY );
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 public:

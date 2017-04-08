@@ -1,12 +1,12 @@
 #pragma once
 
-#define		SOCKET_BUF_SIZE			1024*10
+#define		SOCKET_BUF_SIZE			1024*64
 #define		PACKET_BUF_SIZE			2048
 #define		SERVER_PORT				9000
 #define		THREAD_COUNT			4
 
 #define		UPDATE_TIME_SEC			(1.0f/60.0f)
-#define		SYNC_TIME_SEC			(2.0f/60.0f)
+#define		SYNC_TIME_SEC			(1.0f/60.0f)
 
 #define		MINIMUM_START_COUNT		1
 #define		PLAYER_CAPACITY			4
@@ -27,6 +27,8 @@ typedef enum {
 	PAK_RJT_Request,
 	PAK_REQ_Move,
 	PAK_ANS_Move,
+	PAK_REQ_State,
+	PAK_ANS_State,
 	PAK_ANS_SyncPlayer,
 	PAK_ANS_SyncDynamic,
 } PAK_ID;
@@ -133,7 +135,6 @@ struct C_Move
 {
 	HEADER		header;
 	Vector3		vDir;
-	STATE		state;
 };
 
 struct S_Move
@@ -141,6 +142,18 @@ struct S_Move
 	HEADER		header;
 	UINT		id;
 	Vector3		vDir;
+};
+
+struct C_State
+{
+	HEADER		header;
+	STATE		state;
+};
+
+struct S_State
+{
+	HEADER		header;
+	UINT		id;
 	STATE		state;
 };
 

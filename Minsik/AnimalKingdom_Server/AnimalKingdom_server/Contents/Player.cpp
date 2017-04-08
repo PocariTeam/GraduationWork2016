@@ -81,13 +81,16 @@ XMFLOAT4X4 Player::GetWorld()
 	return Out;
 }
 
-void Player::setMoveDir_State( Vector3 vDir, STATE state )
+void Player::setState(STATE state)
+{
+	stateMachine_->Change_State(state);
+}
+
+void Player::setMoveDir( Vector3 vDir)
 {
 	moveDir_.x = vDir.x;
 	moveDir_.y = vDir.y;
 	moveDir_.z = vDir.z;
-
-	stateMachine_->Change_State(state);
 }
 
 void Player::Jump( const float& fTimeDelta )

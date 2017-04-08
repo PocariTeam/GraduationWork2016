@@ -23,10 +23,12 @@ public:
 	BOOL			setPlayerReady(Session* s, BOOL b);
 	BOOL			setPlayerCharacter(Session* s, CHARACTER c);
 	RoomInfo		getRoomInfo();
-	BOOL			moveRequest(Session * session, Vector3 vDir, STATE state);
+	BOOL			moveRequest(Session * session, Vector3 vDir);
+	BOOL			stateRequest(Session * session, STATE state);
 	void			sendPlayerList();
 	void			sendStartGame();
-	void			sendMovePacket(UINT id, Vector3 vDir, STATE state);
+	void			sendMovePacket(UINT id, Vector3 vDir);
+	void			sendStatePacket(UINT id, STATE state);
 	UINT			getPlayerCount() { return playerCount_; }
 
 	static void		updateTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);

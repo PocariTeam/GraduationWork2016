@@ -13,17 +13,18 @@ class CScene
 public:
 	enum SCENE_TYPE { SCENE_LOGO, SCENE_LOBBY, SCENE_ROOM, SCENE_JUNGLE, SCENE_END };
 protected:
-	virtual HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
+	virtual HRESULT Initialize(HWND hWnd, ID3D11Device* pDevice);
 public:
-	virtual int Update( const float& fTimeDelta );
-	virtual DWORD Release( void );
-	virtual void Render( ID3D11DeviceContext* pContext );
-	POINT	GetMousePosition( HWND hWnd );
+	virtual int Update(const float& fTimeDelta);
+	virtual DWORD Release(void);
+	virtual void Render(ID3D11DeviceContext* pContext);
+	POINT	GetMousePosition(HWND hWnd);
 public:
-	virtual void NotifyRoomInfo( S_RoomList* pRoomlistArray ) {}
-	virtual void NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt ) {}
-	virtual void NotifyGameStart( void ) {}
-	virtual void Move( UINT id, XMFLOAT3 vDir, STATE eState ) {}
+	virtual void NotifyRoomInfo(S_RoomList* pRoomlistArray) {}
+	virtual void NotifyPlayerInfo(PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt) {}
+	virtual void NotifyGameStart(void) {}
+	virtual void ChangeMoveDir(UINT id, XMFLOAT3 vDir) {}
+	virtual void ChangeState(UINT id, STATE state) {}
 	virtual void Sync( UINT id, XMFLOAT3 vDir, float fRotateY ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );

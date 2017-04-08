@@ -30,7 +30,7 @@ public:
 	void	sendExitRoom();
 	void	sendReadyRoom();
 	void	sendStartRoom();
-	void	sendMoveCharacter(NxVec3 dir, STATE state);
+	void	sendMoveCharacter(NxVec3 dir);
 	void	sendSelectCharacter( CHARACTER ch );
 	void	sendCharacterState(STATE s);
 

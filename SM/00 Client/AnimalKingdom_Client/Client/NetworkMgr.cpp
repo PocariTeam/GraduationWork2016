@@ -215,12 +215,19 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_RJT_Request:
 	{
 		printf( "\n !! 요청 실패 !! \n" );
+		MessageBox(NULL, "the most recent request failed! ", nullptr, MB_OK);
 		break;
 	}
 	case PAK_ID::PAK_ANS_Move:
 	{
 		S_Move* packet = ( S_Move* )m_saveBuf;
-		m_pScene->Move( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ), packet->state );
+		m_pScene->ChangeMoveDir( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ) );
+		break;
+	}
+	case PAK_ID::PAK_ANS_State:
+	{
+		S_State* packet = (S_State*)m_saveBuf;
+		m_pScene->ChangeState(packet->id, packet->state);
 		break;
 	}
 	case PAK_ID::PAK_ANS_SyncPlayer:
@@ -305,7 +312,7 @@ void CNetworkMgr::sendStartRoom()
 	sendBufData();
 }
 
-void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state )
+void CNetworkMgr::sendMoveCharacter( NxVec3 dir)
 {
 	C_Move *pMove = ( C_Move* )m_sendBuf;
 	pMove->header.packetID = PAK_ID::PAK_REQ_Move;
@@ -313,7 +320,6 @@ void CNetworkMgr::sendMoveCharacter( NxVec3 dir, STATE state )
 	pMove->vDir.x = dir.x;
 	pMove->vDir.y = dir.y;
 	pMove->vDir.z = dir.z;
-	pMove->state = state;
 
 	sendBufData();
 }
@@ -329,9 +335,14 @@ void CNetworkMgr::sendSelectCharacter( CHARACTER ch )
 	sendBufData();
 }
 
-void CNetworkMgr::sendCharacterState( STATE s )
+void CNetworkMgr::sendCharacterState( STATE state )
 {
+	C_State* pState = (C_State*)m_sendBuf;
+	pState->header.size = sizeof(C_State);
+	pState->header.packetID = PAK_ID::PAK_REQ_State;
+	pState->state = state;
 
+	sendBufData();
 }
 
 DWORD CNetworkMgr::Release( void )

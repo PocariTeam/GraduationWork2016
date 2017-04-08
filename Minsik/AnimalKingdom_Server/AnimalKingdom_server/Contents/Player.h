@@ -59,5 +59,6 @@ public:
 	CStateMachine*  getFSM() { return stateMachine_; }
 	XMFLOAT4X4		GetWorld();
 
-	void			setMoveDir_State(Vector3 vDir, STATE state);
+	void			setMoveDir(Vector3 vDir);
+	void			setState(STATE state);
 };

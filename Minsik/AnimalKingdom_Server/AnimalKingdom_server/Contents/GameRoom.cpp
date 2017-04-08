@@ -203,7 +203,7 @@ RoomInfo GameRoom::getRoomInfo()
 	return r;
 }
 
-BOOL GameRoom::moveRequest(Session* session, Vector3 vDir, STATE state)
+BOOL GameRoom::moveRequest(Session* session, Vector3 vDir)
 {
 	SAFE_LOCK(lock_);
 
@@ -214,8 +214,24 @@ BOOL GameRoom::moveRequest(Session* session, Vector3 vDir, STATE state)
 		return false;
 	}
 
-	((find_iter->second))->setMoveDir_State(vDir, state);
-	sendMovePacket(session->getID(), vDir, state);
+	((find_iter->second))->setMoveDir(vDir);
+	sendMovePacket(session->getID(), vDir);
+	return true;
+}
+
+BOOL GameRoom::stateRequest(Session * session, STATE state)
+{
+	SAFE_LOCK(lock_);
+
+	auto find_iter = players_.find(session->getID());
+	if (find_iter == players_.end())
+	{
+		SLog(L"! id[%d] doens't exists in the [%d] room. ", session->getID(), roomNum_);
+		return false;
+	}
+
+	((find_iter->second))->setState(state);
+	sendStatePacket(session->getID(), state);
 	return true;
 }
 
@@ -234,36 +250,49 @@ void GameRoom::sendPlayerList()
 	if (i != playerCount_)
 	{
 		SLog(L"! the [%d] room's playerCount_ is not correct. ",roomNum_);
+		return;
 	}
 
+	S_PlayerList packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_PlayerList;
+	packet.header.size = sizeof(packet);
+	packet.playerCount = playerCount_;
+	packet.roomNum = roomNum_;
+	memcpy(packet.playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (iter->second)->getSession();
-		S_PlayerList packet;
-		packet.header.packetID = PAK_ID::PAK_ANS_PlayerList;
-		packet.header.size = sizeof(S_PlayerList);
-		packet.playerCount = playerCount_;
-		packet.roomNum = roomNum_;
-		memcpy(packet.playerInfo, pList, sizeof(PlayerInfo)*PLAYER_CAPACITY);
-		session->send((char*)&packet);
+		(iter->second)->getSession()->send((char*)&packet);
 	}
 	
 }
 
-void GameRoom::sendMovePacket(UINT id, Vector3 vDir, STATE state)
+void GameRoom::sendMovePacket(UINT id, Vector3 vDir)
 {
 	SAFE_LOCK(lock_);
 
+	S_Move packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_Move;
+	packet.header.size = sizeof(packet);
+	packet.id = id;
+	packet.vDir = vDir;
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (iter->second)->getSession();
-		S_Move packet;
-		packet.header.packetID = PAK_ID::PAK_ANS_Move;
-		packet.header.size = sizeof(S_Move);
-		packet.id = id;
-		packet.vDir = vDir;
-		packet.state = state;
-		session->send((char*)&packet);
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+}
+
+void GameRoom::sendStatePacket(UINT id, STATE state)
+{
+	SAFE_LOCK(lock_);
+
+	S_State packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_State;
+	packet.header.size = sizeof(packet);
+	packet.id = id;
+	packet.state = state;
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
 	}
 }
 
@@ -271,13 +300,12 @@ void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
 
+	HEADER packet;
+	packet.packetID = PAK_ID::PAK_ANS_StartGame;
+	packet.size = sizeof(packet);
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (iter->second)->getSession();
-		HEADER packet;
-		packet.packetID = PAK_ID::PAK_ANS_StartGame;
-		packet.size = sizeof(packet);
-		session->send((char*)&packet);
+		(iter->second)->getSession()->send((char*)&packet);
 	}
 }
 
@@ -308,8 +336,8 @@ BOOL GameRoom::setupGame()
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
-	updateTimerID_ = timeSetEvent(UPDATE_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
-	syncTimerID_ = timeSetEvent(SYNC_TIME_SEC*1000, caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
+	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC*1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	syncTimerID_ = timeSetEvent((UINT)(SYNC_TIME_SEC*1000), caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
 	
 	return true;
 }
