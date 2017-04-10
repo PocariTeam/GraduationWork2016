@@ -19,3 +19,5 @@
 *.ilk
 *.res
 *.dmp
+*.iobj
+*.ipdb
