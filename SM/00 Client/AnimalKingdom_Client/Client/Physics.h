@@ -10,7 +10,7 @@
 #include "Enum.h"
 #include "Struct.h"
 
-#define GRAVITY -9.8f
+#define GRAVITY -9.81f
 
 class CShader;
 class CMesh;

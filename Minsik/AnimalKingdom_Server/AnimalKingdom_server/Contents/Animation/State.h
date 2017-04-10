@@ -11,6 +11,7 @@ public:
 	virtual void Execute( Player* pOwner, const float& fTImeDelta ) = 0;
 	virtual void Exit( Player* pOwner, const float& fTimeDelta ) = 0;
 	virtual DWORD Release( void );
+	virtual STATE GetCurrentState( void ) = 0;
 };
 
 class CGlobalState
@@ -19,6 +20,7 @@ class CGlobalState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CIdleState
@@ -27,6 +29,7 @@ class CIdleState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CDefendState
@@ -35,6 +38,7 @@ class CDefendState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CRunState
@@ -43,6 +47,7 @@ class CRunState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CJumpState
@@ -51,6 +56,7 @@ class CJumpState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CAttackState
@@ -59,6 +65,7 @@ class CAttackState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CBeatenState
@@ -67,6 +74,7 @@ class CBeatenState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 class CDownState
@@ -75,6 +83,7 @@ class CDownState
 	void Enter( Player* pOwner, const float& fTImeDelta );
 	void Execute( Player* pOwner, const float& fTImeDelta );
 	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetCurrentState( void );
 };
 
 

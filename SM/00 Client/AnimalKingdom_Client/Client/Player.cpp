@@ -15,14 +15,14 @@
 
 CPlayer::CPlayer()
 	: CGameObject()
-	, m_pStateMachine(nullptr)
-	, m_pAnimator(nullptr)
-	, m_pCharacterController(nullptr)
-	, m_dwActorCnt(0)
-	, m_vRotate(0.f, 0.f, 0.f)
-	, m_pInputMgr(CInputMgr::GetInstance())
-	, m_fSpeed(50.f)
-	, m_fJumpTime(0.f)
+	, m_pStateMachine( nullptr )
+	, m_pAnimator( nullptr )
+	, m_pCharacterController( nullptr )
+	, m_dwActorCnt( 0 )
+	, m_vRotate( 0.f, 0.f, 0.f )
+	, m_pInputMgr( CInputMgr::GetInstance() )
+	, m_fSpeed( 50.f )
+	, m_fJumpHeight( 50.f )
 {
 }
 
@@ -30,56 +30,51 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Initialize(ID3D11Device* pDevice, NxController* pCharacterController)
+HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterController )
 {
 	m_pCharacterController = pCharacterController;
-	m_pActor = (NxActor*)m_pCharacterController->getUserData();
-	m_pStateMachine = CStateMachine::Create(this);
+	m_pActor = ( NxActor* )m_pCharacterController->getUserData();
+	m_pStateMachine = CStateMachine::Create( this );
 
 	return S_OK;
 }
 
-void CPlayer::Check_Key(const float& fTimeDelta)
+void CPlayer::Check_Key( const float& fTimeDelta )
 {
 	STATE eState = m_pStateMachine->GetCurrentState();
 	NxVec3 vDir{ 0.f, 0.f, 0.f };
 
-	if (m_pInputMgr->Get_KeyboardState(DIK_UP))
+	if( m_pInputMgr->Get_KeyboardState( DIK_UP ) )
 		vDir += NxVec3{ 0.f, 0.f, 1.f };
-	if (m_pInputMgr->Get_KeyboardState(DIK_DOWN))
+	if( m_pInputMgr->Get_KeyboardState( DIK_DOWN ) )
 		vDir += NxVec3{ 0.f, 0.f, -1.f };
-	if (m_pInputMgr->Get_KeyboardState(DIK_RIGHT))
+	if( m_pInputMgr->Get_KeyboardState( DIK_RIGHT ) )
 		vDir += NxVec3{ 1.f, 0.f, 0.f };
-	if (m_pInputMgr->Get_KeyboardState(DIK_LEFT))
+	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
 
-	if (m_pInputMgr->Get_KeyboardState(DIK_S))
+	if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 		eState = STATE_ATT1;
-	else if (m_pInputMgr->Get_KeyboardState(DIK_D))
+	else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
 		eState = STATE_BEATEN1;
-	else if (m_pInputMgr->Get_KeyboardState(DIK_A))
+	else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
 		eState = STATE_DEFEND;
-	else if (m_pInputMgr->Get_KeyboardState(DIK_F))
+	else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 		eState = STATE_JUMP;
-	else if (!vDir.isZero())
+	else if( !vDir.isZero() && STATE_JUMP != m_pStateMachine->GetCurrentState() )
 		eState = STATE_RUN;
-	else if (m_pAnimator->GetCurrentAnimationFinished())
+	else if( m_pAnimator->GetCurrentAnimationFinished() )
 		eState = STATE_IDLE;
 
-	if (eState != m_pStateMachine->GetCurrentState())
-	{
-		CNetworkMgr::GetInstance()->sendCharacterState(eState);
-	}
-	if (false == m_vDir.equals(vDir, 1.f))
-	{
-		CNetworkMgr::GetInstance()->sendMoveCharacter(vDir);
-	}
+	if( eState != m_pStateMachine->GetCurrentState() )
+		CNetworkMgr::GetInstance()->sendCharacterState( eState );
+	if( false == m_vDir.equals( vDir, 1.f ) )
+		CNetworkMgr::GetInstance()->sendMoveCharacter( vDir );
 }
 
-void CPlayer::Jump( const float& fTimeDelta )
+void CPlayer::Jump( const float& fTimeDelta, float fAnimatePercent )
 {
-	m_fJumpTime += fTimeDelta;
-	m_vDir.y += 5.f * m_fJumpTime;
+	m_vDir.y += m_fJumpHeight * cos( fAnimatePercent * XM_PI ) * fTimeDelta + GRAVITY * GRAVITY * fTimeDelta;
 }
 
 int CPlayer::Update( const float& fTimeDelta )
@@ -156,7 +151,7 @@ void CPlayer::Sync( NxVec3& vPos, float fRotateY )
 	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
 	//m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
-	m_pCharacterController->setPosition(setPos);
+	m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
 }
 

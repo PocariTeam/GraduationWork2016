@@ -25,6 +25,7 @@ public:
 	DWORD		Release( void );
 	/* GraphicDev Resize RenderTarget */
 	void		ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY );
+	DWORD		ChangeDisplayMode();
 public:
 	/* MainFrame Create */
 	static		CMainFrm*	Create( const HINSTANCE hInst, const HWND hWnd );

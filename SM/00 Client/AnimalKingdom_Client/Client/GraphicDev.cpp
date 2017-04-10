@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "GraphicDev.h"
 #include <assert.h>
+#include "Function.h"
+#include "Value.h"
 
 CGraphicDev::CGraphicDev( void )
 	: m_pDevice( nullptr )
 	, m_pSwapChain( nullptr )
 	, m_pDeviceContext( nullptr )
+	, m_pDisplayMode( nullptr )
+	, m_dwDisplayModeCnt( 0 )
 {
 }
 
@@ -36,31 +40,61 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	dwCreateDeviceFlag |= D3D11_CREATE_DEVICE_DEBUG;	/* 플래그 사용시에는 Win8의 SDK 필요_SDKLayer.dll */
 #endif
 
-	D3D_DRIVER_TYPE DriverTypes[] = {
-		D3D_DRIVER_TYPE_HARDWARE /* HARDWARE 를 통한 그래픽 가속 */
-		, D3D_DRIVER_TYPE_WARP
-		, D3D_DRIVER_TYPE_REFERENCE /* SOFTWARE 를 통해 느리지만 하드웨어가 지원하지 않을 때 테스트용 */
-	};
-	DWORD dwDriverTypes = ARRAYSIZE( DriverTypes );
-
 	D3D_DRIVER_TYPE	  eDriverTypes = D3D_DRIVER_TYPE_NULL;
 	D3D_FEATURE_LEVEL eFeatureLevel = D3D_FEATURE_LEVEL_11_1;
 
-	for( DWORD i = 0; i < dwDriverTypes; i++ )
+	IDXGIFactory1*	pdxgiFactory = nullptr;
+	IDXGIDevice*	pdxgiDevice = nullptr;
+	if( FAILED( CreateDXGIFactory1( __uuidof( IDXGIFactory1 ), ( void** )&pdxgiFactory ) ) ) return E_FAIL;
+
+	size_t				dwVideoMemSize{ 0 };
+	IDXGIAdapter*		pAdapter = nullptr;
+	IDXGIOutput*		pOutput = nullptr;
+	DXGI_ADAPTER_DESC	tAdapter_Desc;
+
+	/*if( FAILED( pdxgiFactory->EnumAdapters( NULL, ( IDXGIAdapter** )&pAdapter ) ) )
+		MessageBoxA( hWnd, "요청한 어댑터 없음", NULL, MB_OK );
+
+	pAdapter->GetDesc( &tAdapter_Desc );
+	dwVideoMemSize = ( size_t )( tAdapter_Desc.DedicatedVideoMemory + tAdapter_Desc.SharedSystemMemory );
+
+	int iIndex{ 0 };
+	size_t dwCompare_VideoMemSize;
+	UINT nFlags = DXGI_ENUM_MODES_INTERLACED;
+
+	while( pdxgiFactory->EnumAdapters( iIndex, &pAdapter ) != DXGI_ERROR_NOT_FOUND )
 	{
-		eDriverTypes = DriverTypes[i];
-		if( SUCCEEDED( D3D11CreateDevice( NULL /* 기본어댑터를 사용하겠다 */
-			, eDriverTypes				       /* 위에 참조 */
-			, nullptr						   /* SoftWare 구동기 지정 ( 우리는 하드웨어를 사용한다 ) */
-			, dwCreateDeviceFlag
-			, nullptr						   /* NULL을 넣을 시 최고수준을 찾아줌 */
-			, NULL							   /* 앞의 인자인 FeatureLevel 변수의 원소 개수 ( NULL 일 때는 0 ) */
-			, D3D11_SDK_VERSION
-			, &m_pDevice
-			, &eFeatureLevel				   /* 앞의 FeatureLevel 인자를 NULL로 보내줄 경우 찾아낸 최고수준을 반환 */
-			, &m_pDeviceContext ) ) )
+		pAdapter->EnumOutputs( 0, &pOutput );
+
+		if( pOutput )
+		{
+			pOutput->GetDisplayModeList( DXGI_FORMAT_R8G8B8A8_UNORM, nFlags, &m_dwDisplayModeCnt, NULL );
+			m_pDisplayMode = new DXGI_MODE_DESC[ m_dwDisplayModeCnt ];
+			pOutput->GetDisplayModeList( DXGI_FORMAT_R8G8B8A8_UNORM, 0, &m_dwDisplayModeCnt, m_pDisplayMode );
+			pOutput->Release();
+		}
+
+		pAdapter->GetDesc( &tAdapter_Desc );
+		dwCompare_VideoMemSize = ( size_t )( tAdapter_Desc.DedicatedVideoMemory + tAdapter_Desc.SharedSystemMemory );
+
+		if( dwCompare_VideoMemSize > dwVideoMemSize )
+		{
+			dwVideoMemSize = dwCompare_VideoMemSize;
 			break;
-	}
+		}
+		iIndex++;
+	}*/
+
+	D3D11CreateDevice( pAdapter /* 앞서 찾은 어댑터를 사용하겠다 */
+		, D3D_DRIVER_TYPE_HARDWARE/*D3D_DRIVER_TYPE_UNKNOWN*/			/* 위에 참조 */
+		, nullptr							/* SoftWare 구동기 지정 ( 우리는 하드웨어를 사용한다 ) */
+		, dwCreateDeviceFlag
+		, nullptr						   /* NULL을 넣을 시 최고수준을 찾아줌 */
+		, NULL							   /* 앞의 인자인 FeatureLevel 변수의 원소 개수 ( NULL 일 때는 0 ) */
+		, D3D11_SDK_VERSION
+		, &m_pDevice
+		, &eFeatureLevel				   /* 앞의 FeatureLevel 인자를 NULL로 보내줄 경우 찾아낸 최고수준을 반환 */
+		, &m_pDeviceContext );
 
 	if( !m_pDevice || !m_pDeviceContext ) {
 		MessageBoxA( 0, "ID3D11Device* 또는 ID3D11DeviceContext* 생성 실패", 0, 0 );
@@ -70,7 +104,7 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	// 생성과 동시에 RefCnt 를 낮추어준다.
 	m_pDevice->Release();
 
-	if( FAILED( Create_SwapChain( Mode, hWnd, wSizeX, wSizeY ) ) ) {
+	if( FAILED( Create_SwapChain( Mode, hWnd, pdxgiFactory, wSizeX, wSizeY ) ) ) {
 		MessageBoxA( 0, "SwapChain 생성 실패", 0, 0 );
 		return E_FAIL;
 	}
@@ -78,6 +112,21 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	SetViewport( wSizeX, wSizeY );
 
 	return S_OK;
+}
+
+DWORD CGraphicDev::ChangeDisplayMode()
+{
+	BOOL bMode{ MODE_FULL };
+	DWORD dwResult{};
+	m_pSwapChain->GetFullscreenState( &bMode, NULL );
+
+	if( bMode == MODE_WIN )
+	{
+		m_pSwapChain->SetFullscreenState( TRUE, NULL );
+		dwResult = MAKELONG( m_pDisplayMode[ m_dwDisplayModeCnt - 1 ].Width, m_pDisplayMode[ m_dwDisplayModeCnt - 1 ].Height );
+	}
+
+	return dwResult;
 }
 
 void CGraphicDev::SetViewport( const WORD& wSizeX, const WORD& wSizeY )
@@ -92,7 +141,7 @@ void CGraphicDev::SetViewport( const WORD& wSizeX, const WORD& wSizeY )
 	m_pDeviceContext->RSSetViewports( 1, &ViewPort );
 }
 
-HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, const WORD& wSizeX, const WORD& wSizeY )
+HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, IDXGIFactory* pdxgiFactory, const WORD& wSizeX, const WORD& wSizeY )
 {
 	DXGI_SWAP_CHAIN_DESC SwapChainDesc;
 	ZeroMemory( &SwapChainDesc, sizeof( SwapChainDesc ) );
@@ -140,39 +189,20 @@ HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, const WORD& wSiz
 	SwapChainDesc.OutputWindow = hWnd;
 
 	// 윈모드 or 풀모드
-	SwapChainDesc.Windowed = Mode;
+	SwapChainDesc.Windowed = 1;
 
 	// 출력된 이후 백퍼버의 내용은 버림
 	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	// 추가 옵션 플래그는 사용하지 않음
-	SwapChainDesc.Flags = 0;
-
-	//////////////////////////////////////////////////////////////////////////
-	////////////////// 실질적인 SwapChain 생성 ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////////
-
-	// IDXGIFactory 를 이용하여 SwapChain 을 생성하는데 그 전에 해야할 과정들
-	IDXGIDevice* dxgiDevice = NULL;
-	if( FAILED( m_pDevice->QueryInterface( __uuidof( IDXGIDevice ), ( void** )&dxgiDevice ) ) )
-		return E_FAIL;
-
-	IDXGIAdapter1* dxgiAdaptor = NULL;
-	if( FAILED( dxgiDevice->GetParent( __uuidof( IDXGIAdapter1 ), ( void** )&dxgiAdaptor ) ) )
-		return E_FAIL;
-
-	// IDXGIFactory 를 얻어온다
-	IDXGIFactory* dxgiFatory = 0;
-	if( FAILED( dxgiAdaptor->GetParent( __uuidof( IDXGIFactory ), ( void** )&dxgiFatory ) ) )
-		return E_FAIL;
+	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	pdxgiFactory->MakeWindowAssociation( hWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES );
 
 	// SwapChain 생성
-	if( FAILED( dxgiFatory->CreateSwapChain( m_pDevice, &SwapChainDesc, &m_pSwapChain ) ) )
+	if( FAILED( pdxgiFactory->CreateSwapChain( m_pDevice, &SwapChainDesc, &m_pSwapChain ) ) )
 		return E_FAIL;
 
-	dxgiDevice->Release();
-	dxgiAdaptor->Release();
-	dxgiFatory->Release();
+	m_pSwapChain->SetFullscreenState( Mode, NULL );
 
 	return S_OK;
 }
@@ -183,6 +213,8 @@ DWORD CGraphicDev::Release( void )
 
 	DWORD	dwRef{ 0 };
 	char	szErrorMessage[64]{ "" };
+
+	::Safe_Delete_Array( m_pDisplayMode );
 
 	if( nullptr != m_pSwapChain ) {
 		dwRef = m_pSwapChain->Release();

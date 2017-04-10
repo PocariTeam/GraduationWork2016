@@ -38,6 +38,12 @@ void CGlobalState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CGlobalState::GetCurrentState( void )
+{
+	/* 잘못된 요청 */
+	return ( STATE )-1;
+}
+
 ///////////////////// Idle State /////////////////////
 
 void CIdleState::Enter( CPlayer* pOwner, const float& fTImeDelta )
@@ -52,6 +58,11 @@ void CIdleState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 void CIdleState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
 
+}
+
+STATE CIdleState::GetCurrentState( void )
+{
+	return STATE_IDLE;
 }
 
 ///////////////////// Defend State /////////////////////
@@ -72,6 +83,11 @@ void CDefendState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CDefendState::GetCurrentState( void )
+{
+	return STATE_DEFEND;
+}
+
 ///////////////////// Run State /////////////////////
 
 void CRunState::Enter( CPlayer* pOwner, const float& fTImeDelta )
@@ -89,6 +105,11 @@ void CRunState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CRunState::GetCurrentState( void )
+{
+	return STATE_RUN;
+}
+
 ///////////////////// Jump State /////////////////////
 
 void CJumpState::Enter( CPlayer* pOwner, const float& fTImeDelta )
@@ -99,16 +120,21 @@ void CJumpState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 void CJumpState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 {
 	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
+	{
 		pOwner->GetFSM()->Change_State( STATE_IDLE );
-	else if( pOwner->GetAnimator()->GetPerFinish() >= 0.5f )
-		pOwner->Jump( -2.f * fTImeDelta );
-	else
-		pOwner->Jump( fTImeDelta );
+		return;
+	}
+		
+	pOwner->Jump( fTImeDelta, pOwner->GetAnimator()->GetPerFinish() );
 }
 
 void CJumpState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
-	pOwner->ResetJumpTime();
+}
+
+STATE CJumpState::GetCurrentState( void )
+{
+	return STATE_JUMP;
 }
 
 ///////////////////// Attack State /////////////////////
@@ -129,6 +155,11 @@ void CAttackState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CAttackState::GetCurrentState( void )
+{
+	return STATE_ATT1;
+}
+
 ///////////////////// Beaten State /////////////////////
 
 void CBeatenState::Enter( CPlayer* pOwner, const float& fTImeDelta )
@@ -147,6 +178,11 @@ void CBeatenState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CBeatenState::GetCurrentState( void )
+{
+	return STATE_BEATEN1;
+}
+
 ///////////////////// Down State /////////////////////
 
 void CDownState::Enter( CPlayer* pOwner, const float& fTImeDelta )
@@ -162,4 +198,9 @@ void CDownState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 void CDownState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
 
+}
+
+STATE CDownState::GetCurrentState( void )
+{
+	return STATE_DOWN;
 }

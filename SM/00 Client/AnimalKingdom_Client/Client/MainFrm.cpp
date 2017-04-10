@@ -139,8 +139,13 @@ DWORD CMainFrm::Release( void )
 
 void CMainFrm::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY )
 {
-	m_pRenderTargetMgr->ResizeRenderTarget( m_pDevice, m_pContext, m_pGraphicDev->Get_SwapChain(), wSizeX, wSizeY );
+	m_pRenderTargetMgr->ResizeRenderTarget( m_pDevice, m_pContext, m_pGraphicDev->Get_SwapChain(), g_wWinsizeX, g_wWinsizeY );
 	m_pRenderTargetMgr->SetRenderTargetView( m_pContext, 0, 1 );
+}
+
+DWORD CMainFrm::ChangeDisplayMode()
+{
+	return m_pGraphicDev->ChangeDisplayMode();
 }
 
 CMainFrm* CMainFrm::Create( const HINSTANCE hInst, const HWND hWnd )
@@ -173,6 +178,7 @@ void CMainFrm::Check_Key( void )
 	/* Wireframe */
 	if( ( m_pInputMgr->Get_KeyboardState( DIK_F1 ) ) && m_bOverlapped )
 	{
+		
 		m_pRenderer->SetWireframe();
 		m_bOverlapped = false;
 	}

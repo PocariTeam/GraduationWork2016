@@ -27,6 +27,11 @@ void CGlobalState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CGlobalState::GetCurrentState( void )
+{
+	return ( STATE )-1;
+}
+
 ///////////////////// Idle State /////////////////////
 
 void CIdleState::Enter( Player* pOwner, const float& fTImeDelta )
@@ -41,6 +46,11 @@ void CIdleState::Execute( Player* pOwner, const float& fTImeDelta )
 void CIdleState::Exit( Player* pOwner, const float& fTimeDelta )
 {
 
+}
+
+STATE CIdleState::GetCurrentState( void )
+{
+	return STATE_IDLE;
 }
 
 ///////////////////// Defend State /////////////////////
@@ -61,6 +71,11 @@ void CDefendState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CDefendState::GetCurrentState( void )
+{
+	return STATE_DEFEND;
+}
+
 ///////////////////// Run State /////////////////////
 
 void CRunState::Enter( Player* pOwner, const float& fTImeDelta )
@@ -78,6 +93,11 @@ void CRunState::Exit( Player* pOwner, const float& fTimeDelta )
 	pOwner->ResetDir();
 }
 
+STATE CRunState::GetCurrentState( void )
+{
+	return STATE_RUN;
+}
+
 ///////////////////// Jump State /////////////////////
 
 void CJumpState::Enter( Player* pOwner, const float& fTImeDelta )
@@ -88,16 +108,21 @@ void CJumpState::Enter( Player* pOwner, const float& fTImeDelta )
 void CJumpState::Execute( Player* pOwner, const float& fTImeDelta )
 {
 	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
+	{
 		pOwner->getFSM()->Change_State( STATE_IDLE );
-	else if( pOwner->getAnimator()->GetPerFinish() >= 0.5f )
-		pOwner->Jump( -2.f * fTImeDelta );
-	else
-		pOwner->Jump( fTImeDelta );
+		return;
+	}
+	pOwner->Move( fTImeDelta );
+	pOwner->Jump( fTImeDelta, pOwner->getAnimator()->GetPerFinish() );
 }
 
 void CJumpState::Exit( Player* pOwner, const float& fTimeDelta )
 {
-	pOwner->ResetJumpTime();
+}
+
+STATE CJumpState::GetCurrentState( void )
+{
+	return STATE_JUMP;
 }
 
 ///////////////////// Attack State /////////////////////
@@ -118,6 +143,11 @@ void CAttackState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CAttackState::GetCurrentState( void )
+{
+	return STATE_ATT1;
+}
+
 ///////////////////// Beaten State /////////////////////
 
 void CBeatenState::Enter( Player* pOwner, const float& fTImeDelta )
@@ -136,6 +166,11 @@ void CBeatenState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
+STATE CBeatenState::GetCurrentState( void )
+{
+	return STATE_BEATEN1;
+}
+
 ///////////////////// Down State /////////////////////
 
 void CDownState::Enter( Player* pOwner, const float& fTImeDelta )
@@ -151,4 +186,9 @@ void CDownState::Execute( Player* pOwner, const float& fTImeDelta )
 void CDownState::Exit( Player* pOwner, const float& fTimeDelta )
 {
 
+}
+
+STATE CDownState::GetCurrentState( void )
+{
+	return STATE_DOWN;
 }

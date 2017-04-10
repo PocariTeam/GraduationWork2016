@@ -21,7 +21,7 @@ protected:
 	virtual HRESULT Initialize( ID3D11Device* pDevice, NxController* pCharacterController );
 public:
 	void			Check_Key( const float& fTimeDelta );
-	void			Jump( const float& fTimeDelta );
+	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 public:
 	void			Move( const float& fTimeDelta );
 	void			Sync( NxVec3& vPos, float fRotateY );
@@ -37,7 +37,6 @@ public:
 	XMFLOAT4X4		GetWorld();
 public:
 	void			Change_State( STATE eState );
-	void			ResetJumpTime( void ) { m_fJumpTime = 0.f; }
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType );
 protected:
@@ -48,7 +47,7 @@ protected:
 	DWORD					m_dwActorCnt;
 	CInputMgr*				m_pInputMgr;
 	float					m_fSpeed;
-	float					m_fJumpTime;
+	float					m_fJumpHeight;
 };
 
 #endif // Player_h__

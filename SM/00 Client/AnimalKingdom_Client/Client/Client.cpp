@@ -8,7 +8,7 @@
 #include "Function.h"
 #include "NetworkMgr.h"
 
-
+#define MENU_HEIGHT 47
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -210,6 +210,14 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 			PostQuitMessage( 0 );
 			return 0;
 		}
+		break;
+	case WM_SYSKEYDOWN:
+		/*switch( wParam )
+		{
+		case VK_RETURN:
+			WndProc( hWnd, WM_SIZE, SIZE_RESTORED, g_pMainFrm->ChangeDisplayMode() );
+			break;
+		}*/
 		break;
 	case WM_COMMAND:
 	{

@@ -4,7 +4,7 @@
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
 	, m_vRotate( 0.f, 0.f, 0.f )
-	, m_fJumpTime( 0.f )
+	, m_fJumpHeight( 50.f )
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 50.0f;
@@ -40,6 +40,7 @@ void Player::update( float fTimeDelta )
 
 	NxU32	dwCollisionFlag;
 	cct_->move( moveDir_, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	moveDir_ = NxVec3{ 0.f, 0.f, 0.f };
 }
 
 PlayerInfo Player::getPlayerInfo()
@@ -93,12 +94,10 @@ void Player::setMoveDir( Vector3 vDir)
 	moveDir_.z = vDir.z;
 }
 
-void Player::Jump( const float& fTimeDelta )
+void Player::Jump( const float& fTimeDelta, float fAnimatePercent )
 {
-	m_fJumpTime += fTimeDelta;
-	moveDir_.y += 5.f * m_fJumpTime;
+	moveDir_.y += m_fJumpHeight * cos( fAnimatePercent * XM_PI ) * fTimeDelta + 9.81f * 9.81f * fTimeDelta;
 }
-
 
 void Player::Move( const float& fTimeDelta )
 {

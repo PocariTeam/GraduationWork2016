@@ -6,7 +6,7 @@
 class CGraphicDev
 {
 public:
-	enum WINMODE { MODE_FULL, MODE_WIN };
+	enum WINMODE { MODE_WIN, MODE_FULL };
 private:
 	explicit CGraphicDev( void );
 	~CGraphicDev( void );
@@ -22,13 +22,16 @@ public:
 	// Display 생성 함수
 	HRESULT Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, const WORD& wSizeY );
 private:
-	HRESULT Create_SwapChain( WINMODE Mode, HWND hWnd, const WORD& wSizeX, const WORD& wSizeY );
+	HRESULT Create_SwapChain( WINMODE Mode, HWND hWnd, IDXGIFactory* pdxgiFactory, const WORD& wSizeX, const WORD& wSizeY );
 public:
+	DWORD	ChangeDisplayMode();
 	void	SetViewport( const WORD& wSizeX, const WORD& wSizeY );
 private:
 	ID3D11Device*				m_pDevice;				// Device
 	IDXGISwapChain*				m_pSwapChain;			// Swap Chain
 	ID3D11DeviceContext*		m_pDeviceContext;		// Context
+	DXGI_MODE_DESC*				m_pDisplayMode;
+	UINT						m_dwDisplayModeCnt;
 public:
 	DWORD Release( void );
 };
