@@ -8,10 +8,12 @@
 CGlobalState*	CSingleton<CGlobalState>::m_pInstance;
 CIdleState*		CSingleton<CIdleState>::m_pInstance;
 CAttackState*	CSingleton<CAttackState>::m_pInstance;
+CAttackState2*	CSingleton<CAttackState2>::m_pInstance;
 CRunState*		CSingleton<CRunState>::m_pInstance;
 CJumpState*		CSingleton<CJumpState>::m_pInstance;
 CDefendState*	CSingleton<CDefendState>::m_pInstance;
 CBeatenState*	CSingleton<CBeatenState>::m_pInstance;
+CBeatenState2*	CSingleton<CBeatenState2>::m_pInstance;
 CDownState*		CSingleton<CDownState>::m_pInstance;
 
 DWORD CState::Release( void )
@@ -38,7 +40,7 @@ void CGlobalState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CGlobalState::GetCurrentState( void )
+STATE CGlobalState::GetState( void )
 {
 	/* 잘못된 요청 */
 	return ( STATE )-1;
@@ -60,7 +62,7 @@ void CIdleState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CIdleState::GetCurrentState( void )
+STATE CIdleState::GetState( void )
 {
 	return STATE_IDLE;
 }
@@ -83,7 +85,7 @@ void CDefendState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CDefendState::GetCurrentState( void )
+STATE CDefendState::GetState( void )
 {
 	return STATE_DEFEND;
 }
@@ -105,7 +107,7 @@ void CRunState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CRunState::GetCurrentState( void )
+STATE CRunState::GetState( void )
 {
 	return STATE_RUN;
 }
@@ -132,7 +134,7 @@ void CJumpState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
 }
 
-STATE CJumpState::GetCurrentState( void )
+STATE CJumpState::GetState( void )
 {
 	return STATE_JUMP;
 }
@@ -155,9 +157,32 @@ void CAttackState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CAttackState::GetCurrentState( void )
+STATE CAttackState::GetState( void )
 {
 	return STATE_ATT1;
+}
+
+///////////////////// Attack State2 /////////////////////
+
+void CAttackState2::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_ATT2 );
+}
+
+void CAttackState2::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
+		pOwner->GetFSM()->Change_State( STATE_IDLE );
+}
+
+void CAttackState2::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+STATE CAttackState2::GetState( void )
+{
+	return STATE_ATT2;
 }
 
 ///////////////////// Beaten State /////////////////////
@@ -178,9 +203,32 @@ void CBeatenState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CBeatenState::GetCurrentState( void )
+STATE CBeatenState::GetState( void )
 {
 	return STATE_BEATEN1;
+}
+
+///////////////////// Beaten State2 /////////////////////
+
+void CBeatenState2::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_BEATEN2 );
+}
+
+void CBeatenState2::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
+		pOwner->GetFSM()->Change_State( STATE_IDLE );
+}
+
+void CBeatenState2::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+STATE CBeatenState2::GetState( void )
+{
+	return STATE_BEATEN2;
 }
 
 ///////////////////// Down State /////////////////////
@@ -192,7 +240,8 @@ void CDownState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 
 void CDownState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 {
-
+	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
+		pOwner->GetFSM()->Change_State( STATE_IDLE );
 }
 
 void CDownState::Exit( CPlayer* pOwner, const float& fTimeDelta )
@@ -200,7 +249,7 @@ void CDownState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CDownState::GetCurrentState( void )
+STATE CDownState::GetState( void )
 {
 	return STATE_DOWN;
 }

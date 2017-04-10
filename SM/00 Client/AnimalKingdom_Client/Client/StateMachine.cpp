@@ -45,7 +45,13 @@ HRESULT CStateMachine::Initialize( CPlayer* pOwner )
 
 STATE CStateMachine::GetCurrentState()
 {
-	return m_pCurrentState->GetCurrentState();
+	return m_pCurrentState->GetState();
+}
+
+STATE CStateMachine::GetPreviousState()
+{
+	if( m_pPreviousState )	return m_pPreviousState->GetState();
+	else return STATE_IDLE;
 }
 
 void CStateMachine::Change_State( CState* pState )
@@ -66,8 +72,10 @@ void CStateMachine::Change_State( STATE eState )
 		Change_State( CIdleState::GetInstance() );
 		break;
 	case STATE_ATT1:
-	case STATE_ATT2:
 		Change_State( CAttackState::GetInstance() );
+		break;
+	case STATE_ATT2:
+		Change_State( CAttackState2::GetInstance() );
 		break;
 	case STATE_RUN:
 		Change_State( CRunState::GetInstance() );
@@ -79,8 +87,10 @@ void CStateMachine::Change_State( STATE eState )
 		Change_State( CDefendState::GetInstance() );
 		break;
 	case STATE_BEATEN1:
-	case STATE_BEATEN2:
 		Change_State( CBeatenState::GetInstance() );
+		break;
+	case STATE_BEATEN2:
+		Change_State( CBeatenState2::GetInstance() );
 		break;
 	case STATE_DOWN:
 		Change_State( CDownState::GetInstance() );

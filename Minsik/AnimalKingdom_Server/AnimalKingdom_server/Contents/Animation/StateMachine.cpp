@@ -60,8 +60,10 @@ void CStateMachine::Change_State( STATE eState )
 		Change_State(&CIdleState::getInstance());
 		break;
 	case STATE_ATT1:
+		Change_State( &CAttackState::getInstance() );
+		break;
 	case STATE_ATT2:
-		Change_State(&CAttackState::getInstance());
+		Change_State(&CAttackState2::getInstance());
 		break;
 	case STATE_RUN:
 		Change_State(&CRunState::getInstance());
@@ -73,8 +75,10 @@ void CStateMachine::Change_State( STATE eState )
 		Change_State(&CDefendState::getInstance());
 		break;
 	case STATE_BEATEN1:
+		Change_State( &CBeatenState::getInstance() );
+		break;
 	case STATE_BEATEN2:
-		Change_State(&CBeatenState::getInstance());
+		Change_State(&CBeatenState2::getInstance());
 		break;
 	case STATE_DOWN:
 		Change_State(&CDownState::getInstance());

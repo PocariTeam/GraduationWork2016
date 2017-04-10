@@ -53,22 +53,31 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
 
-	if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
-		eState = STATE_ATT1;
-	else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
-		eState = STATE_BEATEN1;
-	else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
-		eState = STATE_DEFEND;
-	else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
-		eState = STATE_JUMP;
-	else if( !vDir.isZero() && STATE_JUMP != m_pStateMachine->GetCurrentState() )
-		eState = STATE_RUN;
-	else if( m_pAnimator->GetCurrentAnimationFinished() )
-		eState = STATE_IDLE;
+	if( m_pAnimator->GetCurrentAnimationFinished() )
+	{
+		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
+			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
+		else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
+			eState = ( STATE_BEATEN1 == m_pStateMachine->GetPreviousState() ) ? STATE_BEATEN2 : STATE_BEATEN1;
+		else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
+			eState = STATE_DEFEND;
+		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
+			eState = STATE_JUMP;
+		else if( m_pInputMgr->Get_KeyboardState( DIK_Q ) )
+			eState = STATE_DOWN;
+		else if( !vDir.isZero()
+			&& ( STATE_RUN == eState || STATE_IDLE == eState ) )
+			eState = STATE_RUN;
+		else
+			eState = STATE_IDLE;
 
+		if( eState == STATE_ATT2 )
+			int i = 0;
+	}
+	
 	if( eState != m_pStateMachine->GetCurrentState() )
 		CNetworkMgr::GetInstance()->sendCharacterState( eState );
-	if( false == m_vDir.equals( vDir, 1.f ) )
+	if( false == m_vDir.equals( vDir, 1.f ) && ( STATE_RUN == eState || STATE_JUMP == eState || STATE_IDLE == eState ) )
 		CNetworkMgr::GetInstance()->sendMoveCharacter( vDir );
 }
 

@@ -27,7 +27,7 @@ void CGlobalState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CGlobalState::GetCurrentState( void )
+STATE CGlobalState::GetState( void )
 {
 	return ( STATE )-1;
 }
@@ -48,7 +48,7 @@ void CIdleState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CIdleState::GetCurrentState( void )
+STATE CIdleState::GetState( void )
 {
 	return STATE_IDLE;
 }
@@ -71,7 +71,7 @@ void CDefendState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CDefendState::GetCurrentState( void )
+STATE CDefendState::GetState( void )
 {
 	return STATE_DEFEND;
 }
@@ -93,7 +93,7 @@ void CRunState::Exit( Player* pOwner, const float& fTimeDelta )
 	pOwner->ResetDir();
 }
 
-STATE CRunState::GetCurrentState( void )
+STATE CRunState::GetState( void )
 {
 	return STATE_RUN;
 }
@@ -120,7 +120,7 @@ void CJumpState::Exit( Player* pOwner, const float& fTimeDelta )
 {
 }
 
-STATE CJumpState::GetCurrentState( void )
+STATE CJumpState::GetState( void )
 {
 	return STATE_JUMP;
 }
@@ -143,9 +143,32 @@ void CAttackState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CAttackState::GetCurrentState( void )
+STATE CAttackState::GetState( void )
 {
 	return STATE_ATT1;
+}
+
+///////////////////// Attack State2 /////////////////////
+
+void CAttackState2::Enter( Player* pOwner, const float& fTImeDelta )
+{
+	pOwner->getAnimator()->Change_Animation( STATE_ATT2 );
+}
+
+void CAttackState2::Execute( Player* pOwner, const float& fTImeDelta )
+{
+	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
+		pOwner->getFSM()->Change_State( STATE_IDLE );
+}
+
+void CAttackState2::Exit( Player* pOwner, const float& fTimeDelta )
+{
+
+}
+
+STATE CAttackState2::GetState( void )
+{
+	return STATE_ATT2;
 }
 
 ///////////////////// Beaten State /////////////////////
@@ -166,10 +189,34 @@ void CBeatenState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CBeatenState::GetCurrentState( void )
+STATE CBeatenState::GetState( void )
 {
 	return STATE_BEATEN1;
 }
+
+///////////////////// Beaten State2 /////////////////////
+
+void CBeatenState2::Enter( Player* pOwner, const float& fTImeDelta )
+{
+	pOwner->getAnimator()->Change_Animation( STATE_BEATEN2 );
+}
+
+void CBeatenState2::Execute( Player* pOwner, const float& fTImeDelta )
+{
+	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
+		pOwner->getFSM()->Change_State( STATE_IDLE );
+}
+
+void CBeatenState2::Exit( Player* pOwner, const float& fTimeDelta )
+{
+
+}
+
+STATE CBeatenState2::GetState( void )
+{
+	return STATE_BEATEN2;
+}
+
 
 ///////////////////// Down State /////////////////////
 
@@ -180,7 +227,8 @@ void CDownState::Enter( Player* pOwner, const float& fTImeDelta )
 
 void CDownState::Execute( Player* pOwner, const float& fTImeDelta )
 {
-
+	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
+		pOwner->getFSM()->Change_State( STATE_IDLE );
 }
 
 void CDownState::Exit( Player* pOwner, const float& fTimeDelta )
@@ -188,7 +236,7 @@ void CDownState::Exit( Player* pOwner, const float& fTimeDelta )
 
 }
 
-STATE CDownState::GetCurrentState( void )
+STATE CDownState::GetState( void )
 {
 	return STATE_DOWN;
 }
