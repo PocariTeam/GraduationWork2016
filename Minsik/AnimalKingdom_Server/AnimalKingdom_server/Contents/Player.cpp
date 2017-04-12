@@ -104,6 +104,7 @@ void Player::Move( const float& fTimeDelta )
 	if( moveDir_.isZero() ) return;
 
 	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
+	moveDir_.normalize();
 
 	NxReal fRotateY = acos( vDefault_Dir.dot( moveDir_ ) );
 	NxVec3 vCross = vDefault_Dir;

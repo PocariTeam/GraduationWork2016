@@ -70,9 +70,6 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 			eState = STATE_RUN;
 		else
 			eState = STATE_IDLE;
-
-		if( eState == STATE_ATT2 )
-			int i = 0;
 	}
 	
 	if( eState != m_pStateMachine->GetCurrentState() )
@@ -143,6 +140,7 @@ void CPlayer::Move( const float& fTimeDelta )
 {
 	if( m_vDir.isZero() ) return;
 
+	m_vDir.normalize();
 	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
 
 	NxReal fRotateY = acos( vDefault_Dir.dot( m_vDir ) );

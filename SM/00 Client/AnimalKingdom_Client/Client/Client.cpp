@@ -80,7 +80,7 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 		else
 		{
-			if( fFrameTime >= fFrameLimit )	// d
+			//if( fFrameTime >= fFrameLimit )	// d
 			{
 				//printf( "%f\n", fFrameTime );
 				//pRealTimer->Calculate_TimeDelta();

@@ -52,7 +52,7 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	IDXGIOutput*		pOutput = nullptr;
 	DXGI_ADAPTER_DESC	tAdapter_Desc;
 
-	/*if( FAILED( pdxgiFactory->EnumAdapters( NULL, ( IDXGIAdapter** )&pAdapter ) ) )
+	if( FAILED( pdxgiFactory->EnumAdapters( NULL, ( IDXGIAdapter** )&pAdapter ) ) )
 		MessageBoxA( hWnd, "요청한 어댑터 없음", NULL, MB_OK );
 
 	pAdapter->GetDesc( &tAdapter_Desc );
@@ -83,10 +83,10 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 			break;
 		}
 		iIndex++;
-	}*/
+	}
 
 	D3D11CreateDevice( pAdapter /* 앞서 찾은 어댑터를 사용하겠다 */
-		, D3D_DRIVER_TYPE_HARDWARE/*D3D_DRIVER_TYPE_UNKNOWN*/			/* 위에 참조 */
+		, /*D3D_DRIVER_TYPE_HARDWARE*/D3D_DRIVER_TYPE_UNKNOWN			/* 위에 참조 */
 		, nullptr							/* SoftWare 구동기 지정 ( 우리는 하드웨어를 사용한다 ) */
 		, dwCreateDeviceFlag
 		, nullptr						   /* NULL을 넣을 시 최고수준을 찾아줌 */
