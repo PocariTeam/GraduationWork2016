@@ -154,7 +154,7 @@ void CPlayer::Move( const float& fTimeDelta )
 	m_vDir = m_vDir * m_fSpeed * fTimeDelta;
 }
 
-void CPlayer::Sync( NxVec3& vPos, float fRotateY )
+void CPlayer::Sync( NxVec3& vPos, float fRotateY, STATE state)
 {
 	//NxU32	dwCollisionFlag;
 	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
@@ -162,6 +162,7 @@ void CPlayer::Sync( NxVec3& vPos, float fRotateY )
 	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
 	m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
+	m_pStateMachine->Change_State(state);
 }
 
 CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType )

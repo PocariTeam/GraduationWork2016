@@ -215,7 +215,6 @@ BOOL GameRoom::moveRequest(Session* session, Vector3 vDir)
 	}
 
 	((find_iter->second))->setMoveDir(vDir);
-	sendMovePacket(session->getID(), vDir);
 	return true;
 }
 
@@ -231,7 +230,6 @@ BOOL GameRoom::stateRequest(Session * session, STATE state)
 	}
 
 	((find_iter->second))->setState(state);
-	sendStatePacket(session->getID(), state);
 	return true;
 }
 
@@ -266,35 +264,7 @@ void GameRoom::sendPlayerList()
 	
 }
 
-void GameRoom::sendMovePacket(UINT id, Vector3 vDir)
-{
-	SAFE_LOCK(lock_);
 
-	S_Move packet;
-	packet.header.packetID = PAK_ID::PAK_ANS_Move;
-	packet.header.size = sizeof(packet);
-	packet.id = id;
-	packet.vDir = vDir;
-	for (auto iter = players_.begin(); iter != players_.end(); iter++)
-	{
-		(iter->second)->getSession()->send((char*)&packet);
-	}
-}
-
-void GameRoom::sendStatePacket(UINT id, STATE state)
-{
-	SAFE_LOCK(lock_);
-
-	S_State packet;
-	packet.header.packetID = PAK_ID::PAK_ANS_State;
-	packet.header.size = sizeof(packet);
-	packet.id = id;
-	packet.state = state;
-	for (auto iter = players_.begin(); iter != players_.end(); iter++)
-	{
-		(iter->second)->getSession()->send((char*)&packet);
-	}
-}
 
 void GameRoom::sendStartGame()
 {
@@ -361,7 +331,7 @@ void GameRoom::update( float fTimeDelta )
 
 void GameRoom::sendSync()
 {
-	//SAFE_LOCK(lock_);
+	SAFE_LOCK(lock_);
 
 	S_SyncPlayer playerPacket;
 	playerPacket.header.packetID = PAK_ID::PAK_ANS_SyncPlayer;
@@ -373,6 +343,8 @@ void GameRoom::sendSync()
 		NxVec3 p = (iter->second)->getCCT()->getActor()->getGlobalPosition();
 		playerPacket.playerPositions[i].position = Vector3(p.x, p.y, p.z);
 		playerPacket.playerPositions[i].rotY = (iter->second)->getRotateY();
+		playerPacket.playerPositions[i].state = (iter->second)->getFSM()->GetCurrentState();
+		
 	}
 	
 	S_SyncDynamic dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);

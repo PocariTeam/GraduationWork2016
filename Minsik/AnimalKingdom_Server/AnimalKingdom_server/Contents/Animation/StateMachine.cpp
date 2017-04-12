@@ -42,6 +42,11 @@ HRESULT CStateMachine::Initialize( Player* pOwner )
 	return S_OK;
 }
 
+STATE CStateMachine::GetCurrentState()
+{
+	return m_pCurrentState->GetState();
+}
+
 void CStateMachine::Change_State( CState* pState )
 {
 	if( m_pCurrentState == pState ) return;

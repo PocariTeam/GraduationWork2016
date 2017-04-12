@@ -160,6 +160,9 @@ void CPhysics::UpdateCharactercontrollerMgr()
 
 void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 {
+	if (NULL == m_pScene)
+		return;
+
 	NxActor** ppActors = m_pScene->getActors();
 	
 	for (unsigned int i = 0; i < packet->dynamicActorCount; ++i)
@@ -211,12 +214,6 @@ HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 #endif
 		return E_FAIL;
 	}
-
-	NxSceneDesc tSceneDesc;
-	tSceneDesc.groundPlane = true;
-	tSceneDesc.gravity = NxVec3( 0, -9.81f, 0 );
-	tSceneDesc.simType = NX_SIMULATION_HW;
-	m_pScene = m_pPhysicsSDK->createScene( tSceneDesc );
 
 	m_pCharacterControllerMgr = NxCreateControllerManager( m_pAllocator );
 

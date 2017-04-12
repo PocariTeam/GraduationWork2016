@@ -454,11 +454,11 @@ void CPhysicsMgr::Update(const float & fTimeDelta)
 		*/
 		
 		/*
-		Sweep API를 이용한 충돌체크
+		//Sweep API를 이용한 충돌체크
 		NxSweepQueryHit result[100];
 		NxCapsule testBody;
-		((NxActor*)m_pMyCCT->getUserData())->getShapes()[1]->isCapsule()->getWorldCapsule(testBody);
-		m_pScene->linearCapsuleSweep(testBody, pos, (NX_SF_STATICS | NX_SF_DYNAMICS), NULL, 16, result,
+		((NxActor*)m_pMyCCT[m_nCurrentScene]->getUserData())->getShapes()[1]->isCapsule()->getWorldCapsule(testBody);
+		m_pScene[m_nCurrentScene]->linearCapsuleSweep(testBody, pos, (NX_SF_STATICS | NX_SF_DYNAMICS), NULL, 16, result,
 		(NxUserEntityReport<NxSweepQueryHit>*)&gUserEntityReport, 1 << OTHER_CHARACTER );
 		*/
 		

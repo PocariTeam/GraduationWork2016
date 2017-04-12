@@ -24,7 +24,7 @@ public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 public:
 	void			Move( const float& fTimeDelta );
-	void			Sync( NxVec3& vPos, float fRotateY );
+	void			Sync( NxVec3& vPos, float fRotateY, STATE state);
 public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext );

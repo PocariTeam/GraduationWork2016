@@ -218,18 +218,6 @@ void CNetworkMgr::processPacket()
 		MessageBox(NULL, "the most recent request failed! ", nullptr, MB_OK);
 		break;
 	}
-	case PAK_ID::PAK_ANS_Move:
-	{
-		S_Move* packet = ( S_Move* )m_saveBuf;
-		m_pScene->ChangeMoveDir( packet->id, XMFLOAT3( packet->vDir.x, packet->vDir.y, packet->vDir.z ) );
-		break;
-	}
-	case PAK_ID::PAK_ANS_State:
-	{
-		S_State* packet = (S_State*)m_saveBuf;
-		m_pScene->ChangeState(packet->id, packet->state);
-		break;
-	}
 	case PAK_ID::PAK_ANS_SyncPlayer:
 	{
 		S_SyncPlayer* packet = (S_SyncPlayer* )m_saveBuf;
@@ -239,7 +227,7 @@ void CNetworkMgr::processPacket()
 			position.x = packet->playerPositions[i].position.x;
 			position.y = packet->playerPositions[i].position.y;
 			position.z = packet->playerPositions[i].position.z;
-			m_pScene->Sync( packet->playerPositions[ i ].id, position, packet->playerPositions[ i ].rotY );
+			m_pScene->Sync( packet->playerPositions[ i ].id, position, packet->playerPositions[ i ].rotY , packet->playerPositions[i].state );
 		}
 		break;
 	}

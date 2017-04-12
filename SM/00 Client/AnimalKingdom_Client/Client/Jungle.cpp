@@ -73,33 +73,14 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CRenderer::GetInstance()->Render( pContext );
 }
 
-void CJungle::ChangeMoveDir( UINT id, XMFLOAT3 vDir )
-{
-	auto find_iter = m_mapPlayer.find( id );
-	if( find_iter == m_mapPlayer.end() ) return;
-	
-	NxVec3	vDirection{ vDir.x, vDir.y, vDir.z };
-	vDirection.normalize();
-
-	find_iter->second->SetDir( vDirection );
-}
-
-void CJungle::ChangeState(UINT id, STATE eState)
-{
-	auto find_iter = m_mapPlayer.find(id);
-	if (find_iter == m_mapPlayer.end()) return;
-
-	find_iter->second->Change_State(eState);
-}
-
-void CJungle::Sync( UINT id, XMFLOAT3 vPos, float fRotateY )
+void CJungle::Sync( UINT id, XMFLOAT3 vPos, float fRotateY, STATE state )
 {
 	auto find_iter = m_mapPlayer.find( id );
 	if( find_iter == m_mapPlayer.end() ) return;
 	
 	NxVec3	vPosition{ vPos.x, vPos.y, vPos.z };
 
-	find_iter->second->Sync( vPosition, fRotateY );
+	find_iter->second->Sync( vPosition, fRotateY, state);
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )

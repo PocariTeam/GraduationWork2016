@@ -18,9 +18,7 @@ public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
 	void  Render( ID3D11DeviceContext* pContext );
-	void  ChangeMoveDir( UINT id, XMFLOAT3 vDir);
-	void  ChangeState(UINT id, STATE state);
-	void  Sync( UINT id, XMFLOAT3 vPos, float fRotateY );
+	void  Sync( UINT id, XMFLOAT3 vPos, float fRotateY, STATE state );
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );

@@ -26,9 +26,7 @@ typedef enum {
 	PAK_ANS_StartGame,
 	PAK_RJT_Request,
 	PAK_REQ_Move,
-	PAK_ANS_Move,
 	PAK_REQ_State,
-	PAK_ANS_State,
 	PAK_ANS_SyncPlayer,
 	PAK_ANS_SyncDynamic,
 } PAK_ID;
@@ -68,11 +66,12 @@ struct PlayerInfo
 	BOOL		isMaster;
 };
 
-struct PlayerPosition
+struct PlayerSyncInfo
 {
 	UINT		id;
 	Vector3		position;
 	FLOAT		rotY;
+	STATE		state;
 };
 
 struct DynamicActor
@@ -137,30 +136,16 @@ struct C_Move
 	Vector3		vDir;
 };
 
-struct S_Move
-{
-	HEADER		header;
-	UINT		id;
-	Vector3		vDir;
-};
-
 struct C_State
 {
 	HEADER		header;
 	STATE		state;
 };
 
-struct S_State
-{
-	HEADER		header;
-	UINT		id;
-	STATE		state;
-};
-
 struct S_SyncPlayer
 {
 	HEADER			header;
-	PlayerPosition	playerPositions[PLAYER_CAPACITY];
+	PlayerSyncInfo	playerPositions[PLAYER_CAPACITY];
 };
 
 struct S_SyncDynamic

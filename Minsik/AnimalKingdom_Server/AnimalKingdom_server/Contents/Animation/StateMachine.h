@@ -22,6 +22,7 @@ private:
 	CState*			m_pPreviousState;
 	CState*			m_pGlobalState;
 public:
+	STATE	GetCurrentState();
 	void	Change_State( CState* pState );
 	void	Change_State( STATE	eState );
 	void	RevertToPreviousState( void );
