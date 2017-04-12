@@ -76,6 +76,7 @@ BOOL PhysXManager::LoadSceneFromFile(UINT roomNum)
 			success = NXU::instantiateCollection(c, *physicsSDK_, 0, 0, 0);
 			
 			scenes_[roomNum] = physicsSDK_->getScene(sceneSeedNum++);
+			scenes_[roomNum]->userData = (void*)roomNum;
 
 			NXU::releaseCollection(c);
 		}
@@ -161,9 +162,9 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 
 	physicsSDK_->setParameter(NX_SKIN_WIDTH, 0.2f);
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_PLAYER, NX_NOTIFY_ON_TOUCH);
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_TOUCH);
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_TOUCH);
+	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_PLAYER, NX_NOTIFY_ALL);
+	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ALL);
+	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ALL);
 
 	// Create the default material
 	NxMaterial* pDefaultMaterial = scenes_[roomNum]->getMaterialFromIndex(0);
@@ -436,7 +437,7 @@ S_SyncDynamic PhysXManager::getDynamicInfo(UINT roomNum)
 	packet.header.packetID = PAK_ID::PAK_ANS_SyncDynamic;
 	packet.header.size = sizeof(packet);
 
-	unsigned int j = 0;
+	unsigned int count = 0;
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
 		if (true == aList[i] ->isDynamic() && 
@@ -455,30 +456,56 @@ S_SyncDynamic PhysXManager::getDynamicInfo(UINT roomNum)
 			NxVec3 a = aList[i]->getAngularVelocity();
 			NxQuat o = aList[i]->getGlobalOrientationQuat();
 
-			packet.dynamicActors[j].index = i;
-			packet.dynamicActors[j].position = Vector3(p.x, p.y, p.z);
-			packet.dynamicActors[j].linear = Vector3(l.x, l.y, l.z);
-			packet.dynamicActors[j].angular = Vector3(a.x, a.y, a.z);
-			packet.dynamicActors[j].orient = Vector4(o.x, o.y, o.z, o.w);
-			++j;
+			packet.dynamicActors[count].index = i;
+			packet.dynamicActors[count].position = Vector3(p.x, p.y, p.z);
+			packet.dynamicActors[count].linear = Vector3(l.x, l.y, l.z);
+			packet.dynamicActors[count].angular = Vector3(a.x, a.y, a.z);
+			packet.dynamicActors[count].orient = Vector4(o.x, o.y, o.z, o.w);
+			++count;
 		}
 	}
-	packet.dynamicActorCount = j;
+	packet.dynamicActorCount = count;
 
 	return packet;
 }
 
-UINT PhysXManager::getSceneIndex(NxScene *scene)
+S_SyncADynamic* PhysXManager::getADynamicInfo(NxActor *actor)
 {
-	for (UINT i = 0; i < GAMEROOM_CAPACITY; ++i)
+	if (false == actor->isDynamic() || true == actor->readBodyFlag(NX_BF_KINEMATIC))
 	{
-		if (scenes_[i] == scene)
+		return NULL;
+	}
+
+	NxScene *scene = &actor->getScene();
+
+	NxU32 nbActors = scene->getNbActors();
+	NxActor** aList = scene->getActors();
+
+	S_SyncADynamic *packet = new S_SyncADynamic;
+	packet->header.packetID = PAK_ID::PAK_ANS_SyncADynamic;
+	packet->header.size = sizeof(S_SyncADynamic);
+
+	for (NxU32 i = 0; i < nbActors; i++)
+	{
+		if (actor == aList[i])
 		{
-			return i;
+			NxVec3 p = aList[i]->getGlobalPosition();
+			NxVec3 l = aList[i]->getLinearVelocity();
+			NxVec3 a = aList[i]->getAngularVelocity();
+			NxQuat o = aList[i]->getGlobalOrientationQuat();
+
+			packet->dynamicActor.index = i;
+			packet->dynamicActor.position = Vector3(p.x, p.y, p.z);
+			packet->dynamicActor.linear = Vector3(l.x, l.y, l.z);
+			packet->dynamicActor.angular = Vector3(a.x, a.y, a.z);
+			packet->dynamicActor.orient = Vector4(o.x, o.y, o.z, o.w);
+			return packet;
 		}
 	}
-	SLog(L"! not found scene index.");
-	return -1;
+
+	SLog(L"! not found sync actor.");
+	return NULL;
 }
+
 
 

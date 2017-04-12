@@ -18,6 +18,7 @@ public:
 	void			update( UINT roomNum, float fTimeDelta );
 	void			sendPlayerSync(UINT roomNum);
 	void			sendDynamicSync(UINT roomNum);
+	void			sendDynamicASync(UINT roomNum, NxActor* actor);
 
 	BOOL			setPlayerReady(Session* session, BOOL b);
 	BOOL			setPlayerCharacter(Session* session, CHARACTER c);

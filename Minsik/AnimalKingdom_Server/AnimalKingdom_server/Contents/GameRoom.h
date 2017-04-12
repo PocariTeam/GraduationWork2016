@@ -35,4 +35,5 @@ public:
 	void			update( float fTimeDelta );
 	void			sendPlayerSync();
 	void			sendDynamicSync();
+	void			sendADynamicSync(NxActor* actor);
 };

@@ -364,3 +364,18 @@ void GameRoom::sendDynamicSync()
 		(iter->second)->getSession()->send((char*)&dynamicPacket);
 	}
 }
+
+void GameRoom::sendADynamicSync(NxActor*actor)
+{
+	SAFE_LOCK(lock_);
+
+	S_SyncADynamic *dynamicPacket = PhysXManager::getInstance().getADynamicInfo(actor);
+	
+	if (dynamicPacket == NULL)	return;
+
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)dynamicPacket);
+	}
+	SAFE_DELETE(dynamicPacket);
+}

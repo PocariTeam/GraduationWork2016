@@ -29,6 +29,7 @@ typedef enum {
 	PAK_REQ_State,
 	PAK_ANS_SyncPlayer,
 	PAK_ANS_SyncDynamic,
+	PAK_ANS_SyncADynamic
 } PAK_ID;
 
 #pragma pack(push, 1)
@@ -164,6 +165,12 @@ struct S_SyncDynamic
 	HEADER			header;
 	UINT			dynamicActorCount;
 	DynamicActor	dynamicActors[DYNAMIC_CAPACITY];
+};
+
+struct S_SyncADynamic
+{
+	HEADER			header;
+	DynamicActor	dynamicActor;
 };
 
 /////////////////////////////////////////////////////////////

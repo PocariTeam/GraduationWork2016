@@ -190,6 +190,26 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 	}
 }
 
+void CPhysics::UpdateDynamicActor(S_SyncADynamic * packet)
+{
+	if (NULL == m_pScene)
+		return;
+
+	UINT	i = packet->dynamicActor.index;
+	Vector3 p = packet->dynamicActor.position;
+	Vector3 l = packet->dynamicActor.linear;
+	Vector3 a = packet->dynamicActor.angular;
+	Vector4 o = packet->dynamicActor.orient;
+
+	NxActor* pActors = m_pScene->getActors()[i];
+
+	pActors->setGlobalPosition(NxVec3(p.x, p.y, p.z));
+	pActors->setLinearVelocity(NxVec3(l.x, l.y, l.z));
+	pActors->setAngularVelocity(NxVec3(a.x, a.y, a.z));
+	pActors->setGlobalOrientationQuat(NxQuat(NxVec3(o.x, o.y, o.z), o.w));
+
+}
+
 HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 {
 	m_pAllocator = new UserAllocator;

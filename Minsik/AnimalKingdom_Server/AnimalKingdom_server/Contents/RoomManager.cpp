@@ -88,10 +88,12 @@ void RoomManager::sendPlayerSync(UINT roomNum)
 
 void RoomManager::sendDynamicSync(UINT roomNum)
 {
-	if (roomNum == -1)
-		return;
-
 	roomArray_[roomNum]->sendDynamicSync();
+}
+
+void RoomManager::sendDynamicASync(UINT roomNum, NxActor *actor)
+{
+	roomArray_[roomNum]->sendADynamicSync(actor);
 }
 
 void RoomManager::sendPlayerList( UINT32 roomNum )

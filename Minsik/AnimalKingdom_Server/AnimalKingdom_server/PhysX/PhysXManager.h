@@ -58,7 +58,6 @@ public:
 	NxController*			CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT roomNum);
 
 	S_SyncDynamic			getDynamicInfo(UINT roomNum);
-
-	UINT					getSceneIndex(NxScene* scene);
+	S_SyncADynamic*			getADynamicInfo(NxActor *actor);
 
 };

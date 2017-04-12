@@ -40,6 +40,7 @@ public:
 
 	void		UpdateCharactercontrollerMgr();
 	void		UpdateDynamicActors(S_SyncDynamic *packet);
+	void		UpdateDynamicActor(S_SyncADynamic *packet);
 public:
 	HRESULT		Initialize( ID3D11Device* pDevice );
 	HRESULT		Load_Kinematic( void );
