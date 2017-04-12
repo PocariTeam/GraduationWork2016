@@ -5,7 +5,6 @@
 
 #include "Scene.h"
 #include "Define.h"
-#include "Protocol.h"
 
 class CShader;
 class CButton_UI;

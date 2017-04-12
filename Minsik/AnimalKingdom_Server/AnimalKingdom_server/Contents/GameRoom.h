@@ -33,5 +33,6 @@ public:
 	static void		syncTimer(UINT, UINT, DWORD_PTR, DWORD_PTR, DWORD_PTR);
 
 	void			update( float fTimeDelta );
-	void			sendSync();
+	void			sendPlayerSync();
+	void			sendDynamicSync();
 };

@@ -264,8 +264,6 @@ void GameRoom::sendPlayerList()
 	
 }
 
-
-
 void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
@@ -320,7 +318,7 @@ void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, D
 
 void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
-	RoomManager::getInstance().sendSync((UINT)roomNum);
+	RoomManager::getInstance().sendPlayerSync((UINT)roomNum);
 }
 
 void GameRoom::update( float fTimeDelta )
@@ -329,7 +327,7 @@ void GameRoom::update( float fTimeDelta )
 		(iter->second)->update( fTimeDelta );
 }
 
-void GameRoom::sendSync()
+void GameRoom::sendPlayerSync()
 {
 	SAFE_LOCK(lock_);
 
@@ -347,14 +345,22 @@ void GameRoom::sendSync()
 		
 	}
 	
-	S_SyncDynamic dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);
-
+	
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		Session* session = (iter->second)->getSession();
-		session->send((char*)&playerPacket);
-		session->send((char*)&dynamicPacket);
+		(iter->second)->getSession()->send((char*)&playerPacket);
 	}
 
 
+}
+
+void GameRoom::sendDynamicSync()
+{
+	SAFE_LOCK(lock_);
+
+	S_SyncDynamic dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&dynamicPacket);
+	}
 }

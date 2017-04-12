@@ -59,4 +59,6 @@ public:
 
 	S_SyncDynamic			getDynamicInfo(UINT roomNum);
 
+	UINT					getSceneIndex(NxScene* scene);
+
 };

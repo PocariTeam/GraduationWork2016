@@ -81,9 +81,17 @@ void RoomManager::update( UINT roomNum, float fTimeDelta )
 	roomArray_[ roomNum ]->update( fTimeDelta );
 }
 
-void RoomManager::sendSync(UINT roomNum)
+void RoomManager::sendPlayerSync(UINT roomNum)
 {
-	roomArray_[roomNum]->sendSync();
+	roomArray_[roomNum]->sendPlayerSync();
+}
+
+void RoomManager::sendDynamicSync(UINT roomNum)
+{
+	if (roomNum == -1)
+		return;
+
+	roomArray_[roomNum]->sendDynamicSync();
 }
 
 void RoomManager::sendPlayerList( UINT32 roomNum )

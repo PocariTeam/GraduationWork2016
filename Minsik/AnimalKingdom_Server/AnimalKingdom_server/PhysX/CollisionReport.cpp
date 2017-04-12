@@ -47,5 +47,10 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
+	NxScene *s = &pair.actors[0]->getScene();
+	UINT roomNum = PhysXManager::getInstance().getSceneIndex(s);
+	RoomManager::getInstance().sendDynamicSync(roomNum);
+	//static int i = 0;
+	//printf("Sync count: %d \n",i++);
 	// printf( " [CCollisionReport] %s 와 %s가 충돌! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 }

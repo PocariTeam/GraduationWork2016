@@ -5,7 +5,6 @@
 
 #include "Physics.h"
 #include "GameObject.h"
-#include "Protocol.h"
 
 class CAnimator;
 class CStateMachine;

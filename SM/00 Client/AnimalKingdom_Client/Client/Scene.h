@@ -4,7 +4,6 @@
 #define _SCENE_H_
 
 #include "Enum.h"
-#include "Protocol.h"
 
 class CShader;
 class CCamera;

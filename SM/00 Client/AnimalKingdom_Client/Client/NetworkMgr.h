@@ -4,7 +4,6 @@
 #define NetworkMgr_h__
 
 #include "Singleton.h"
-#include "Protocol.h"
 #include "Physics.h"
 
 #pragma warning( disable : 4996 )

@@ -27,7 +27,6 @@
 #include <xfunctional>
 #include "NetworkMgr.h"
 #include "NormalShader.h"
-#include "Protocol.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -169,6 +168,7 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 	{
 		unsigned int j = packet->dynamicActors[i].index;
 
+		// 에러체크용: 후에 삭제
 		if (j >= m_pScene->getNbActors())
 		{
 			printf(" 받은 동적 객체의 인덱스가 총 액터수보다 많습니다!! \n");
@@ -180,11 +180,13 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 		Vector3 p = packet->dynamicActors[i].position;
 		Vector3 l = packet->dynamicActors[i].linear;
 		Vector3 a = packet->dynamicActors[i].angular;
+		Vector4 o = packet->dynamicActors[i].orient;
 
 		ppActors[j]->setGlobalPosition(NxVec3(p.x,p.y,p.z));
 		ppActors[j]->setLinearVelocity(NxVec3(l.x, l.y, l.z));
 		ppActors[j]->setAngularVelocity(NxVec3(a.x, a.y, a.z));
-
+		ppActors[j]->setGlobalOrientationQuat(NxQuat(NxVec3(o.x,o.y,o.z),o.w));
+	
 	}
 }
 
