@@ -143,11 +143,6 @@ void CMainFrm::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY )
 	m_pRenderTargetMgr->SetRenderTargetView( m_pContext, 0, 1 );
 }
 
-DWORD CMainFrm::ChangeDisplayMode()
-{
-	return m_pGraphicDev->ChangeDisplayMode();
-}
-
 CMainFrm* CMainFrm::Create( const HINSTANCE hInst, const HWND hWnd )
 {
 	CMainFrm*	pMainFrm = new CMainFrm;

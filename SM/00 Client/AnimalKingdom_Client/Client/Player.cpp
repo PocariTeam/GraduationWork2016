@@ -18,6 +18,7 @@ CPlayer::CPlayer()
 	, m_pStateMachine( nullptr )
 	, m_pAnimator( nullptr )
 	, m_pCharacterController( nullptr )
+	, m_pActorsOriginPose( nullptr )
 	, m_dwActorCnt( 0 )
 	, m_vRotate( 0.f, 0.f, 0.f )
 	, m_pInputMgr( CInputMgr::GetInstance() )
@@ -30,11 +31,13 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterController )
+HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )
 {
 	m_pCharacterController = pCharacterController;
+	m_pCharacterController->getActor()->userData = this;
 	m_pActor = ( NxActor* )m_pCharacterController->getUserData();
 	m_pStateMachine = CStateMachine::Create( this );
+	m_pActorsOriginPose = pActorOriginPose;
 
 	return S_OK;
 }
@@ -110,8 +113,7 @@ DWORD CPlayer::Release( void )
 	::Safe_Release( m_pAnimator );
 	::Safe_Release( m_pStateMachine );
 
-	for( DWORD i = 0; i < m_dwActorCnt; ++i )
-		delete ( ( NxActor** )m_pCharacterController->getUserData() )[ i ]->userData;
+	delete[] m_pActorsOriginPose;
 	delete[]( ( NxActor** )m_pCharacterController->getUserData() );
 
 	return 0;
@@ -163,14 +165,14 @@ void CPlayer::Sync( NxVec3& vPos, float fRotateY, STATE state)
 	m_pStateMachine->Change_State(state);
 }
 
-CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, CHARACTER eType )
+CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType )
 {
 	CPlayer* pPlayer{ nullptr };
 
 	switch( eType )
 	{
 	case CHARACTER_CHM:
-		pPlayer = CChameleon::Create( pDevice, pCharacterController );
+		pPlayer = CChameleon::Create( pDevice, pCharacterController, pActorOriginPoseArray );
 		break;
 	case CHARACTER_MON:
 		break;

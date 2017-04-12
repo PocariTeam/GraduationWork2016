@@ -30,6 +30,7 @@ HRESULT CLogo::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_pShader = CShaderMgr::GetInstance()->Clone( "Shader_Background" );
 
 	m_pThreadMgr = CThreadMgr::GetInstance();
+	CPhysics::GetInstance()->Initialize( pDevice );
 
 	m_pThreadMgr->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_Textures", "../Executable/Resources/List/Textures.txt", pDevice, CThreadMgr::LOAD_TEXTURE );
 	m_pThreadMgr->Create_Thread( CThreadMgr::THREAD_LOAD, "Thread_Load_StaticMeshes", "../Executable/Resources/List/StaticMeshes.txt", pDevice, CThreadMgr::LOAD_MESH );
@@ -45,7 +46,7 @@ HRESULT CLogo::Initialize( HWND hWnd, ID3D11Device* pDevice )
 int CLogo::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
-	if( m_pThreadMgr->Check_EndEvent( 10 ) ) return CScene::SCENE_LOBBY;
+	if( m_pThreadMgr->Check_EndEvent( 100 ) ) return CScene::SCENE_LOBBY;
 
 	return 0;
 }

@@ -3,7 +3,7 @@
 
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
-	, m_vRotate( 0.f, 0.f, 0.f )
+	, m_vRotate( 0.f, 0.f, 0.f ), actorsOriginPose_( nullptr )
 	, m_fJumpHeight( 50.f )
 {
 	stateMachine_ = CStateMachine::Create( this );
@@ -13,6 +13,12 @@ Player::Player(Session * s, UINT room, BOOL master)
 
 Player::~Player()
 {
+	if( actorsOriginPose_ )
+	{
+		delete[] actorsOriginPose_;
+		actorsOriginPose_ = nullptr;
+	}
+
 	if( animator_ )
 	{
 		animator_->Release();
@@ -70,6 +76,32 @@ void Player::setCharacter( CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 	character_ = c;
+}
+
+void Player::setCCT( NxController* cct )
+{
+	cct_ = cct;
+	cct_->getActor()->userData = this;
+}
+
+void Player::setActorArray( NxActor** dpActorArray, UINT actorcnt )
+{
+	actorArray_ = dpActorArray;
+	actorCount_ = actorcnt;
+
+	if( actorsOriginPose_ )
+	{
+		delete[] actorsOriginPose_;
+		actorsOriginPose_ = nullptr;
+	}
+
+	actorsOriginPose_ = new NxMat34[ actorCount_ ];
+	for( UINT i = 0; i < actorCount_; ++i )
+	{
+		actorsOriginPose_[ i ] = *( NxMat34* )actorArray_[ i ]->userData;
+		delete actorArray_[ i ]->userData;
+		actorArray_[ i ]->userData = this;
+	}
 }
 
 XMFLOAT4X4 Player::GetWorld()

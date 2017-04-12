@@ -91,6 +91,7 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 	XMFLOAT4X4*	pWorld{ new XMFLOAT4X4[ m_dwJointCnt ] };
 	m_pCurrentAnimationSet->GetAnimationMatrix( pWorld );
 	NxController* pCharacterController = ( ( CPlayer* )pOwner)->GetCharacterController();
+	NxMat34*	pActorsOriginPose = ( ( CPlayer* )pOwner )->GetActorsOriginPose();
 	NxActor** dpActorArray = ( NxActor** )pCharacterController->getUserData();
 
 	DWORD dwActorCnt = ( ( CPlayer* )pOwner )->GetActorCnt();
@@ -106,7 +107,7 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 		XMFLOAT4X4 mtxTemp;
 		XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
 		
-		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( ( ( NxMat34* )dpActorArray[ j ]->userData ) );
+		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( &pActorsOriginPose[ j ] );
 		mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
 		
 		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );
@@ -115,6 +116,7 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 	}
 
 	delete[] pWorld;
+	pWorld = nullptr;
 }
 
 HRESULT CAnimator::Add( STATE eState, const char* pFilePath )

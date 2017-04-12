@@ -1,15 +1,11 @@
 #include "stdafx.h"
 #include "GraphicDev.h"
 #include <assert.h>
-#include "Function.h"
-#include "Value.h"
 
 CGraphicDev::CGraphicDev( void )
 	: m_pDevice( nullptr )
 	, m_pSwapChain( nullptr )
 	, m_pDeviceContext( nullptr )
-	, m_pDisplayMode( nullptr )
-	, m_dwDisplayModeCnt( 0 )
 {
 }
 
@@ -43,50 +39,39 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	D3D_DRIVER_TYPE	  eDriverTypes = D3D_DRIVER_TYPE_NULL;
 	D3D_FEATURE_LEVEL eFeatureLevel = D3D_FEATURE_LEVEL_11_1;
 
-	IDXGIFactory1*	pdxgiFactory = nullptr;
-	IDXGIDevice*	pdxgiDevice = nullptr;
+	IDXGIFactory1*	pdxgiFactory{ nullptr };
 	if( FAILED( CreateDXGIFactory1( __uuidof( IDXGIFactory1 ), ( void** )&pdxgiFactory ) ) ) return E_FAIL;
-
 	size_t				dwVideoMemSize{ 0 };
 	IDXGIAdapter*		pAdapter = nullptr;
-	IDXGIOutput*		pOutput = nullptr;
+	IDXGIAdapter*		pAdapter_Compare = nullptr;
 	DXGI_ADAPTER_DESC	tAdapter_Desc;
 
 	if( FAILED( pdxgiFactory->EnumAdapters( NULL, ( IDXGIAdapter** )&pAdapter ) ) )
 		MessageBoxA( hWnd, "요청한 어댑터 없음", NULL, MB_OK );
-
 	pAdapter->GetDesc( &tAdapter_Desc );
 	dwVideoMemSize = ( size_t )( tAdapter_Desc.DedicatedVideoMemory + tAdapter_Desc.SharedSystemMemory );
 
-	int iIndex{ 0 };
+	int iIndex{ 1 };
 	size_t dwCompare_VideoMemSize;
 	UINT nFlags = DXGI_ENUM_MODES_INTERLACED;
 
-	while( pdxgiFactory->EnumAdapters( iIndex, &pAdapter ) != DXGI_ERROR_NOT_FOUND )
+	while( pdxgiFactory->EnumAdapters( iIndex, &pAdapter_Compare ) != DXGI_ERROR_NOT_FOUND )
 	{
-		pAdapter->EnumOutputs( 0, &pOutput );
-
-		if( pOutput )
-		{
-			pOutput->GetDisplayModeList( DXGI_FORMAT_R8G8B8A8_UNORM, nFlags, &m_dwDisplayModeCnt, NULL );
-			m_pDisplayMode = new DXGI_MODE_DESC[ m_dwDisplayModeCnt ];
-			pOutput->GetDisplayModeList( DXGI_FORMAT_R8G8B8A8_UNORM, 0, &m_dwDisplayModeCnt, m_pDisplayMode );
-			pOutput->Release();
-		}
-
-		pAdapter->GetDesc( &tAdapter_Desc );
+		pAdapter_Compare->GetDesc( &tAdapter_Desc );
 		dwCompare_VideoMemSize = ( size_t )( tAdapter_Desc.DedicatedVideoMemory + tAdapter_Desc.SharedSystemMemory );
 
 		if( dwCompare_VideoMemSize > dwVideoMemSize )
 		{
 			dwVideoMemSize = dwCompare_VideoMemSize;
+			pAdapter->Release();
+			pAdapter = pAdapter_Compare;
 			break;
 		}
 		iIndex++;
 	}
 
-	D3D11CreateDevice( pAdapter /* 앞서 찾은 어댑터를 사용하겠다 */
-		, /*D3D_DRIVER_TYPE_HARDWARE*/D3D_DRIVER_TYPE_UNKNOWN			/* 위에 참조 */
+	D3D11CreateDevice( pAdapter				/* 앞서 찾은 어댑터를 사용하겠다 */
+		, D3D_DRIVER_TYPE_UNKNOWN			/* 위에 참조 */
 		, nullptr							/* SoftWare 구동기 지정 ( 우리는 하드웨어를 사용한다 ) */
 		, dwCreateDeviceFlag
 		, nullptr						   /* NULL을 넣을 시 최고수준을 찾아줌 */
@@ -109,24 +94,12 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 		return E_FAIL;
 	}
 
+	pAdapter->Release();
+	pdxgiFactory->Release();
+
 	SetViewport( wSizeX, wSizeY );
 
 	return S_OK;
-}
-
-DWORD CGraphicDev::ChangeDisplayMode()
-{
-	BOOL bMode{ MODE_FULL };
-	DWORD dwResult{};
-	m_pSwapChain->GetFullscreenState( &bMode, NULL );
-
-	if( bMode == MODE_WIN )
-	{
-		m_pSwapChain->SetFullscreenState( TRUE, NULL );
-		dwResult = MAKELONG( m_pDisplayMode[ m_dwDisplayModeCnt - 1 ].Width, m_pDisplayMode[ m_dwDisplayModeCnt - 1 ].Height );
-	}
-
-	return dwResult;
 }
 
 void CGraphicDev::SetViewport( const WORD& wSizeX, const WORD& wSizeY )
@@ -196,13 +169,13 @@ HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, IDXGIFactory* pd
 
 	// 추가 옵션 플래그는 사용하지 않음
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-	pdxgiFactory->MakeWindowAssociation( hWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES );
+	// pdxgiFactory->MakeWindowAssociation( hWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES );
 
 	// SwapChain 생성
 	if( FAILED( pdxgiFactory->CreateSwapChain( m_pDevice, &SwapChainDesc, &m_pSwapChain ) ) )
 		return E_FAIL;
 
-	m_pSwapChain->SetFullscreenState( Mode, NULL );
+	//m_pSwapChain->SetFullscreenState( Mode, NULL );
 
 	return S_OK;
 }
@@ -213,8 +186,6 @@ DWORD CGraphicDev::Release( void )
 
 	DWORD	dwRef{ 0 };
 	char	szErrorMessage[64]{ "" };
-
-	::Safe_Delete_Array( m_pDisplayMode );
 
 	if( nullptr != m_pSwapChain ) {
 		dwRef = m_pSwapChain->Release();

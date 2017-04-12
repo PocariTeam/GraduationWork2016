@@ -24,14 +24,11 @@ public:
 private:
 	HRESULT Create_SwapChain( WINMODE Mode, HWND hWnd, IDXGIFactory* pdxgiFactory, const WORD& wSizeX, const WORD& wSizeY );
 public:
-	DWORD	ChangeDisplayMode();
 	void	SetViewport( const WORD& wSizeX, const WORD& wSizeY );
 private:
 	ID3D11Device*				m_pDevice;				// Device
 	IDXGISwapChain*				m_pSwapChain;			// Swap Chain
 	ID3D11DeviceContext*		m_pDeviceContext;		// Context
-	DXGI_MODE_DESC*				m_pDisplayMode;
-	UINT						m_dwDisplayModeCnt;
 public:
 	DWORD Release( void );
 };

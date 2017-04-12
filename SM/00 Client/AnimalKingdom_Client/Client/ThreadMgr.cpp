@@ -126,7 +126,6 @@ DWORD WINAPI CThreadMgr::LoadResources( LPVOID lpParameter )
 		CTextureMgr::GetInstance()->Load( pParam->m_pDevice, pParam->m_strPath );
 		break;
 	case LOAD_MESH:
-		CPhysics::GetInstance()->Initialize( pParam->m_pDevice );
 		CMeshMgr::GetInstance()->Load( pParam->m_pDevice, pParam->m_strPath );
 		break;
 	case LOAD_SHADER:

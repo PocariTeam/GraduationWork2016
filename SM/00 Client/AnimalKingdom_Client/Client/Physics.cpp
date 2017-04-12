@@ -47,6 +47,9 @@ DWORD CPhysics::Release( void )
 		m_pPhysicsSDK = nullptr;
 	}
 
+	NxReleaseControllerManager( m_pCharacterControllerMgr );
+	m_pCharacterControllerMgr = nullptr;
+
 	if( nullptr != m_pAllocator )
 	{
 		CloseCooking();
@@ -145,9 +148,7 @@ void CPhysics::Release_Scene( void )
 	if( nullptr != m_pScene )
 	{
 		m_pCharacterControllerMgr->purgeControllers();
-		NxReleaseControllerManager( m_pCharacterControllerMgr );
 		m_pPhysicsSDK->releaseScene( *m_pScene );
-		m_pCharacterControllerMgr = nullptr;
 		m_pScene = nullptr;
 	}
 }
@@ -396,6 +397,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ CHARACTER_CHM ].size();
 					NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
+					NxMat34*  pActorOriginPose = new NxMat34[ dwCameleonActorCnt ];
 
 					auto iter_begin = m_mapActorInfo[ CHARACTER_CHM ].begin();
 					auto iter_end = m_mapActorInfo[ CHARACTER_CHM ].end();
@@ -407,14 +409,14 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					{
 						dpCameleonActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second );
 						dpCameleonActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
-						dpCameleonActors[ j ]->userData = new NxMat34;
-						*( NxMat34* )dpCameleonActors[ j ]->userData = dpCameleonActors[ j ]->getGlobalPose();
+						pActorOriginPose[ j ] = dpCameleonActors[ j ]->getGlobalPose();
 						// Collision Grouping 은 CreateActor 함수 안에서 현재 하고 있음 ( 추후 변경도 가능 )
 					}
 					dpActorArray = m_pScene->getActors();
 
 					NxController* pController = CreateCharacterController( pActor, dpCameleonActors, j );
-					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, CHARACTER_CHM );
+					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, CHARACTER_CHM );
+					for( int k = 0; k < j; ++k ) dpCameleonActors[ k ]->userData = pPlayer;
 					pShader_Animate->Add_RenderObject( pPlayer );
 					pmapPlayer->insert( make_pair( ( int )pPlayerInfo[ iCreatePlayerCnt ].id, ( CPlayer* )pPlayer ) );
 					iCreatePlayerCnt++;

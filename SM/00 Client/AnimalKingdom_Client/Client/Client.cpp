@@ -36,7 +36,7 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER( lpCmdLine );
 
 	// TODO: 여기에 코드를 입력합니다.
-	// _CrtSetBreakAlloc( 66753 );
+	//_CrtSetBreakAlloc( 370 );
 
 	// 전역 문자열을 초기화합니다.
 	LoadStringW( hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING );
@@ -55,7 +55,6 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 	/* Timer for Fixed Frame */
 	CTimer* pFixedTimer{ CTimer::Create() };
-	CTimer* pRealTimer{ CTimer::Create() };
 
 	float fFrameLimit{ 1.f / 60.f };
 	float fFrameTime{ 0.f };
@@ -80,15 +79,11 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 		else
 		{
-			//if( fFrameTime >= fFrameLimit )	// d
+			// if( fFrameTime >= fFrameLimit )	// d
 			{
-				//printf( "%f\n", fFrameTime );
-				//pRealTimer->Calculate_TimeDelta();
-				//if( -1 == g_pMainFrm->Update( pRealTimer->GetTimeDelta() ) )
-				if (-1 == g_pMainFrm->Update(fFrameTime)) // 축척된 프레임(델타)타임을 넣어주도록 수정했음
+				if( -1 == g_pMainFrm->Update( fFrameTime ) ) // 축척된 프레임(델타)타임을 넣어주도록 수정했음
 					break;
 				fFrameTime = 0.f;
-				//fFrameTime -= fFrameLimit;
 				g_pMainFrm->Render();
 			}
 		}
@@ -96,7 +91,6 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 	::Safe_Release( g_pMainFrm );
 	::Safe_Release( pFixedTimer );
-	::Safe_Release( pRealTimer );
 
 #ifdef _DEBUG
 	FreeConsole();
@@ -196,7 +190,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 		CNetworkMgr::GetInstance()->Initialize();
 		break;
 	case WM_SOCKET:
-		CNetworkMgr::GetInstance()->processSocketMessage(hWnd, lParam);
+		CNetworkMgr::GetInstance()->processSocketMessage( hWnd, lParam );
 		break;
 	case WM_SIZE:
 		g_wWinsizeX = LOWORD( lParam );
@@ -210,14 +204,6 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 			PostQuitMessage( 0 );
 			return 0;
 		}
-		break;
-	case WM_SYSKEYDOWN:
-		/*switch( wParam )
-		{
-		case VK_RETURN:
-			WndProc( hWnd, WM_SIZE, SIZE_RESTORED, g_pMainFrm->ChangeDisplayMode() );
-			break;
-		}*/
 		break;
 	case WM_COMMAND:
 	{

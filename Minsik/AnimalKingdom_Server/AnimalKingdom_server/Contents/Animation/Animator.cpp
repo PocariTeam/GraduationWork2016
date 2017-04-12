@@ -82,6 +82,7 @@ void CAnimator::ConnectActorShape( Player* pOwner )
 	m_pCurrentAnimationSet->GetAnimationMatrix( pWorld );
 	NxController* pCharacterController = pOwner->getCCT();
 	NxActor** dpActorArray = pOwner->getActors();
+	NxMat34* pActorsOriginPose = pOwner->getActorsOriginPose();
 
 	DWORD dwActorCnt = ( DWORD )pOwner->getActorCount();
 
@@ -96,7 +97,7 @@ void CAnimator::ConnectActorShape( Player* pOwner )
 		XMFLOAT4X4 mtxTemp;
 		XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
 		
-		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( ( ( NxMat34* )dpActorArray[ j ]->userData ) );
+		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( &pActorsOriginPose[ j ] );
 		mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
 		
 		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );

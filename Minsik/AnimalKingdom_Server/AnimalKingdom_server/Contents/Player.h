@@ -20,6 +20,7 @@ class Player {
 	NxController*	cct_;
 
 	NxActor**		actorArray_;
+	NxMat34*		actorsOriginPose_;
 	UINT			actorCount_;
 	/* 애니메이션 재생기 */
 	CAnimator*		animator_;
@@ -48,13 +49,14 @@ public:
 	void			setMaster(BOOL b);
 	void			setReady(BOOL b);
 	void			setCharacter( CHARACTER c);
-	void			setCCT(NxController* cct) { cct_ = cct; }
-	void			setActorArray( NxActor** dpActorArray, UINT actorcnt ) { actorArray_ = dpActorArray; actorCount_ = actorcnt; }
+	void			setCCT( NxController* cct );
+	void			setActorArray( NxActor** dpActorArray, UINT actorcnt );
 	void			setAnimator( CAnimator* pAnimator ) { animator_ = pAnimator; }
 	NxController*	getCCT() { return cct_; }
 	NxActor**		getActors() { return actorArray_; }
 	CAnimator*		getAnimator() { return animator_; }
 	UINT			getActorCount() { return actorCount_; }
+	NxMat34*		getActorsOriginPose() {	return actorsOriginPose_; }
 	CStateMachine*  getFSM() { return stateMachine_; }
 	XMFLOAT4X4		GetWorld();
 
