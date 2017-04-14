@@ -29,7 +29,7 @@ typedef enum {
 	PAK_REQ_State,
 	PAK_ANS_SyncPlayer,
 	PAK_ANS_SyncDynamic,
-	PAK_ANS_SyncADynamic
+	PAK_ANS_SyncDynamicOne
 } PAK_ID;
 
 #pragma pack(push, 1)
@@ -89,8 +89,6 @@ struct DynamicActor
 {
 	UINT		index;
 	Vector3		position;
-	Vector3		linear;
-	Vector3		angular;
 	Vector4		orient;
 };
 
@@ -167,7 +165,7 @@ struct S_SyncDynamic
 	DynamicActor	dynamicActors[DYNAMIC_CAPACITY];
 };
 
-struct S_SyncADynamic
+struct S_SyncDynamicOne
 {
 	HEADER			header;
 	DynamicActor	dynamicActor;

@@ -118,7 +118,7 @@ void Session::recv()
 		retval = WSAGetLastError();
 		if (retval != ERROR_IO_PENDING)
 		{
-			SLog(L"! socket error code: %d", retval);
+			SLog(L"! recv error code: %d", retval);
 		}
 	}
 }
@@ -136,7 +136,7 @@ void Session::send(char *sendBuf)
 		errorCode = WSAGetLastError();
 		if (errorCode != WSA_IO_PENDING)
 		{
-			SLog(L"! socket error: %d", errorCode);
+			SLog(L"! send error: %d", errorCode);
 			return;
 		}
 	}

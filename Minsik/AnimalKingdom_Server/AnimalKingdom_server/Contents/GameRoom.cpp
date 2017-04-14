@@ -320,10 +320,13 @@ void CALLBACK GameRoom::updateTimer(UINT , UINT, DWORD_PTR roomNum, DWORD_PTR, D
 void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWORD_PTR)
 {
 	RoomManager::getInstance().sendPlayerSync((UINT)roomNum);
+	RoomManager::getInstance().sendDynamicSync((UINT)roomNum);
 }
 
 void GameRoom::update( float fTimeDelta )
 {
+	SAFE_LOCK(lock_);
+
 	for(auto iter = players_.begin(); iter != players_.end(); ++iter )
 		(iter->second)->update( fTimeDelta );
 }
@@ -359,18 +362,22 @@ void GameRoom::sendDynamicSync()
 {
 	SAFE_LOCK(lock_);
 
-	S_SyncDynamic dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);
+	S_SyncDynamic *dynamicPacket = PhysXManager::getInstance().getDynamicInfo(roomNum_);
+
+	if (dynamicPacket == NULL)	return;
+
 	for (auto iter = players_.begin(); iter != players_.end(); iter++)
 	{
-		(iter->second)->getSession()->send((char*)&dynamicPacket);
+		(iter->second)->getSession()->send((char*)dynamicPacket);
 	}
+	SAFE_DELETE(dynamicPacket);
 }
 
-void GameRoom::sendADynamicSync(NxActor*actor)
+void GameRoom::sendDynamicOneSync(NxActor*actor)
 {
 	SAFE_LOCK(lock_);
 
-	S_SyncADynamic *dynamicPacket = PhysXManager::getInstance().getADynamicInfo(actor);
+	S_SyncDynamicOne *dynamicPacket = PhysXManager::getInstance().getDynamicOneInfo(actor);
 	
 	if (dynamicPacket == NULL)	return;
 

@@ -91,9 +91,9 @@ void RoomManager::sendDynamicSync(UINT roomNum)
 	roomArray_[roomNum]->sendDynamicSync();
 }
 
-void RoomManager::sendDynamicASync(UINT roomNum, NxActor *actor)
+void RoomManager::sendDynamicOneSync(UINT roomNum, NxActor *actor)
 {
-	roomArray_[roomNum]->sendADynamicSync(actor);
+	roomArray_[roomNum]->sendDynamicOneSync(actor);
 }
 
 void RoomManager::sendPlayerList( UINT32 roomNum )

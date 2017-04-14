@@ -56,13 +56,13 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 	//UINT roomNum = (UINT)pair.actors[0]->getScene().userData;
 	//RoomManager::getInstance().sendDynamicSync(roomNum);
 
-	for (int i = 0; i < 2; ++i)
-	{
-		RoomManager::getInstance().sendDynamicASync((UINT)pair.actors[i]->getScene().userData, pair.actors[i]);
-	}
+	// 충돌감지된 동적객체 하나에 대한 싱크 
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	RoomManager::getInstance().sendDynamicOneSync((UINT)pair.actors[i]->getScene().userData, pair.actors[i]);
+	//}
 	
-	
-	static int i = 0;
-	printf("Sync count: %d \n",i++);
+	//static int i = 0;
+	//printf("Sync count: %d \n",i++);
 	// printf( " [CCollisionReport] %s 와 %s가 충돌! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 }

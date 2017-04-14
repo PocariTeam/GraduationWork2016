@@ -57,7 +57,7 @@ public:
 	void					SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
 	NxController*			CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT roomNum);
 
-	S_SyncDynamic			getDynamicInfo(UINT roomNum);
-	S_SyncADynamic*			getADynamicInfo(NxActor *actor);
+	S_SyncDynamic*			getDynamicInfo(UINT roomNum);
+	S_SyncDynamicOne*		getDynamicOneInfo(NxActor *actor);
 
 };
