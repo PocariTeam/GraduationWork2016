@@ -34,8 +34,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 int CJungle::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
-	if( -1 != m_iPlayerID )
-		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
+	if( -1 != m_iPlayerID )	m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
 
 	CPhysics::GetInstance()->Update( fTimeDelta );
 

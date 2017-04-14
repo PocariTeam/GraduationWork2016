@@ -56,7 +56,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
 
-	if( m_pAnimator->GetCurrentAnimationFinished() )
+	if( m_pAnimator->GetCurrentAnimationFinished() && STATE_JUMP != eState )
 	{
 		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;

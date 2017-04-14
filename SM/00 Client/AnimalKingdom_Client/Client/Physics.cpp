@@ -415,6 +415,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					dpActorArray = m_pScene->getActors();
 
 					NxController* pController = CreateCharacterController( pActor, dpCameleonActors, j );
+					pController->getActor()->setGroup( COL_MINE );
 					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, CHARACTER_CHM );
 					for( int k = 0; k < j; ++k ) dpCameleonActors[ k ]->userData = pPlayer;
 					pShader_Animate->Add_RenderObject( pPlayer );

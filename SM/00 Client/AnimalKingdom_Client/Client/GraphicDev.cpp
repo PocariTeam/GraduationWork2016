@@ -63,7 +63,6 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 		if( dwCompare_VideoMemSize > dwVideoMemSize )
 		{
 			dwVideoMemSize = dwCompare_VideoMemSize;
-			pAdapter->Release();
 			pAdapter = pAdapter_Compare;
 			break;
 		}

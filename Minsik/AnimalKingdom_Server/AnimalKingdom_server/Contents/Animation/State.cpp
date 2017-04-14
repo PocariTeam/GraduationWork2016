@@ -107,11 +107,6 @@ void CJumpState::Enter( Player* pOwner, const float& fTImeDelta )
 
 void CJumpState::Execute( Player* pOwner, const float& fTImeDelta )
 {
-	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
-	{
-		pOwner->getFSM()->Change_State( STATE_IDLE );
-		return;
-	}
 	pOwner->Move( fTImeDelta );
 	pOwner->Jump( fTImeDelta, pOwner->getAnimator()->GetPerFinish() );
 }

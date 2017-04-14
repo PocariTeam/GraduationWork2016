@@ -4,6 +4,9 @@
 #include "NxBoxController.h"
 #include "NxCapsuleController.h"
 #include "NxControllerManager.h"
+#include "Player.h"
+#include <NxActor.h>
+#include "StateMachine.h"
 
 bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
@@ -19,23 +22,26 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 {
 	//printf("컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
 
-	if( 1 && hit.shape )
+	NxActor* actor = hit.controller->getActor();
+	NxCollisionGroup group = actor->getGroup();
+
+	if( COL_MINE == group )
 	{
-		NxCollisionGroup group = hit.shape->getGroup();
-		if( group == COL_DYNAMIC )
+		STATE eState = ( ( CPlayer* )actor->userData )->GetFSM()->GetCurrentState();
+		switch( eState )
 		{
-			NxActor& actor = hit.shape->getActor();
-			// We only allow horizontal pushes. Vertical pushes when we stand on dynamic objects creates
-			// useless stress on the solver. It would be possible to enable/disable vertical pushes on
-			// particular objects, if the gameplay requires it.
-			if( hit.dir.y == 0.0f )
-			{
-				NxF32 coeff = actor.getMass() * hit.length * 10.0f;
-				actor.addForceAtLocalPos( hit.dir*coeff, NxVec3( 0, 0, 0 ), NX_IMPULSE );
-				//						actor.addForceAtPos(hit.dir*coeff, hit.controller->getPosition(), NX_IMPULSE);
-				//						actor.addForceAtPos(hit.dir*coeff, hit.worldPos, NX_IMPULSE);
-			}
+		case STATE_JUMP:
+			( ( CPlayer* )actor->userData )->GetFSM()->Change_State( STATE_IDLE );
+			break;
+		default:
+			break;
 		}
+
+		/*if( 0.f == hit.dir.y )
+		{
+			NxF32 coeff = actor.getMass() * hit.length * 10.0f;
+			actor.addForceAtLocalPos( hit.dir*coeff, NxVec3( 0, 0, 0 ), NX_IMPULSE );
+		}*/
 	}
 
 	return NX_ACTION_NONE;

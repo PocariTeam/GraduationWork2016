@@ -104,7 +104,7 @@ void CRunState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 
 void CRunState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->SetDir( NxVec3( 0.f ) );
 }
 
 STATE CRunState::GetState( void )
@@ -121,12 +121,13 @@ void CJumpState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 
 void CJumpState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 {
-	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
+	/*if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
 	{
 		pOwner->GetFSM()->Change_State( STATE_IDLE );
 		return;
-	}
+	}*/
 		
+	pOwner->Move( fTImeDelta );
 	pOwner->Jump( fTImeDelta, pOwner->GetAnimator()->GetPerFinish() );
 }
 

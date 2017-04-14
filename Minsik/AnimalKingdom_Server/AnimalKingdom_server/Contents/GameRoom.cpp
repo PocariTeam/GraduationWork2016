@@ -297,6 +297,7 @@ BOOL GameRoom::setupGame()
 		CHARACTER character = (p->second)->getPlayerInfo().character;
 
 		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors(character, roomNum_, iActorCnt);
+		pController->getActor()->setGroup( COL_PLAYER );
 		(p->second)->setActorArray(dpActors, iActorCnt);
 		(p->second)->setCCT(pController);
 		(p->second)->setAnimator(CAnimationMgr::getInstance().Clone(character));
