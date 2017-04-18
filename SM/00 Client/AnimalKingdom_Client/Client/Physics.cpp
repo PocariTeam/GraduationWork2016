@@ -463,10 +463,24 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pActor->setGroup( COL_STATIC );
 					SetCollisionGroup( pActor, COL_STATIC );
 
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Ground1" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Ground1" );
+					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pShader_Mesh->Add_RenderObject( pTerrain );
 
-					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Map" );
-					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Map" );
-					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1048.53164f, 1048.53164f, 1048.53164f ) );
+					pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Ground2" );
+					pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Ground2" );
+					pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pShader_Mesh->Add_RenderObject( pTerrain );
+
+					pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Cave" );
+					pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Cave" );
+					pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pShader_Mesh->Add_RenderObject( pTerrain );
+
+					pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Water" );
+					pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Water" );
+					pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pShader_Mesh->Add_RenderObject( pTerrain );
 				}
 

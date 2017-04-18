@@ -64,5 +64,6 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 	
 	//static int i = 0;
 	//printf("Sync count: %d \n",i++);
-	// printf( " [CCollisionReport] %s 와 %s가 충돌! ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	printf( " [CCollisionReport] %s 와 %s가 충돌!\n ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	printf( " [CCollisionReport] %f, %f, %f에서 충돌!\n ", pair.actors[ 1 ]->getGlobalPosition().x, pair.actors[ 1 ]->getGlobalPosition().y, pair.actors[ 1 ]->getGlobalPosition().z );
 }

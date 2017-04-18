@@ -20,13 +20,14 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 
 NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& hit )
 {
-	//printf("컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
+	
 
 	NxActor* actor = hit.controller->getActor();
 	NxCollisionGroup group = actor->getGroup();
 
 	if( COL_MINE == group )
 	{
+		printf( "컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName() );
 		STATE eState = ( ( CPlayer* )actor->userData )->GetFSM()->GetCurrentState();
 		switch( eState )
 		{

@@ -33,7 +33,7 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 {
 	DWORD dwCreateDeviceFlag = 0;
 #if defined(DEBUG) || defined(_DEBUG)
-	dwCreateDeviceFlag |= D3D11_CREATE_DEVICE_DEBUG;	/* 플래그 사용시에는 Win8의 SDK 필요_SDKLayer.dll */
+	// dwCreateDeviceFlag |= D3D11_CREATE_DEVICE_DEBUG;	/* 플래그 사용시에는 Win8의 SDK 필요_SDKLayer.dll */
 #endif
 
 	D3D_DRIVER_TYPE	  eDriverTypes = D3D_DRIVER_TYPE_NULL;
@@ -53,7 +53,6 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 
 	int iIndex{ 1 };
 	size_t dwCompare_VideoMemSize;
-	UINT nFlags = DXGI_ENUM_MODES_INTERLACED;
 
 	while( pdxgiFactory->EnumAdapters( iIndex, &pAdapter_Compare ) != DXGI_ERROR_NOT_FOUND )
 	{

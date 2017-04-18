@@ -25,7 +25,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
 	m_pCamera = CDebugCamera::Create( hWnd, pDevice );
 	CLightMgr::GetInstance()->Initialize( pDevice );
-	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle_player4.xml" );
+	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 
 	return CScene::Initialize( hWnd, pDevice );
