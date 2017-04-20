@@ -22,8 +22,11 @@ public:
 	bool	GetFinished( void ) { return ( !m_bLoop ) & ( m_fTimePos == m_dwLength ); }
 	bool	GetLoop( void ) { return m_bLoop; }
 	float	GetPerFinish( void ) { return m_fTimePos / ( float )m_dwLength; }
+	float	GetTimePos( void ) { return m_fTimePos; }
+	map<int, int> GetEvent() { return m_mapEvent; }
 private:
 	XMFLOAT4X4**	m_dpArrFrame;
+	map<int, int>	m_mapEvent;
 	DWORD			m_dwJointCnt;
 	DWORD			m_dwLength;
 	float			m_fTimePos;

@@ -56,7 +56,6 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	/* Timer for Fixed Frame */
 	CTimer* pFixedTimer{ CTimer::Create() };
 
-	float fFrameLimit{ 1.f / 60.f };
 	float fFrameTime{ 0.f };
 
 	// 기본 메시지 루프입니다.

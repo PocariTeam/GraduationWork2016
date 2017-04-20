@@ -30,6 +30,7 @@ CAnimationSet::CAnimationSet( const CAnimationSet& Instance )
 	, m_fSpeed( Instance.m_fSpeed )
 	, m_fTimePos( 0.f )
 	, m_bLoop( Instance.m_bLoop )
+	, m_mapEvent( Instance.m_mapEvent )
 {
 
 }
@@ -50,6 +51,7 @@ CAnimationSet* CAnimationSet::Create( const char* pFilePath )
 HRESULT CAnimationSet::Load( const char* pFilePath )
 {
 	ifstream pIn{ pFilePath };
+	int		 iEventCnt{};
 	char szType{};
 	pIn >> szType;
 
@@ -59,6 +61,14 @@ HRESULT CAnimationSet::Load( const char* pFilePath )
 		pIn >> m_dwLength;
 		pIn >> m_fSpeed;
 		pIn >> m_bLoop;
+		pIn >> iEventCnt;
+		for( int i = 0; i < iEventCnt; ++i )
+		{
+			int iEventPos{}, iEventKey{};
+			pIn >> iEventPos;
+			pIn >> iEventKey;
+			m_mapEvent.insert( make_pair( iEventPos, iEventKey ) );
+		}
 
 		m_dpArrFrame = new XMFLOAT4X4*[ m_dwLength ];
 
@@ -89,11 +99,14 @@ DWORD CAnimationSet::Release( void )
 
 	if( 0 == dwRefCnt )
 	{
+		if( !m_mapEvent.empty() )
+			m_mapEvent.erase( m_mapEvent.begin(), m_mapEvent.end() );
+
 		for( DWORD i = 0; i < m_dwLength; ++i )
 			::Safe_Delete_Array( m_dpArrFrame[ i ] );
 		Safe_Delete_Array( m_dpArrFrame );
 	}
-	
+
 	delete this;
 
 	return 0;

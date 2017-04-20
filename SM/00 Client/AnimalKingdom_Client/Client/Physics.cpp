@@ -547,7 +547,7 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dp
 		NxF32	fHeight = ( ( NxCapsuleShape* )( pShape ) )->getHeight();
 		NxCapsuleControllerDesc		tCapsuleDesc;
 		tCapsuleDesc.radius = fRadius * 0.5f;
-		tCapsuleDesc.height = fHeight;
+		tCapsuleDesc.height = fHeight * 2.f;
 		tCapsuleDesc.position.x = pActor->getGlobalPosition().x;
 		// gSpace = ( tCapsuleDesc.height * 0.5f + tCapsuleDesc.radius );
 		tCapsuleDesc.position.y = pActor->getGlobalPosition().y;

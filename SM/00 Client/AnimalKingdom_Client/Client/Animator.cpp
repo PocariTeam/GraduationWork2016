@@ -15,24 +15,25 @@
 
 CAnimator::CAnimator( void )
 	: CBase()
-	, m_fTimePos( 0.f )
 	, m_dwJointCnt( 0 )
 	, m_pArrJointName( nullptr )
 	, m_pConstantBufferAnimation( nullptr )
 	, m_pCurrentAnimationSet( nullptr )
 	, m_pPreviousAnimationSet( nullptr )
+	, m_bPause( false )
 {
 }
 
 CAnimator::CAnimator( const CAnimator& Instance )
 	: CBase( Instance )
-	, m_fTimePos( 0.f )
 	, m_dwJointCnt( Instance.m_dwJointCnt )
 	, m_pArrJointName( Instance.m_pArrJointName )
 	, m_pConstantBufferAnimation( Instance.m_pConstantBufferAnimation )
 	, m_pPreviousAnimationSet( nullptr )
+	, m_bPause( false )
 {
 	m_pCurrentAnimationSet = Instance.m_vecAnimationSet[ 0 ];
+	m_mapEvent = m_pCurrentAnimationSet->GetEvent();
 	for( size_t i = 0; i < Instance.m_vecAnimationSet.size(); ++i )
 		m_vecAnimationSet.push_back( Instance.m_vecAnimationSet[ i ]->Clone() );
 }
@@ -76,7 +77,7 @@ HRESULT CAnimator::Load( const char* pFilePath )
 	{
 		pIn >> m_dwJointCnt;
 		m_pArrJointName = new string[ m_dwJointCnt ];
-		
+
 		for( DWORD i = 0; i < m_dwJointCnt; ++i )
 			pIn >> m_pArrJointName[ i ];
 	}
@@ -90,7 +91,7 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 	DWORD i = 0;
 	XMFLOAT4X4*	pWorld{ new XMFLOAT4X4[ m_dwJointCnt ] };
 	m_pCurrentAnimationSet->GetAnimationMatrix( pWorld );
-	NxController* pCharacterController = ( ( CPlayer* )pOwner)->GetCharacterController();
+	NxController* pCharacterController = ( ( CPlayer* )pOwner )->GetCharacterController();
 	NxMat34*	pActorsOriginPose = ( ( CPlayer* )pOwner )->GetActorsOriginPose();
 	NxActor** dpActorArray = ( NxActor** )pCharacterController->getUserData();
 
@@ -102,14 +103,14 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 		for( ; i < m_dwJointCnt; ++i )
 			if( 0 == strcmp( m_pArrJointName[ i ].c_str(), dpActorArray[ j ]->getName() ) )
 				break;
-		
+
 		NxMat34 mtxLocal;
 		XMFLOAT4X4 mtxTemp;
 		XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
-		
+
 		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( &pActorsOriginPose[ j ] );
 		mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
-		
+
 		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );
 		dpActorArray[ j ]->moveGlobalPose( CMathematics::ConvertToNxMat34( mtxResult ) );
 		i = 0;
@@ -134,6 +135,9 @@ void CAnimator::Change_Animation( STATE eState )
 	if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->ResetTimePos();
 	m_pPreviousAnimationSet = m_pCurrentAnimationSet;
 	m_pCurrentAnimationSet = m_vecAnimationSet[ eState ];
+	if( !m_mapEvent.empty() )
+		m_mapEvent.erase( m_mapEvent.begin(), m_mapEvent.end() );
+	m_mapEvent = m_pCurrentAnimationSet->GetEvent();
 }
 
 bool CAnimator::GetCurrentAnimationFinished()
@@ -147,6 +151,16 @@ bool CAnimator::GetCurrentAnimationFinished()
 float CAnimator::GetPerFinish()
 {
 	return m_pCurrentAnimationSet->GetPerFinish();
+}
+
+void CAnimator::Pause()
+{
+	m_bPause = true;
+}
+
+void CAnimator::Play()
+{
+	m_bPause = false;
 }
 
 HRESULT CAnimator::CreateConstantBuffer( ID3D11Device* pDevice )
@@ -167,7 +181,6 @@ DWORD CAnimator::Release( void )
 {
 	DWORD dwRefCnt = CBase::Release();
 
-	
 	if( 0 == dwRefCnt )
 	{
 		::Safe_Delete_Array( m_pArrJointName );
@@ -177,7 +190,7 @@ DWORD CAnimator::Release( void )
 	for_each( m_vecAnimationSet.begin(), m_vecAnimationSet.end(), ReleaseElement() );
 	m_vecAnimationSet.erase( m_vecAnimationSet.begin(), m_vecAnimationSet.end() );
 	m_vecAnimationSet.swap( vector<CAnimationSet*>{} );
-		
+
 	delete this;
 	return 0;
 }
@@ -196,8 +209,21 @@ void CAnimator::Update( CGameObject* pOwner, const float& fTimeDelta )
 {
 	if( m_pCurrentAnimationSet )
 	{
-		m_pCurrentAnimationSet->Update( fTimeDelta );
+		int iEvent{ -1 };
+		auto map_iter = m_mapEvent.find( ( int )m_pCurrentAnimationSet->GetTimePos() );
+		if( map_iter != m_mapEvent.end() ) iEvent = map_iter->second;
+
+		switch( iEvent )
+		{
+		case 0:
+			m_bPause = true;
+			m_mapEvent.erase( map_iter );
+			break;
+		default:
+			break;
+		}
+
+		if( !m_bPause ) m_pCurrentAnimationSet->Update( fTimeDelta );
 		if( pOwner ) ConnectActorShape( pOwner );
 	}
-	// if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->Update( fTimeDelta );
 }

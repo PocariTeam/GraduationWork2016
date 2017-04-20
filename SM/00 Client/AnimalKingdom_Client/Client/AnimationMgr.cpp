@@ -27,10 +27,10 @@ HRESULT CAnimationMgr::Load( ID3D11Device* pDevice, const char* pFilePath )
 
 	ifstream pIn{ pFilePath };
 	int iCharacterCnt{}, iCharacterType{}, iStateCnt{}, iState{};
-	char szPath[ MAX_PATH ]{""};
-	
+	char szPath[ MAX_PATH ]{ "" };
+
 	pIn >> iCharacterCnt;
-	
+
 	for( int i = 0; i < iCharacterCnt; ++i )
 	{
 		pIn >> iCharacterType;

@@ -10,7 +10,7 @@
 
 CAnimator::CAnimator( void )
 	: CBase()
-	, m_fTimePos( 0.f )
+	, m_bPause( false )
 	, m_dwJointCnt( 0 )
 	, m_pArrJointName( nullptr )
 	, m_pCurrentAnimationSet( nullptr )
@@ -20,12 +20,13 @@ CAnimator::CAnimator( void )
 
 CAnimator::CAnimator( const CAnimator& Instance )
 	: CBase( Instance )
-	, m_fTimePos( 0.f )
+	, m_bPause( false )
 	, m_dwJointCnt( Instance.m_dwJointCnt )
 	, m_pArrJointName( Instance.m_pArrJointName )
 	, m_pPreviousAnimationSet( nullptr )
 {
 	m_pCurrentAnimationSet = Instance.m_vecAnimationSet[ 0 ];
+	m_mapEvent = m_pCurrentAnimationSet->GetEvent();
 	for( size_t i = 0; i < Instance.m_vecAnimationSet.size(); ++i )
 		m_vecAnimationSet.push_back( Instance.m_vecAnimationSet[ i ]->Clone() );
 }
@@ -123,6 +124,9 @@ void CAnimator::Change_Animation( STATE eState )
 	if( m_pPreviousAnimationSet ) m_pPreviousAnimationSet->ResetTimePos();
 	m_pPreviousAnimationSet = m_pCurrentAnimationSet;
 	m_pCurrentAnimationSet = m_vecAnimationSet[ eState ];
+	if( !m_mapEvent.empty() )
+		m_mapEvent.erase( m_mapEvent.begin(), m_mapEvent.end() );
+	m_mapEvent = m_pCurrentAnimationSet->GetEvent();
 }
 
 bool CAnimator::GetCurrentAnimationFinished()
@@ -136,6 +140,16 @@ bool CAnimator::GetCurrentAnimationFinished()
 float CAnimator::GetPerFinish()
 {
 	return m_pCurrentAnimationSet->GetPerFinish();
+}
+
+void CAnimator::Pause()
+{
+	m_bPause = true;
+}
+
+void CAnimator::Play()
+{
+	m_bPause = false;
 }
 
 class ReleaseElement
@@ -176,7 +190,23 @@ void CAnimator::Update( Player* pOwner, const float& fTimeDelta )
 {
 	if( m_pCurrentAnimationSet )
 	{
-		m_pCurrentAnimationSet->Update( fTimeDelta );
+		int iEvent{ -1 };
+		if( m_mapEvent.size() == 1 )
+			int iDebuig = 0;
+		auto map_iter = m_mapEvent.find( ( int )m_pCurrentAnimationSet->GetTimePos() );
+		if( map_iter != m_mapEvent.end() ) iEvent = map_iter->second;
+
+		switch( iEvent )
+		{
+		case 0:
+			m_bPause = true;
+			m_mapEvent.erase( map_iter );
+			break;
+		default:
+			break;
+		}
+
+		if( !m_bPause ) m_pCurrentAnimationSet->Update( fTimeDelta );
 		ConnectActorShape( pOwner );
 	}
 }

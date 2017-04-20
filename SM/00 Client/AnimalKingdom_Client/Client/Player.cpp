@@ -23,7 +23,7 @@ CPlayer::CPlayer()
 	, m_vRotate( 0.f, 0.f, 0.f )
 	, m_pInputMgr( CInputMgr::GetInstance() )
 	, m_fSpeed( 50.f )
-	, m_fJumpHeight( 50.f )
+	, m_fJumpHeight( 100.f )
 {
 }
 
@@ -156,11 +156,11 @@ void CPlayer::Move( const float& fTimeDelta )
 
 void CPlayer::Sync( NxVec3& vPos, float fRotateY, STATE state)
 {
-	//NxU32	dwCollisionFlag;
-	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
-	//m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
-	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
-	m_pCharacterController->setPosition( setPos );
+	NxU32	dwCollisionFlag;
+	vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
+	m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	//NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
+	//m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
 	m_pStateMachine->Change_State(state);
 }

@@ -29,16 +29,20 @@ public:
 	void	Change_Animation( STATE eState );
 	bool	GetCurrentAnimationFinished();
 	float	GetPerFinish();
+	void	Pause();
+	void	Play();
+	bool	isPause() { return m_bPause; }
 private:
 	HRESULT CreateConstantBuffer( ID3D11Device* pDevice );
 private:
 	CAnimationSet*			m_pCurrentAnimationSet;
 	CAnimationSet*			m_pPreviousAnimationSet;
 
+	map<int, int>			m_mapEvent;
 	vector<CAnimationSet*>	m_vecAnimationSet;
 	string*					m_pArrJointName;
 	DWORD					m_dwJointCnt;
-	float					m_fTimePos;
+	bool					m_bPause;
 	ID3D11Buffer*			m_pConstantBufferAnimation;
 };
 

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include <NxActor.h>
 #include "StateMachine.h"
+#include "Animator.h"
 
 bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
@@ -20,19 +21,20 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 
 NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& hit )
 {
-	
+	//printf("컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
 
 	NxActor* actor = hit.controller->getActor();
 	NxCollisionGroup group = actor->getGroup();
 
+	if( hit.dir.y > -1.f ) return NX_ACTION_NONE;
+
 	if( COL_MINE == group )
 	{
-		printf( "컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName() );
 		STATE eState = ( ( CPlayer* )actor->userData )->GetFSM()->GetCurrentState();
 		switch( eState )
 		{
 		case STATE_JUMP:
-			( ( CPlayer* )actor->userData )->GetFSM()->Change_State( STATE_IDLE );
+			( ( CPlayer* )actor->userData )->GetAnimator()->Play();
 			break;
 		default:
 			break;
@@ -40,8 +42,8 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 
 		/*if( 0.f == hit.dir.y )
 		{
-			NxF32 coeff = actor.getMass() * hit.length * 10.0f;
-			actor.addForceAtLocalPos( hit.dir*coeff, NxVec3( 0, 0, 0 ), NX_IMPULSE );
+		NxF32 coeff = actor.getMass() * hit.length * 10.0f;
+		actor.addForceAtLocalPos( hit.dir*coeff, NxVec3( 0, 0, 0 ), NX_IMPULSE );
 		}*/
 	}
 

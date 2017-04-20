@@ -17,11 +17,12 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 
 NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& hit )
 {
-	//printf(" [NxControllerAction]컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
-
+	//printf("컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
 
 	NxActor* actor = hit.controller->getActor();
 	NxCollisionGroup group = actor->getGroup();
+
+	if( hit.dir.y > -1.f ) return NX_ACTION_NONE;
 
 	if( COL_PLAYER == group )
 	{
@@ -29,7 +30,7 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 		switch( eState )
 		{
 		case STATE_JUMP:
-			( ( Player* )actor->userData )->getFSM()->Change_State( STATE_IDLE );
+			( ( Player* )actor->userData )->getAnimator()->Play();
 			break;
 		default:
 			break;
@@ -41,7 +42,6 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 		actor.addForceAtLocalPos( hit.dir*coeff, NxVec3( 0, 0, 0 ), NX_IMPULSE );
 		}*/
 	}
-
 
 	return NX_ACTION_NONE;
 }
@@ -64,6 +64,6 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 	
 	//static int i = 0;
 	//printf("Sync count: %d \n",i++);
-	printf( " [CCollisionReport] %s 와 %s가 충돌!\n ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
-	printf( " [CCollisionReport] %f, %f, %f에서 충돌!\n ", pair.actors[ 1 ]->getGlobalPosition().x, pair.actors[ 1 ]->getGlobalPosition().y, pair.actors[ 1 ]->getGlobalPosition().z );
+	//printf( " [CCollisionReport] %s 와 %s가 충돌!\n ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	//printf( " [CCollisionReport] %f, %f, %f에서 충돌!\n ", pair.actors[ 1 ]->getGlobalPosition().x, pair.actors[ 1 ]->getGlobalPosition().y, pair.actors[ 1 ]->getGlobalPosition().z );
 }

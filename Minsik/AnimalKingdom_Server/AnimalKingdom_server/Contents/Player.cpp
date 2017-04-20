@@ -4,7 +4,7 @@
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
 	, m_vRotate( 0.f, 0.f, 0.f ), actorsOriginPose_( nullptr )
-	, m_fJumpHeight( 50.f )
+	, m_fJumpHeight( 100.f )
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 50.0f;

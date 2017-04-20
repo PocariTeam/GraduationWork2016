@@ -32,9 +32,6 @@ CGraphicDev* CGraphicDev::Create( WINMODE Mode, HWND hWnd, const WORD& wSizeX, c
 HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, const WORD& wSizeY )
 {
 	DWORD dwCreateDeviceFlag = 0;
-#if defined(DEBUG) || defined(_DEBUG)
-	// dwCreateDeviceFlag |= D3D11_CREATE_DEVICE_DEBUG;	/* 플래그 사용시에는 Win8의 SDK 필요_SDKLayer.dll */
-#endif
 
 	D3D_DRIVER_TYPE	  eDriverTypes = D3D_DRIVER_TYPE_NULL;
 	D3D_FEATURE_LEVEL eFeatureLevel = D3D_FEATURE_LEVEL_11_1;
