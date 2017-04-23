@@ -66,16 +66,16 @@ VS_OUT VS( VS_IN In )
 	for( int i = 0; i < 4; ++i )
 	{
 		vPos += fWeight[ i ] * mul( float4( In.vPos, 1.f ), g_mtxBone[ iIndex[ i ] ] ).xyz;
-		vNormal += fWeight[ i ] * mul( ( float3x3 )g_mtxBone[ iIndex[ i ] ], In.vNormal ).xyz;
-		vTangent += fWeight[ i ] * mul( ( float3x3 )g_mtxBone[ iIndex[ i ] ], In.vTangent ).xyz;
+		vNormal += fWeight[ i ] * mul( float4( In.vNormal, 0.f ), g_mtxBone[ iIndex[ i ] ] ).xyz;
+		vTangent += fWeight[ i ] * mul( float4( In.vTangent, 0.f ), g_mtxBone[ iIndex[ i ] ] ).xyz;
 	}
 
 	Out.vPos = mul( float4( vPos, 1.f ), mtxWVP );
 	Out.vWorldPos = mul( float4( vPos, 1.f ), g_mtxWorld ).xyz;
 	Out.vUV = In.vUV;
-
-	Out.vNormal = normalize( mul( vNormal, ( float3x3 )g_mtxWorld ) ).xyz;
-	Out.vTangent = normalize( mul( vTangent, ( float3x3 )g_mtxWorld ) ).xyz;
+	
+	Out.vNormal = normalize( mul( float4( vNormal, 0.f ), g_mtxWorld ) ).xyz;
+	Out.vTangent = normalize( mul( float4( vTangent, 0.f ), g_mtxWorld ) ).xyz;
 
 	return Out;
 }

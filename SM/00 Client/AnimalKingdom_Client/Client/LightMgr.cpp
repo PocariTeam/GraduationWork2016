@@ -13,7 +13,7 @@ HRESULT CLightMgr::Initialize( ID3D11Device* pDevice, DWORD dwLightingCnt/*= 1 *
 	m_dwLightingCnt = 0;
 	
 	// Add( pDevice, LIGHT_POINT, XMFLOAT4( 1.f, 0.f, 0.f, 1.f ), XMFLOAT3( 0.f, 100.f, 0.f ) );
-	Add( pDevice, LIGHT_DIRECTIONAL, XMFLOAT4( 1.f, 1.f, 1.f, 1.f ), XMFLOAT3( 0.f, -0.4f, 0.6f ) );
+	Add( pDevice, LIGHT_DIRECTIONAL, XMFLOAT4( 1.f, 1.f, 1.f, 1.f ), XMFLOAT3( 0.2f, -0.3f, 0.5f ) );
 
 	CreateConstantBuffer( pDevice );
 

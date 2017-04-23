@@ -128,6 +128,8 @@ float4 Directional_Specular( LIGHT tLight, float4 vWorldNormal, float3 vLookInv 
 	float4 vReflect = reflect( float4( normalize( tLight.vDir ), 0.f ), vWorldNormal );
 	vSpecular = pow( max( dot( vLookInv, normalize( vReflect ).xyz ), 0.f ), tLight.vSpecular.w );
 
+	vSpecular *= tLight.vSpecular;
+
 	return vSpecular;
 }
 

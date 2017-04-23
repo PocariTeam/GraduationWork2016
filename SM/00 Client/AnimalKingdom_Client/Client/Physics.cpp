@@ -484,6 +484,28 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pShader_Mesh->Add_RenderObject( pTerrain );
 				}
 
+				if( 0 == strcmp( pActor->getName(), "Tree00" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree00" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree00" );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.2354510850370835f, 0.2354510850370835f, 0.2354510850370835f ) );
+					pShader_Mesh->Add_RenderObject( pTree );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Tree01" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree01" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree01" );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.1197511570955554f, 0.1197511570955554f, 0.1197511570955554f ) );
+					pShader_Mesh->Add_RenderObject( pTree );
+				}
+
 				else
 				{
 					pActor->setGroup( COL_STATIC );
