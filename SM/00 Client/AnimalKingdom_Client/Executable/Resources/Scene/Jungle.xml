@@ -2,43 +2,43 @@
     <NxuPhysicsCollection id="Jungle_fix.xml" sdkVersion="284" nxuVersion="103">
       <NxPhysicsSDKDesc id="SDK"/>
       <NxConvexMeshDesc id="ConvexMesh_0">
-        <points>1.341499329 -6.096746445 5.119993687  -0.314216614 -6.096747398 5.11999321  0.691154003 -5.020298004 5.119993687  0.00606966 1.024755478 4.554869652  
-          -2.156242847 1.816490173 4.295847416  -3.119804382 13.39305687 0.508487701  3.122349262 13.39305687 0.508488178  4.6269207 0.119249344 -3.258318663  
-          3.328053474 -1.451302528 -4.295104504  0.606528282 -11.95896244 -3.792066813  3.203220844 -10.241654396 -1.191963196  5.358312607 -1.611357689 -1.705081463  
-          -1.660130024 -12.538975716 -2.262823582  -0.603878975 -11.961538315 -3.791808605  -3.5304811 -1.921937943 -4.240134239  -4.618709087 -1.371162415 -3.125985146  
-          -5.147236824 -2.379802704 -2.071240902  -3.2091465 -10.197077751 -1.303951263  3.164062023 13.39305687 -0.456467152  3.113746643 13.39305687 -0.480575562  
-          1.079778671 0.162360668 -4.946522713  1.462762594 -0.503865242 -4.938827991  2.413045883 -6.521971226 4.964835167  1.995271206 -13.311899185 2.487282276  
-          -1.993574142 -13.337006569 2.478121758  -2.411423683 -6.545850754 4.956122398  -3.123073101 13.39305687 -0.480575562  -1.177466393 0.798802376 -4.731695175  
-          -1.554898262 -13.290618896 -0.264507294  1.887841463 -13.290769577 -0.245384216  -5.560847282 -1.343447447 1.217450142  -5.237541199 0.339611053 2.682025194  
-          -3.087166309 -11.167301178 1.356992722  3.315903187 -10.259513855 1.34409523  2.007360458 -13.311714172 2.463288307  4.151302338 -1.323815346 4.035603523  
-          5.343727112 0.452951431 2.526024342  5.561970234 -1.339595795 1.217393875  -4.98291111 2.755249023 -1.692315102  -3.197435856 13.39305687 -0.414569378  
-          -3.168623924 13.39305687 0.476537704  -5.563845634 -0.94171524 -0.912453651  3.207559586 13.39305687 0.438351631  5.444670677 -1.354003906 -1.242258072  
-          -3.323659897 -1.464452744 -4.300607681  3.992703438 -0.772939682 4.002421379  -2.538696289 0.674724579 4.3568964  
-        </points>
-        <triangles>0 2 1  6 5 4  6 4 3  11 10 9  
-          11 9 8  11 8 7  17 16 15  17 15 14  
-          17 14 13  17 13 12  21 20 19  21 19 18  
-          21 18 7  21 7 8  25 24 23  25 23 22  
-          25 22 0  25 0 1  27 26 19  27 19 20  
-          29 28 12  29 12 13  29 13 9  32 24 25  
-          32 25 31  32 31 30  37 36 35  37 35 22  
-          37 22 23  37 23 34  37 34 33  41 30 31  
-          41 31 40  41 40 39  41 39 38  43 18 42  
-          43 42 36  43 36 37  44 14 15  44 15 38  
-          44 38 39  45 35 36  45 36 42  45 42 6  
-          46 4 5  46 5 40  46 40 31  21 9 13  
-          22 35 45  22 45 3  22 3 2  22 2 0  
-          32 30 41  32 41 16  32 16 17  10 33 34  
-          10 34 29  43 37 33  43 33 10  43 10 11  
-          25 46 31  42 18 19  42 19 26  42 26 39  
-          42 39 40  42 40 5  42 5 6  3 4 46  
-          3 46 25  3 25 1  3 1 2  44 27 20  
-          44 20 21  44 21 13  44 13 14  3 45 6  
-          28 24 32  28 32 17  28 17 12  41 38 15  
-          41 15 16  9 21 8  18 43 11  18 11 7  
-          44 39 26  44 26 27  29 34 23  29 23 24  
-          24 28 29  10 29 9  
-        </triangles>
+        <points>-0.968078613 73.379455566 -38.911201477  -6.984344482 73.001701355 -38.911201477  -3.999931335 70.259307861 -38.911201477  0.905792236 73.453201294 38.902965546  
+          5.6355896 73.319137573 38.902965546  3.23097229 71.060272217 38.902965546  14.07262516 -1.524116516 -3.476864815  10.885824203 -1.524116397 -9.888223648  
+          -3.930629253 -1.524116516 -12.780387878  -4.716832638 -1.524116516 -12.517166138  -6.153289318 -1.524116397 -11.277582169  1.99513936 -1.524116516 9.587144852  
+          -20.287334442 75.718101501 -35.447410583  -31.351915359 59.190895081 -18.118026733  -30.16292572 49.116825104 -14.40104866  -10.471845627 -0.256061554 -8.147918701  
+          6.991369247 3.632824898 17.275726318  20.289041519 75.722755432 35.445487976  31.362504959 59.192649841 18.107610703  27.914470673 35.570960999 11.305952072  
+          13.466472626 3.9923563 11.389129639  16.561313629 60.121871948 -33.35559845  31.362957001 59.193321228 -18.114982605  20.924804688 72.201568604 -34.702720642  
+          -12.70821476 52.033889771 32.613830566  -7.850120544 1.291434288 15.879465103  -14.714756012 2.325002432 9.866111755  -31.353218079 59.192821503 18.107416153  
+          -20.263284683 75.737106323 35.466640472  -20.754974365 92.095001221 -6.145103455  -41.128658295 73.592758179 0.0052948  20.286010742 75.726348877 -35.453125  
+          41.139556885 73.585647583 -0.004096985  20.684467316 88.864547729 -11.945907593  -19.243560791 92.993690491 -5.423774719  -7.607475281 94.655250549 13.194879532  
+          -19.062606812 76.545837402 35.804088593  20.690093994 88.860366821 11.934326172  15.101654053 76.779716492 -36.579162598  0.022628784 88.865341187 -23.869262695  
+          -0.001237869 59.184188843 -36.214794159  0.012233734 59.199623108 36.209579468  5.039737701 2.957404137 17.628627777  -1.063648701 -0.252661705 15.980584145  
+          -33.55821991 42.719024658 -0.001314163  -17.177467346 2.401555061 4.416654587  33.578582764 42.75976944 -0.0041008  16.488113403 91.997825623 8.073150635  
+          </points>
+        <triangles>0 2 1  3 5 4  11 10 9  11 9 8  
+          11 8 7  11 7 6  15 14 13  15 13 12  
+          15 12 9  15 9 10  20 19 18  20 18 17  
+          20 17 16  23 22 7  23 7 21  28 27 26  
+          28 26 25  28 25 24  29 12 30  31 33 32  
+          28 36 35  28 35 34  28 34 29  28 29 30  
+          37 17 32  17 35 36  17 36 3  17 3 4  
+          12 39 38  12 38 0  12 0 1  21 7 8  
+          21 8 40  24 25 43  24 43 42  24 42 41  
+          14 15 45  14 45 44  32 18 19  32 19 46  
+          6 46 19  6 19 20  30 44 27  46 22 32  
+          13 30 12  39 34 35  39 35 47  39 47 33  
+          40 8 9  40 9 12  40 12 1  40 1 2  
+          41 42 16  41 16 17  41 17 4  41 4 5  
+          28 30 27  31 32 22  31 22 23  18 32 17  
+          47 37 32  47 32 33  34 39 12  34 12 29  
+          22 46 6  22 6 7  20 16 42  20 42 43  
+          20 43 11  20 11 6  43 25 26  43 26 45  
+          43 45 15  43 15 10  43 10 11  38 39 33  
+          38 33 31  44 45 26  44 26 27  31 23 21  
+          31 21 40  31 40 2  31 2 0  0 38 31  
+          28 24 41  28 41 5  28 5 3  3 36 28  
+          47 35 17  47 17 37  44 30 13  44 13 14  
+          </triangles>
         <cookedDataSize>0</cookedDataSize>
         <cookedData></cookedData>
       </NxConvexMeshDesc>
@@ -84,47 +84,6 @@
         <cookedData></cookedData>
       </NxConvexMeshDesc>
       <NxConvexMeshDesc id="ConvexMesh_2">
-        <points>-0.968078613 73.379455566 -38.911201477  -6.984344482 73.001701355 -38.911201477  -3.999931335 70.259307861 -38.911201477  0.905792236 73.453201294 38.902965546  
-          5.6355896 73.319137573 38.902965546  3.23097229 71.060272217 38.902965546  14.07262516 -1.524116516 -3.476864815  10.885824203 -1.524116397 -9.888223648  
-          -3.930629253 -1.524116516 -12.780387878  -4.716832638 -1.524116516 -12.517166138  -6.153289318 -1.524116397 -11.277582169  1.99513936 -1.524116516 9.587144852  
-          -20.287334442 75.718101501 -35.447410583  -31.351915359 59.190895081 -18.118026733  -30.16292572 49.116825104 -14.40104866  -10.471845627 -0.256061554 -8.147918701  
-          6.991369247 3.632824898 17.275726318  20.289041519 75.722755432 35.445487976  31.362504959 59.192649841 18.107610703  27.914470673 35.570960999 11.305952072  
-          13.466472626 3.9923563 11.389129639  16.561313629 60.121871948 -33.35559845  31.362957001 59.193321228 -18.114982605  20.924804688 72.201568604 -34.702720642  
-          -12.70821476 52.033889771 32.613830566  -7.850120544 1.291434288 15.879465103  -14.714756012 2.325002432 9.866111755  -31.353218079 59.192821503 18.107416153  
-          -20.263284683 75.737106323 35.466640472  -20.754974365 92.095001221 -6.145103455  -41.128658295 73.592758179 0.0052948  20.286010742 75.726348877 -35.453125  
-          41.139556885 73.585647583 -0.004096985  20.684467316 88.864547729 -11.945907593  -19.243560791 92.993690491 -5.423774719  -7.607475281 94.655250549 13.194879532  
-          -19.062606812 76.545837402 35.804088593  20.690093994 88.860366821 11.934326172  15.101654053 76.779716492 -36.579162598  0.022628784 88.865341187 -23.869262695  
-          -0.001237869 59.184188843 -36.214794159  0.012233734 59.199623108 36.209579468  5.039737701 2.957404137 17.628627777  -1.063648701 -0.252661705 15.980584145  
-          -33.55821991 42.719024658 -0.001314163  -17.177467346 2.401555061 4.416654587  33.578582764 42.75976944 -0.0041008  16.488113403 91.997825623 8.073150635  
-          </points>
-        <triangles>0 2 1  3 5 4  11 10 9  11 9 8  
-          11 8 7  11 7 6  15 14 13  15 13 12  
-          15 12 9  15 9 10  20 19 18  20 18 17  
-          20 17 16  23 22 7  23 7 21  28 27 26  
-          28 26 25  28 25 24  29 12 30  31 33 32  
-          28 36 35  28 35 34  28 34 29  28 29 30  
-          37 17 32  17 35 36  17 36 3  17 3 4  
-          12 39 38  12 38 0  12 0 1  21 7 8  
-          21 8 40  24 25 43  24 43 42  24 42 41  
-          14 15 45  14 45 44  32 18 19  32 19 46  
-          6 46 19  6 19 20  30 44 27  46 22 32  
-          13 30 12  39 34 35  39 35 47  39 47 33  
-          40 8 9  40 9 12  40 12 1  40 1 2  
-          41 42 16  41 16 17  41 17 4  41 4 5  
-          28 30 27  31 32 22  31 22 23  18 32 17  
-          47 37 32  47 32 33  34 39 12  34 12 29  
-          22 46 6  22 6 7  20 16 42  20 42 43  
-          20 43 11  20 11 6  43 25 26  43 26 45  
-          43 45 15  43 15 10  43 10 11  38 39 33  
-          38 33 31  44 45 26  44 26 27  31 23 21  
-          31 21 40  31 40 2  31 2 0  0 38 31  
-          28 24 41  28 41 5  28 5 3  3 36 28  
-          47 35 17  47 17 37  44 30 13  44 13 14  
-          </triangles>
-        <cookedDataSize>0</cookedDataSize>
-        <cookedData></cookedData>
-      </NxConvexMeshDesc>
-      <NxConvexMeshDesc id="ConvexMesh_3">
         <points>-14.612062454 -4.456928253 10.252379417  -6.45215559 -4.480051994 16.181930542  9.142395973 -4.53465414 13.23455143  15.743853569 -4.563393116 4.272685051  
           5.742916107 -4.542701244 -13.483744621  -4.768582344 -4.51013279 -17.308515549  -12.476919174 -4.482282639 -14.671000481  -17.958076477 -4.453589916 -0.605086982  
           16.772888184 9.964754105 -11.411811829  19.223974228 9.476013184 -10.455705643  20.628763199 10.58371067 -9.614570618  20.029829025 44.505027771 -2.707700729  
@@ -159,6 +118,98 @@
           7 26 36  3 16 2  37 38 43  37 43 28  
           37 28 29  8 41 13  31 32 12  31 12 13  
           </triangles>
+        <cookedDataSize>0</cookedDataSize>
+        <cookedData></cookedData>
+      </NxConvexMeshDesc>
+      <NxConvexMeshDesc id="ConvexMesh_3">
+        <points>-6.94314909 65.293365479 -21.116882324  -6.94314909 68.249847412 -20.731487274  -6.94314909 67.453857422 -22.51751709  -60.7709198 72.492736816 -42.933727264  
+          -53.235488892 74.031311035 -42.933727264  -59.075286865 77.612182617 -42.933727264  -53.216827393 66.565673828 37.357788086  -61.338806152 70.525283813 37.357784271  
+          -55.106323242 71.301948547 37.357788086  -64.919166565 -0.296355695 -17.333705902  -68.082061768 -0.296902716 -15.911505699  -85.530776978 -0.28688556 -2.35493803  
+          -58.516654968 -0.195887119 23.317338943  -24.911960602 -0.202019781 2.97377491  -43.202030182 -0.266731888 -15.766371727  -61.320014954 71.968536377 -42.787094116  
+          -112.753372192 60.430419922 -15.856998444  -48.571327209 85.08442688 31.465301514  -42.643165588 90.126708984 24.253995895  -39.548965454 87.822235107 22.70967865  
+          -34.083763123 65.49319458 28.192070007  -105.723640442 58.469696045 30.534990311  -112.76133728 60.432052612 25.605171204  -49.986644745 61.787334442 36.709079742  
+          -12.720714569 75.824188232 -33.858322144  -26.007879257 68.70476532 -39.060070038  -106.013275146 85.421951294 21.15826416  -82.113861084 95.201202393 24.969108582  
+          -92.774291992 72.539840698 34.662437439  -101.820617676 69.080757141 33.068958282  -112.616271973 74.099784851 25.472427368  -72.921691895 89.249816895 -36.020568848  
+          -111.44984436 85.083122253 -5.874603271  -117.318885803 76.693984985 -8.218162537  -14.305519104 85.063545227 -21.389785767  -47.211982727 102.252532959 9.405075073  
+          -67.229942322 106.198669434 1.510434628  -60.509536743 96.199134827 -31.319625854  -20.991485596 84.257781982 -32.712783813  -15.361373901 82.768615723 -32.043922424  
+          -7.086274147 68.725891113 -20.409542084  -110.334846497 87.636070251 -0.494659424  -68.826477051 101.435913086 22.888536453  -112.610641479 85.613319397 4.888440609  
+          -123.448219299 60.430404663 4.880271912  -13.034534454 82.896072388 -19.626731873  -66.36088562 101.107795715 23.177230835  -61.321472168 83.982963562 -41.232372284  
+          -68.56463623 90.44543457 -37.567550659  -49.499256134 100.805015564 16.734146118  -115.203590393 62.685844421 23.867530823  -122.592224121 71.653610229 2.382919312  
+          -121.14263916 74.098175049 4.888448715  
+        </points>
+        <triangles>0 2 1  3 5 4  6 8 7  14 13 12  
+          14 12 11  14 11 10  14 10 9  16 15 9  
+          16 9 10  20 19 18  20 18 17  22 11 12  
+          22 12 21  20 23 12  20 12 13  24 14 25  
+          30 29 28  30 28 27  30 27 26  31 33 32  
+          39 38 37  39 37 36  39 36 35  39 35 34  
+          40 20 13  40 13 0  40 0 1  43 26 27  
+          43 27 42  43 42 36  43 36 41  16 11 44  
+          28 29 21  28 21 12  28 12 23  28 23 6  
+          28 6 7  45 19 20  45 20 40  25 14 9  
+          25 9 15  25 15 3  25 3 4  17 46 42  
+          17 42 27  17 27 28  17 28 7  17 7 8  
+          24 25 4  24 4 5  24 5 47  24 47 38  
+          24 38 39  41 36 37  41 37 48  41 48 31  
+          41 31 32  46 17 18  46 18 49  52 51 44  
+          52 44 50  52 50 30  31 48 47  31 47 5  
+          31 5 3  45 34 35  45 35 49  45 49 18  
+          45 18 19  33 16 44  33 44 51  24 39 34  
+          24 34 45  24 45 40  24 40 1  24 1 2  
+          31 16 33  13 14 24  13 24 2  13 2 0  
+          51 52 43  51 43 41  51 41 32  51 32 33  
+          50 44 11  50 11 22  23 20 17  23 17 8  
+          23 8 6  11 16 10  29 30 50  29 50 22  
+          29 22 21  42 46 49  42 49 35  42 35 36  
+          47 48 37  47 37 38  43 52 30  43 30 26  
+          31 3 15  31 15 16  
+        </triangles>
+        <cookedDataSize>0</cookedDataSize>
+        <cookedData></cookedData>
+      </NxConvexMeshDesc>
+      <NxConvexMeshDesc id="ConvexMesh_4">
+        <points>44.238689423 -0.103456117 -233.358947754  53.168357849 -0.103456117 -233.812057495  56.557590485 -0.10345611 -240.311752319  53.772769928 -0.103456117 -246.719741821  
+          40.81149292 -0.103456117 -249.857223511  36.123645782 -0.103456117 -246.840560913  36.357913971 -0.103456117 -240.13192749  37.472034454 -0.10345611 -236.019058228  
+          37.470844269 6.696151733 -236.016784668  43.171447754 6.706697941 -233.321762085  37.472923279 -0.059326172 -236.01574707  36.302692413 5.718287945 -241.713806152  
+          41.717479706 10.381591797 -243.308044434  41.202480316 10.389128685 -237.848709106  53.205383301 6.706695557 -233.830917358  48.465637207 9.885183334 -237.584030151  
+          53.777587891 6.714004517 -246.718582153  50.671356201 9.767036438 -242.586425781  36.122261047 3.926326752 -246.880615234  40.551971436 2.336685181 -249.920089722  
+          50.768943787 9.759284973 -242.422866821  56.454551697 6.712656975 -241.518936157  40.426757813 2.420196533 -249.847320557  
+        </points>
+        <triangles>7 6 5  7 5 4  7 4 3  7 3 2  
+          7 2 1  7 1 0  8 10 9  11 13 12  
+          15 13 9  15 9 14  14 9 0  14 0 1  
+          12 17 16  5 6 11  5 11 18  3 4 19  
+          3 19 16  21 20 15  21 15 14  22 18 12  
+          2 14 1  5 19 4  3 21 2  19 22 12  
+          19 12 16  20 21 16  20 16 17  9 13 8  
+          15 20 17  15 17 12  15 12 13  6 8 11  
+          12 18 11  14 2 21  9 10 7  9 7 0  
+          11 8 13  16 21 3  10 8 6  10 6 7  
+          22 19 5  22 5 18  
+        </triangles>
+        <cookedDataSize>0</cookedDataSize>
+        <cookedData></cookedData>
+      </NxConvexMeshDesc>
+      <NxConvexMeshDesc id="ConvexMesh_5">
+        <points>44.238689423 -0.103456117 -233.358947754  53.168357849 -0.103456117 -233.812057495  56.557590485 -0.10345611 -240.311752319  53.772769928 -0.103456117 -246.719741821  
+          40.81149292 -0.103456117 -249.857223511  36.123645782 -0.103456117 -246.840560913  36.357913971 -0.103456117 -240.13192749  37.472034454 -0.10345611 -236.019058228  
+          37.470844269 6.696151733 -236.016784668  43.171447754 6.706697941 -233.321762085  37.472923279 -0.059326172 -236.01574707  36.302692413 5.718287945 -241.713806152  
+          41.717479706 10.381591797 -243.308044434  41.202480316 10.389128685 -237.848709106  53.205383301 6.706695557 -233.830917358  48.465637207 9.885183334 -237.584030151  
+          53.777587891 6.714004517 -246.718582153  50.671356201 9.767036438 -242.586425781  36.122261047 3.926326752 -246.880615234  40.551971436 2.336685181 -249.920089722  
+          50.768943787 9.759284973 -242.422866821  56.454551697 6.712656975 -241.518936157  40.426757813 2.420196533 -249.847320557  
+        </points>
+        <triangles>7 6 5  7 5 4  7 4 3  7 3 2  
+          7 2 1  7 1 0  8 10 9  11 13 12  
+          15 13 9  15 9 14  14 9 0  14 0 1  
+          12 17 16  5 6 11  5 11 18  3 4 19  
+          3 19 16  21 20 15  21 15 14  22 18 12  
+          2 14 1  5 19 4  3 21 2  19 22 12  
+          19 12 16  20 21 16  20 16 17  9 13 8  
+          15 20 17  15 17 12  15 12 13  6 8 11  
+          12 18 11  14 2 21  9 10 7  9 7 0  
+          11 8 13  16 21 3  10 8 6  10 6 7  
+          22 19 5  22 5 18  
+        </triangles>
         <cookedDataSize>0</cookedDataSize>
         <cookedData></cookedData>
       </NxConvexMeshDesc>
@@ -1056,87 +1107,25 @@
           <restitution>0.5</restitution>
         </NxMaterialDesc>
         <NxMaterialDesc id="Material_10" materialIndex="10">
-          <dynamicFriction>0.300000012</dynamicFriction>
-          <staticFriction>0.300000012</staticFriction>
-          <restitution>0.5</restitution>
+          <dynamicFriction>0.200000003</dynamicFriction>
+          <staticFriction>0.5</staticFriction>
+          <restitution>0.400000006</restitution>
         </NxMaterialDesc>
         <NxMaterialDesc id="Material_11" materialIndex="11">
-          <dynamicFriction>0.300000012</dynamicFriction>
-          <staticFriction>0.300000012</staticFriction>
-          <restitution>0.5</restitution>
+          <dynamicFriction>0.200000003</dynamicFriction>
+          <staticFriction>0.5</staticFriction>
+          <restitution>0.400000006</restitution>
         </NxMaterialDesc>
         <NxMaterialDesc id="Material_12" materialIndex="12">
-          <dynamicFriction>0.300000012</dynamicFriction>
-          <staticFriction>0.300000012</staticFriction>
-          <restitution>0.5</restitution>
+          <dynamicFriction>0.200000003</dynamicFriction>
+          <staticFriction>0.5</staticFriction>
+          <restitution>0.400000006</restitution>
         </NxMaterialDesc>
-        <NxMaterialDesc id="Material_13" materialIndex="13">
-          <dynamicFriction>0.300000012</dynamicFriction>
-          <staticFriction>0.300000012</staticFriction>
-          <restitution>0.5</restitution>
-        </NxMaterialDesc>
-        <NxActorDesc id="Actor_0" hasBody="true" name="Snowball">
-          <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -75.721603394 157.063110352 -44.315460205</globalPose>
-          <NxBodyDesc id="body">
-            <massLocalPose>0.715352714 -0.69876349 0.000002787  0.696104646 0.712630451 -0.087155029  0.06089877 0.06234853 0.99619472  -0.000000032 -0.081451416 -0.072799683</massLocalPose>
-            <massSpaceInertia>1250.437133789 1250.434204102 289.711364746</massSpaceInertia>
-            <mass>9.447919846</mass>
-            <maxAngularVelocity>7</maxAngularVelocity>
-            <NxBodyFlag id="flags">
-              <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
-              <NX_BF_FROZEN_POS_X>false</NX_BF_FROZEN_POS_X>
-              <NX_BF_FROZEN_POS_Y>false</NX_BF_FROZEN_POS_Y>
-              <NX_BF_FROZEN_POS_Z>false</NX_BF_FROZEN_POS_Z>
-              <NX_BF_FROZEN_ROT_X>false</NX_BF_FROZEN_ROT_X>
-              <NX_BF_FROZEN_ROT_Y>false</NX_BF_FROZEN_ROT_Y>
-              <NX_BF_FROZEN_ROT_Z>false</NX_BF_FROZEN_ROT_Z>
-              <NX_BF_KINEMATIC>false</NX_BF_KINEMATIC>
-              <NX_BF_VISUALIZATION>false</NX_BF_VISUALIZATION>
-              <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
-              <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
-            </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
-            <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
-            <solverIterationCount>30</solverIterationCount>
-          </NxBodyDesc>
-          <NxCapsuleShapeDesc radius="5.837043285" height="15.193452835">
-            <NxShapeDesc name="Snowball">
-              <localPose>-0.000006706 -0.000001073 1.000001311  -0.996196091 0.087153405 -0.000005305  -0.087154746 -0.996196091 -0.000002861  -0.000000032 -0.081451416 -0.072799683</localPose>
-              <NxShapeFlag id="shapeFlags">
-                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
-                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
-                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
-                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
-                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
-                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
-                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
-                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
-                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
-                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
-                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
-                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
-                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
-                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
-                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
-                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
-                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
-                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
-                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
-                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
-              </NxShapeFlag>
-              <materialIndex>1</materialIndex>
-              <shapeDensity>0.003999998</shapeDensity>
-              <shapeMass>9.447919846</shapeMass>
-              <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
-            </NxShapeDesc>
-          </NxCapsuleShapeDesc>
-        </NxActorDesc>
-        <NxActorDesc id="Actor_1" hasBody="true" name="Test">
+        <NxActorDesc id="Actor_0" hasBody="true" name="Test">
           <globalPose>1 0 0  0 1 0  0 0 1  21.508735657 81.68963623 -54.704910278</globalPose>
           <NxBodyDesc id="body">
-            <massSpaceInertia>5292000.5 5292000.5 5292000.5</massSpaceInertia>
-            <mass>12500</mass>
+            <massSpaceInertia>16934406 16934406 16934406</massSpaceInertia>
+            <mass>40000.0078125</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
               <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
@@ -1151,7 +1140,7 @@
               <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
               <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
             </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
             <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
             <solverIterationCount>30</solverIterationCount>
           </NxBodyDesc>
@@ -1179,189 +1168,15 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>2</materialIndex>
-              <shapeDensity>0.100000001</shapeDensity>
-              <shapeMass>12500</shapeMass>
+              <materialIndex>1</materialIndex>
+              <shapeDensity>0.320000052</shapeDensity>
+              <shapeMass>40000.0078125</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxBoxShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_2" hasBody="true" name="Snowball">
-          <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -121.41292572 233.375244141 45.407562256</globalPose>
-          <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.088443756 0.023605347</massLocalPose>
-            <massSpaceInertia>3184.936767578 3184.936523438 3184.936523438</massSpaceInertia>
-            <mass>42.312713623</mass>
-            <maxAngularVelocity>7</maxAngularVelocity>
-            <NxBodyFlag id="flags">
-              <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
-              <NX_BF_FROZEN_POS_X>false</NX_BF_FROZEN_POS_X>
-              <NX_BF_FROZEN_POS_Y>false</NX_BF_FROZEN_POS_Y>
-              <NX_BF_FROZEN_POS_Z>false</NX_BF_FROZEN_POS_Z>
-              <NX_BF_FROZEN_ROT_X>false</NX_BF_FROZEN_ROT_X>
-              <NX_BF_FROZEN_ROT_Y>false</NX_BF_FROZEN_ROT_Y>
-              <NX_BF_FROZEN_ROT_Z>false</NX_BF_FROZEN_ROT_Z>
-              <NX_BF_KINEMATIC>false</NX_BF_KINEMATIC>
-              <NX_BF_VISUALIZATION>false</NX_BF_VISUALIZATION>
-              <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
-              <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
-            </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
-            <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
-            <solverIterationCount>30</solverIterationCount>
-          </NxBodyDesc>
-          <NxSphereShapeDesc radius="13.717816353">
-            <NxShapeDesc name="Snowball001">
-              <localPose>1 0 0  0 1 0  0 0 1  0 0.088443756 0.023605347</localPose>
-              <NxShapeFlag id="shapeFlags">
-                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
-                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
-                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
-                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
-                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
-                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
-                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
-                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
-                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
-                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
-                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
-                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
-                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
-                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
-                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
-                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
-                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
-                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
-                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
-                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
-              </NxShapeFlag>
-              <materialIndex>3</materialIndex>
-              <shapeDensity>0.003999998</shapeDensity>
-              <shapeMass>42.312709808</shapeMass>
-              <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
-            </NxShapeDesc>
-          </NxSphereShapeDesc>
-        </NxActorDesc>
-        <NxActorDesc id="Actor_3" hasBody="true" name="Snowball">
-          <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  -114.832962036 156.834121704 -81.971710205</globalPose>
-          <NxBodyDesc id="body">
-            <massLocalPose>0.999944687 0.000076184 -0.010516009  0.000120044 0.999825895 0.01865809  0.0105156 -0.018658321 0.999770582  -0.011514059 -1.094461083 0.108587697</massLocalPose>
-            <massSpaceInertia>205.38369751 53.001232147 211.359329224</massSpaceInertia>
-            <mass>5.13478899</mass>
-            <maxAngularVelocity>7</maxAngularVelocity>
-            <NxBodyFlag id="flags">
-              <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
-              <NX_BF_FROZEN_POS_X>false</NX_BF_FROZEN_POS_X>
-              <NX_BF_FROZEN_POS_Y>false</NX_BF_FROZEN_POS_Y>
-              <NX_BF_FROZEN_POS_Z>false</NX_BF_FROZEN_POS_Z>
-              <NX_BF_FROZEN_ROT_X>false</NX_BF_FROZEN_ROT_X>
-              <NX_BF_FROZEN_ROT_Y>false</NX_BF_FROZEN_ROT_Y>
-              <NX_BF_FROZEN_ROT_Z>false</NX_BF_FROZEN_ROT_Z>
-              <NX_BF_KINEMATIC>false</NX_BF_KINEMATIC>
-              <NX_BF_VISUALIZATION>false</NX_BF_VISUALIZATION>
-              <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
-              <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
-            </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
-            <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
-            <solverIterationCount>30</solverIterationCount>
-          </NxBodyDesc>
-          <NxConvexShapeDesc meshData="ConvexMesh_0">
-            <NxMeshShapeFlag id="meshFlags">
-              <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
-              <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
-            </NxMeshShapeFlag>
-            <NxShapeDesc name="Snowball002">
-              <NxShapeFlag id="shapeFlags">
-                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
-                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
-                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
-                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
-                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
-                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
-                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
-                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
-                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
-                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
-                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
-                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
-                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
-                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
-                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
-                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
-                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
-                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
-                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
-                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
-              </NxShapeFlag>
-              <materialIndex>4</materialIndex>
-              <shapeDensity>0.003999998</shapeDensity>
-              <shapeMass>5.13478899</shapeMass>
-              <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
-            </NxShapeDesc>
-          </NxConvexShapeDesc>
-        </NxActorDesc>
-        <NxActorDesc id="Actor_4" hasBody="true" name="Snowball">
-          <globalPose>-1 0.000000389 0  -0.000000389 -1 0  0 0 1  123.666366577 146.592956543 -75.848175049</globalPose>
-          <NxBodyDesc id="body">
-            <massLocalPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</massLocalPose>
-            <massSpaceInertia>3184.936767578 3184.936523438 3184.936523438</massSpaceInertia>
-            <mass>42.312713623</mass>
-            <maxAngularVelocity>7</maxAngularVelocity>
-            <NxBodyFlag id="flags">
-              <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
-              <NX_BF_FROZEN_POS_X>false</NX_BF_FROZEN_POS_X>
-              <NX_BF_FROZEN_POS_Y>false</NX_BF_FROZEN_POS_Y>
-              <NX_BF_FROZEN_POS_Z>false</NX_BF_FROZEN_POS_Z>
-              <NX_BF_FROZEN_ROT_X>false</NX_BF_FROZEN_ROT_X>
-              <NX_BF_FROZEN_ROT_Y>false</NX_BF_FROZEN_ROT_Y>
-              <NX_BF_FROZEN_ROT_Z>false</NX_BF_FROZEN_ROT_Z>
-              <NX_BF_KINEMATIC>false</NX_BF_KINEMATIC>
-              <NX_BF_VISUALIZATION>false</NX_BF_VISUALIZATION>
-              <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
-              <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
-            </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
-            <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
-            <solverIterationCount>30</solverIterationCount>
-          </NxBodyDesc>
-          <NxSphereShapeDesc radius="13.717816353">
-            <NxShapeDesc name="Snowball003">
-              <localPose>1 0 0  0 1 0  0 0 1  0 0.088439941 0.023605347</localPose>
-              <NxShapeFlag id="shapeFlags">
-                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
-                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
-                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
-                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
-                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
-                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
-                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
-                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
-                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
-                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
-                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
-                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
-                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
-                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
-                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
-                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
-                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
-                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
-                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
-                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
-              </NxShapeFlag>
-              <materialIndex>5</materialIndex>
-              <shapeDensity>0.003999998</shapeDensity>
-              <shapeMass>42.312709808</shapeMass>
-              <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
-            </NxShapeDesc>
-          </NxSphereShapeDesc>
-        </NxActorDesc>
-        <NxActorDesc id="Actor_5" hasBody="true" name="player00">
+        <NxActorDesc id="Actor_1" hasBody="true" name="player00">
           <globalPose>1 0 0  0 1 0  0 0 1  -206.172012329 227.023681641 38.331436157</globalPose>
           <NxBodyDesc id="body">
             <massLocalPose>0.999853432 0.01709624 -0.000936645  -0.01711059 0.999684095 -0.018410213  0.000621604 0.018423542 0.999830067  0.002059937 2.599716187 3.548995972</massLocalPose>
@@ -1381,7 +1196,7 @@
               <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
               <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
             </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
             <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
             <solverIterationCount>30</solverIterationCount>
           </NxBodyDesc>
@@ -1410,15 +1225,15 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>6</materialIndex>
+              <materialIndex>2</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659303</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_6" hasBody="true" name="player01">
+        <NxActorDesc id="Actor_2" hasBody="true" name="player01">
           <globalPose>1 0 0  0 1 0  0 0 1  -165.434509277 140.25617981 -94.332351685</globalPose>
           <NxBodyDesc id="body">
             <massLocalPose>0.999662697 0.025954762 -0.000939489  -0.025967667 0.999493182 -0.01841275  0.000461114 0.018430937 0.999830008  0.002059937 2.599716187 3.548995972</massLocalPose>
@@ -1438,7 +1253,7 @@
               <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
               <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
             </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
             <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
             <solverIterationCount>30</solverIterationCount>
           </NxBodyDesc>
@@ -1467,15 +1282,15 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>7</materialIndex>
+              <materialIndex>3</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659303</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_7" hasBody="true" name="player02">
+        <NxActorDesc id="Actor_3" hasBody="true" name="player02">
           <globalPose>1 0 0  0 1 0  0 0 1  215.44631958 227.023681641 48.939407349</globalPose>
           <NxBodyDesc id="body">
             <massLocalPose>0.999981582 -0.006000868 -0.000928642  0.005982765 0.999812782 -0.01840313  0.001038903 0.018397236 0.999830246  0.002059937 2.599715948 3.548995972</massLocalPose>
@@ -1495,7 +1310,7 @@
               <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
               <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
             </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
             <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
             <solverIterationCount>30</solverIterationCount>
           </NxBodyDesc>
@@ -1524,15 +1339,15 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>8</materialIndex>
+              <materialIndex>4</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659064</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_8" hasBody="true" name="player03">
+        <NxActorDesc id="Actor_4" hasBody="true" name="player03">
           <globalPose>1 0 0  0 1 0  0 0 1  194.345336914 137.991271973 -80.678764343</globalPose>
           <NxBodyDesc id="body">
             <massLocalPose>0.999664962 0.025867898 -0.000939489  -0.025880817 0.999495506 -0.018412489  0.000462723 0.018430635 0.999830067  0.002059937 2.599715948 3.548995972</massLocalPose>
@@ -1552,7 +1367,7 @@
               <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
               <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
             </NxBodyFlag>
-            <sleepLinearVelocity>15.000000954</sleepLinearVelocity>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
             <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
             <solverIterationCount>30</solverIterationCount>
           </NxBodyDesc>
@@ -1581,15 +1396,15 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>9</materialIndex>
+              <materialIndex>5</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.096659064</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_9" name="map">
+        <NxActorDesc id="Actor_5" name="map">
           <globalPose>-1 0 0.000000151  0.000000151 0.000000044 1  0 1 -0.000000044  -246.643814087 109.827468872 -38.341049194</globalPose>
           <density>1</density>
           <NxTriangleMeshShapeDesc meshData="TriangleMesh_0">
@@ -1617,16 +1432,55 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>10</materialIndex>
+              <materialIndex>6</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>742.268676758</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxTriangleMeshShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_10" name="Tree00">
+        <NxActorDesc id="Actor_6" name="Tree00">
           <globalPose>1 -0.00000006 0  0.00000006 1 0  0 0 1  243.781494141 200.137817383 84.606811523</globalPose>
+          <density>1</density>
+          <NxConvexShapeDesc meshData="ConvexMesh_0">
+            <NxMeshShapeFlag id="meshFlags">
+              <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
+              <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
+            </NxMeshShapeFlag>
+            <NxShapeDesc name="Tree00">
+              <NxShapeFlag id="shapeFlags">
+                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
+                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
+                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
+                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
+                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
+                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
+                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
+                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
+                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
+                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
+                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
+                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
+                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
+                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
+                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
+                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
+                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
+                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
+                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
+                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
+              </NxShapeFlag>
+              <materialIndex>7</materialIndex>
+              <shapeDensity>0.0005</shapeDensity>
+              <shapeMass>117.232963562</shapeMass>
+              <skinWidth>0.100000001</skinWidth>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
+            </NxShapeDesc>
+          </NxConvexShapeDesc>
+        </NxActorDesc>
+        <NxActorDesc id="Actor_7" name="Tree00">
+          <globalPose>1 -0.00000006 0  0.00000006 1 0  0 0 1  -156.898391724 200.137817383 84.606811523</globalPose>
           <density>1</density>
           <NxConvexShapeDesc meshData="ConvexMesh_1">
             <NxMeshShapeFlag id="meshFlags">
@@ -1656,57 +1510,18 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>11</materialIndex>
+              <materialIndex>8</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>117.232963562</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
-        <NxActorDesc id="Actor_11" name="Tree00">
-          <globalPose>1 -0.00000006 0  0.00000006 1 0  0 0 1  -89.20904541 200.137817383 84.606811523</globalPose>
-          <density>1</density>
-          <NxConvexShapeDesc meshData="ConvexMesh_2">
-            <NxMeshShapeFlag id="meshFlags">
-              <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
-              <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
-            </NxMeshShapeFlag>
-            <NxShapeDesc name="Tree00">
-              <NxShapeFlag id="shapeFlags">
-                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
-                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
-                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
-                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
-                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
-                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
-                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
-                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
-                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
-                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
-                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
-                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
-                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
-                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
-                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
-                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
-                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
-                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
-                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
-                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
-              </NxShapeFlag>
-              <materialIndex>12</materialIndex>
-              <shapeDensity>0.0005</shapeDensity>
-              <shapeMass>117.232963562</shapeMass>
-              <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
-            </NxShapeDesc>
-          </NxConvexShapeDesc>
-        </NxActorDesc>
-        <NxActorDesc id="Actor_12" name="Tree01">
+        <NxActorDesc id="Actor_8" name="Tree01">
           <globalPose>1 0 0  0 1 0  0 0 1  103.803703308 204.979217529 105.46661377</globalPose>
           <density>1</density>
-          <NxConvexShapeDesc meshData="ConvexMesh_3">
+          <NxConvexShapeDesc meshData="ConvexMesh_2">
             <NxMeshShapeFlag id="meshFlags">
               <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
               <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
@@ -1734,11 +1549,169 @@
                 <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
-              <materialIndex>13</materialIndex>
+              <materialIndex>9</materialIndex>
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>25.285024643</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
+            </NxShapeDesc>
+          </NxConvexShapeDesc>
+        </NxActorDesc>
+        <NxActorDesc id="Actor_9" name="Tree02">
+          <globalPose>1 0 0  0 1 0  0 0 1  329.638000488 120.723999023 -54.057998657</globalPose>
+          <density>1</density>
+          <NxConvexShapeDesc meshData="ConvexMesh_3">
+            <NxMeshShapeFlag id="meshFlags">
+              <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
+              <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
+            </NxMeshShapeFlag>
+            <NxShapeDesc name="Tree02">
+              <NxShapeFlag id="shapeFlags">
+                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
+                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
+                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
+                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
+                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
+                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
+                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
+                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
+                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
+                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
+                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
+                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
+                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
+                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
+                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
+                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
+                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
+                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
+                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
+                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
+              </NxShapeFlag>
+              <materialIndex>10</materialIndex>
+              <shapeDensity>0.009000001</shapeDensity>
+              <skinWidth>0.100000001</skinWidth>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
+            </NxShapeDesc>
+          </NxConvexShapeDesc>
+        </NxActorDesc>
+        <NxActorDesc id="Actor_10" hasBody="true" name="Rock00">
+          <globalPose>1 -0.000000175 0  0.000000175 1 0  0 0 1  -39.166419983 160.952697754 -339.493713379</globalPose>
+          <NxBodyDesc id="body">
+            <massLocalPose>0.986679971 -0.001611358 -0.162665591  0.020812016 0.992983997 0.116402894  0.161336765 -0.118237793 0.979790926  -36.850521088 487.314697266 -251.176040649</massLocalPose>
+            <massSpaceInertia>403.544769287 755.12902832 609.845397949</massSpaceInertia>
+            <mass>19.190132141</mass>
+            <maxAngularVelocity>7</maxAngularVelocity>
+            <NxBodyFlag id="flags">
+              <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
+              <NX_BF_FROZEN_POS_X>false</NX_BF_FROZEN_POS_X>
+              <NX_BF_FROZEN_POS_Y>false</NX_BF_FROZEN_POS_Y>
+              <NX_BF_FROZEN_POS_Z>false</NX_BF_FROZEN_POS_Z>
+              <NX_BF_FROZEN_ROT_X>false</NX_BF_FROZEN_ROT_X>
+              <NX_BF_FROZEN_ROT_Y>false</NX_BF_FROZEN_ROT_Y>
+              <NX_BF_FROZEN_ROT_Z>false</NX_BF_FROZEN_ROT_Z>
+              <NX_BF_KINEMATIC>false</NX_BF_KINEMATIC>
+              <NX_BF_VISUALIZATION>false</NX_BF_VISUALIZATION>
+              <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
+              <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
+            </NxBodyFlag>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
+            <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
+            <solverIterationCount>30</solverIterationCount>
+          </NxBodyDesc>
+          <NxConvexShapeDesc meshData="ConvexMesh_4">
+            <NxMeshShapeFlag id="meshFlags">
+              <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
+              <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
+            </NxMeshShapeFlag>
+            <NxShapeDesc name="Rock00">
+              <localPose>1 0 0  0 1 0  0 0 1  -82.781204224 483.174194336 -10.276901245</localPose>
+              <NxShapeFlag id="shapeFlags">
+                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
+                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
+                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
+                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
+                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
+                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
+                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
+                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
+                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
+                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
+                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
+                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
+                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
+                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
+                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
+                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
+                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
+                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
+                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
+                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
+              </NxShapeFlag>
+              <materialIndex>11</materialIndex>
+              <shapeDensity>0.009000001</shapeDensity>
+              <skinWidth>0.100000001</skinWidth>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
+            </NxShapeDesc>
+          </NxConvexShapeDesc>
+        </NxActorDesc>
+        <NxActorDesc id="Actor_11" hasBody="true" name="Rock00">
+          <globalPose>-1 0 -0.000000151  -0 1 0.00000006  0.000000151 0.00000006 -1  -176.832275391 245.53604126 -241.552627563</globalPose>
+          <NxBodyDesc id="body">
+            <massLocalPose>0.98664248 -0.001635879 -0.162892535  0.020995667 0.992886424 0.117199816  0.161542043 -0.119054355 0.979658246  -36.850509644 487.314697266 -251.176040649</massLocalPose>
+            <massSpaceInertia>403.043914795 755.173950195 608.801330566</massSpaceInertia>
+            <mass>19.190132141</mass>
+            <maxAngularVelocity>7</maxAngularVelocity>
+            <NxBodyFlag id="flags">
+              <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
+              <NX_BF_FROZEN_POS_X>false</NX_BF_FROZEN_POS_X>
+              <NX_BF_FROZEN_POS_Y>false</NX_BF_FROZEN_POS_Y>
+              <NX_BF_FROZEN_POS_Z>false</NX_BF_FROZEN_POS_Z>
+              <NX_BF_FROZEN_ROT_X>false</NX_BF_FROZEN_ROT_X>
+              <NX_BF_FROZEN_ROT_Y>false</NX_BF_FROZEN_ROT_Y>
+              <NX_BF_FROZEN_ROT_Z>false</NX_BF_FROZEN_ROT_Z>
+              <NX_BF_KINEMATIC>false</NX_BF_KINEMATIC>
+              <NX_BF_VISUALIZATION>false</NX_BF_VISUALIZATION>
+              <NX_BF_FILTER_SLEEP_VEL>false</NX_BF_FILTER_SLEEP_VEL>
+              <NX_BF_ENERGY_SLEEP_TEST>true</NX_BF_ENERGY_SLEEP_TEST>
+            </NxBodyFlag>
+            <sleepLinearVelocity>0.100000001</sleepLinearVelocity>
+            <sleepAngularVelocity>0.100000001</sleepAngularVelocity>
+            <solverIterationCount>30</solverIterationCount>
+          </NxBodyDesc>
+          <NxConvexShapeDesc meshData="ConvexMesh_5">
+            <NxMeshShapeFlag id="meshFlags">
+              <NX_MESH_SMOOTH_SPHERE_COLLISIONS>false</NX_MESH_SMOOTH_SPHERE_COLLISIONS>
+              <NX_MESH_DOUBLE_SIDED>false</NX_MESH_DOUBLE_SIDED>
+            </NxMeshShapeFlag>
+            <NxShapeDesc name="Rock00">
+              <localPose>1 0 0  0 1 0  0 0 1  -82.781188965 483.174163818 -10.276901245</localPose>
+              <NxShapeFlag id="shapeFlags">
+                <NX_TRIGGER_ON_ENTER>false</NX_TRIGGER_ON_ENTER>
+                <NX_TRIGGER_ON_LEAVE>false</NX_TRIGGER_ON_LEAVE>
+                <NX_TRIGGER_ON_STAY>false</NX_TRIGGER_ON_STAY>
+                <NX_SF_VISUALIZATION>false</NX_SF_VISUALIZATION>
+                <NX_SF_DISABLE_COLLISION>false</NX_SF_DISABLE_COLLISION>
+                <NX_SF_FEATURE_INDICES>false</NX_SF_FEATURE_INDICES>
+                <NX_SF_DISABLE_RAYCASTING>false</NX_SF_DISABLE_RAYCASTING>
+                <NX_SF_POINT_CONTACT_FORCE>true</NX_SF_POINT_CONTACT_FORCE>
+                <NX_SF_FLUID_DRAIN>false</NX_SF_FLUID_DRAIN>
+                <NX_SF_FLUID_DISABLE_COLLISION>false</NX_SF_FLUID_DISABLE_COLLISION>
+                <NX_SF_FLUID_TWOWAY>false</NX_SF_FLUID_TWOWAY>
+                <NX_SF_DISABLE_RESPONSE>false</NX_SF_DISABLE_RESPONSE>
+                <NX_SF_DYNAMIC_DYNAMIC_CCD>false</NX_SF_DYNAMIC_DYNAMIC_CCD>
+                <NX_SF_DISABLE_SCENE_QUERIES>false</NX_SF_DISABLE_SCENE_QUERIES>
+                <NX_SF_CLOTH_DRAIN>false</NX_SF_CLOTH_DRAIN>
+                <NX_SF_CLOTH_DISABLE_COLLISION>false</NX_SF_CLOTH_DISABLE_COLLISION>
+                <NX_SF_CLOTH_TWOWAY>true</NX_SF_CLOTH_TWOWAY>
+                <NX_SF_SOFTBODY_DRAIN>false</NX_SF_SOFTBODY_DRAIN>
+                <NX_SF_SOFTBODY_DISABLE_COLLISION>false</NX_SF_SOFTBODY_DISABLE_COLLISION>
+                <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
+              </NxShapeFlag>
+              <materialIndex>12</materialIndex>
+              <shapeDensity>0.009000001</shapeDensity>
+              <skinWidth>0.100000001</skinWidth>
+              <NxGroupsMask id="groupsMask" bits0="4" bits2="4"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>

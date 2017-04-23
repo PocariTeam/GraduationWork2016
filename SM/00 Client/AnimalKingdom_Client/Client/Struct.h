@@ -12,7 +12,7 @@ typedef struct tagLight_Info
 		, m_vPos( 0.f, 0.f, 0.f )
 		, m_vDiffuse( 1.f, 1.f, 1.f, 1.f )
 		, m_vAmbient( 0.1f, 0.1f, 0.1f, 10.f )
-		, m_vSpecular( 0.7f, 0.7f, 0.7f, 15.f )
+		, m_vSpecular( 0.5f, 0.5f, 0.5f, 15.f )
 		, m_vDir( 0.f, 0.f, 1.f )
 		, m_fRange( 1000.f )
 		, m_vAttenuation( 0.1f, 0.001f, 0.0001f )
