@@ -243,7 +243,7 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 
 void PhysXManager::ReleaseScene(UINT roomNum)
 {
-	SAFE_LOCK(lock_);
+	// SAFE_LOCK(lock_);
 
 	if (CCTManager_[roomNum])
 	{
@@ -460,10 +460,10 @@ S_SyncDynamic* PhysXManager::getDynamicInfo(UINT roomNum)
 			packet->dynamicActors[count].position = Vector3(p.x, p.y, p.z);
 			packet->dynamicActors[count].orient = Vector4(o.x, o.y, o.z, o.w);
 
-			//NxVec3 l = aList[i]->getLinearVelocity();
-			//NxVec3 a = aList[i]->getAngularVelocity();
-			//packet->dynamicActors[count].linear = Vector3(l.x, l.y, l.z);
-			//packet->dynamicActors[count].angular = Vector3(a.x, a.y, a.z);
+			NxVec3 l = aList[i]->getLinearVelocity();
+			NxVec3 a = aList[i]->getAngularVelocity();
+			packet->dynamicActors[count].linear = Vector3(l.x, l.y, l.z);
+			packet->dynamicActors[count].angular = Vector3(a.x, a.y, a.z);
 
 			++count;
 		}
@@ -500,10 +500,10 @@ S_SyncDynamicOne* PhysXManager::getDynamicOneInfo(NxActor *actor)
 			packet->dynamicActor.position = Vector3(p.x, p.y, p.z);
 			packet->dynamicActor.orient = Vector4(o.x, o.y, o.z, o.w);
 
-			//NxVec3 l = aList[i]->getLinearVelocity();
-			//NxVec3 a = aList[i]->getAngularVelocity();
-			//packet->dynamicActor.linear = Vector3(l.x, l.y, l.z);
-			//packet->dynamicActor.angular = Vector3(a.x, a.y, a.z);
+			NxVec3 l = aList[i]->getLinearVelocity();
+			NxVec3 a = aList[i]->getAngularVelocity();
+			packet->dynamicActor.linear = Vector3(l.x, l.y, l.z);
+			packet->dynamicActor.angular = Vector3(a.x, a.y, a.z);
 			return packet;
 		}
 	}

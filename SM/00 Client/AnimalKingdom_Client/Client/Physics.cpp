@@ -184,10 +184,10 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 		ppActors[j]->setGlobalPosition(NxVec3(p.x,p.y,p.z));
 		ppActors[j]->setGlobalOrientationQuat(NxQuat(NxVec3(o.x,o.y,o.z),o.w));
 
-		//Vector3 l = packet->dynamicActors[i].linear;
-		//Vector3 a = packet->dynamicActors[i].angular;
-		//ppActors[j]->setLinearVelocity(NxVec3(l.x, l.y, l.z));
-		//ppActors[j]->setAngularVelocity(NxVec3(a.x, a.y, a.z));
+		Vector3 l = packet->dynamicActors[i].linear;
+		Vector3 a = packet->dynamicActors[i].angular;
+		ppActors[j]->setLinearVelocity(NxVec3(l.x, l.y, l.z));
+		ppActors[j]->setAngularVelocity(NxVec3(a.x, a.y, a.z));
 	
 	}
 }
@@ -206,10 +206,10 @@ void CPhysics::UpdateDynamicOneActor(S_SyncDynamicOne * packet)
 	pActors->setGlobalPosition(NxVec3(p.x, p.y, p.z));
 	pActors->setGlobalOrientationQuat(NxQuat(NxVec3(o.x, o.y, o.z), o.w));
 
-	//Vector3 l = packet->dynamicActor.linear;
-	//Vector3 a = packet->dynamicActor.angular;
-	//pActors->setLinearVelocity(NxVec3(l.x, l.y, l.z));
-	//pActors->setAngularVelocity(NxVec3(a.x, a.y, a.z));
+	Vector3 l = packet->dynamicActor.linear;
+	Vector3 a = packet->dynamicActor.angular;
+	pActors->setLinearVelocity(NxVec3(l.x, l.y, l.z));
+	pActors->setAngularVelocity(NxVec3(a.x, a.y, a.z));
 
 }
 

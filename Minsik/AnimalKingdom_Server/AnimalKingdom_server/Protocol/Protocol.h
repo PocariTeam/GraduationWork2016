@@ -89,6 +89,8 @@ struct DynamicActor
 {
 	UINT		index;
 	Vector3		position;
+	Vector3		linear;
+	Vector3		angular;
 	Vector4		orient;
 };
 
