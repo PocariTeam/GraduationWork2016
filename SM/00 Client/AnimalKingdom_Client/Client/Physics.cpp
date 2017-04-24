@@ -425,7 +425,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					iCreatePlayerCnt++;
 				}
 
-				else if( strcmp( pActor->getName(), "Test" ) == 0 )
+				else if( strcmp( pActor->getName(), "Box001" ) == 0 )
 				{
 					pActor->setGroup( COL_DYNAMIC );
 					SetCollisionGroup( pActor, COL_DYNAMIC );
@@ -433,7 +433,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CMesh* pMesh_Test = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 					CTexture* pTexture_Test = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
 
-					CGameObject* pEnvironment = CEnvironment::Create( pDevice, pActor, pMesh_Test, pTexture_Test, XMFLOAT3( 2.5f, 2.5f, 2.5f ) );
+					CGameObject* pEnvironment = CEnvironment::Create( pDevice, pActor, pMesh_Test, pTexture_Test, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pShader_Mesh->Add_RenderObject( pEnvironment );
 				}
 

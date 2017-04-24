@@ -201,7 +201,7 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 			{
 				if( currentPlayer >= playerCount )
 				{
-					scenes_[ roomNum ]->releaseActor( *a );
+					// scenes_[ roomNum ]->releaseActor( *a );
 					aList = scenes_[ roomNum ]->getActors();
 					continue;
 				}
