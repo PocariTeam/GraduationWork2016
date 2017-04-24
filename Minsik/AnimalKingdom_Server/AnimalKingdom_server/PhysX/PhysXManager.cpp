@@ -193,10 +193,10 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 		// 충돌그루핑
 		if (a->isDynamic())
 		{
-			if (  0 == strcmp(a->getName(), "player00")
-				|| 0 == strcmp(a->getName(), "player01")
-				|| 0 == strcmp(a->getName(), "player02")
-				|| 0 == strcmp(a->getName(), "player03")
+			if (  0 == strcmp(a->getName(), "player1")
+				|| 0 == strcmp(a->getName(), "player2")
+				|| 0 == strcmp(a->getName(), "player3")
+				|| 0 == strcmp(a->getName(), "player4")
 				)
 			{
 				if( currentPlayer >= playerCount )

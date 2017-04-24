@@ -1,0 +1,32 @@
+<PhysicsPlugin>
+    <ExporterSettings ExportPhysXScene="true" PhysXSceneFileFormat=".xml" ExportAPEXClothing="false" APEXClothingFileFormat=".apx" APEXClothingExportCtp="true" APEXClothingExportCtw="true" APEXReverseWinding="false" APEXClothingAddHulls="true" APEXClothingOmitMeshSubpartName="false" />
+    <GraphicsExport File="" />
+    <PhysicsExport SDK="2.8.5" PhysXScene="NewJungle.xml" />
+    <ClothingTool SDK="unknown" CTP="" />
+    <SceneParameters>
+        <AnimationRange Start="0" End="100" FrameRate="30" FrameSubStepCount="3" />
+        <LengthUnit Type="centimeters" />
+        <GroundPlane Enabled="false" />
+        <Gravity Enabled="true" Value="0 0 -981" />
+        <Simulation SolverIteration="30" SimulationLoop="Continue Simulation" LastFrameMode="Continue Simulation" />
+    </SceneParameters>
+    <SceneObjects>
+        <RigidBody Attach="map" Type="Static" Position="5.72205e-006 0 7.62939e-006" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Tree01" Type="Static" Position="381.821 265.843 203.773" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Tree00" Type="Static" Position="158.737 279.719 199.676" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Tree00" Type="Static" Position="530.58 127.293 120.016" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Tree02" Type="Static" Position="127.166 137.185 99.8468" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="121.51 -295.809 98.9873" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="373.453 -212.044 58.7783" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="316.884 -295.809 58.9306" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="471.214 -295.809 98.2864" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="373.453 -133.861 138.968" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="317.24 -99.8674 157.767" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="180.119 -192.167 198.904" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="Rock00" Type="Static" Position="600.951 -192.167 198.904" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="player1" Type="Kinematic" Position="83.6944 81.8586 118" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="player2" Type="Kinematic" Position="481.268 81.8586 118" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="player3" Type="Kinematic" Position="437.363 211.725 220" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+        <RigidBody Attach="player4" Type="Kinematic" Position="123.603 211.725 220" SwitchEnabled="false" SwitchAtFrame="0" Velocity="0 0 0" Spin="0 0 0" />
+    </SceneObjects>
+</PhysicsPlugin>

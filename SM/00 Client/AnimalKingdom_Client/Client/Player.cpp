@@ -123,8 +123,8 @@ XMFLOAT4X4 CPlayer::GetWorld()
 {
 	XMMATRIX mtxWorld;
 	XMFLOAT4X4 mtxStoreWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	mtxStoreWorld._24 += 2.f;
-	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &mtxStoreWorld ), XMMatrixRotationY( m_vRotate.y ) );
+	mtxStoreWorld._24 -= 5.f;
+	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &mtxStoreWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
 
 	XMFLOAT4X4 Out;
 
