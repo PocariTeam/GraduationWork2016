@@ -12,6 +12,7 @@
 #include <NxControllerManager.h>
 #include <NxQuat.h>
 #include "NetworkMgr.h"
+#include "Monkey.h"
 
 CPlayer::CPlayer()
 	: CGameObject()
@@ -123,7 +124,7 @@ XMFLOAT4X4 CPlayer::GetWorld()
 {
 	XMMATRIX mtxWorld;
 	XMFLOAT4X4 mtxStoreWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	mtxStoreWorld._24 -= 5.f;
+	mtxStoreWorld._24 -= 5.5f;
 	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &mtxStoreWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
 
 	XMFLOAT4X4 Out;
@@ -175,6 +176,7 @@ CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterControl
 		pPlayer = CChameleon::Create( pDevice, pCharacterController, pActorOriginPoseArray );
 		break;
 	case CHARACTER_MON:
+		pPlayer = CMonkey::Create( pDevice, pCharacterController, pActorOriginPoseArray );
 		break;
 	}
 

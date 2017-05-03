@@ -1,4 +1,4 @@
-1
+2
 0
 10
 -1 ../Executable/Resources/Animation/Chameleon/Joint.jsma
@@ -11,3 +11,15 @@
 6 ../Executable/Resources/Animation/Chameleon/Beaten1.jsma
 7 ../Executable/Resources/Animation/Chameleon/Beaten2.jsma
 8 ../Executable/Resources/Animation/Chameleon/Down.jsma
+1
+10
+-1 ../Executable/Resources/Animation/Monkey/Joint.jsma
+0 ../Executable/Resources/Animation/Monkey/Idle.jsma
+1 ../Executable/Resources/Animation/Monkey/Attack1.jsma
+2 ../Executable/Resources/Animation/Monkey/Attack2.jsma
+3 ../Executable/Resources/Animation/Monkey/Run.jsma
+4 ../Executable/Resources/Animation/Monkey/Jump.jsma
+5 ../Executable/Resources/Animation/Monkey/Defend.jsma
+6 ../Executable/Resources/Animation/Monkey/Beaten1.jsma
+7 ../Executable/Resources/Animation/Monkey/Beaten2.jsma
+8 ../Executable/Resources/Animation/Monkey/Down.jsma

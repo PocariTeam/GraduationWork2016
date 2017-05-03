@@ -106,12 +106,26 @@ void Player::setActorArray( NxActor** dpActorArray, UINT actorcnt )
 
 XMFLOAT4X4 Player::GetWorld()
 {
-	XMMATRIX mtxWorld = CMathematics::ConvertToXMMatrix( &cct_->getActor()->getGlobalPose() );
-	mtxWorld = XMMatrixMultiply( mtxWorld, XMMatrixRotationY( m_vRotate.y ) );
-	XMFLOAT4X4 Out;
+	XMFLOAT4X4 mtxWorld = CMathematics::ConvertToXMFloat4x4( &cct_->getActor()->getGlobalPose() );
+	
+	float	   fScale{ 1.f };
+	switch( character_ )
+	{
+	case CHARACTER_CHM:
+		mtxWorld._24 -= 5.5f;
+		fScale = 1.5f;
+		break;
+	case CHARACTER_MON:
+		mtxWorld._24 -= 6.8f;
+		fScale = 21.209435f;
+		break;
+	default:
+		break;
+	}
 
-	XMStoreFloat4x4( &Out, mtxWorld );
-	return Out;
+	XMMATRIX   mtxLoadWorld = XMMatrixMultiply( XMLoadFloat4x4( &mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( fScale, fScale, fScale ) );
+	XMStoreFloat4x4( &mtxWorld, mtxLoadWorld );
+	return mtxWorld;
 }
 
 void Player::setState(STATE state)

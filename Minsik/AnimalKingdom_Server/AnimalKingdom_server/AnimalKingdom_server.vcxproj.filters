@@ -7,9 +7,6 @@
     <ClCompile Include="Contents\PacketManager.cpp">
       <Filter>Contents</Filter>
     </ClCompile>
-    <ClCompile Include="Contents\Player.cpp">
-      <Filter>Contents</Filter>
-    </ClCompile>
     <ClCompile Include="Contents\RoomManager.cpp">
       <Filter>Contents</Filter>
     </ClCompile>
@@ -160,15 +157,15 @@
     <ClCompile Include="Contents\Animation\StateMachine.cpp">
       <Filter>Contents\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Contents\Player.cpp">
+      <Filter>Contents\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contents\GameRoom.h">
       <Filter>Contents</Filter>
     </ClInclude>
     <ClInclude Include="Contents\PacketManager.h">
-      <Filter>Contents</Filter>
-    </ClInclude>
-    <ClInclude Include="Contents\Player.h">
       <Filter>Contents</Filter>
     </ClInclude>
     <ClInclude Include="Contents\RoomManager.h">
@@ -345,6 +342,9 @@
     <ClInclude Include="Contents\Animation\StateMachine.h">
       <Filter>Contents\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Contents\Player.h">
+      <Filter>Contents\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
@@ -376,6 +376,9 @@
     </Filter>
     <Filter Include="Contents\Animation">
       <UniqueIdentifier>{7329967c-de15-4e4c-b7e8-a7c2d027c1e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Player">
+      <UniqueIdentifier>{2af5ce43-7f14-480c-9624-9566069d47ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -397,44 +397,33 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 						continue;
 					}
 
-					DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ CHARACTER_CHM ].size();
-					NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
-					NxMat34*  pActorOriginPose = new NxMat34[ dwCameleonActorCnt ];
+					CHARACTER eType = pPlayerInfo[ iCreatePlayerCnt ].character;
+					DWORD dwCharacterActorCnt = ( DWORD )m_mapActorInfo[ eType ].size();
+					NxActor** dpCharacterActors = new NxActor*[ dwCharacterActorCnt ];
+					NxMat34*  pActorOriginPose = new NxMat34[ dwCharacterActorCnt ];
 
-					auto iter_begin = m_mapActorInfo[ CHARACTER_CHM ].begin();
-					auto iter_end = m_mapActorInfo[ CHARACTER_CHM ].end();
+					auto iter_begin = m_mapActorInfo[ eType ].begin();
+					auto iter_end = m_mapActorInfo[ eType ].end();
 
 					setReleaseActorIndex.insert( i );
 
 					int j = 0;
 					for( ; iter_begin != iter_end; ++j, ++iter_begin )
 					{
-						dpCameleonActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second );
-						dpCameleonActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
-						pActorOriginPose[ j ] = dpCameleonActors[ j ]->getGlobalPose();
+						dpCharacterActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second );
+						dpCharacterActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
+						pActorOriginPose[ j ] = dpCharacterActors[ j ]->getGlobalPose();
 						// Collision Grouping 은 CreateActor 함수 안에서 현재 하고 있음 ( 추후 변경도 가능 )
 					}
 					dpActorArray = m_pScene->getActors();
 
-					NxController* pController = CreateCharacterController( pActor, dpCameleonActors, j );
+					NxController* pController = CreateCharacterController( pActor, dpCharacterActors, j );
 					pController->getActor()->setGroup( COL_MINE );
-					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, CHARACTER_CHM );
-					for( int k = 0; k < j; ++k ) dpCameleonActors[ k ]->userData = pPlayer;
+					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, eType );
+					for( int k = 0; k < j; ++k ) dpCharacterActors[ k ]->userData = pPlayer;
 					pShader_Animate->Add_RenderObject( pPlayer );
 					pmapPlayer->insert( make_pair( ( int )pPlayerInfo[ iCreatePlayerCnt ].id, ( CPlayer* )pPlayer ) );
 					iCreatePlayerCnt++;
-				}
-
-				else if( strcmp( pActor->getName(), "Box001" ) == 0 )
-				{
-					pActor->setGroup( COL_DYNAMIC );
-					SetCollisionGroup( pActor, COL_DYNAMIC );
-
-					CMesh* pMesh_Test = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
-					CTexture* pTexture_Test = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
-
-					CGameObject* pEnvironment = CEnvironment::Create( pDevice, pActor, pMesh_Test, pTexture_Test, XMFLOAT3( 1.f, 1.f, 1.f ) );
-					pShader_Mesh->Add_RenderObject( pEnvironment );
 				}
 
 				else

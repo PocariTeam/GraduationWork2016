@@ -235,6 +235,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\02 Normal_UI">
       <UniqueIdentifier>{09981906-a8a2-414a-a701-c9a737d08d45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey">
+      <UniqueIdentifier>{2148dde5-429e-41d4-a71f-10a4bf6078f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -528,6 +531,9 @@
     <ClInclude Include="OrthoCamera.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\01 Ortho</Filter>
     </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -769,6 +775,9 @@
     </ClCompile>
     <ClCompile Include="OrthoCamera.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\01 Ortho</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

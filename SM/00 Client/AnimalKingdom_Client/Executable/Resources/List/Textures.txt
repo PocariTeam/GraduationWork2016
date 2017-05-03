@@ -16,7 +16,6 @@ Texture_Wnd 1 ../Executable/Resources/Texture/UI/Wnd/Wnd.png
 Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
 Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
 Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds
-Texture_Snowball 1 ../Executable/Resources/Texture/Snowball/Snowball0.png
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
 Texture_Ground1 1 ../Executable/Resources/Texture/map/ground1.png
 Texture_Ground2 1 ../Executable/Resources/Texture/map/ground2.png
@@ -27,4 +26,5 @@ Texture_Tree01 1 ../Executable/Resources/Texture/Tree/Tree01.png
 Texture_Tree02 1 ../Executable/Resources/Texture/Tree/Tree02.png
 Texture_Rock00 1 ../Executable/Resources/Texture/Rock/Rock00.png
 Texture_Chameleon 1 ../Executable/Resources/Texture/Chameleon/Chameleon.png
+Texture_Monkey 1 ../Executable/Resources/Texture/Monkey/Monkey.png
 Texture_L_Room 4 ../Executable/Resources/Texture/UI/L_Room/L_Room%d.png

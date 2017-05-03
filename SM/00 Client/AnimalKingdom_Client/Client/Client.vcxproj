@@ -225,6 +225,7 @@
     <ClInclude Include="Mathematics.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshMgr.h" />
+    <ClInclude Include="Monkey.h" />
     <ClInclude Include="MultiTexture.h" />
     <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="NormalShader.h" />
@@ -381,6 +382,7 @@
     <ClCompile Include="Mathematics.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshMgr.cpp" />
+    <ClCompile Include="Monkey.cpp" />
     <ClCompile Include="MultiTexture.cpp" />
     <ClCompile Include="NetworkMgr.cpp" />
     <ClCompile Include="NormalShader.cpp" />

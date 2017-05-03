@@ -18,6 +18,7 @@ public:
 	virtual DWORD	Release( void );
 public:
 	virtual void	SetTexture( CTexture* pTexture );
+	virtual void	SetSize( XMFLOAT2& vSize );
 protected:
 	XMFLOAT4X4	m_mtxPosSize;
 	XMFLOAT4	m_vPosSize_Dest;

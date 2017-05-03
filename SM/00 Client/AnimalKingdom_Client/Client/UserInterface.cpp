@@ -42,3 +42,9 @@ void CUserInterface::SetTexture( CTexture* pTexture )
 {
 	::Safe_Release( m_pTexture ); m_pTexture = pTexture;
 }
+
+void CUserInterface::SetSize( XMFLOAT2& vSize )
+{
+	m_vPosSize_Dest.z = m_mtxPosSize._31 = vSize.x;
+	m_vPosSize_Dest.w = m_mtxPosSize._41 = vSize.y;
+}
