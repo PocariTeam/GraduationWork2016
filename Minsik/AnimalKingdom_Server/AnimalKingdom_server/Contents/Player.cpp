@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "..\PhysX\PhysXManager.h"
+#include <NxActor.h>
 
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
@@ -159,4 +161,33 @@ void Player::Move( const float& fTimeDelta )
 	m_vRotate.y = fRotateY;
 
 	moveDir_ = moveDir_ * speed_ * fTimeDelta;
+}
+
+void Player::Attack( STATE eState )
+{
+	NxActor*	pActor{};
+
+	if( character_ == CHARACTER_CHM )
+	{
+		switch( eState )
+		{
+		case STATE_ATT1:
+			pActor = actorArray_[ 1 ];
+			break;
+		case STATE_ATT2:
+			pActor = actorArray_[ 3 ];
+			break;
+		default:
+			return;
+		}
+	}
+
+	if( pActor )
+	{
+		NxSweepQueryHit result[ 100 ];
+		UINT MyGroup = UINT( pActor->getGroup() );
+		LPVOID pUserdata = LPVOID( LONGLONG( MyGroup ) );
+		pActor->linearSweep( pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
+			( NxUserEntityReport<NxSweepQueryHit>* )&PhysXManager::getInstance().entityReport_ );
+	}
 }

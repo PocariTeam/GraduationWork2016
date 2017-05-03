@@ -136,6 +136,7 @@ void CAttackState::Enter( Player* pOwner, const float& fTImeDelta )
 
 void CAttackState::Execute( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->Attack( STATE_ATT1 );
 	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
 		pOwner->getFSM()->Change_State( STATE_IDLE );
 }
@@ -159,6 +160,7 @@ void CAttackState2::Enter( Player* pOwner, const float& fTImeDelta )
 
 void CAttackState2::Execute( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->Attack( STATE_ATT2 );
 	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
 		pOwner->getFSM()->Change_State( STATE_IDLE );
 }

@@ -292,15 +292,16 @@ BOOL GameRoom::setupGame()
 	int i = 0;
 	for (auto p = players_.begin(); p != players_.end(); p++)
 	{
-		NxController* pController = cctManager->getController(i++);
+		NxController* pController = cctManager->getController(i);
 		UINT iActorCnt{};
 		CHARACTER character = (p->second)->getPlayerInfo().character;
 
-		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors(character, roomNum_, iActorCnt);
-		pController->getActor()->setGroup( COL_PLAYER );
+		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors( COL_GROUP( COL_PLAYER1 << i ), character, roomNum_, iActorCnt);
+		pController->getActor()->setGroup( COL_GROUP( COL_PLAYER1 << i ) );
 		(p->second)->setActorArray(dpActors, iActorCnt);
 		(p->second)->setCCT(pController);
 		(p->second)->setAnimator(CAnimationMgr::getInstance().Clone(character));
+		i++;
 	}
 
 	TIMECAPS caps;

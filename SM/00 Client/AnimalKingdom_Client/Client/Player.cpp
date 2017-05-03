@@ -166,6 +166,10 @@ void CPlayer::Sync( NxVec3& vPos, float fRotateY, STATE state)
 	m_pStateMachine->Change_State(state);
 }
 
+void CPlayer::Attack( STATE eState )
+{
+}
+
 CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType )
 {
 	CPlayer* pPlayer{ nullptr };

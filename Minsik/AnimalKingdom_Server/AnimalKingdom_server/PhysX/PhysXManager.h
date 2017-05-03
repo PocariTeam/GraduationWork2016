@@ -28,10 +28,11 @@ private:
 	NxScene*					scenes_[GAMEROOM_CAPACITY];
 	NxControllerManager*		CCTManager_[GAMEROOM_CAPACITY];
 	// 엔티티와 컨트롤러는 도형충돌그룹, 충돌리포트는 액터그룹
+public:
 	CEntityReport				entityReport_;		// P v P ( Sweep Collision )
 	CControllerReport			controllerReport_;  // Controller Collision
 	CCollisionReport			collisionReport_;	// Normal Collision
-
+private:
 	map<string, ACTOR_INFO>		m_mapActorInfo[CHARACTER_MAX];
 
 	Lock						lock_;
@@ -43,8 +44,8 @@ public:
 	BOOL					Load_Kinematic( void );
 
 	/* dsf */
-	NxActor**				CreateCharacterActors( CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
-	NxActor*				CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
+	NxActor**				CreateCharacterActors( COL_GROUP eColgroup, CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt );
+	NxActor*				CreateActor( COL_GROUP eColgroup, const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
 
 	BOOL					initPhysX();
 	BOOL					LoadSceneFromFile(UINT roomNum);

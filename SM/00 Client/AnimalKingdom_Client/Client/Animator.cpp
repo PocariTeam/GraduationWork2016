@@ -97,7 +97,6 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 
 	DWORD dwActorCnt = ( ( CPlayer* )pOwner )->GetActorCnt();
 
-	// 상수 6은 각 캐릭터별 액터 수 ( 변경해야할 부분 - 인자로 )
 	for( NxU32 j = 0; j < dwActorCnt; ++j )
 	{
 		for( ; i < m_dwJointCnt; ++i )

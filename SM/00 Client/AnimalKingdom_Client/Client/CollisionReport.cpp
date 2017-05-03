@@ -8,12 +8,22 @@
 #include <NxActor.h>
 #include "StateMachine.h"
 #include "Animator.h"
+#include <NxShape.h>
+#include "Enum.h"
 
 bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
 	for( NxU32 i = 0; i < nbEntities; ++i )
 	{
-		printf( "E [ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
+		LONGLONG temp{ ( LONGLONG )entities[ i ].hitShape->getGroup() };
+		if( !( ( LONGLONG )entities->userData & temp ) )
+		{
+			// printf( "내 그룹 : %lld\n", ( LONGLONG )entities->userData );
+			// printf( "얘 그룹 : %lld\n", temp = entities[ i ].hitShape->getGroup() );
+			// printf( "E [ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
+			( ( CPlayer* )entities[ i ].hitShape->getActor().userData )->GetFSM()->Change_State( STATE_BEATEN1 );
+			return true;
+		}
 	}
 
 	return true;
@@ -28,7 +38,7 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 
 	if( hit.dir.y > -1.f ) return NX_ACTION_NONE;
 
-	if( COL_MINE == group )
+	if( ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) & group )
 	{
 		STATE eState = ( ( CPlayer* )actor->userData )->GetFSM()->GetCurrentState();
 		switch( eState )

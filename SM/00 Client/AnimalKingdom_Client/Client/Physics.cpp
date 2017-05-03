@@ -320,7 +320,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 {
 	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.2f );
 	m_pScene->setUserContactReport( &m_CollisionReport );
-	m_pScene->setActorGroupPairFlags( COL_MINE, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
+	m_pScene->setActorGroupPairFlags( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
 
 	// Create the default material
 	NxMaterial* pDefaultMaterial = m_pScene->getMaterialFromIndex( 0 );
@@ -410,7 +410,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					int j = 0;
 					for( ; iter_begin != iter_end; ++j, ++iter_begin )
 					{
-						dpCharacterActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second );
+						dpCharacterActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second
+							, COL_GROUP( COL_PLAYER1 << iCreatePlayerCnt ) );
 						dpCharacterActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
 						pActorOriginPose[ j ] = dpCharacterActors[ j ]->getGlobalPose();
 						// Collision Grouping 은 CreateActor 함수 안에서 현재 하고 있음 ( 추후 변경도 가능 )
@@ -418,7 +419,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					dpActorArray = m_pScene->getActors();
 
 					NxController* pController = CreateCharacterController( pActor, dpCharacterActors, j );
-					pController->getActor()->setGroup( COL_MINE );
+					pController->getActor()->setGroup( COL_GROUP( COL_PLAYER1 << iCreatePlayerCnt ) );
 					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, eType );
 					for( int k = 0; k < j; ++k ) dpCharacterActors[ k ]->userData = pPlayer;
 					pShader_Animate->Add_RenderObject( pPlayer );
@@ -601,7 +602,7 @@ void CPhysics::SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup )
 		dpActorShapeArray[ iActorShapeCnt ]->setGroup( eGroup );
 }
 
-NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info )
+NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, COL_GROUP eColGroup )
 {
 	switch( tActor_Info.m_dwType )
 	{
@@ -620,8 +621,8 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 		tActorDesc.body = &bodyDesc;
 
 		tActorDesc.density = 1;
-		tActorDesc.group = COL_MINE;
-		tSphereShapeDesc.group = COL_MINE;
+		tActorDesc.group = eColGroup;
+		tSphereShapeDesc.group = eColGroup;
 
 		tActorDesc.shapes.pushBack( &tSphereShapeDesc );
 
@@ -641,8 +642,8 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 		NxBodyDesc bodyDesc;
 		tActorDesc.body = &bodyDesc;
 		tActorDesc.density = 1;
-		tActorDesc.group = COL_MINE;
-		tBoxShapeDesc.group = COL_MINE;
+		tActorDesc.group = eColGroup;
+		tBoxShapeDesc.group = eColGroup;
 
 		tActorDesc.shapes.pushBack( &tBoxShapeDesc );
 
@@ -663,8 +664,8 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 		NxBodyDesc bodyDesc;
 		tActorDesc.body = &bodyDesc;
 		tActorDesc.density = 1;
-		tActorDesc.group = COL_MINE;
-		tCapsuleShapeDesc.group = COL_MINE;
+		tActorDesc.group = eColGroup;
+		tCapsuleShapeDesc.group = eColGroup;
 
 		tActorDesc.shapes.pushBack( &tCapsuleShapeDesc );
 

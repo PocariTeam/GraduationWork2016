@@ -173,7 +173,6 @@ void CMainFrm::Check_Key( void )
 	/* Wireframe */
 	if( ( m_pInputMgr->Get_KeyboardState( DIK_F1 ) ) && m_bOverlapped )
 	{
-		
 		m_pRenderer->SetWireframe();
 		m_bOverlapped = false;
 	}

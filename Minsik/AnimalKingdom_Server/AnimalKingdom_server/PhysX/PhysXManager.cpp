@@ -162,7 +162,7 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 
 	physicsSDK_->setParameter(NX_SKIN_WIDTH, 0.2f);
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_PLAYER, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
+	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
 
@@ -206,8 +206,8 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 					continue;
 				}
 
-				a->setGroup(CollGroup::COL_PLAYER);
-				SetCollisionGroup(a, CollGroup::COL_PLAYER);
+				a->setGroup( COL_GROUP( COL_PLAYER1 << currentPlayer ) );
+				SetCollisionGroup(a, COL_GROUP( COL_PLAYER1 << currentPlayer ) );
 				CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
 				scenes_[ roomNum ]->releaseActor( *a );
 				aList = scenes_[ roomNum ]->getActors();
@@ -332,7 +332,7 @@ BOOL PhysXManager::Load_Kinematic( void )
 	return TRUE;
 }
 
-NxActor** PhysXManager::CreateCharacterActors( CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt )
+NxActor** PhysXManager::CreateCharacterActors( COL_GROUP eColgroup, CHARACTER eCharacterType, UINT iSceneNum, UINT& iActorCnt )
 {
 	DWORD dwCameleonActorCnt = ( DWORD )m_mapActorInfo[ eCharacterType ].size();
 	NxActor** dpCameleonActors = new NxActor*[ dwCameleonActorCnt ];
@@ -343,7 +343,7 @@ NxActor** PhysXManager::CreateCharacterActors( CHARACTER eCharacterType, UINT iS
 	UINT j = 0;
 	for( ; iter_begin != iter_end; ++j, ++iter_begin )
 	{
-		dpCameleonActors[ j ] = CreateActor( ( *iter_begin ).first.c_str(), ( *iter_begin ).second, iSceneNum );
+		dpCameleonActors[ j ] = CreateActor( eColgroup, ( *iter_begin ).first.c_str(), ( *iter_begin ).second, iSceneNum );
 		dpCameleonActors[ j ]->raiseBodyFlag( NX_BF_KINEMATIC );
 		dpCameleonActors[ j ]->userData = new NxMat34;
 		*( NxMat34* )dpCameleonActors[ j ]->userData = dpCameleonActors[ j ]->getGlobalPose();
@@ -354,7 +354,7 @@ NxActor** PhysXManager::CreateCharacterActors( CHARACTER eCharacterType, UINT iS
 	return dpCameleonActors;
 }
 
-NxActor* PhysXManager::CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum )
+NxActor* PhysXManager::CreateActor( COL_GROUP eColgroup, const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum )
 {
 	switch( tActor_Info.m_dwType )
 	{
@@ -373,8 +373,8 @@ NxActor* PhysXManager::CreateActor( const char* pActorName, const ACTOR_INFO& tA
 		tActorDesc.body = &bodyDesc;
 
 		tActorDesc.density = 1;
-		tActorDesc.group = COL_PLAYER;
-		tSphereShapeDesc.group = COL_PLAYER;
+		tActorDesc.group = eColgroup;
+		tSphereShapeDesc.group = eColgroup;
 
 		tActorDesc.shapes.pushBack( &tSphereShapeDesc );
 
@@ -394,8 +394,8 @@ NxActor* PhysXManager::CreateActor( const char* pActorName, const ACTOR_INFO& tA
 		NxBodyDesc bodyDesc;
 		tActorDesc.body = &bodyDesc;
 		tActorDesc.density = 1;
-		tActorDesc.group = COL_PLAYER;
-		tBoxShapeDesc.group = COL_PLAYER;
+		tActorDesc.group = eColgroup;
+		tBoxShapeDesc.group = eColgroup;
 
 		tActorDesc.shapes.pushBack( &tBoxShapeDesc );
 
@@ -416,8 +416,8 @@ NxActor* PhysXManager::CreateActor( const char* pActorName, const ACTOR_INFO& tA
 		NxBodyDesc bodyDesc;
 		tActorDesc.body = &bodyDesc;
 		tActorDesc.density = 1;
-		tActorDesc.group = COL_PLAYER;
-		tCapsuleShapeDesc.group = COL_PLAYER;
+		tActorDesc.group = eColgroup;
+		tCapsuleShapeDesc.group = eColgroup;
 
 		tActorDesc.shapes.pushBack( &tCapsuleShapeDesc );
 

@@ -238,6 +238,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey">
       <UniqueIdentifier>{2148dde5-429e-41d4-a71f-10a4bf6078f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\02 First">
+      <UniqueIdentifier>{f0d31040-7aa6-46d6-be00-0a42497bcc9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
