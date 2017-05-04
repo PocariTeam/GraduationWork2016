@@ -1,5 +1,6 @@
-12
+13
 Mesh_Test ../Executable/Resources/Mesh/Inanimate/Normal/Test.jsm
+Mesh_Banana ../Executable/Resources/Mesh/Inanimate/Normal/Banana.jsm
 Mesh_Ground1 ../Executable/Resources/Mesh/Inanimate/Normal/Ground1.jsm
 Mesh_Ground2 ../Executable/Resources/Mesh/Inanimate/Normal/Ground2.jsm
 Mesh_Cave ../Executable/Resources/Mesh/Inanimate/Normal/Cave.jsm

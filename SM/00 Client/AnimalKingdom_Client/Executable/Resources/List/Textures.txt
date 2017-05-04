@@ -1,4 +1,4 @@
-29
+30
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
 Texture_Billboard_Ready 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Ready.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
@@ -17,6 +17,7 @@ Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
 Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
 Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
+Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Ground1 1 ../Executable/Resources/Texture/map/ground1.png
 Texture_Ground2 1 ../Executable/Resources/Texture/map/ground2.png
 Texture_Cave 1 ../Executable/Resources/Texture/map/cave.png

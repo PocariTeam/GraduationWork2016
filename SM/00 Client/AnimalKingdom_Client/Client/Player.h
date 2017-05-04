@@ -25,6 +25,7 @@ public:
 	void			Move( const float& fTimeDelta );
 	void			Sync( NxVec3& vPos, float fRotateY, STATE state);
 	virtual void	Attack( STATE eState );
+	virtual void	Create_Banana( void );
 public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext );

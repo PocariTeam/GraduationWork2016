@@ -170,6 +170,10 @@ void CPlayer::Attack( STATE eState )
 {
 }
 
+void CPlayer::Create_Banana( void )
+{
+}
+
 CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType )
 {
 	CPlayer* pPlayer{ nullptr };

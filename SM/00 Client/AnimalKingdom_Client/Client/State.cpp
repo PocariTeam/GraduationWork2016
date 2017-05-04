@@ -146,6 +146,7 @@ STATE CJumpState::GetState( void )
 void CAttackState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Change_Animation( STATE_ATT1 );
+	pOwner->Create_Banana();
 }
 
 void CAttackState::Execute( CPlayer* pOwner, const float& fTImeDelta )

@@ -51,9 +51,12 @@ private:
 	HRESULT		SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer );
 	NxController* CreateCharacterController( NxActor* pActor, NxActor** dpActors, int iArraySize );
 	void		  SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup );
+public:
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, COL_GROUP eColGroup );
+	void		CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup );
 private:
 	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_END ];
+	list<CShader*>*				m_pShaderlist{ nullptr };
 };
 
 #endif // Physics_h__

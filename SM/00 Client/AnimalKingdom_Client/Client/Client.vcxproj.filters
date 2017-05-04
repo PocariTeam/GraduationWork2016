@@ -241,6 +241,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\02 First">
       <UniqueIdentifier>{f0d31040-7aa6-46d6-be00-0a42497bcc9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\01 InGame\03 Banana">
+      <UniqueIdentifier>{a51b1048-719c-46f2-97f1-d4d5a0cbcf51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -537,6 +540,9 @@
     <ClInclude Include="Monkey.h">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey</Filter>
     </ClInclude>
+    <ClInclude Include="Banana.h">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\03 Banana</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -781,6 +787,9 @@
     </ClCompile>
     <ClCompile Include="Monkey.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey</Filter>
+    </ClCompile>
+    <ClCompile Include="Banana.cpp">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\03 Banana</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

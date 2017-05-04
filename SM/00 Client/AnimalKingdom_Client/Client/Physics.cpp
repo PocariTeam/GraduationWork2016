@@ -27,6 +27,7 @@
 #include <xfunctional>
 #include "NetworkMgr.h"
 #include "NormalShader.h"
+#include "Banana.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -318,6 +319,8 @@ HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType 
 
 HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer )
 {
+	m_pShaderlist = plistShader;
+
 	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.2f );
 	m_pScene->setUserContactReport( &m_CollisionReport );
 	m_pScene->setActorGroupPairFlags( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
@@ -633,7 +636,7 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 		NxBoxShapeDesc		tBoxShapeDesc;
 		tBoxShapeDesc.dimensions = NxVec3( tActor_Info.m_fLength * 0.5f, tActor_Info.m_fHeight * 0.5f, tActor_Info.m_fWidth * 0.5f );
 		tBoxShapeDesc.name = pActorName;
-		tBoxShapeDesc.localPose.t = NxVec3( 0.f, 0.f, 0.f );
+		tBoxShapeDesc.localPose.t = NxVec3( tActor_Info.m_fLength * 0.5f, tActor_Info.m_fHeight * 0.5f, tActor_Info.m_fWidth * 0.5f );
 
 		NxActorDesc tActorDesc;
 		tActorDesc.name = pActorName;
@@ -674,4 +677,24 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 	default:
 		return nullptr;
 	}
+}
+
+void CPhysics::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
+{
+	if( nullptr == m_pShaderlist ) return;
+
+	ACTOR_INFO	tActor_Info;
+	tActor_Info.m_dwType = 2;
+	tActor_Info.m_fWidth = 2.5f;
+	tActor_Info.m_fHeight = 8.f;
+	tActor_Info.m_fLength = 2.5f;
+	tActor_Info.m_vGlobalPosition.x = vPos.x;
+	tActor_Info.m_vGlobalPosition.y = vPos.y;
+	tActor_Info.m_vGlobalPosition.z = vPos.z;
+
+	NxActor* pActor = CreateActor( "Banana", tActor_Info, COL_DYNAMIC/*eColGroup*/ );
+	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+
+	CBanana*	pBanana = CBanana::Create( pActor, vDir );
+	m_pShaderlist[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pBanana );
 }
