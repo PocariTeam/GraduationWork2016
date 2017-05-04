@@ -72,10 +72,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);../AnimalKingdom_server/PhysX/SampleCommonCode/src/win;../AnimalKingdom_server/PhysX/SDKs/Foundation/include;../AnimalKingdom_server/PhysX/SDKs/Foundation/include/win;../AnimalKingdom_server/PhysX/SDKs/Physics/include;../AnimalKingdom_server/PhysX/SDKs/Cooking/include;../AnimalKingdom_server/PhysX/SDKs/PhysXLoader/include;../AnimalKingdom_server/PhysX/SDKs/NxCharacter/include;../AnimalKingdom_server/PhysX/NxuStream2;../AnimalKingdom_server/PhysX/SampleCommonCode/src</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);../AnimalKingdom_server/PhysX/SDKs/lib/win64</LibraryPath>
+    <OutDir>../Executable/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(IncludePath);$(DXSDK_DIR)include/;$(ProjectDir);../AnimalKingdom_server/PhysX/SampleCommonCode/src/win;../AnimalKingdom_server/PhysX/SDKs/Foundation/include;../AnimalKingdom_server/PhysX/SDKs/Foundation/include/win;../AnimalKingdom_server/PhysX/SDKs/Physics/include;../AnimalKingdom_server/PhysX/SDKs/Cooking/include;../AnimalKingdom_server/PhysX/SDKs/PhysXLoader/include;../AnimalKingdom_server/PhysX/SDKs/NxCharacter/include;../AnimalKingdom_server/PhysX/NxuStream2;../AnimalKingdom_server/PhysX/SampleCommonCode/src</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);../AnimalKingdom_server/PhysX/SDKs/lib/win64</LibraryPath>
+    <OutDir>../Executable/</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

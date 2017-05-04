@@ -3,7 +3,7 @@
 
 bool loadConfig(xml_t *config)
 {
-	if (!config->LoadFile("./config.xml")) {
+	if (!config->LoadFile("../Executable/config.xml")) {
 		printf("! not exist config file.");
 		return false;
 	}

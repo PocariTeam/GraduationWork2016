@@ -306,7 +306,7 @@ BOOL PhysXManager::initPhysX()
 
 BOOL PhysXManager::Load_Kinematic( void )
 {
-	ifstream	In{ "KinematicActor.txt" };
+	ifstream	In{ "../Executable/KinematicActor.txt" };
 	int			iCharacterType{}, iActorCnt{};
 	char		szJointName[ MAX_PATH ]{ "" };
 	ACTOR_INFO	tActorInfo;

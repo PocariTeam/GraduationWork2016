@@ -42,8 +42,6 @@ bool SessionManager::addSession(Session * session)
 //소켓을 닫으라는 클라이언트에게 보냅니다.
 bool SessionManager::closeSession(Session *session)
 {
-	SAFE_LOCK(lock_);
-
 	if (session == nullptr) {
 		return false;
 	}
