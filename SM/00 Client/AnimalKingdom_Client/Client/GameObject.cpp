@@ -75,3 +75,8 @@ DirectX::XMFLOAT4 CGameObject::GetOption()
 {
 	return m_vOption;
 }
+
+CTexture* CGameObject::GetTexture()
+{
+	return m_pTexture;
+}

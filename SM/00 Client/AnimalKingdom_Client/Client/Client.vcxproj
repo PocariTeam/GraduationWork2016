@@ -210,6 +210,7 @@
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="ThirdCamera.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Dot.h" />
     <ClInclude Include="Enum.h" />
@@ -372,6 +373,7 @@
     <ClCompile Include="CollisionReport.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="ThirdCamera.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="GameObject.cpp" />

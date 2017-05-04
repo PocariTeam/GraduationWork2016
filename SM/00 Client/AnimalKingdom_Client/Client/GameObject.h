@@ -25,10 +25,12 @@ public:
 	void				SetActor( NxActor* pActor ) { m_pActor = pActor; }
 	void				SetDir( NxVec3 vDir );
 	void				SetOption( int iKey, float fValue );
+	virtual void		SetInstanceCnt( UINT iCnt ) {}
 public:
 	virtual XMFLOAT4X4  GetWorld();
 	NxActor*			GetActor();
 	XMFLOAT4			GetOption();
+	CTexture*			GetTexture();
 protected:
 	NxActor*		m_pActor;
 	CMesh*			m_pMesh;

@@ -7,6 +7,7 @@ CNumber_UI::CNumber_UI()
 	, m_bHide( false )
 	, m_fSpeed( 0.f )
 	, m_iValue( 1000 )
+	, m_iInstanceCnt( 0 )
 {
 }
 
@@ -42,9 +43,8 @@ void CNumber_UI::Render( ID3D11DeviceContext* pContext )
 {
 	if( m_bHide ) return;
 
-	m_pTexture->Render( pContext );
-	//pContext->Draw( 6, 0 );
-	pContext->DrawInstanced( 6, 5, 0, 0 );
+	// m_pTexture->Render( pContext );
+	pContext->DrawInstanced( 6, m_iInstanceCnt, 0, 0 );
 }
 
 int CNumber_UI::Update( const float& fTimeDelta )
@@ -87,4 +87,9 @@ void CNumber_UI::SetNumber( UINT iNum )
 
 	m_vOption.x = ( float )m_iValue * 1.f / 12.f;
 	m_vOption.y = m_vOption.x + 1.f / 12.f;
+}
+
+void CNumber_UI::SetInstanceCnt( UINT iCnt )
+{
+	m_iInstanceCnt = iCnt;
 }

@@ -29,6 +29,7 @@ protected:
 	CScene();
 	virtual ~CScene() = default;
 protected:
+	ID3D11Device*		 m_pDevice;
 	HWND				 m_hWnd;
 	CCamera*			 m_pCamera;
 	using SHADERLIST = list<CShader*>;

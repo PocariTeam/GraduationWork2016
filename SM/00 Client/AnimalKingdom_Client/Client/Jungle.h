@@ -24,6 +24,7 @@ public:
 	void  Render( ID3D11DeviceContext* pContext );
 	void  Sync( UINT id, XMFLOAT3 vPos, float fRotateY, STATE state );
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
+	void  Check_Key( const float& fTimeDelta );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:
@@ -33,6 +34,9 @@ private:
 	UINT					m_dwPlayerCnt;
 	CNumber_UI**			m_dpTime_UI;
 	float					m_fAccTime;
+	bool					m_bDebug;
+	/* Check Key */
+	bool					m_bOverlapped;
 };
 
 #endif // Jungle_h__

@@ -8,6 +8,5 @@
 #define SLOT_WINSIZE	0x00
 #define SLOT_POS_SIZE	0x00
 #define SLOT_ANIMATION  0x02
-#define SLOT_OPTION		0x03
 
 #endif // Define_h__

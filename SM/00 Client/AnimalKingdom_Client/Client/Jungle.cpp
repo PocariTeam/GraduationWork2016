@@ -12,13 +12,17 @@
 #include "TextureMgr.h"
 #include "Number_UI.h"
 #include "Normal_UI.h"
+#include "InputMgr.h"
+#include "ThirdCamera.h"
 
 CJungle::CJungle()
 	: CScene()
 	, m_iPlayerID( -1 )
 	, m_pPlayerInfo( nullptr )
 	, m_dwPlayerCnt( 0 )
-	, m_fAccTime( 0.f )
+	, m_fAccTime( 180.f )
+	, m_bOverlapped( true )
+	, m_bDebug( true )
 {
 }
 
@@ -28,6 +32,9 @@ CJungle::~CJungle()
 
 HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
+	m_pDevice = pDevice;
+	m_hWnd = hWnd;
+
 	m_pCamera = CDebugCamera::Create( hWnd, pDevice );
 	CLightMgr::GetInstance()->Initialize( pDevice );
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
@@ -54,15 +61,15 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 void CJungle::AccumulateTime( const float& fTimeDelta )
 {
-	m_fAccTime += fTimeDelta;
+	UINT	iInput = UINT( m_fAccTime );
 
-	UINT	iInput = UINT( m_fAccTime * 100 );
-	if( iInput > 9999 ) m_fAccTime = 0.f;
+	m_dpTime_UI[ NUM_TEN ]->SetNumber( iInput / 600 );
+	m_dpTime_UI[ NUM_ONE ]->SetNumber( ( iInput / 60 ) % 10 );
+	m_dpTime_UI[ NUM_PROCENT ]->SetNumber( ( iInput % 60 ) / 10 );
+	m_dpTime_UI[ NUM_CENTI ]->SetNumber( iInput % 10 );
 
-	m_dpTime_UI[ NUM_TEN ]->SetNumber( iInput / 1000 );
-	m_dpTime_UI[ NUM_ONE ]->SetNumber( ( iInput % 1000 ) / 100 );
-	m_dpTime_UI[ NUM_PROCENT ]->SetNumber( ( iInput % 100 ) / 10 );
-	m_dpTime_UI[ NUM_CENTI ]->SetNumber( ( iInput % 100 ) % 10 );
+	if( iInput == 0 ) return; // 게임 종료
+	m_fAccTime -= fTimeDelta;
 }
 
 int CJungle::Update( const float& fTimeDelta )
@@ -72,7 +79,7 @@ int CJungle::Update( const float& fTimeDelta )
 
 	CPhysics::GetInstance()->Update( fTimeDelta );
 	AccumulateTime( fTimeDelta );
-
+	Check_Key( fTimeDelta );
 
 	return 0;
 }
@@ -143,6 +150,26 @@ void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 
 	delete[] pTemp;
 	pTemp = nullptr;
+}
+
+void CJungle::Check_Key( const float& fTimeDelta )
+{
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) && m_bOverlapped )
+	{
+		// 카메라 전환
+		::Safe_Release( m_pCamera );
+		m_bDebug = !m_bDebug;
+
+		if( m_bDebug )
+			m_pCamera = CDebugCamera::Create( m_hWnd, m_pDevice );
+		else
+			m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetCharacterController()->getActor(), XMFLOAT3( 0.f, 100.f, -200.f ) );
+		
+		m_bOverlapped = false;
+	}
+
+	else if( !CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) )
+		m_bOverlapped = true;
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )

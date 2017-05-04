@@ -2,6 +2,7 @@
 #include "InstancingShader.h"
 #include "Function.h"
 #include "GameObject.h"
+#include "Texture.h"
 #include "Functor.h"
 
 CInstancingShader::CInstancingShader()
@@ -48,6 +49,7 @@ void CInstancingShader::Render( ID3D11DeviceContext* pContext )
 	if( m_vecRenderObject.empty() )
 		return;
 
+	m_vecRenderObject.front()->GetTexture()->Render( pContext );
 	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
 	{
 		SetConstantBuffer( pContext, m_vecRenderObject[ i ]->GetWorld(), m_vecRenderObject[ i ]->GetOption() );
@@ -152,6 +154,7 @@ void CInstancingShader::Add_RenderObject( CGameObject* pGameObject )
 {
 	m_vecRenderObject.push_back( pGameObject );
 	CreateConstantBuffer( m_pDevice, sizeof( CB_WORLD ) );
+	pGameObject->SetInstanceCnt( ( UINT )m_vecRenderObject.size() );
 }
 
 void CInstancingShader::SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOAT4X4 mtxWorld, XMFLOAT4 vOption /*= XMFLOAT4( 0.f, 0.f, 0.f, 0.f ) */ )

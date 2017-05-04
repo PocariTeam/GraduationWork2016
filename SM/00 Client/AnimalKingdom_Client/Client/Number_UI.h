@@ -20,6 +20,7 @@ public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
 	void SetNumber( UINT iNum );
+	void SetInstanceCnt( UINT iCnt );
 public:
 	void Hide() { m_bHide = true; }
 	void Show() { m_bHide = false; }
@@ -27,6 +28,7 @@ private:
 	bool	m_bHide;
 	float	m_fSpeed;
 	UINT	m_iValue;
+	UINT	m_iInstanceCnt;
 };
 
 #endif // Number_UI_h__

@@ -238,9 +238,6 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\00 Player\01 Monkey">
       <UniqueIdentifier>{2148dde5-429e-41d4-a71f-10a4bf6078f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\02 First">
-      <UniqueIdentifier>{f0d31040-7aa6-46d6-be00-0a42497bcc9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\03 Banana">
       <UniqueIdentifier>{a51b1048-719c-46f2-97f1-d4d5a0cbcf51}</UniqueIdentifier>
     </Filter>
@@ -249,6 +246,9 @@
     </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\04 Number_UI">
       <UniqueIdentifier>{7a43bff3-9a73-45dd-b597-390869864a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\02 Third">
+      <UniqueIdentifier>{f0d31040-7aa6-46d6-be00-0a42497bcc9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -552,6 +552,9 @@
     <ClInclude Include="Number_UI.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\04 Number_UI</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdCamera.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\02 Third</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -802,6 +805,9 @@
     </ClCompile>
     <ClCompile Include="Number_UI.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\04 Number_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdCamera.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\02 Third</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
