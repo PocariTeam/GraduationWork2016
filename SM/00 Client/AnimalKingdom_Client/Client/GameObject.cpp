@@ -13,6 +13,7 @@ CGameObject::CGameObject()
 	, m_pTexture( nullptr )
 	, m_pActor( nullptr )
 	, m_vDir( 0.f, 0.f, 0.f )
+	, m_vOption( 0.f, 0.f, 0.f, 0.f )
 {
 }
 
@@ -37,6 +38,25 @@ void CGameObject::SetDir( NxVec3 vDir )
 	m_vDir = vDir;
 }
 
+void CGameObject::SetOption( int iKey, float fValue )
+{
+	switch( iKey )
+	{
+	case 0 :
+		m_vOption.x = fValue;
+		break;
+	case 1:
+		m_vOption.y = fValue;
+		break;
+	case 2:
+		m_vOption.z = fValue;
+		break;
+	case 3:
+		m_vOption.w = fValue;
+		break;
+	}
+}
+
 XMFLOAT4X4 CGameObject::GetWorld()
 {
 	NxF32 mtxWorld[ 16 ]{};
@@ -49,4 +69,9 @@ XMFLOAT4X4 CGameObject::GetWorld()
 NxActor* CGameObject::GetActor()
 {
 	return m_pActor;
+}
+
+DirectX::XMFLOAT4 CGameObject::GetOption()
+{
+	return m_vOption;
 }

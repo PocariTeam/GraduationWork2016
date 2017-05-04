@@ -28,6 +28,7 @@ protected:
 	XMFLOAT3		m_vAt;
 	XMFLOAT4X4		m_mtxView;
 	XMFLOAT4X4		m_mtxProj;
+	XMFLOAT4X4		m_mtxOrtho;
 	float			m_fSpeed;
 };
 

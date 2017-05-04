@@ -17,10 +17,7 @@ HRESULT COrthoCamera::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
 	m_hWnd = hWnd;
 
-	XMMATRIX mtxProj = XMMatrixOrthographicOffCenterLH( -1.f, 1.f/* float( g_wWinsizeX )*/, -1.f, 1.f/*float( g_wWinsizeY )*/, -100.f, 1000.f );
-	XMStoreFloat4x4( &m_mtxProj, mtxProj );
-	
-	CreateConstantBuffer( pDevice );
+	CCamera::Initialize( pDevice );
 
 	return S_OK;
 }
@@ -40,8 +37,8 @@ COrthoCamera* COrthoCamera::Create( HWND hWnd, ID3D11Device* pDevice )
 
 int COrthoCamera::Update( const float& fTimeDelta )
 {
-	XMMATRIX mtxProj = XMMatrixOrthographicOffCenterLH( -1.f, 1.f/* float( g_wWinsizeX )*/, -1.f, 1.f/*float( g_wWinsizeY )*/, -100.f, 1000.f );
-	XMStoreFloat4x4( &m_mtxProj, mtxProj );
+	 XMMATRIX mtxProj = XMMatrixOrthographicOffCenterLH( -1.f, 1.f/* float( g_wWinsizeX )*/, -1.f, 1.f/*float( g_wWinsizeY )*/, -100.f, 1000.f );
+	 XMStoreFloat4x4( &m_mtxProj, mtxProj );
 
 	return 0;
 }

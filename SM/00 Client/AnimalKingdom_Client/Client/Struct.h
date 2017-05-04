@@ -62,10 +62,17 @@ typedef struct tagVertex_PNTTB {
 
 /*                           Constant Buffer                                   */
 
+typedef struct tagConstantBuffer_World
+{
+	XMFLOAT4X4  m_mtxWorld;
+	XMFLOAT4	m_vOption;
+}CB_WORLD;
+
 typedef struct tagConstantBuffer_Camera
 {
 	XMFLOAT4X4  m_mtxView;
 	XMFLOAT4X4  m_mtxProj;
+	XMFLOAT4X4	m_mtxOrtho;
 	XMFLOAT4	m_vCameraPos;
 }CB_CAMERA;
 

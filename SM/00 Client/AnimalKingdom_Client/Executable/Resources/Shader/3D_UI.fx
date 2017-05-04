@@ -4,12 +4,14 @@ SamplerState gSamplerState : register( s0 );
 cbuffer cbWorld : register( b0 )
 {
 	matrix g_mtxWorld;
+	float4 g_vOption;
 }
 
 cbuffer cbCamera : register( b1 )
 {
 	matrix g_mtxView;
 	matrix g_mtxProj;
+	matrix g_mtxOrtho;
 	float4 g_vCameraPos;
 };
 
@@ -44,7 +46,7 @@ VS_OUT VS( VS_IN In )
 
 	matrix	mtxWV, mtxWVP;
 	// mtxWV = mul( g_mtxWorld, g_mtxView );
-	mtxWVP = mul( g_mtxWorld, g_mtxProj );
+	mtxWVP = mul( g_mtxWorld, g_mtxOrtho );
 
 	float3 vPos = ( float3 )0;
 	float3 vNormal = ( float3 )0;

@@ -1,12 +1,17 @@
 Texture2D gTexture : register( t0 );
 SamplerState gSamplerState : register( s0 );
 
-matrix g_mtxWorld : register( b0 );
+cbuffer cbWorld : register( b0 )
+{
+	matrix g_mtxWorld;
+	float4 g_vOption;
+}
 
 cbuffer cbCamera : register( b1 )
 {
 	matrix g_mtxView;
 	matrix g_mtxProj;
+	matrix g_mtxOrtho;
 	float4 g_vCameraPos;
 };
 

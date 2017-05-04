@@ -4,6 +4,7 @@
 #define Shader_h__
 
 #include "Resources.h"
+#include "Struct.h"
 
 class CGameObject;
 class CShader
@@ -21,16 +22,17 @@ protected:
 	HRESULT CreateGS( ID3D11Device* pDevice, const char* pFilePath );
 	HRESULT CreateHS( ID3D11Device* pDevice, const char* pFilePath );
 	HRESULT CreateDS( ID3D11Device* pDevice, const char* pFilePath );
-	HRESULT CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize = sizeof( XMFLOAT4X4 ) );
+	virtual HRESULT CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize = sizeof( CB_WORLD ) );
 public:
 	virtual CShader*	Clone( void )PURE;
 	virtual void Update( const float& fTimeDelta )PURE;
 	virtual void Render( ID3D11DeviceContext* pContext )PURE;
 	virtual void Add_RenderObject( CGameObject* pGameObject )PURE;
-	void	SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData );
+	virtual void SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOAT4X4 mtxWorld, XMFLOAT4 vOption = XMFLOAT4( 0.f, 0.f, 0.f, 0.f ) );
 public:
 	virtual DWORD Release();
 protected:
+	ID3D11Device*			m_pDevice;
 	ID3D11InputLayout*		m_pInputLayout;
 	ID3D11VertexShader*		m_pVS;
 	ID3D11PixelShader*		m_pPS;

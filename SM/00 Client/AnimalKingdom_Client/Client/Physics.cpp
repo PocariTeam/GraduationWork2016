@@ -28,6 +28,7 @@
 #include "NetworkMgr.h"
 #include "NormalShader.h"
 #include "Banana.h"
+#include "Normal_UI.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -110,7 +111,7 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				mtxScale.M.diagonal( vScale );
 				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
 				mtxRealWorld.getRowMajor44( mtxWorld );
-				pShader->SetConstantBuffer( pContext, mtxWorld );
+				pShader->SetConstantBuffer( pContext, XMFLOAT4X4( mtxWorld ) );
 				pBox->Render( pContext );
 				break;
 			case NX_SHAPE_SPHERE:
@@ -119,7 +120,7 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				mtxScale.M.diagonal( NxVec3( fRadius ) );
 				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
 				mtxRealWorld.getRowMajor44( mtxWorld );
-				pShader->SetConstantBuffer( pContext, mtxWorld );
+				pShader->SetConstantBuffer( pContext, XMFLOAT4X4( mtxWorld ) );
 				pSphere->Render( pContext );
 				break;
 			case NX_SHAPE_CAPSULE:
@@ -129,7 +130,7 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				mtxScale.M.diagonal( NxVec3( fRadius, ( fHeight + fRadius ) * 0.5f, fRadius ) );
 				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
 				mtxRealWorld.getRowMajor44( mtxWorld );
-				pShader->SetConstantBuffer( pContext, mtxWorld );
+				pShader->SetConstantBuffer( pContext, XMFLOAT4X4( mtxWorld ) );
 				pCapsule->Render( pContext );
 				break;
 			}

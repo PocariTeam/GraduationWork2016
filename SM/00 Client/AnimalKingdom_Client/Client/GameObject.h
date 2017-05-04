@@ -24,14 +24,17 @@ public:
 public:
 	void				SetActor( NxActor* pActor ) { m_pActor = pActor; }
 	void				SetDir( NxVec3 vDir );
+	void				SetOption( int iKey, float fValue );
 public:
 	virtual XMFLOAT4X4  GetWorld();
 	NxActor*			GetActor();
+	XMFLOAT4			GetOption();
 protected:
 	NxActor*		m_pActor;
 	CMesh*			m_pMesh;
 	CTexture*		m_pTexture;
 	NxVec3			m_vDir;
+	XMFLOAT4		m_vOption;
 };
 
 #endif

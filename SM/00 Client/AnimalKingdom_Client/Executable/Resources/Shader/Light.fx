@@ -19,14 +19,19 @@ struct LIGHT
 	float2	vPadding;
 };
 
-matrix	g_mtxWinSize : register( b0 );
+cbuffer cbWorld : register( b0 )
+{
+	matrix g_mtxWinSize;
+	float4 g_vOption;
+}
 
 cbuffer cbCamera : register( b1 )
 {
 	matrix g_mtxView;
 	matrix g_mtxProj;
+	matrix g_mtxOrtho;
 	float4 g_vCameraPos;
-}
+};
 
 cbuffer cbLight : register( b2 )
 {

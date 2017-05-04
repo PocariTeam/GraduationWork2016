@@ -1,7 +1,11 @@
 Texture2D g_Texture : register( t0 );
 SamplerState g_SamplerState : register( s0 );
 
-matrix	g_mtxPosSize : register( b0 );
+cbuffer cbWorld : register( b0 )
+{
+	matrix g_mtxPosSize;
+	float4 g_vOption;
+}
 
 struct VS_OUT
 {

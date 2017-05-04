@@ -32,6 +32,8 @@ HRESULT CBanana::Initialize( NxActor* pActor, NxVec3& vDir )
 	m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Banana" );
 	m_pActor = pActor;
 	m_vDir = vDir;
+	m_pActor->setLinearVelocity( m_vDir * 300.f );
+	m_pActor->setAngularVelocity( NxVec3( 0.f, 90.f, 180.f ) );
 
 	return S_OK;
 }
@@ -63,8 +65,6 @@ XMFLOAT4X4 CBanana::GetWorld()
 
 int CBanana::Update( const float& fTimeDelta )
 {
-	m_pActor->addForceAtPos( m_vDir * /*fTimeDelta * */500, m_pActor->getGlobalPosition() );
-	
 	return 0;
 }
 

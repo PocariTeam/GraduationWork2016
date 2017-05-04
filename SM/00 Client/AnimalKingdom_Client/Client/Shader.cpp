@@ -6,6 +6,7 @@
 
 CShader::CShader()
 	: CResources()
+	, m_pDevice( nullptr )
 	, m_pInputLayout( nullptr )
 	, m_pVS( nullptr )
 	, m_pPS( nullptr )
@@ -19,6 +20,7 @@ CShader::CShader()
 
 CShader::CShader( const CShader& Instance )
 	: CResources( Instance )
+	, m_pDevice( Instance.m_pDevice )
 	, m_pInputLayout( Instance.m_pInputLayout )
 	, m_pVS( Instance.m_pVS )
 	, m_pPS( Instance.m_pPS )
@@ -192,13 +194,14 @@ HRESULT CShader::CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize )
 	return S_OK;
 }
 
-void CShader::SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData )
+void CShader::SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOAT4X4 mtxWorld, XMFLOAT4 vOption/* = XMFLOAT4( 0.f, 0.f, 0.f, 0.f )*/ )
 {
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
 
 	pContext->Map( m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
-	XMFLOAT4X4* pConstantBuffer = ( XMFLOAT4X4* )MappedSubresource.pData;
-	*pConstantBuffer = *( XMFLOAT4X4* )pData;
+	CB_WORLD* pConstantBuffer = ( CB_WORLD* )MappedSubresource.pData;
+	pConstantBuffer->m_mtxWorld = mtxWorld;
+	pConstantBuffer->m_vOption = vOption;
 
 	pContext->Unmap( m_pConstantBuffer, 0 );
 	pContext->VSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );
@@ -211,6 +214,7 @@ DWORD CShader::Release()
 
 	if( 0 == dwRefCnt )
 	{
+		::Safe_Release( m_pDevice );
 		::Safe_Release( m_pConstantBuffer );
 		::Safe_Release( m_pInputLayout );
 		::Safe_Release( m_pVS );

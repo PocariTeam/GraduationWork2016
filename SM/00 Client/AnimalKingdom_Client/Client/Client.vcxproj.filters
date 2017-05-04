@@ -244,6 +244,12 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\03 Banana">
       <UniqueIdentifier>{a51b1048-719c-46f2-97f1-d4d5a0cbcf51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\03 Font_UI">
+      <UniqueIdentifier>{cabb542f-c0aa-4220-b627-ee6f6b624dfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\04 Number_UI">
+      <UniqueIdentifier>{7a43bff3-9a73-45dd-b597-390869864a70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -543,6 +549,9 @@
     <ClInclude Include="Banana.h">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\03 Banana</Filter>
     </ClInclude>
+    <ClInclude Include="Number_UI.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\04 Number_UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -791,6 +800,9 @@
     <ClCompile Include="Banana.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\03 Banana</Filter>
     </ClCompile>
+    <ClCompile Include="Number_UI.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\04 Number_UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -834,6 +846,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\3D_UI.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Number_UI.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

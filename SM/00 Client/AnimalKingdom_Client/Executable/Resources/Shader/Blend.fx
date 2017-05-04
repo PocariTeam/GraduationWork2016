@@ -1,4 +1,8 @@
-matrix	g_mtxWinSize : register( b0 );
+cbuffer cbWorld : register( b0 )
+{
+	matrix g_mtxWinSize;
+	float4 g_vOption;
+}
 
 Texture2D g_AlbedoTexture : register( t0 );
 Texture2D g_LightTexture : register( t1 );

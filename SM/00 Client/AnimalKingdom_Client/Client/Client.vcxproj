@@ -231,6 +231,7 @@
     <ClInclude Include="NetworkMgr.h" />
     <ClInclude Include="NormalShader.h" />
     <ClInclude Include="Normal_UI.h" />
+    <ClInclude Include="Number_UI.h" />
     <ClInclude Include="OrthoCamera.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
@@ -389,6 +390,7 @@
     <ClCompile Include="NetworkMgr.cpp" />
     <ClCompile Include="NormalShader.cpp" />
     <ClCompile Include="Normal_UI.cpp" />
+    <ClCompile Include="Number_UI.cpp" />
     <ClCompile Include="OrthoCamera.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -487,6 +489,14 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Mesh.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Number_UI.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
