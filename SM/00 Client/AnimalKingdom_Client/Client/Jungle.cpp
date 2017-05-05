@@ -147,7 +147,6 @@ void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 			iter_begin = m_mapPlayer.erase( iter_begin );
 			break;
 		}
-
 	delete[] pTemp;
 	pTemp = nullptr;
 }

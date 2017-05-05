@@ -3,7 +3,7 @@
 #ifndef CollisionReport_h__
 #define CollisionReport_h__
 
-enum CollGroup { COL_STATIC = 1, COL_DYNAMIC = 2, COL_PLAYER1 = 4, COL_PLAYER2 = 8, COL_PLAYER3 = 16, COL_PLAYER4 = 32, COL_END };
+enum CollGroup { COL_STATIC = 0, COL_DYNAMIC = 1, COL_PLAYER1 = 2, COL_PLAYER2 = 4, COL_PLAYER3 = 8, COL_PLAYER4 = 16, COL_END };
 using COL_GROUP = CollGroup;
 
 #include <NxUserEntityReport.h>
