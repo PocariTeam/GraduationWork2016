@@ -58,6 +58,8 @@ public:
 	void					SetCollisionGroup(NxActor * pActor, NxCollisionGroup eGroup);
 	NxController*			CreateCharacterController(NxActor * actor, const NxVec3 & startPos, NxReal scale, UINT roomNum);
 
+	void					CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum );
+
 	S_SyncDynamic*			getDynamicInfo(UINT roomNum);
 	S_SyncDynamicOne*		getDynamicOneInfo(NxActor *actor);
 

@@ -23,7 +23,8 @@ CPlayer::CPlayer()
 	, m_dwActorCnt( 0 )
 	, m_vRotate( 0.f, 0.f, 0.f )
 	, m_pInputMgr( CInputMgr::GetInstance() )
-	, m_fSpeed( 50.f )
+	, m_fSpeed( 80.f )
+	, m_bSweap( false )
 	, m_fJumpHeight( 100.f )
 {
 }
@@ -172,6 +173,16 @@ void CPlayer::Attack( STATE eState )
 
 void CPlayer::Create_Banana( void )
 {
+}
+
+void CPlayer::SweapOn( void )
+{
+	m_bSweap = true;
+}
+
+void CPlayer::SweapOff( void )
+{
+	m_bSweap = false;
 }
 
 CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType )

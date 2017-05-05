@@ -695,7 +695,7 @@ void CPhysics::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 
 	NxActor* pActor = CreateActor( "Banana", tActor_Info, COL_DYNAMIC/*eColGroup*/ );
 	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
-
 	CBanana*	pBanana = CBanana::Create( pActor, vDir );
+	pActor->userData = pBanana;
 	m_pShaderlist[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pBanana );
 }

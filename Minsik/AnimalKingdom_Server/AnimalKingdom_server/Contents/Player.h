@@ -31,6 +31,7 @@ class Player {
 	/* 플레이어 회전각 */
 	XMFLOAT3				m_vRotate;
 	float					m_fJumpHeight;
+	bool					m_bSweap;
 public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 	void			Move( const float& fTimeDelta );
@@ -60,7 +61,9 @@ public:
 	NxMat34*		getActorsOriginPose() {	return actorsOriginPose_; }
 	CStateMachine*  getFSM() { return stateMachine_; }
 	XMFLOAT4X4		GetWorld();
-
+	void			CreateBanana( void );
+	void			sweapOn( void );
+	void			sweapOff( void );
 	void			setMoveDir(Vector3 vDir);
 	void			setState(STATE state);
 };

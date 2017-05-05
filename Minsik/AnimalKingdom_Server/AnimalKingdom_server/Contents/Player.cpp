@@ -5,11 +5,11 @@
 
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
-	, m_vRotate( 0.f, 0.f, 0.f ), actorsOriginPose_( nullptr )
+	, m_vRotate( 0.f, 0.f, 0.f ), actorsOriginPose_( nullptr ), m_bSweap( false )
 	, m_fJumpHeight( 100.f )
 {
 	stateMachine_ = CStateMachine::Create( this );
-	speed_ = 50.0f;
+	speed_ = 80.0f;
 	moveDir_ = NxVec3(0.0f, 0.0f, 0.0f);
 }
 
@@ -130,7 +130,26 @@ XMFLOAT4X4 Player::GetWorld()
 	return mtxWorld;
 }
 
-void Player::setState(STATE state)
+void Player::CreateBanana( void )
+{
+	XMFLOAT4X4	mtxWorld = GetWorld();
+	XMVECTOR vDir = XMVector3Normalize( XMLoadFloat3( &XMFLOAT3( mtxWorld._13, mtxWorld._23, mtxWorld._33 ) ) );
+	XMFLOAT3 vNormalDir;
+	XMStoreFloat3( &vNormalDir, vDir );
+	PhysXManager::getInstance().CreateBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast< COL_GROUP >( cct_->getActor()->getGroup() ), roomNum_ );
+}
+
+void Player::sweapOn( void )
+{
+	m_bSweap = true;
+}
+
+void Player::sweapOff( void )
+{
+	m_bSweap = false;
+}
+
+void Player::setState( STATE state )
 {
 	stateMachine_->Change_State(state);
 }
@@ -165,6 +184,8 @@ void Player::Move( const float& fTimeDelta )
 
 void Player::Attack( STATE eState )
 {
+	if( !m_bSweap ) return;
+
 	NxActor*	pActor{};
 
 	if( character_ == CHARACTER_CHM )

@@ -16,6 +16,7 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 	for( NxU32 i = 0; i < nbEntities; ++i )
 	{
 		LONGLONG temp{ ( LONGLONG )entities[ i ].hitShape->getGroup() };
+		if( 0 == temp ) return true;
 		if( !( ( LONGLONG )entities->userData & temp ) )
 		{
 			// printf( "³» ±×·ì : %lld\n", ( LONGLONG )entities->userData );

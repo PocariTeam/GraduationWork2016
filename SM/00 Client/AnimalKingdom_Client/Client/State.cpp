@@ -146,7 +146,6 @@ STATE CJumpState::GetState( void )
 void CAttackState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Change_Animation( STATE_ATT1 );
-	pOwner->Create_Banana();
 }
 
 void CAttackState::Execute( CPlayer* pOwner, const float& fTImeDelta )
@@ -158,7 +157,7 @@ void CAttackState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 
 void CAttackState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->SweapOff();
 }
 
 STATE CAttackState::GetState( void )
@@ -182,7 +181,7 @@ void CAttackState2::Execute( CPlayer* pOwner, const float& fTImeDelta )
 
 void CAttackState2::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->SweapOff();
 }
 
 STATE CAttackState2::GetState( void )

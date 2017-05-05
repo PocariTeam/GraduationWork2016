@@ -32,8 +32,8 @@ HRESULT CBanana::Initialize( NxActor* pActor, NxVec3& vDir )
 	m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Banana" );
 	m_pActor = pActor;
 	m_vDir = vDir;
-	m_pActor->setLinearVelocity( m_vDir * 300.f );
-	m_pActor->setAngularVelocity( NxVec3( 0.f, 90.f, 180.f ) );
+	m_pActor->setLinearVelocity( m_vDir * 200.f );
+	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
 
 	return S_OK;
 }

@@ -51,6 +51,8 @@ DWORD CChameleon::Release( void )
 
 void CChameleon::Attack( STATE eState )
 {
+	if( !m_bSweap ) return;
+
 	NxActor*	pActor{};
 	switch( eState )
 	{

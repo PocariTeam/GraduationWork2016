@@ -11,10 +11,11 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 	for( NxU32 i = 0; i < nbEntities; ++i )
 	{
 		LONGLONG temp{ ( LONGLONG )entities[ i ].hitShape->getGroup() };
+		if( 0 == temp ) return true;
 		if( !( ( LONGLONG )entities->userData & temp ) )
 		{
-			 //printf( "내 그룹 : %lld\n", ( LONGLONG )entities->userData );
-			 //printf( "얘 그룹 : %lld\n", temp = entities[ i ].hitShape->getGroup() );
+			// printf( "내 그룹 : %lld\n", ( LONGLONG )entities->userData );
+			// printf( "얘 그룹 : %lld\n", temp );
 			// printf( "E [ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
 			( ( Player* )entities[ i ].hitShape->getActor().userData )->getFSM()->Change_State( STATE_BEATEN1 );
 			return true;

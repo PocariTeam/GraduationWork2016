@@ -26,6 +26,8 @@ public:
 	void			Sync( NxVec3& vPos, float fRotateY, STATE state);
 	virtual void	Attack( STATE eState );
 	virtual void	Create_Banana( void );
+	virtual void	SweapOn( void );
+	virtual void	SweapOff( void );
 public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext );
@@ -49,6 +51,7 @@ protected:
 	XMFLOAT3				m_vRotate;
 	DWORD					m_dwActorCnt;
 	CInputMgr*				m_pInputMgr;
+	bool					m_bSweap;
 	float					m_fSpeed;
 	float					m_fJumpHeight;
 };

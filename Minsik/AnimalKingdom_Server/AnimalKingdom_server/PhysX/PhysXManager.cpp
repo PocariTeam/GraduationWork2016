@@ -9,6 +9,7 @@
 #include "NxCapsuleController.h"
 #include "NxControllerManager.h"
 #include <NxCapsuleShape.h>
+#include "..\Banana.h"
 
 
 PhysXManager::PhysXManager(void)
@@ -148,7 +149,25 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 }
 
 
-BOOL PhysXManager::SetupScene(UINT roomNum)
+void PhysXManager::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum )
+{
+	ACTOR_INFO	tActor_Info;
+	tActor_Info.m_dwType = 2;
+	tActor_Info.m_fWidth = 2.5f;
+	tActor_Info.m_fHeight = 8.f;
+	tActor_Info.m_fLength = 2.5f;
+	tActor_Info.m_vGlobalPosition.x = vPos.x;
+	tActor_Info.m_vGlobalPosition.y = vPos.y;
+	tActor_Info.m_vGlobalPosition.z = vPos.z;
+
+	NxActor* pActor = CreateActor( COL_DYNAMIC/*eColGroup*/, "Banana", tActor_Info, iSceneNum );
+	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+
+	CBanana*	pBanana = CBanana::Create( pActor, vDir );
+	pActor->userData = pBanana;
+}
+
+BOOL PhysXManager::SetupScene( UINT roomNum )
 {
 	SAFE_LOCK(lock_);
 
@@ -201,7 +220,7 @@ BOOL PhysXManager::SetupScene(UINT roomNum)
 			{
 				if( currentPlayer >= playerCount )
 				{
-					// scenes_[ roomNum ]->releaseActor( *a );
+					scenes_[ roomNum ]->releaseActor( *a );
 					aList = scenes_[ roomNum ]->getActors();
 					continue;
 				}

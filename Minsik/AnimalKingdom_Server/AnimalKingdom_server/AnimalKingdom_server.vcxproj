@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimalKingdom_server.h" />
+    <ClInclude Include="Banana.h" />
     <ClInclude Include="Contents\Animation\AnimationMgr.h" />
     <ClInclude Include="Contents\Animation\AnimationSet.h" />
     <ClInclude Include="Contents\Animation\Animator.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Util\Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Banana.cpp" />
     <ClCompile Include="Contents\Animation\AnimationMgr.cpp" />
     <ClCompile Include="Contents\Animation\AnimationSet.cpp" />
     <ClCompile Include="Contents\Animation\Animator.cpp" />

@@ -143,7 +143,7 @@ void CAttackState::Execute( Player* pOwner, const float& fTImeDelta )
 
 void CAttackState::Exit( Player* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->sweapOff();
 }
 
 STATE CAttackState::GetState( void )
@@ -167,7 +167,7 @@ void CAttackState2::Execute( Player* pOwner, const float& fTImeDelta )
 
 void CAttackState2::Exit( Player* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->sweapOff();
 }
 
 STATE CAttackState2::GetState( void )
