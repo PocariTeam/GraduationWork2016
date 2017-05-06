@@ -464,9 +464,9 @@ S_SyncDynamic* PhysXManager::getDynamicInfo(UINT roomNum)
 		if (true == aList[i] ->isDynamic() && 
 			false == aList[i]->readBodyFlag(NX_BF_KINEMATIC))
 		{
-			if (i >= DYNAMIC_CAPACITY)
+			if (count >= DYNAMIC_CAPACITY)
 			{
-				SLog(L"! DYNAMIC_CAPACITY is overflow! index: %d",i);
+				SLog(L"! DYNAMIC_CAPACITY is overflow! index: %d",count);
 				break;
 			}
 
