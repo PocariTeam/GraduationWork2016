@@ -50,7 +50,8 @@ private:
 	HRESULT		CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType eType );
 	HRESULT		SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer );
 	NxController* CreateCharacterController( NxActor* pActor, NxActor** dpActors, int iArraySize );
-	void		  SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup );
+	void		SetCollisionGroup( NxActor* pActor, NxCollisionGroup eGroup );
+	void		CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape);
 public:
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, COL_GROUP eColGroup );
 	void		CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup );
