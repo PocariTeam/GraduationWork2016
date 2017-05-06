@@ -171,7 +171,7 @@ void CPlayer::Attack( STATE eState )
 {
 }
 
-void CPlayer::Create_Banana( void )
+void CPlayer::ThrowBanana( void )
 {
 }
 

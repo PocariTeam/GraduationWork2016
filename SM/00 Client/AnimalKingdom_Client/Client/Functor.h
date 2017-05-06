@@ -42,4 +42,5 @@ public:
 	}
 };
 
+
 #endif // Functor_h__

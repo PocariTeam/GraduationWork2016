@@ -160,7 +160,9 @@
     <ClCompile Include="Contents\Player.cpp">
       <Filter>Contents\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Banana.cpp" />
+    <ClCompile Include="Banana.cpp">
+      <Filter>Contents\Banana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contents\GameRoom.h">
@@ -346,7 +348,9 @@
     <ClInclude Include="Contents\Player.h">
       <Filter>Contents\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Banana.h" />
+    <ClInclude Include="Banana.h">
+      <Filter>Contents\Banana</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">

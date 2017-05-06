@@ -130,13 +130,13 @@ XMFLOAT4X4 Player::GetWorld()
 	return mtxWorld;
 }
 
-void Player::CreateBanana( void )
+void Player::ThrowBanana( void )
 {
 	XMFLOAT4X4	mtxWorld = GetWorld();
 	XMVECTOR vDir = XMVector3Normalize( XMLoadFloat3( &XMFLOAT3( mtxWorld._13, mtxWorld._23, mtxWorld._33 ) ) );
 	XMFLOAT3 vNormalDir;
 	XMStoreFloat3( &vNormalDir, vDir );
-	PhysXManager::getInstance().CreateBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast< COL_GROUP >( cct_->getActor()->getGroup() ), roomNum_ );
+	PhysXManager::getInstance().ThrowBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast< COL_GROUP >( cct_->getActor()->getGroup() ), roomNum_ );
 }
 
 void Player::sweapOn( void )

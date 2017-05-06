@@ -13,16 +13,18 @@ private:
 	explicit CBanana();
 	virtual ~CBanana();
 private:
-	HRESULT		Initialize( NxActor* pActor, NxVec3& vDir, COL_GROUP eMaster );
+	HRESULT		Initialize( NxActor* pActor, COL_GROUP eMaster );
 public:
-	static CBanana* Create( NxActor* pActor, NxVec3& vDir, COL_GROUP eMaster );
+	static CBanana* Create( NxActor* pActor, COL_GROUP eMaster );
 public:
 	XMFLOAT4X4 GetWorld();
 public:
-	int		Update( const float& fTimeDelta );
-	void	Render( ID3D11DeviceContext* pContext );
-	DWORD	Release( void );
-	COL_GROUP	GetMasterCollisionGroup();
+	int			Update( const float& fTimeDelta );
+	void		Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster );
+	void		Frozen( void );
+	void		Render( ID3D11DeviceContext* pContext );
+	DWORD		Release( void );
+	COL_GROUP	GetMasterCollisionGroup() const;
 private:
 	XMFLOAT3	m_vScale;
 	COL_GROUP	m_eMasterGroup;

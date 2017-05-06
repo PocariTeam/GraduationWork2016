@@ -166,33 +166,41 @@ void PhysXManager::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *s
 	NX_ASSERT(triMesh.isValid());
 }
 
-void PhysXManager::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum )
+void PhysXManager::CreateBanana( UINT iSceneNum )
 {
 	ACTOR_INFO	tActor_Info;
 	tActor_Info.m_dwType = 2;
 	tActor_Info.m_fWidth = 2.5f;
 	tActor_Info.m_fHeight = 8.f;
 	tActor_Info.m_fLength = 2.5f;
-	tActor_Info.m_vGlobalPosition.x = vPos.x;
-	tActor_Info.m_vGlobalPosition.y = vPos.y;
-	tActor_Info.m_vGlobalPosition.z = vPos.z;
+	tActor_Info.m_vGlobalPosition.x = 0.f;
+	tActor_Info.m_vGlobalPosition.y = 0.f;
+	tActor_Info.m_vGlobalPosition.z = -1000.f;
 
 	NxActor* pActor = CreateActor( COL_DYNAMIC, "Banana", tActor_Info, iSceneNum );
-	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
-	pActor->setLinearDamping(1); // 감속하는 선속도
-	pActor->setAngularDamping(5); //  감속하는 각속도
+	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
 
 	// CCD 충돌체크
-	NxShape *shape = pActor->getShapes()[0];
-	NxSimpleTriangleMesh triMesh;        
-	CreateMeshFromShape(triMesh, shape);
-	NxCCDSkeleton *newSkeleton = physicsSDK_->createCCDSkeleton(triMesh);
-	shape->setCCDSkeleton(newSkeleton);
-	// 바나나가 사라질 때 아래 함수를 호출해서 제거해주어야 함
-	// physicsSDK_->releaseCCDSkeleton(*(shape->getCCDSkeleton()));
+	NxShape *shape = pActor->getShapes()[ 0 ];
+	NxSimpleTriangleMesh triMesh;
+	CreateMeshFromShape( triMesh, shape );
+	NxCCDSkeleton *newSkeleton = physicsSDK_->createCCDSkeleton( triMesh );
+	shape->setCCDSkeleton( newSkeleton );
+	delete[] triMesh.points;
+	delete[] triMesh.triangles;
 
-	CBanana*	pBanana = CBanana::Create( pActor, vDir, eColGroup );
+	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC, iSceneNum );
 	pActor->userData = pBanana;
+	m_BananaQueue[ iSceneNum ].push( pBanana );
+}
+
+void PhysXManager::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum )
+{
+	CBanana* pBanana = m_BananaQueue[ iSceneNum ].front();
+	if( pBanana->GetMasterCollisionGroup() > COL_DYNAMIC ) return;
+	pBanana->Throw( vPos, vDir, eColGroup );
+	m_BananaQueue[ iSceneNum ].pop();
+	m_BananaQueue[ iSceneNum ].push( pBanana );
 }
 
 BOOL PhysXManager::SetupScene( UINT roomNum )
@@ -222,8 +230,8 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER3, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
 	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
 
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
+	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/);
+	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/);
 	
 	// Create the default material
 	NxMaterial* pDefaultMaterial = scenes_[roomNum]->getMaterialFromIndex(0);
@@ -237,6 +245,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 
 	NxU32 nbActors = scenes_[roomNum]->getNbActors();
 	NxActor** aList = scenes_[roomNum]->getActors();
+	set<int, less<int> >	setReleaseActorIndex;
 
 	UINT currentPlayer = 0;
 	UINT playerCount = RoomManager::getInstance().getPlayerCountRoom(roomNum);
@@ -258,18 +267,17 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 				|| 0 == strcmp(a->getName(), "player4")
 				)
 			{
-				if( currentPlayer >= playerCount )
+				if( playerCount == currentPlayer )
 				{
-					scenes_[ roomNum ]->releaseActor( *a );
-					aList = scenes_[ roomNum ]->getActors();
+					setReleaseActorIndex.insert( i );
 					continue;
 				}
 
 				a->setGroup( COL_GROUP( COL_PLAYER1 << currentPlayer ) );
 				SetCollisionGroup(a, COL_GROUP( COL_PLAYER1 << currentPlayer ) );
 				CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
-				scenes_[ roomNum ]->releaseActor( *a );
 				aList = scenes_[ roomNum ]->getActors();
+				setReleaseActorIndex.insert( i );
 				currentPlayer++;
 			}
 			else
@@ -297,12 +305,29 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 		//}
 	}
 
+	auto set_iter_begin = setReleaseActorIndex.begin();
+	auto set_iter_end = setReleaseActorIndex.end();
+
+	aList = scenes_[ roomNum ]->getActors();
+
+	for( ; set_iter_begin != set_iter_end; ++set_iter_begin )
+		scenes_[ roomNum ]->releaseActor( *aList[ ( *set_iter_begin ) ] );
+
+	for( int i = 0; i < BANANA_COUNT; ++i )
+		CreateBanana( roomNum );
+
 	return true;
 }
 
 void PhysXManager::ReleaseScene(UINT roomNum)
 {
 	SAFE_LOCK(lock_);
+
+	while( !m_BananaQueue[ roomNum ].empty() )
+	{
+		m_BananaQueue[ roomNum ].front()->Release();
+		m_BananaQueue[ roomNum ].pop();
+	}
 
 	if (CCTManager_[roomNum])
 	{
@@ -571,5 +596,13 @@ S_SyncDynamicOne* PhysXManager::getDynamicOneInfo(NxActor *actor)
 	return NULL;
 }
 
+NxScene* PhysXManager::getScene( UINT roomNum )
+{
+	return scenes_[ roomNum ];
+}
 
+NxPhysicsSDK* PhysXManager::getSDK()
+{
+	return physicsSDK_;
+}
 

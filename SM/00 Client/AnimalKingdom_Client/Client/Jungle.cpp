@@ -103,6 +103,8 @@ DWORD CJungle::Release( void )
 	CBeatenState2::DestroyInstance();
 	CDefendState::DestroyInstance();
 
+	CPhysics::GetInstance()->Release_Scene();
+
 	delete this;
 
 	return 0;

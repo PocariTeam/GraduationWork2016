@@ -21,31 +21,22 @@ CBanana::~CBanana()
 {
 }
 
-HRESULT CBanana::Initialize( NxActor* pActor, NxVec3& vDir, COL_GROUP eMaster )
+HRESULT CBanana::Initialize( NxActor* pActor, COL_GROUP eMaster )
 {
-	/*ACTOR_INFO	tActor_Info;
-	tActor_Info.m_dwType = 2;
-	tActor_Info.m_fWidth = m_vScale.x;
-	tActor_Info.m_fHeight = m_vScale.y;
-	tActor_Info.m_fLength = m_vScale.z;
-	m_pActor = CPhysics::GetInstance()->CreateActor( "Banana", tActor_Info, COL_DYNAMIC );*/
 	m_pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Banana" );
 	m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Banana" );
-	m_pActor = pActor;
-	m_vDir = vDir;
-	m_pActor->setLinearVelocity( m_vDir * 200.f );
-	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
 	m_eMasterGroup = eMaster;
+	m_pActor = pActor;
 	m_vOption.w = 1.f;
 
 	return S_OK;
 }
 
-CBanana* CBanana::Create( NxActor* pActor, NxVec3& vDir, COL_GROUP eMaster )
+CBanana* CBanana::Create( NxActor* pActor, COL_GROUP eMaster )
 {
 	CBanana* pBanana = new CBanana;
 
-	if( FAILED( pBanana->Initialize( pActor, vDir, eMaster ) ) )
+	if( FAILED( pBanana->Initialize( pActor, eMaster ) ) )
 	{
 		pBanana->Release();
 		pBanana = nullptr;
@@ -75,7 +66,31 @@ int CBanana::Update( const float& fTimeDelta )
 		if( m_vOption.w < 0.f ) m_vOption.w = 0;
 	}
 
+	else if( m_vOption.w == 0.f )
+		Frozen();
+
 	return 0;
+}
+
+void CBanana::Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster )
+{
+	m_pActor->setName( "Banana" );
+	m_pActor->clearBodyFlag( NX_BF_KINEMATIC );
+	m_pActor->setLinearDamping( 1 );
+	m_pActor->setAngularDamping( 5 );
+	m_pActor->setGlobalPosition( vPos );
+	m_pActor->setLinearVelocity( vDir * 200.f );
+	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
+	m_eMasterGroup = eMaster;
+}
+
+void CBanana::Frozen( void )
+{
+	m_pActor->setName( "Banana" );
+	m_pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+	m_pActor->setGlobalPosition( NxVec3( 0.f, 0.f, -1000.f ) );
+	m_eMasterGroup = COL_DYNAMIC;
+	m_vOption.w = 1.f;
 }
 
 void CBanana::Render( ID3D11DeviceContext* pContext )
@@ -86,6 +101,7 @@ void CBanana::Render( ID3D11DeviceContext* pContext )
 
 DWORD CBanana::Release( void )
 {
+	CPhysics::GetInstance()->GetSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
 	CGameObject::Release();
 
 	delete this;
@@ -93,7 +109,7 @@ DWORD CBanana::Release( void )
 	return 0;
 }
 
-COL_GROUP CBanana::GetMasterCollisionGroup()
+COL_GROUP CBanana::GetMasterCollisionGroup() const
 {
 	return m_eMasterGroup;
 }

@@ -48,6 +48,7 @@
 #include <typeinfo>    //typeinfo
 
 #include <map>
+#include <queue>
 
 #include <DirectXMath.h>
 using namespace std;

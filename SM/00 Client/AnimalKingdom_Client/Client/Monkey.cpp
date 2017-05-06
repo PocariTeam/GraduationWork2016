@@ -64,13 +64,13 @@ DirectX::XMFLOAT4X4 CMonkey::GetWorld()
 	return Out;
 }
 
-void CMonkey::Create_Banana()
+void CMonkey::ThrowBanana()
 {
 	XMFLOAT4X4	mtxWorld = GetWorld();
 	XMVECTOR vDir = XMVector3Normalize( XMLoadFloat3( &XMFLOAT3( mtxWorld._13, mtxWorld._23, mtxWorld._33 ) ) );
 	XMFLOAT3 vNormalDir;
 	XMStoreFloat3( &vNormalDir, vDir );
-	CPhysics::GetInstance()->CreateBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast<COL_GROUP>( m_pCharacterController->getActor()->getGroup() ) );
+	CPhysics::GetInstance()->ThrowBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast<COL_GROUP>( m_pCharacterController->getActor()->getGroup() ) );
 }
 
 CMonkey* CMonkey::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )

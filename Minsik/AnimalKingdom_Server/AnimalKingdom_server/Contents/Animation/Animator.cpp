@@ -203,7 +203,7 @@ void CAnimator::Update( Player* pOwner, const float& fTimeDelta )
 			m_mapEvent.erase( map_iter );
 			break;
 		case 1:
-			pOwner->CreateBanana();
+			pOwner->ThrowBanana();
 			m_mapEvent.erase( map_iter );
 			break;
 		case 2:

@@ -61,7 +61,7 @@ public:
 	NxMat34*		getActorsOriginPose() {	return actorsOriginPose_; }
 	CStateMachine*  getFSM() { return stateMachine_; }
 	XMFLOAT4X4		GetWorld();
-	void			CreateBanana( void );
+	void			ThrowBanana( void );
 	void			sweapOn( void );
 	void			sweapOff( void );
 	void			setMoveDir(Vector3 vDir);

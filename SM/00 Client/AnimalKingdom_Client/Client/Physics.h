@@ -9,8 +9,10 @@
 #include "NXU_helper.h"
 #include "Enum.h"
 #include "Struct.h"
+#include "Banana.h"
 
 #define GRAVITY -9.81f
+#define BANANA_COUNT 20
 
 class CShader;
 class CMesh;
@@ -46,6 +48,7 @@ public:
 	HRESULT		Load_Kinematic( void );
 	HRESULT		Load_Scene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer, const char* pFileName, NXU::NXU_FileType eType = NXU::FT_XML );
 	NxScene*	GetScene() { return m_pScene; }
+	NxPhysicsSDK*	GetSDK() { return m_pPhysicsSDK; }
 private:
 	HRESULT		CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType eType );
 	HRESULT		SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer );
@@ -54,10 +57,12 @@ private:
 	void		CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape);
 public:
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, COL_GROUP eColGroup );
-	void		CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup );
+	void		CreateBanana( void );
+	void		ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup );
 private:
 	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_END ];
 	list<CShader*>*				m_pShaderlist{ nullptr };
+	queue<CBanana*>				m_BananaQueue;
 };
 
 #endif // Physics_h__

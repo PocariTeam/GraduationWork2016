@@ -219,7 +219,7 @@ void CAnimator::Update( CGameObject* pOwner, const float& fTimeDelta )
 			m_mapEvent.erase( map_iter );
 			break;
 		case 1:
-			( ( CPlayer* )pOwner )->Create_Banana();
+			( ( CPlayer* )pOwner )->ThrowBanana();
 			m_mapEvent.erase( map_iter );
 			break;
 		case 2:

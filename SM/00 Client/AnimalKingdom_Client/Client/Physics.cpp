@@ -147,6 +147,9 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 
 void CPhysics::Release_Scene( void )
 {
+	while( !m_BananaQueue.empty() )
+		m_BananaQueue.pop();
+
 	if( nullptr != m_pScene )
 	{
 		m_pCharacterControllerMgr->purgeControllers();
@@ -337,6 +340,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER2, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER3, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH );
+	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
+	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH );
 
 	// Create the default material
 	NxMaterial* pDefaultMaterial = m_pScene->getMaterialFromIndex( 0 );
@@ -531,19 +536,24 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			}
 		}
 
+		plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skybox );
+		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
+		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
+		plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
+		plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
+		plistShader[ RENDER_ALPHA ].push_back( CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" ) );
+		plistShader[ RENDER_DEBUG ].push_back( pShader_Debug );
+
 		auto set_iter_begin = setReleaseActorIndex.begin();
 		auto set_iter_end = setReleaseActorIndex.end();
 
 		for( ; set_iter_begin != set_iter_end; ++set_iter_begin )
 			m_pScene->releaseActor( *dpActorArray[( *set_iter_begin )] );
-	}
 
-	plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skybox );
-	plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
-	plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
-	plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
-	plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
-	plistShader[ RENDER_DEBUG ].push_back( pShader_Debug );
+		for( int i = 0; i < BANANA_COUNT; ++i )
+			CreateBanana();
+
+	}
 
 	CRenderer::GetInstance()->Copy_RenderGroup( plistShader );
 
@@ -604,7 +614,6 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dp
 	char szName[ MAX_PATH ] = "Character Controller Actor of ";
 	strcat_s( szName, MAX_PATH, dpActors[ 0 ]->getName() );
 	pOut->getActor()->setName( szName );
-	// m_pScene->releaseActor( *pActor );
 
 	return pOut;
 }
@@ -716,7 +725,7 @@ void CPhysics::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape
 	NX_ASSERT(triMesh.isValid());
 }
 
-void CPhysics::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
+void CPhysics::CreateBanana( void )
 {
 	if( nullptr == m_pShaderlist ) return;
 
@@ -725,22 +734,34 @@ void CPhysics::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 	tActor_Info.m_fWidth = 2.5f;
 	tActor_Info.m_fHeight = 8.f;
 	tActor_Info.m_fLength = 2.5f;
-	tActor_Info.m_vGlobalPosition.x = vPos.x;
-	tActor_Info.m_vGlobalPosition.y = vPos.y;
-	tActor_Info.m_vGlobalPosition.z = vPos.z;
+	tActor_Info.m_vGlobalPosition.x = 0.f;
+	tActor_Info.m_vGlobalPosition.y = 0.f;
+	tActor_Info.m_vGlobalPosition.z = -1000.f;
 
 	NxActor* pActor = CreateActor( "Banana", tActor_Info, COL_DYNAMIC );
-	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+	
 	// CCD 충돌체크
 	NxShape *shape = pActor->getShapes()[0];
 	NxSimpleTriangleMesh triMesh;
 	CreateMeshFromShape(triMesh, shape);
 	NxCCDSkeleton *newSkeleton = m_pPhysicsSDK->createCCDSkeleton(triMesh);
-	shape->setCCDSkeleton(newSkeleton);
-	// 바나나가 사라질 때 아래 함수를 호출해서 제거해주어야 함
-	// m_pPhysicsSDK->releaseCCDSkeleton(*(shape->getCCDSkeleton()));
+	delete[] triMesh.points;
+	delete[] triMesh.triangles;
 
-	CBanana*	pBanana = CBanana::Create( pActor, vDir, eColGroup );
+	shape->setCCDSkeleton(newSkeleton);
+
+	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;
-	m_pShaderlist[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pBanana );
+	m_pShaderlist[ RENDER_ALPHA ].front()->Add_RenderObject( pBanana );
+	m_BananaQueue.push( pBanana );
+}
+
+void CPhysics::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
+{
+	CBanana* pBanana = m_BananaQueue.front();
+	if( pBanana->GetMasterCollisionGroup() > COL_DYNAMIC ) return;
+	pBanana->Throw( vPos, vDir, eColGroup );
+	m_BananaQueue.pop();
+	m_BananaQueue.push( pBanana );
 }
