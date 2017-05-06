@@ -20,7 +20,7 @@ CJungle::CJungle()
 	, m_iPlayerID( -1 )
 	, m_pPlayerInfo( nullptr )
 	, m_dwPlayerCnt( 0 )
-	, m_fAccTime( 180.f )
+	, m_fAccTime( 120.f )
 	, m_bOverlapped( true )
 	, m_bDebug( true )
 {

@@ -70,7 +70,7 @@ void CMonkey::Create_Banana()
 	XMVECTOR vDir = XMVector3Normalize( XMLoadFloat3( &XMFLOAT3( mtxWorld._13, mtxWorld._23, mtxWorld._33 ) ) );
 	XMFLOAT3 vNormalDir;
 	XMStoreFloat3( &vNormalDir, vDir );
-	CPhysics::GetInstance()->CreateBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 10.f, mtxWorld._24 + vNormalDir.y * 10.f, mtxWorld._34 + vNormalDir.z * 10.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast<COL_GROUP>( m_pCharacterController->getActor()->getGroup() ) );
+	CPhysics::GetInstance()->CreateBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast<COL_GROUP>( m_pCharacterController->getActor()->getGroup() ) );
 }
 
 CMonkey* CMonkey::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )

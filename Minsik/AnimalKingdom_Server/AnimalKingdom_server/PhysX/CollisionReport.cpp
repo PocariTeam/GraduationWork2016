@@ -5,6 +5,7 @@
 #include "NxCapsuleController.h"
 #include "NxControllerManager.h"
 #include "..\Contents\Player.h"
+#include "..\Banana.h"
 
 bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
@@ -32,15 +33,14 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 	NxActor* actor = hit.controller->getActor();
 	NxCollisionGroup group = actor->getGroup();
 
-	if( hit.dir.y > -1.f ) return NX_ACTION_NONE;
-
 	if( ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) & group )
 	{
 		STATE eState = ( ( Player* )actor->userData )->getFSM()->GetCurrentState();
 		switch( eState )
 		{
 		case STATE_JUMP:
-			( ( Player* )actor->userData )->getAnimator()->Play();
+			if( hit.dir.y <= -1.f )
+				( ( Player* )actor->userData )->getAnimator()->Play();
 			break;
 		default:
 			break;
@@ -63,6 +63,22 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
+	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Banana" ) )
+	{
+		if( ( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( COL_STATIC | COL_DYNAMIC ) ) )
+		{
+			printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+			pair.actors[ 1 ]->setName( "Banana1" );
+		}
+
+		else if( !( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( ( CBanana* )pair.actors[ 1 ]->userData )->GetMasterCollisionGroup() ) )
+		{
+			printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+			( ( Player* )pair.actors[ 0 ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			pair.actors[ 1 ]->setName( "Banana1" );
+		}
+	}
+
 	//UINT roomNum = (UINT)pair.actors[0]->getScene().userData;
 	//RoomManager::getInstance().sendDynamicSync(roomNum);
 

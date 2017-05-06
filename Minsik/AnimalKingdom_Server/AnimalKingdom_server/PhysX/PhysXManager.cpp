@@ -160,10 +160,10 @@ void PhysXManager::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup
 	tActor_Info.m_vGlobalPosition.y = vPos.y;
 	tActor_Info.m_vGlobalPosition.z = vPos.z;
 
-	NxActor* pActor = CreateActor( COL_DYNAMIC/*eColGroup*/, "Banana", tActor_Info, iSceneNum );
+	NxActor* pActor = CreateActor( COL_DYNAMIC, "Banana", tActor_Info, iSceneNum );
 	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
 
-	CBanana*	pBanana = CBanana::Create( pActor, vDir );
+	CBanana*	pBanana = CBanana::Create( pActor, vDir, eColGroup );
 	pActor->userData = pBanana;
 }
 
@@ -181,7 +181,11 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 
 	physicsSDK_->setParameter(NX_SKIN_WIDTH, 0.2f);
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
-	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
+	scenes_[roomNum]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER1, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
+	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER2, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
+	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER3, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
+	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
+
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
 

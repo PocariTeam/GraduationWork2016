@@ -10,6 +10,7 @@
 #include "Animator.h"
 #include <NxShape.h>
 #include "Enum.h"
+#include "Banana.h"
 
 bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
@@ -37,20 +38,18 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 	NxActor* actor = hit.controller->getActor();
 	NxCollisionGroup group = actor->getGroup();
 
-	if( hit.dir.y > -1.f ) return NX_ACTION_NONE;
-
 	if( ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) & group )
 	{
 		STATE eState = ( ( CPlayer* )actor->userData )->GetFSM()->GetCurrentState();
 		switch( eState )
 		{
 		case STATE_JUMP:
-			( ( CPlayer* )actor->userData )->GetAnimator()->Play();
+			if( hit.dir.y <= -1.f )
+				( ( CPlayer* )actor->userData )->GetAnimator()->Play();
 			break;
 		default:
 			break;
 		}
-
 		/*if( 0.f == hit.dir.y )
 		{
 		NxF32 coeff = actor.getMass() * hit.length * 10.0f;
@@ -68,5 +67,12 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
-	printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+	/*if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Banana" ) 
+		&& ( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) )
+		&& !( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( ( CBanana* ) pair.actors[ 1 ]->userData )->GetMasterCollisionGroup() ) )
+	{
+		printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+		( ( CPlayer* )pair.actors[ 0 ]->userData )->GetFSM()->Change_State( STATE_BEATEN1 );
+		pair.actors[ 1 ]->setName( "Banana1" );
+	}*/
 }
