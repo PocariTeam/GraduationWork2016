@@ -7,6 +7,7 @@ class CAnimator;
 class CStateMachine;
 
 class Player {
+	int				hp_;
 	Session*		session_;
 	CHARACTER		character_;
 
@@ -66,4 +67,5 @@ public:
 	void			sweapOff( void );
 	void			setMoveDir(Vector3 vDir);
 	void			setState(STATE state);
+	int				getHp() { return hp_; }
 };

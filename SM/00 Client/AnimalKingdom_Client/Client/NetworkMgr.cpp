@@ -227,7 +227,7 @@ void CNetworkMgr::processPacket()
 			position.x = packet->playerPositions[i].position.x;
 			position.y = packet->playerPositions[i].position.y;
 			position.z = packet->playerPositions[i].position.z;
-			m_pScene->Sync( packet->playerPositions[ i ].id, position, packet->playerPositions[ i ].rotY , packet->playerPositions[i].state );
+			m_pScene->Sync( packet->playerPositions[ i ].id, packet->playerPositions[i].hp, position, packet->playerPositions[ i ].rotY , packet->playerPositions[i].state );
 		}
 		break;
 	}

@@ -29,7 +29,8 @@ typedef enum {
 	PAK_REQ_State,
 	PAK_ANS_SyncPlayer,
 	PAK_ANS_SyncDynamic,
-	PAK_ANS_SyncDynamicOne
+	PAK_ANS_SyncDynamicOne,
+	PAK_ANS_REMOVE_OBJ
 } PAK_ID;
 
 #pragma pack(push, 1)
@@ -80,6 +81,7 @@ struct PlayerInfo
 struct PlayerSyncInfo
 {
 	UINT		id;
+	INT			hp;
 	Vector3		position;
 	FLOAT		rotY;
 	STATE		state;
@@ -138,6 +140,12 @@ struct S_PlayerList
 	UINT		roomNum;
 	UINT		playerCount;
 	PlayerInfo	playerInfo[PLAYER_CAPACITY];
+};
+
+struct S_RemoveObj
+{
+	HEADER		header;
+	int			index;
 };
 
 /////////////////////////////////////////////////////////////

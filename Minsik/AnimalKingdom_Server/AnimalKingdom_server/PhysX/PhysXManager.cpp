@@ -315,7 +315,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 
 	for( int i = 0; i < BANANA_COUNT; ++i )
 		CreateBanana( roomNum );
-
+	
 	return true;
 }
 
@@ -523,6 +523,8 @@ S_SyncDynamic* PhysXManager::getDynamicInfo(UINT roomNum)
 	packet->header.packetID = PAK_ID::PAK_ANS_SyncDynamic;
 	packet->header.size = sizeof(S_SyncDynamic);
 
+
+	printf("ÃÑ ¾×ÅÍ¼ö: %d \n", nbActors);
 	unsigned int count = 0;
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
@@ -535,7 +537,7 @@ S_SyncDynamic* PhysXManager::getDynamicInfo(UINT roomNum)
 				break;
 			}
 
-			//printf("[index:%d] %s \n", i, aList[i]->getName());
+			printf("[index:%d] %s \n", i, aList[i]->getName());
 
 			packet->dynamicActors[count].index = i;
 

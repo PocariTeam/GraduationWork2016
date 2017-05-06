@@ -23,7 +23,7 @@ public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 public:
 	void			Move( const float& fTimeDelta );
-	void			Sync( NxVec3& vPos, float fRotateY, STATE state);
+	void			Sync( NxVec3& vPos, int hp, float fRotateY, STATE state);
 	virtual void	Attack( STATE eState );
 	virtual void	ThrowBanana( void );
 	virtual void	SweapOn( void );
@@ -44,6 +44,8 @@ public:
 public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType );
 protected:
+	int						m_iHp;
+
 	CStateMachine*			m_pStateMachine;
 	CAnimator*				m_pAnimator;
 	NxController*			m_pCharacterController;

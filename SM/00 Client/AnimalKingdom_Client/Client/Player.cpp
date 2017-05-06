@@ -16,16 +16,17 @@
 
 CPlayer::CPlayer()
 	: CGameObject()
-	, m_pStateMachine( nullptr )
-	, m_pAnimator( nullptr )
-	, m_pCharacterController( nullptr )
-	, m_pActorsOriginPose( nullptr )
-	, m_dwActorCnt( 0 )
-	, m_vRotate( 0.f, 0.f, 0.f )
-	, m_pInputMgr( CInputMgr::GetInstance() )
-	, m_fSpeed( 80.f )
-	, m_bSweap( false )
-	, m_fJumpHeight( 100.f )
+	, m_pStateMachine(nullptr)
+	, m_pAnimator(nullptr)
+	, m_pCharacterController(nullptr)
+	, m_pActorsOriginPose(nullptr)
+	, m_dwActorCnt(0)
+	, m_vRotate(0.f, 0.f, 0.f)
+	, m_pInputMgr(CInputMgr::GetInstance())
+	, m_fSpeed(80.f)
+	, m_bSweap(false)
+	, m_fJumpHeight(100.f)
+	, m_iHp(100)
 {
 }
 
@@ -156,7 +157,7 @@ void CPlayer::Move( const float& fTimeDelta )
 	m_vDir = m_vDir * m_fSpeed * fTimeDelta;
 }
 
-void CPlayer::Sync( NxVec3& vPos, float fRotateY, STATE state)
+void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
 {
 	// NxU32	dwCollisionFlag;
 	// vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );

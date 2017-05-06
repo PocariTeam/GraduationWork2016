@@ -11,6 +11,7 @@ Player::Player(Session * s, UINT room, BOOL master)
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 80.0f;
 	moveDir_ = NxVec3(0.0f, 0.0f, 0.0f);
+	hp_ = 100;
 }
 
 Player::~Player()

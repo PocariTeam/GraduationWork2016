@@ -80,6 +80,7 @@ struct PlayerInfo
 struct PlayerSyncInfo
 {
 	UINT		id;
+	INT			hp;
 	Vector3		position;
 	FLOAT		rotY;
 	STATE		state;
