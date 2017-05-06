@@ -27,12 +27,6 @@ PhysXManager::PhysXManager(void)
 
 PhysXManager::~PhysXManager()
 {
-	for (int i = 0; i < GAMEROOM_CAPACITY; i++)
-	{
-		ReleaseScene(i);
-	}
-
-
 	NXU::releasePersistentMemory();
 
 	if (physicsSDK_)
@@ -148,6 +142,29 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 
 }
 
+void PhysXManager::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape)
+{
+	NxBoxShape *boxShape = shape->isBox();
+	if (boxShape != NULL)
+	{
+		NxBox obb = NxBox(NxVec3(0.0f, 0.0f, 0.0f), boxShape->getDimensions(), NxMat33(NX_IDENTITY_MATRIX));
+		triMesh.points = new NxVec3[8];
+		triMesh.numVertices = 8;
+		triMesh.pointStrideBytes = sizeof(NxVec3);
+		triMesh.numTriangles = 2 * 6;
+		triMesh.triangles = new NxU32[2 * 6 * 3];
+		triMesh.triangleStrideBytes = sizeof(NxU32) * 3;
+		triMesh.flags = 0;
+		NxComputeBoxPoints(obb, (NxVec3 *)triMesh.points);
+		memcpy((NxU32 *)triMesh.triangles, NxGetBoxTriangles(), sizeof(NxU32) * 2 * 6 * 3);
+	}
+	else
+	{
+		NX_ASSERT(!"Invalid shape type");
+	}
+
+	NX_ASSERT(triMesh.isValid());
+}
 
 void PhysXManager::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum )
 {
@@ -162,6 +179,17 @@ void PhysXManager::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup
 
 	NxActor* pActor = CreateActor( COL_DYNAMIC, "Banana", tActor_Info, iSceneNum );
 	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+	pActor->setLinearDamping(1); // 감속하는 선속도
+	pActor->setAngularDamping(5); //  감속하는 각속도
+
+	// CCD 충돌체크
+	NxShape *shape = pActor->getShapes()[0];
+	NxSimpleTriangleMesh triMesh;        
+	CreateMeshFromShape(triMesh, shape);
+	NxCCDSkeleton *newSkeleton = physicsSDK_->createCCDSkeleton(triMesh);
+	shape->setCCDSkeleton(newSkeleton);
+	// 바나나가 사라질 때 아래 함수를 호출해서 제거해주어야 함
+	// physicsSDK_->releaseCCDSkeleton(*(shape->getCCDSkeleton()));
 
 	CBanana*	pBanana = CBanana::Create( pActor, vDir, eColGroup );
 	pActor->userData = pBanana;
@@ -179,7 +207,15 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 
 	CCTManager_[roomNum] = NxCreateControllerManager(userAllocator_);
 
-	physicsSDK_->setParameter(NX_SKIN_WIDTH, 0.2f);
+	physicsSDK_->setParameter(NX_SKIN_WIDTH, 2.5f); // 피부두께 (민감도)
+	physicsSDK_->setParameter(NX_CONTINUOUS_CD, true); // 고속충돌
+	physicsSDK_->setParameter(NX_CCD_EPSILON,0.1f); // 고속충돌 정밀도
+	physicsSDK_->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15); // 객체가 잠드는 최소한 선속도
+	physicsSDK_->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14); // 객체가 잠드는 최소한 각속도
+	physicsSDK_->setParameter(NX_BOUNCE_THRESHOLD, -200); //  통통 튀는 최소 속도
+	physicsSDK_->setParameter(NX_DYN_FRICT_SCALING, 100); // 동적객체 마찰
+	physicsSDK_->setParameter(NX_STA_FRICT_SCALING, 100); // 정적객체 마찰
+
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
 	scenes_[roomNum]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER1, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
 	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER2, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
@@ -188,7 +224,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH);
-
+	
 	// Create the default material
 	NxMaterial* pDefaultMaterial = scenes_[roomNum]->getMaterialFromIndex(0);
 	pDefaultMaterial->setRestitution(0.0);
@@ -266,7 +302,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 
 void PhysXManager::ReleaseScene(UINT roomNum)
 {
-	// SAFE_LOCK(lock_);
+	SAFE_LOCK(lock_);
 
 	if (CCTManager_[roomNum])
 	{

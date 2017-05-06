@@ -321,6 +321,15 @@ HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType 
 HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer )
 {
 	m_pShaderlist = plistShader;
+	
+	m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 2.5f);
+	m_pPhysicsSDK->setParameter(NX_CONTINUOUS_CD, true);
+	m_pPhysicsSDK->setParameter(NX_CCD_EPSILON, 0.1f);
+	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15);
+	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14);
+	m_pPhysicsSDK->setParameter(NX_BOUNCE_THRESHOLD, -200);
+	m_pPhysicsSDK->setParameter(NX_DYN_FRICT_SCALING, 100);
+	m_pPhysicsSDK->setParameter(NX_STA_FRICT_SCALING, 100);
 
 	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.2f );
 	m_pScene->setUserContactReport( &m_CollisionReport );
@@ -683,6 +692,30 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 	}
 }
 
+void CPhysics::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape)
+{
+	NxBoxShape *boxShape = shape->isBox();
+	if (boxShape != NULL)
+	{
+		NxBox obb = NxBox(NxVec3(0.0f, 0.0f, 0.0f), boxShape->getDimensions(), NxMat33(NX_IDENTITY_MATRIX));
+		triMesh.points = new NxVec3[8];
+		triMesh.numVertices = 8;
+		triMesh.pointStrideBytes = sizeof(NxVec3);
+		triMesh.numTriangles = 2 * 6;
+		triMesh.triangles = new NxU32[2 * 6 * 3];
+		triMesh.triangleStrideBytes = sizeof(NxU32) * 3;
+		triMesh.flags = 0;
+		NxComputeBoxPoints(obb, (NxVec3 *)triMesh.points);
+		memcpy((NxU32 *)triMesh.triangles, NxGetBoxTriangles(), sizeof(NxU32) * 2 * 6 * 3);
+	}
+	else
+	{
+		NX_ASSERT(!"Invalid shape type");
+	}
+
+	NX_ASSERT(triMesh.isValid());
+}
+
 void CPhysics::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 {
 	if( nullptr == m_pShaderlist ) return;
@@ -698,6 +731,15 @@ void CPhysics::CreateBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 
 	NxActor* pActor = CreateActor( "Banana", tActor_Info, COL_DYNAMIC );
 	// pActor->raiseBodyFlag( NX_BF_KINEMATIC );
+	// CCD 충돌체크
+	NxShape *shape = pActor->getShapes()[0];
+	NxSimpleTriangleMesh triMesh;
+	CreateMeshFromShape(triMesh, shape);
+	NxCCDSkeleton *newSkeleton = m_pPhysicsSDK->createCCDSkeleton(triMesh);
+	shape->setCCDSkeleton(newSkeleton);
+	// 바나나가 사라질 때 아래 함수를 호출해서 제거해주어야 함
+	// m_pPhysicsSDK->releaseCCDSkeleton(*(shape->getCCDSkeleton()));
+
 	CBanana*	pBanana = CBanana::Create( pActor, vDir, eColGroup );
 	pActor->userData = pBanana;
 	m_pShaderlist[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pBanana );
