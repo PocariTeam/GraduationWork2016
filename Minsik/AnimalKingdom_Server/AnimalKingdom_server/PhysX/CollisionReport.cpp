@@ -63,19 +63,27 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
+	int iBananaIndex{ -1 };
+
 	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Banana" ) )
+		iBananaIndex = 1;
+	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Banana" ) )
+		iBananaIndex = 0;
+
+	if( -1 != iBananaIndex )
 	{
-		if( ( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( COL_STATIC | COL_DYNAMIC ) ) )
+		int iNoBananaIndex = ( iBananaIndex == 0 ) ? 1 : 0;
+
+		// printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+		if( ( COL_GROUP( pair.actors[ iBananaIndex ]->getGroup() ) & ( COL_STATIC | COL_DYNAMIC ) ) )
 		{
-			printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
-			pair.actors[ 1 ]->setName( "Banana1" );
+			pair.actors[ iBananaIndex ]->setName( "Banana1" );
 		}
 
-		else if( !( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( ( CBanana* )pair.actors[ 1 ]->userData )->GetMasterCollisionGroup() ) )
+		else if( !( COL_GROUP( pair.actors[ iBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ 1 ]->userData )->GetMasterCollisionGroup() ) )
 		{
-			printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
-			( ( Player* )pair.actors[ 0 ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
-			pair.actors[ 1 ]->setName( "Banana1" );
+			( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			pair.actors[ iBananaIndex ]->setName( "Banana1" );
 		}
 	}
 

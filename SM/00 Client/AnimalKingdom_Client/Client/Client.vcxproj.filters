@@ -857,5 +857,8 @@
     <FxCompile Include="..\Executable\Resources\Shader\Number_UI.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh_Alpha.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -67,12 +67,27 @@ NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& 
 
 void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 {
-	/*if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Banana" ) 
-		&& ( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) )
-		&& !( COL_GROUP( pair.actors[ 0 ]->getGroup() ) & ( ( CBanana* ) pair.actors[ 1 ]->userData )->GetMasterCollisionGroup() ) )
+	int iBananaIndex{ -1 };
+
+	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Banana" ) )
+		iBananaIndex = 1;
+	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Banana" ) )
+		iBananaIndex = 0;
+
+	if( -1 != iBananaIndex )
 	{
+		int iNoBananaIndex = ( iBananaIndex == 0 ) ? 1 : 0;
+
 		printf( "C %s 와 %s가 충돌! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
-		( ( CPlayer* )pair.actors[ 0 ]->userData )->GetFSM()->Change_State( STATE_BEATEN1 );
-		pair.actors[ 1 ]->setName( "Banana1" );
-	}*/
+		if( ( COL_GROUP( pair.actors[ iBananaIndex ]->getGroup() ) & ( COL_STATIC | COL_DYNAMIC ) ) )
+		{
+			pair.actors[ iBananaIndex ]->setName( "Banana1" );
+		}
+
+		else if( !( COL_GROUP( pair.actors[ iBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ 1 ]->userData )->GetMasterCollisionGroup() ) )
+		{
+			( ( CPlayer* )pair.actors[ iNoBananaIndex ]->userData )->GetFSM()->Change_State( STATE_BEATEN1 );
+			pair.actors[ iBananaIndex ]->setName( "Banana1" );
+		}
+	}
 }

@@ -175,8 +175,8 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 {
 	// 블렌딩 설정한다.
 	// Z값에 따른 소팅을 수행한다.
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
-	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_WRITE );
 
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
@@ -187,8 +187,8 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	}
 
 	// 블렌딩 설정해제
-	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
 }
 
 void CRenderer::Render_UI( ID3D11DeviceContext* pContext )

@@ -36,6 +36,7 @@ HRESULT CBanana::Initialize( NxActor* pActor, NxVec3& vDir, COL_GROUP eMaster )
 	m_pActor->setLinearVelocity( m_vDir * 200.f );
 	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
 	m_eMasterGroup = eMaster;
+	m_vOption.w = 1.f;
 
 	return S_OK;
 }
@@ -67,6 +68,13 @@ XMFLOAT4X4 CBanana::GetWorld()
 
 int CBanana::Update( const float& fTimeDelta )
 {
+	if( 0 == strcmp( m_pActor->getName(), "Banana1" )
+		&& m_vOption.w != 0.f )
+	{
+		m_vOption.w -= fTimeDelta;
+		if( m_vOption.w < 0.f ) m_vOption.w = 0;
+	}
+
 	return 0;
 }
 
