@@ -53,7 +53,7 @@ void PhysXManager::SetCollisionGroup(NxActor* pActor, NxCollisionGroup eGroup)
 		dpActorShapeArray[iActorShapeCnt]->setGroup(eGroup);
 }
 
-BOOL PhysXManager::LoadSceneFromFile(UINT roomNum)
+BOOL PhysXManager::LoadSceneFromFile(UINT roomNum, map<UINT, Player*>* pmapPlayers )
 {
 	SAFE_LOCK(lock_);
 
@@ -84,7 +84,7 @@ BOOL PhysXManager::LoadSceneFromFile(UINT roomNum)
 	if (success)
 	{
 		SLog(L"* Room [%d]'s Scene loaded from file '%S'.", roomNum, fileName);
-		return SetupScene(roomNum);
+		return SetupScene(roomNum, pmapPlayers );
 	}
 
 	return success;
@@ -203,7 +203,7 @@ void PhysXManager::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup,
 	m_BananaQueue[ iSceneNum ].push( pBanana );
 }
 
-BOOL PhysXManager::SetupScene( UINT roomNum )
+BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 {
 	SAFE_LOCK(lock_);
 
@@ -250,6 +250,8 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 	UINT currentPlayer = 0;
 	UINT playerCount = RoomManager::getInstance().getPlayerCountRoom(roomNum);
 
+	auto player_iter = pmapPlayers->begin();
+
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
 		NxActor *a = aList[i];
@@ -276,9 +278,13 @@ BOOL PhysXManager::SetupScene( UINT roomNum )
 				a->setGroup( COL_GROUP( COL_PLAYER1 << currentPlayer ) );
 				SetCollisionGroup(a, COL_GROUP( COL_PLAYER1 << currentPlayer ) );
 				CreateCharacterController(a, a->getGlobalPosition(), 2.8f,roomNum);
+				UINT iActorCnt{};
+				NxActor** dpActors = CreateCharacterActors( COL_GROUP( COL_PLAYER1 << currentPlayer ), player_iter->second->getPlayerInfo().character, roomNum, iActorCnt );
+				player_iter->second->setActorArray( dpActors, iActorCnt );
 				aList = scenes_[ roomNum ]->getActors();
 				setReleaseActorIndex.insert( i );
 				currentPlayer++;
+				player_iter++;
 			}
 			else
 			{
@@ -524,7 +530,7 @@ S_SyncDynamic* PhysXManager::getDynamicInfo(UINT roomNum)
 	packet->header.size = sizeof(S_SyncDynamic);
 
 
-	printf("ÃÑ ¾×ÅÍ¼ö: %d \n", nbActors);
+	// printf("ÃÑ ¾×ÅÍ¼ö: %d \n", nbActors);
 	unsigned int count = 0;
 	for (NxU32 i = 0; i < nbActors; i++)
 	{
@@ -537,7 +543,7 @@ S_SyncDynamic* PhysXManager::getDynamicInfo(UINT roomNum)
 				break;
 			}
 
-			printf("[index:%d] %s \n", i, aList[i]->getName());
+			// printf("[index:%d] %s \n", i, aList[i]->getName());
 
 			packet->dynamicActors[count].index = i;
 

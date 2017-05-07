@@ -11,6 +11,7 @@
 class UserAllocator;
 class NxControllerManager;
 class NxController;
+class Player;
 
 typedef struct tagActorInfo
 {
@@ -51,8 +52,8 @@ public:
 	NxActor*				CreateActor( COL_GROUP eColgroup, const char* pActorName, const ACTOR_INFO& tActor_Info, UINT iSceneNum );
 
 	BOOL					initPhysX();
-	BOOL					LoadSceneFromFile( UINT roomNum );
-	BOOL					SetupScene( UINT roomNum );
+	BOOL					LoadSceneFromFile( UINT roomNum, map<UINT, Player*>* pmapPlayers );
+	BOOL					SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers );
 	void					ReleaseScene( UINT roomNum );
 	void					updateScene( UINT roomNum, float fTimeDelta );
 	NxControllerManager*	getCCTManager( UINT roomNum ) { return CCTManager_[ roomNum ]; };

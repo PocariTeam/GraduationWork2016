@@ -171,7 +171,7 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 	NxActor** ppActors = m_pScene->getActors();
 	unsigned int nbActors = m_pScene->getNbActors();
 
-	printf("ця ╬вем╪Ж: %d \n", nbActors);
+	// printf("ця ╬вем╪Ж: %d \n", nbActors);
 
 	for (unsigned int i = 0; i < packet->dynamicActorCount; ++i)
 	{
@@ -184,7 +184,7 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 			break;
 		}
 
-		printf("[index:%d] %s \n", j, ppActors[j]->getName());
+		// printf("[index:%d] %s \n", j, ppActors[j]->getName());
 
 		Vector3 p = packet->dynamicActors[i].position;
 		Vector4 o = packet->dynamicActors[i].orient;

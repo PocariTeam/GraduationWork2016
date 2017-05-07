@@ -77,7 +77,7 @@ BOOL GameRoom::startGame(Session* session)
 
 	if (startCheck)
 	{
-		BOOL loadCheck = PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber());
+		BOOL loadCheck = PhysXManager::getInstance().LoadSceneFromFile(session->getRoomNumber(), &players_ );
 		if (loadCheck && GameRoom::setupGame())
 		{
 			isPlaying_ = true;
@@ -293,12 +293,9 @@ BOOL GameRoom::setupGame()
 	for (auto p = players_.begin(); p != players_.end(); p++)
 	{
 		NxController* pController = cctManager->getController(i);
-		UINT iActorCnt{};
 		CHARACTER character = (p->second)->getPlayerInfo().character;
 
-		NxActor** dpActors = PhysXManager::getInstance().CreateCharacterActors( COL_GROUP( COL_PLAYER1 << i ), character, roomNum_, iActorCnt);
 		pController->getActor()->setGroup( COL_GROUP( COL_PLAYER1 << i ) );
-		(p->second)->setActorArray(dpActors, iActorCnt);
 		(p->second)->setCCT(pController);
 		(p->second)->setAnimator(CAnimationMgr::getInstance().Clone(character));
 		i++;
