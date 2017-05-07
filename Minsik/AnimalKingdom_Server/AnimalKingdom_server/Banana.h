@@ -5,6 +5,9 @@
 
 #include "PhysX\CollisionReport.h"
 
+#define FROZEN_DELAY_TICK		3000
+
+
 class CBanana
 {
 private:

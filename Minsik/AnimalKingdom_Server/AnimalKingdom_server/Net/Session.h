@@ -8,11 +8,6 @@
 
 //////////////////////////////////////////////////////////////////////
 
-typedef enum {
-	IO_RECV,
-	IO_SEND,
-	IO_ERROR
-} IO_OPERATION;
 
 struct overlappedEx
 {

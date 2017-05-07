@@ -110,6 +110,13 @@ void RoomManager::sendStartGame(UINT32 roomNum)
 	roomArray_[roomNum]->sendStartGame();
 }
 
+BOOL RoomManager::getPlaying(UINT roomNum)
+{
+	SAFE_LOCK(lock_);
+
+	return roomArray_[roomNum]->getPlaying();
+}
+
 BOOL RoomManager::setPlayerReady(Session* session, BOOL b)
 {
 	SAFE_LOCK(lock_);

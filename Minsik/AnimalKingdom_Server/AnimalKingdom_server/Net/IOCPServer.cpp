@@ -55,6 +55,7 @@ bool IOCPServer::run()
 	}
 	this->createListenSocket();
 
+	timerThread_ = MAKE_THREAD(IOCPServer, timerThread);
 	acceptThread_ = MAKE_THREAD(IOCPServer, acceptThread);
 	for (int i = 0; i < workerThreadCount_; ++i) {
 		workerThread_[i] = MAKE_THREAD(IOCPServer, workerThread);
@@ -69,6 +70,13 @@ bool IOCPServer::run()
 	}
 
 	return true;
+}
+
+void IOCPServer::pushEvent(event_obj *obj, unsigned int startTime, IO_OPERATION type)
+{
+	timerLock_.lock();
+	timer_priority_Queue.push(event_node{ obj, startTime, type });
+	timerLock_.unlock();
 }
 
 void IOCPServer::onAccept(SOCKET accepter, SOCKADDR_IN addrInfo)
@@ -231,15 +239,47 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			SessionManager::getInstance().closeSession(session);
 			continue;
 		}
+		case EVENT_BANANA:
+		{
+			if (RoomManager::getInstance().getPlaying(((event_obj*)session)->sceneNum))
+			{
+				((CBanana*)((event_obj*)session)->obj_ptr)->Frozen();
+			}
+			delete session;
+			delete ioData;
+			continue;
+		}
 		}
 
 	}
 	return 0;
 }
 
+bool IOCPServer::timerThread()
+{
+	while (true)
+	{
+		Sleep(1);
+		timerLock_.lock();
+		while (false == timer_priority_Queue.empty())
+		{
+			if (timer_priority_Queue.top().startTime > GetTickCount()) break;
+			event_node ev = timer_priority_Queue.top();
+			timer_priority_Queue.pop();
+			timerLock_.unlock();
+			overlappedEx *send_over = new overlappedEx;
+			memset(send_over, 0, sizeof(overlappedEx));
+			send_over->ioType_ = ev.type;
+			PostQueuedCompletionStatus(iocp_, 1, (ULONG_PTR)ev.eventObj, &(send_over->overlapped_));
+			timerLock_.lock();
+		}
+		timerLock_.unlock();
+	}
+}
+
 void IOCPServer::command(wstr_t cmd)
 {
-	shutdownServer();
+	// shutdownServer();
 
 	/*
 	overlappedEx over;

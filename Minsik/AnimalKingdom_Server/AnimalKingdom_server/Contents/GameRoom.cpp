@@ -385,3 +385,9 @@ void GameRoom::sendDynamicOneSync(NxActor*actor)
 	}
 	SAFE_DELETE(dynamicPacket);
 }
+
+BOOL GameRoom::getPlaying()
+{
+	SAFE_LOCK(lock_);
+	return isPlaying_;
+}

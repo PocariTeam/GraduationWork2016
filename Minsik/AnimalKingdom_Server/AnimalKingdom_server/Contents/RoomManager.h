@@ -32,4 +32,6 @@ public:
 
 	void			sendPlayerList(UINT32 roomNum);
 	void			sendStartGame(UINT32 roomNum);
+
+	BOOL			getPlaying(UINT roomNum);
 };

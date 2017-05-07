@@ -36,4 +36,5 @@ public:
 	void			sendPlayerSync();
 	void			sendDynamicSync();
 	void			sendDynamicOneSync(NxActor* actor);
+	BOOL			getPlaying();
 };

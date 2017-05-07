@@ -60,6 +60,8 @@ void CBanana::Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster )
 	m_pActor->setLinearVelocity( vDir * 200.f );
 	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
 	m_eMasterGroup = eMaster;
+
+	IOCPServer::getInstance().pushEvent(new event_obj{ m_iSceneNum, (void*)this  }, GetTickCount() + FROZEN_DELAY_TICK, EVENT_BANANA);
 }
 
 void CBanana::Frozen( void )
