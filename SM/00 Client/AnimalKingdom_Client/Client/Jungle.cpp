@@ -14,6 +14,8 @@
 #include "Normal_UI.h"
 #include "InputMgr.h"
 #include "ThirdCamera.h"
+#include "MeshMgr.h"
+#include "Section.h"
 
 CJungle::CJungle()
 	: CScene()
@@ -40,6 +42,21 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 
+	// Section 1
+	CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
+	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
+	CSection*	pSection = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -20.f, 130.f, 360.f ), XMFLOAT3( 180.f, 45.f, 45.f ) );
+	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pSection );
+	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
+	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
+	pSection = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -170.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
+	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pSection );
+	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
+	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
+	pSection = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( 130.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
+	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pSection );
+
+	// Timer UI
 	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI" );
 	m_dpTime_UI = new CNumber_UI*[ NUM_END ];
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_TEN ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( -0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
@@ -49,6 +66,8 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	// Time ±ÛÀÚ
 
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 	CGameObject* pTime = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Time" ), XMFLOAT4( -0.3f, 0.9f, 0.15f, 0.1f ) );
@@ -115,7 +134,8 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CScene::Render( pContext );
 
 	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
-	CPhysics::GetInstance()->Render( pContext );
+	if( CRenderer::GetInstance()->m_bWireFrame )
+		CPhysics::GetInstance()->Render( pContext );
 
 	CRenderer::GetInstance()->Render( pContext );
 }

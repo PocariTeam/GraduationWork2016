@@ -250,6 +250,12 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\02 Third">
       <UniqueIdentifier>{f0d31040-7aa6-46d6-be00-0a42497bcc9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\97 etc">
+      <UniqueIdentifier>{9994a15f-e11c-436a-8874-de392621cae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\04 Section">
+      <UniqueIdentifier>{ff9edfbc-5bdc-409d-aa33-c43b0de1530b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -555,6 +561,9 @@
     <ClInclude Include="ThirdCamera.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\02 Third</Filter>
     </ClInclude>
+    <ClInclude Include="Section.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\04 Section</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -808,6 +817,9 @@
     </ClCompile>
     <ClCompile Include="ThirdCamera.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\02 Third</Filter>
+    </ClCompile>
+    <ClCompile Include="Section.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\04 Section</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
