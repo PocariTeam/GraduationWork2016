@@ -16,6 +16,7 @@ HRESULT CSkybox::Initialize( CMesh* pMesh, CTexture* pTexture )
 {
 	m_pMesh = pMesh;
 	m_pTexture = pTexture;
+	XMStoreFloat4x4( &m_mtxWorld, XMMatrixIdentity() );
 
 	return S_OK;
 }
@@ -31,13 +32,6 @@ CSkybox* CSkybox::Create( CMesh* pMesh, CTexture* pTexture )
 	}
 
 	return pSkyBox;
-}
-
-XMFLOAT4X4 CSkybox::GetWorld()
-{
-	XMFLOAT4X4	Out;
-	XMStoreFloat4x4( &Out, XMMatrixIdentity() );
-	return Out;
 }
 
 void CSkybox::Render( ID3D11DeviceContext* pContext )

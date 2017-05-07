@@ -18,7 +18,7 @@ private:
 public:
 	static CBanana* Create( NxActor* pActor, COL_GROUP eMaster );
 public:
-	XMFLOAT4X4	GetWorld();
+	XMFLOAT4X4*	GetWorld();
 public:
 	int			Update( const float& fTimeDelta );
 	void		Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster );

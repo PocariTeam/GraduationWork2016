@@ -6,8 +6,9 @@
 
 CThirdCamera::CThirdCamera()
 	: CCamera()
-	, m_pDestActor( nullptr )
-	, m_vOffset()
+	, m_pDestWorldTranspose( nullptr )
+	, m_vOffset( 0.f, 0.f, 0.f )
+	, m_vCurrent( 0.f, 0.f, 0.f )
 {
 }
 
@@ -15,24 +16,26 @@ CThirdCamera::~CThirdCamera()
 {
 }
 
-HRESULT CThirdCamera::Initialize( ID3D11Device* pDevice, NxActor* pActor, XMFLOAT3& vOffset )
+HRESULT CThirdCamera::Initialize( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset )
 {
-	m_pDestActor = pActor;
+	m_pDestWorldTranspose = pWorldTranspose;
 	m_vOffset = vOffset;
-	NxVec3 vAt = pActor->getGlobalPosition();
-	m_vAt = XMFLOAT3( vAt.x, vAt.y, vAt.z );
+	m_vAt = XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 );
+	m_vCurrent = XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 );
 	m_vEye = XMFLOAT3( m_vAt.x + m_vOffset.x, m_vAt.y + m_vOffset.y, m_vAt.z + m_vOffset.z );
-	CalculateViewMatrix( &m_mtxView, m_vEye, m_vAt );
+	
+	CalculateViewMatrix( &m_mtxView, m_vEye, m_vCurrent );
+	m_fSpeed = 1.f;
 
 	return CCamera::Initialize( pDevice );
 }
 
 
-CThirdCamera* CThirdCamera::Create( ID3D11Device* pDevice, NxActor* pActor, XMFLOAT3& vOffset )
+CThirdCamera* CThirdCamera::Create( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset )
 {
 	CThirdCamera* pThirdCamera = new CThirdCamera;
 
-	if( FAILED( pThirdCamera->Initialize( pDevice, pActor, vOffset ) ) )
+	if( FAILED( pThirdCamera->Initialize( pDevice, pWorldTranspose, vOffset ) ) )
 	{
 		pThirdCamera->Release();
 		pThirdCamera = nullptr;
@@ -43,16 +46,19 @@ CThirdCamera* CThirdCamera::Create( ID3D11Device* pDevice, NxActor* pActor, XMFL
 
 int CThirdCamera::Update( const float& fTimeDelta )
 {
-	NxVec3		vActorPos = m_pDestActor->getGlobalPosition();
-	XMVECTOR	vAt{ XMLoadFloat3( &XMFLOAT3( vActorPos.x, vActorPos.y, vActorPos.z ) ) };
+	XMVECTOR	vAt{ XMLoadFloat3( &XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 ) ) };
+	XMVECTOR	vCurrent{ XMLoadFloat3( &m_vCurrent ) };
 	XMVECTOR	vEye{ XMLoadFloat3( &m_vOffset ) };
 
-	vEye += vAt;
+	vCurrent = XMVectorLerp( vAt, vCurrent, fTimeDelta * fTimeDelta );
+
+	vEye += vCurrent;
 
 	XMStoreFloat3( &m_vEye, vEye );
 	XMStoreFloat3( &m_vAt, vAt );
+	XMStoreFloat3( &m_vCurrent, vCurrent );
 
-	CalculateViewMatrix( &m_mtxView, m_vEye, m_vAt );
+	CalculateViewMatrix( &m_mtxView, m_vEye, m_vCurrent );
 
 	return 0;
 }

@@ -52,7 +52,7 @@ void CInstancingShader::Render( ID3D11DeviceContext* pContext )
 	m_vecRenderObject.front()->GetTexture()->Render( pContext );
 	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
 	{
-		SetConstantBuffer( pContext, m_vecRenderObject[ i ]->GetWorld(), m_vecRenderObject[ i ]->GetOption() );
+		SetConstantBuffer( pContext, *m_vecRenderObject[ i ]->GetWorld(), m_vecRenderObject[ i ]->GetOption() );
 		m_vecRenderObject[ i ]->Render( pContext );
 	}
 }
@@ -170,7 +170,7 @@ void CInstancingShader::SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOA
 		CB_WORLD* pStruct = ( CB_WORLD* )MappedSubresource.pData;
 		for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
 		{
-			pStruct[ i ].m_mtxWorld = m_vecRenderObject[ i ]->GetWorld();
+			pStruct[ i ].m_mtxWorld = *m_vecRenderObject[ i ]->GetWorld();
 			pStruct[ i ].m_vOption = m_vecRenderObject[ i ]->GetOption();
 		}
 		iStride = sizeof( CB_WORLD );

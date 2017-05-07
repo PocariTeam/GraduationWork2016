@@ -74,10 +74,10 @@ int CThreeD_UI::Update( const float& fTimeDelta )
 	XMFLOAT4 vLerp_Store;
 	XMStoreFloat4( &vLerp_Store, vLerp );
 
-	m_mtxPosSize._11 = vLerp_Store.x;
-	m_mtxPosSize._21 = vLerp_Store.y;
-	m_mtxPosSize._31 = vLerp_Store.z;
-	m_mtxPosSize._41 = vLerp_Store.w;
+	m_mtxWorld._11 = vLerp_Store.x;
+	m_mtxWorld._21 = vLerp_Store.y;
+	m_mtxWorld._31 = vLerp_Store.z;
+	m_mtxWorld._41 = vLerp_Store.w;
 
 	return 0;
 }
@@ -105,13 +105,11 @@ void CThreeD_UI::SetAnimator( CAnimator* pAnimator )
 	m_pAnimator = pAnimator;
 }
 
-DirectX::XMFLOAT4X4 CThreeD_UI::GetWorld()
+DirectX::XMFLOAT4X4* CThreeD_UI::GetWorld()
 {
-	XMFLOAT4X4 Out;
+	XMMATRIX mtxOut = XMMatrixMultiply( XMMatrixScaling( m_mtxWorld._31, m_mtxWorld._41, 1.f ), XMMatrixRotationY( XM_PI ) );
+	mtxOut = XMMatrixMultiplyTranspose( mtxOut, XMMatrixTranslation( m_mtxWorld._11, m_mtxWorld._21, 0.f ) );
+	XMStoreFloat4x4( &m_mtxPosSize, mtxOut );
 
-	XMMATRIX mtxOut = XMMatrixMultiply( XMMatrixScaling( m_mtxPosSize._31, m_mtxPosSize._41, 1.f ), XMMatrixRotationY( XM_PI ) );
-	mtxOut = XMMatrixMultiplyTranspose( mtxOut, XMMatrixTranslation( m_mtxPosSize._11, m_mtxPosSize._21, 0.f ) );
-	XMStoreFloat4x4( &Out, mtxOut );
-
-	return Out;
+	return &m_mtxPosSize;
 }

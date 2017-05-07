@@ -5,6 +5,7 @@
 #include "AnimationMgr.h"
 #include "Animator.h"
 #include "Player.h"
+#include "Mathematics.h"
 
 CChameleon::CChameleon()
 	: CPlayer()
@@ -32,6 +33,13 @@ int CChameleon::Update( const float& fTimeDelta )
 {
 	CPlayer::Update( fTimeDelta );
 
+	XMMATRIX mtxWorld;
+	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+	m_mtxWorld._24 -= 2.f;
+	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
+
+	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+
 	return 0;
 }
 
@@ -57,10 +65,10 @@ void CChameleon::Attack( STATE eState )
 	switch( eState )
 	{
 	case STATE_ATT1:
-		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
+		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 2 ];
 		break;
 	case STATE_ATT2:
-		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 3 ];
+		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
 		break;
 	default:
 		return ;

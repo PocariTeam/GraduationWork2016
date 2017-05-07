@@ -48,8 +48,6 @@ void CButton_UI::Render( ID3D11DeviceContext* pContext )
 
 int CButton_UI::Update( const float& fTimeDelta )
 {
-	CUserInterface::Update( fTimeDelta );
-
 	if( m_fLerpTime == 1.f )
 		return 0;
 
@@ -60,10 +58,10 @@ int CButton_UI::Update( const float& fTimeDelta )
 	XMFLOAT4 vLerp_Store;
 	XMStoreFloat4( &vLerp_Store, vLerp );
 
-	m_mtxPosSize._11 = vLerp_Store.x;
-	m_mtxPosSize._21 = vLerp_Store.y;
-	m_mtxPosSize._31 = vLerp_Store.z;
-	m_mtxPosSize._41 = vLerp_Store.w;
+	m_mtxWorld._11 = vLerp_Store.x;
+	m_mtxWorld._21 = vLerp_Store.y;
+	m_mtxWorld._31 = vLerp_Store.z;
+	m_mtxWorld._41 = vLerp_Store.w;
 
 	return 0;
 }
@@ -85,10 +83,10 @@ bool CButton_UI::isCollide( POINT& ptMouse, bool bClick )
 
 	RECT	rcCollision;
 
-	rcCollision.top = long( ( -1.f * m_mtxPosSize._21 + 1.f ) * ( float )g_wWinsizeY * 0.5f );
-	rcCollision.left = long( ( m_mtxPosSize._11 + 1.f ) * ( float )g_wWinsizeX * 0.5f );
-	rcCollision.bottom = long( ( -1.f *m_mtxPosSize._21 + 1.f + m_mtxPosSize._41 ) * ( float )g_wWinsizeY * 0.5f );
-	rcCollision.right = long( ( m_mtxPosSize._11 + 1.f + m_mtxPosSize._31 ) * ( float )g_wWinsizeX * 0.5f );
+	rcCollision.top = long( ( -1.f * m_mtxWorld._21 + 1.f ) * ( float )g_wWinsizeY * 0.5f );
+	rcCollision.left = long( ( m_mtxWorld._11 + 1.f ) * ( float )g_wWinsizeX * 0.5f );
+	rcCollision.bottom = long( ( -1.f *m_mtxWorld._21 + 1.f + m_mtxWorld._41 ) * ( float )g_wWinsizeY * 0.5f );
+	rcCollision.right = long( ( m_mtxWorld._11 + 1.f + m_mtxWorld._31 ) * ( float )g_wWinsizeX * 0.5f );
 
 	if( PtInRect( &rcCollision, ptMouse ) )
 	{

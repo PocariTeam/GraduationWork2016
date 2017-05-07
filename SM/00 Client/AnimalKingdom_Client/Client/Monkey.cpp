@@ -33,6 +33,13 @@ int CMonkey::Update( const float& fTimeDelta )
 {
 	CPlayer::Update( fTimeDelta );
 
+	XMMATRIX mtxWorld;
+	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+	m_mtxWorld._24 -= 2.8f;
+	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 21.209435f, 21.209435f, 21.209435f ) );
+
+	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+
 	return 0;
 }
 
@@ -50,23 +57,9 @@ DWORD CMonkey::Release( void )
 	return 0;
 }
 
-DirectX::XMFLOAT4X4 CMonkey::GetWorld()
-{
-	XMMATRIX mtxWorld;
-	XMFLOAT4X4 mtxStoreWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	mtxStoreWorld._24 -= 6.8f;
-	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &mtxStoreWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 21.209435f, 21.209435f, 21.209435f ) );
-
-	XMFLOAT4X4 Out;
-
-	XMStoreFloat4x4( &Out, mtxWorld );
-
-	return Out;
-}
-
 void CMonkey::ThrowBanana()
 {
-	XMFLOAT4X4	mtxWorld = GetWorld();
+	XMFLOAT4X4	mtxWorld = *GetWorld();
 	XMVECTOR vDir = XMVector3Normalize( XMLoadFloat3( &XMFLOAT3( mtxWorld._13, mtxWorld._23, mtxWorld._33 ) ) );
 	XMFLOAT3 vNormalDir;
 	XMStoreFloat3( &vNormalDir, vDir );

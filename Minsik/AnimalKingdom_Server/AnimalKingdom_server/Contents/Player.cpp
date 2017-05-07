@@ -115,11 +115,11 @@ XMFLOAT4X4 Player::GetWorld()
 	switch( character_ )
 	{
 	case CHARACTER_CHM:
-		mtxWorld._24 -= 5.5f;
+		mtxWorld._24 -= 2.f;
 		fScale = 1.5f;
 		break;
 	case CHARACTER_MON:
-		mtxWorld._24 -= 6.8f;
+		mtxWorld._24 -= 2.8f;
 		fScale = 21.209435f;
 		break;
 	default:
@@ -194,10 +194,10 @@ void Player::Attack( STATE eState )
 		switch( eState )
 		{
 		case STATE_ATT1:
-			pActor = actorArray_[ 1 ];
+			pActor = actorArray_[ 2 ];
 			break;
 		case STATE_ATT2:
-			pActor = actorArray_[ 3 ];
+			pActor = actorArray_[ 1 ];
 			break;
 		default:
 			return;

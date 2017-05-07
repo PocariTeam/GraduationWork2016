@@ -118,8 +118,8 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		// NxF32	InitialRadius = 0.5f;
 		// NxF32	InitialHeight = 2.0f;
 		NxCapsuleControllerDesc desc;
-		desc.radius = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getRadius() * 0.5f;
-		desc.height = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getHeight() * 2.f;
+		desc.radius = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getRadius();
+		desc.height = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getHeight() * 1.f;
 		desc.position.x = startPos.x;
 		desc.position.y = startPos.y; //+ gSpace;
 		desc.position.z = startPos.z;

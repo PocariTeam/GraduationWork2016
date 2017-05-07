@@ -93,10 +93,10 @@ void CJungle::AccumulateTime( const float& fTimeDelta )
 
 int CJungle::Update( const float& fTimeDelta )
 {
+	CPhysics::GetInstance()->Update( fTimeDelta );
 	CScene::Update( fTimeDelta );
 	if( -1 != m_iPlayerID )	m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
 
-	CPhysics::GetInstance()->Update( fTimeDelta );
 	AccumulateTime( fTimeDelta );
 	Check_Key( fTimeDelta );
 
@@ -184,7 +184,7 @@ void CJungle::Check_Key( const float& fTimeDelta )
 		if( m_bDebug )
 			m_pCamera = CDebugCamera::Create( m_hWnd, m_pDevice );
 		else
-			m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetCharacterController()->getActor(), XMFLOAT3( 0.f, 100.f, -200.f ) );
+			m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
 		
 		m_bOverlapped = false;
 	}

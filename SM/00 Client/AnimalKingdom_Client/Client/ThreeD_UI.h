@@ -23,10 +23,11 @@ public:
 public:
 	void SetMesh( CMesh* pMesh );
 	void SetAnimator( CAnimator* pAnimator );
-	XMFLOAT4X4 GetWorld();
+	XMFLOAT4X4* GetWorld();
 private:
 	bool			m_bHide;
 	CAnimator*		m_pAnimator;
+	XMFLOAT4X4		m_mtxPosSize;
 public:
 	void Hide() { m_bHide = true; }
 	void Show() { m_bHide = false; }

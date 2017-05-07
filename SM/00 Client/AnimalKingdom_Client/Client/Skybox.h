@@ -17,7 +17,6 @@ private:
 public:
 	static	CSkybox*	Create( CMesh* pMesh, CTexture* pTexture );
 public:
-	XMFLOAT4X4	GetWorld();
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );
 };

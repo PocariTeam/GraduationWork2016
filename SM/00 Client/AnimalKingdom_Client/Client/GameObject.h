@@ -27,7 +27,7 @@ public:
 	void				SetOption( int iKey, float fValue );
 	virtual void		SetInstanceCnt( UINT iCnt ) {}
 public:
-	virtual XMFLOAT4X4  GetWorld();
+	virtual XMFLOAT4X4* GetWorld();
 	NxActor*			GetActor();
 	XMFLOAT4			GetOption();
 	CTexture*			GetTexture();
@@ -37,6 +37,7 @@ protected:
 	CTexture*		m_pTexture;
 	NxVec3			m_vDir;
 	XMFLOAT4		m_vOption;
+	XMFLOAT4X4		m_mtxWorld;
 };
 
 #endif

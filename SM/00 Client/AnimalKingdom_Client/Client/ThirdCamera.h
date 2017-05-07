@@ -13,12 +13,13 @@ private:
 	explicit CThirdCamera();
 	virtual ~CThirdCamera();
 private:
-	HRESULT Initialize( ID3D11Device* pDevice, NxActor* pActor, XMFLOAT3& vOffset );
+	HRESULT Initialize( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset );
 public:
-	static CThirdCamera*	Create( ID3D11Device* pDevice, NxActor* pActor, XMFLOAT3& vOffset );
+	static CThirdCamera*	Create( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset );
 private:
-	NxActor*	m_pDestActor;
+	XMFLOAT4X4*	m_pDestWorldTranspose;
 	XMFLOAT3	m_vOffset;
+	XMFLOAT3	m_vCurrent;
 public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );

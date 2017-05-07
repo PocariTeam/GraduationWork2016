@@ -38,7 +38,7 @@ public:
 	DWORD			GetActorCnt( void ) { return m_dwActorCnt; }
 	NxController*	GetCharacterController( void ) { return m_pCharacterController; }
 	NxMat34*		GetActorsOriginPose( void ) { return m_pActorsOriginPose; }
-	virtual XMFLOAT4X4		GetWorld();
+	XMFLOAT4X4*		GetWorld();
 public:
 	void			Change_State( STATE eState );
 public:

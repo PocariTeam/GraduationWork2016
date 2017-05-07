@@ -16,14 +16,11 @@ private:
 public:
 	static CSection* Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTexture, XMFLOAT3& vPos, XMFLOAT3& vScale );
 public:
-	XMFLOAT4X4 GetWorld();
-public:
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );
 private:
 	XMFLOAT3	m_vPos;
 	XMFLOAT3	m_vScale;
-	XMFLOAT4X4	m_mtxWorld;
 	XMFLOAT4	m_vPlane[ 6 ];
 };
 

@@ -40,6 +40,8 @@ HRESULT CSection::Initialize( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTe
 		XMStoreFloat4( &m_vPlane[ i ], vPlane );
 	}
 
+	XMStoreFloat4x4( &m_mtxWorld, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxWorld ) ) );
+
 	return S_OK;
 }
 
@@ -53,14 +55,6 @@ CSection* CSection::Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pText
 		pEnvironment = nullptr;
 	}
 	return pEnvironment;
-}
-
-XMFLOAT4X4 CSection::GetWorld()
-{
-	XMFLOAT4X4 Out;
-	XMStoreFloat4x4( &Out, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxWorld ) ) );
-
-	return Out;
 }
 
 void CSection::Render( ID3D11DeviceContext* pContext )

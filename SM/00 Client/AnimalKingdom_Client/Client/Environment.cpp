@@ -38,7 +38,7 @@ CEnvironment* CEnvironment::Create( ID3D11Device* pDevice, NxActor* pActor, CMes
 	return pEnvironment;
 }
 
-XMFLOAT4X4 CEnvironment::GetWorld()
+XMFLOAT4X4* CEnvironment::GetWorld()
 {
 	NxF32 mtxWorld[ 16 ]{};
 	XMFLOAT4X4 Out;
@@ -46,9 +46,9 @@ XMFLOAT4X4 CEnvironment::GetWorld()
 	memcpy( &Out, mtxWorld, sizeof( XMFLOAT4X4 ) );
 	XMMATRIX mtxScale = XMMatrixScaling( m_vScale.x, m_vScale.y, m_vScale.z );
 	mtxScale = XMMatrixMultiply( XMLoadFloat4x4( &Out ), mtxScale );
-	XMStoreFloat4x4( &Out, mtxScale );
+	XMStoreFloat4x4( &m_mtxWorld, mtxScale );
 
-	return Out;
+	return &m_mtxWorld;
 }
 
 void CEnvironment::Render( ID3D11DeviceContext* pContext )

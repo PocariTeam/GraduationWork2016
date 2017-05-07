@@ -58,10 +58,10 @@ int CNormal_UI::Update( const float& fTimeDelta )
 	XMFLOAT4 vLerp_Store;
 	XMStoreFloat4( &vLerp_Store, vLerp );
 
-	m_mtxPosSize._11 = vLerp_Store.x;
-	m_mtxPosSize._21 = vLerp_Store.y;
-	m_mtxPosSize._31 = vLerp_Store.z;
-	m_mtxPosSize._41 = vLerp_Store.w;
+	m_mtxWorld._11 = vLerp_Store.x;
+	m_mtxWorld._21 = vLerp_Store.y;
+	m_mtxWorld._31 = vLerp_Store.z;
+	m_mtxWorld._41 = vLerp_Store.w;
 
 	return 0;
 }

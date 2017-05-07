@@ -110,8 +110,8 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( &pActorsOriginPose[ j ] );
 		mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
 
-		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );
-		dpActorArray[ j ]->moveGlobalPose( CMathematics::ConvertToNxMat34( mtxResult ) );
+		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );
+		dpActorArray[ j ]->setGlobalPose( CMathematics::ConvertToNxMat34( mtxResult ) );
 		i = 0;
 	}
 

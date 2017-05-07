@@ -74,9 +74,14 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 	{
 		int iNoBananaIndex = ( iBananaIndex == 0 ) ? 1 : 0;
 
-		if( !( COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->GetMasterCollisionGroup() ) )
+		if( COL_STATIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() )
+			|| COL_DYNAMIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) )
+			return;
+
+		else if( !( COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->GetMasterCollisionGroup() ) )
 		{
 			( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->Frozen();
 		}
 	}
 

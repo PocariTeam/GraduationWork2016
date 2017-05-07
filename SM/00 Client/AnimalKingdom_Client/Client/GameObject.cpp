@@ -15,10 +15,15 @@ CGameObject::CGameObject()
 	, m_vDir( 0.f, 0.f, 0.f )
 	, m_vOption( 0.f, 0.f, 0.f, 0.f )
 {
+	memset( &m_mtxWorld, 0, sizeof( XMFLOAT4X4 ) );
 }
 
 int	CGameObject::Update( const float& fTimeDelta )
 {
+	/*NxF32 mtxWorld[ 16 ]{};
+	m_pActor->getGlobalPose().getRowMajor44( mtxWorld );
+	memcpy( &m_mtxWorld, mtxWorld, sizeof( XMFLOAT4X4 ) );*/
+
 	return 0;
 }
 
@@ -57,13 +62,9 @@ void CGameObject::SetOption( int iKey, float fValue )
 	}
 }
 
-XMFLOAT4X4 CGameObject::GetWorld()
+XMFLOAT4X4* CGameObject::GetWorld()
 {
-	NxF32 mtxWorld[ 16 ]{};
-	XMFLOAT4X4 Out;
-	m_pActor->getGlobalPose().getRowMajor44( mtxWorld );
-	memcpy( &Out, mtxWorld, sizeof( XMFLOAT4X4 ) );
-	return Out;
+	return &m_mtxWorld;
 }
 
 NxActor* CGameObject::GetActor()

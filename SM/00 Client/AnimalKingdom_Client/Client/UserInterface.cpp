@@ -8,16 +8,10 @@ CUserInterface::CUserInterface()
 	, m_vPosSize_Src( 0.f, 0.f, 0.f, 0.f )
 	, m_fLerpTime( 0.f )
 {
-	ZeroMemory( &m_mtxPosSize, sizeof( XMFLOAT4X4 ) );
 }
 
 CUserInterface::~CUserInterface()
 {
-}
-
-XMFLOAT4X4 CUserInterface::GetWorld( void )
-{
-	return m_mtxPosSize;
 }
 
 void CUserInterface::Render( ID3D11DeviceContext* pContext )
@@ -28,7 +22,7 @@ void CUserInterface::Render( ID3D11DeviceContext* pContext )
 
 int CUserInterface::Update( const float& fTimedelta )
 {
-	return CGameObject::Update( fTimedelta );
+	return 0;
 }
 
 DWORD CUserInterface::Release( void )
@@ -45,6 +39,6 @@ void CUserInterface::SetTexture( CTexture* pTexture )
 
 void CUserInterface::SetSize( XMFLOAT2& vSize )
 {
-	m_vPosSize_Dest.z = m_mtxPosSize._31 = vSize.x;
-	m_vPosSize_Dest.w = m_mtxPosSize._41 = vSize.y;
+	m_vPosSize_Dest.z = m_mtxWorld._31 = vSize.x;
+	m_vPosSize_Dest.w = m_mtxWorld._41 = vSize.y;
 }
