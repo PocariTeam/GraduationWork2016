@@ -159,11 +159,11 @@ void CPlayer::Move( const float& fTimeDelta )
 
 void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
 {
-	// NxU32	dwCollisionFlag;
-	// vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
-	// m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
-	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
-	m_pCharacterController->setPosition( setPos );
+	 NxU32	dwCollisionFlag;
+	 vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
+	 m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	// NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
+	// m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
 	m_pStateMachine->Change_State(state);
 }

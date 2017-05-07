@@ -95,7 +95,7 @@ void CBanana::Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster )
 	m_pActor->setLinearVelocity( vDir * 200.f );
 	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
 	m_eMasterGroup = eMaster;
-	m_fLifeTime = 5.f;
+	m_fLifeTime = 3.f;
 }
 
 void CBanana::Frozen( void )

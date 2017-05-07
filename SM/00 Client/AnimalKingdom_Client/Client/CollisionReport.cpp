@@ -81,7 +81,7 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		if( COL_STATIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() )
 			|| COL_DYNAMIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) )
 		{
-			printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
+			// printf( "C %s 客 %s啊 面倒! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 			pair.actors[ iBananaIndex ]->setName( "Banana1" );
 		}
 
