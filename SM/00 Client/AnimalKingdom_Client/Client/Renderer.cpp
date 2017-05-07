@@ -9,6 +9,7 @@
 CRenderer*	CSingleton<CRenderer>::m_pInstance;
 bool		CRenderer::m_bWireFrame = false;
 bool		CRenderer::m_bRenderTargetDebug = false;
+bool		CRenderer::m_bInCave = false;
 
 void CRenderer::SetWireframe( void )
 {
@@ -24,6 +25,16 @@ void CRenderer::SetRenderTargetDebug( void )
 		m_bRenderTargetDebug = false;
 	else
 		m_bRenderTargetDebug = true;
+}
+
+void CRenderer::InCave( void )
+{
+	m_bInCave = true;
+}
+
+void CRenderer::OutCave( void )
+{
+	m_bInCave = false;
 }
 
 void CRenderer::Clear_RenderGroup( void )
@@ -130,6 +141,8 @@ void CRenderer::Render_DepthTest( ID3D11DeviceContext* pContext )
 	else
 		CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_NORMAL, 3 );
 
+	if( m_bInCave ) iter++;
+
 	for( ; iter != iter_end; ++iter )
 	{
 		( *iter )->Render( pContext );
@@ -180,6 +193,8 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
+
+	if( !m_bInCave ) iter++;
 
 	for( ; iter != iter_end; ++iter )
 	{

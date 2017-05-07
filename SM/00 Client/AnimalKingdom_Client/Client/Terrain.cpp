@@ -22,6 +22,7 @@ HRESULT CTerrain::Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMe
 	m_pMesh = pMesh;
 	m_pTexture = pTexture;
 	m_vScale = vScale;
+	m_vOption.w = 0.5f;
 
 	return S_OK;
 }

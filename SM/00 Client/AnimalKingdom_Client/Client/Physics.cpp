@@ -372,7 +372,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 	CNetworkMgr::GetInstance()->getPlayerInfo( pPlayerInfo, iPlayerCnt );
 
-	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skybox;
+	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skybox, *pShader_Mesh_Alpha;
 
 	pShader_Skybox = CShaderMgr::GetInstance()->Clone( "Shader_Skybox" );
 	pShader_Mesh = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
@@ -380,6 +380,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pShader_Blend = CShaderMgr::GetInstance()->Clone( "Shader_Blend" );
 	pShader_Debug = CShaderMgr::GetInstance()->Clone( "Shader_Debug" );
 	pShader_Animate = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh" );
+	pShader_Mesh_Alpha = CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" );
 
 	CMesh* pDot_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Dot" );
 	CTexture* pTexture_Skybox = CTextureMgr::GetInstance()->Clone( "Texture_Skybox" );
@@ -469,11 +470,13 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Ground1" );
 					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pShader_Mesh->Add_RenderObject( pTerrain );
+					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
 
 					pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Ground2" );
 					pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Ground2" );
 					pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pShader_Mesh->Add_RenderObject( pTerrain );
+					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
 
 					pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Cave" );
 					pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Cave" );
@@ -484,6 +487,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Water" );
 					pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pShader_Mesh->Add_RenderObject( pTerrain );
+					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
 				}
 
 				else if( 0 == strcmp( pActor->getName(), "Tree00" ) )
@@ -495,6 +499,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree00" );
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.25f, 0.25f, 0.25f ) );
 					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
 				else if( 0 == strcmp( pActor->getName(), "Tree01" ) )
@@ -506,6 +511,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree01" );
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.3f, 0.3f, 0.3f ) );
 					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
 				else if( 0 == strcmp( pActor->getName(), "Tree02" ) )
@@ -517,6 +523,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree02" );
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.5f, 0.5f, 0.5f ) );
 					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
 				else if( 0 == strcmp( pActor->getName(), "Rock00" ) )
@@ -528,6 +535,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Rock00" );
 					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.20f, 0.20f, 0.20f ) );
 					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Mesh_Alpha->Add_RenderObject( pRock );
 				}
 
 				else
@@ -535,7 +543,6 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pActor->setGroup( COL_STATIC );
 					SetCollisionGroup( pActor, COL_STATIC );
 				}
-
 			}
 		}
 
@@ -544,6 +551,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
 		plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
 		plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
+		plistShader[ RENDER_ALPHA ].push_back( pShader_Mesh_Alpha );
 		plistShader[ RENDER_ALPHA ].push_back( CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" ) );
 		plistShader[ RENDER_DEBUG ].push_back( pShader_Debug );
 
@@ -756,7 +764,7 @@ void CPhysics::CreateBanana( void )
 
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;
-	m_pShaderlist[ RENDER_ALPHA ].front()->Add_RenderObject( pBanana );
+	m_pShaderlist[ RENDER_ALPHA ].back()->Add_RenderObject( pBanana );
 	m_BananaQueue.push( pBanana );
 }
 
