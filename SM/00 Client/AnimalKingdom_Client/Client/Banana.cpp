@@ -14,6 +14,7 @@ CBanana::CBanana()
 	: CGameObject()
 	, m_vScale( 0.06f, 0.06f, 0.06f )
 	, m_eMasterGroup( COL_DYNAMIC )
+	, m_fLifeTime( 0.f )
 {
 }
 
@@ -30,6 +31,14 @@ HRESULT CBanana::Initialize( NxActor* pActor, COL_GROUP eMaster )
 	m_vOption.w = 1.f;
 
 	return S_OK;
+}
+
+bool CBanana::Timer( const float& fTimeDelta )
+{
+	m_fLifeTime -= fTimeDelta;
+	if( m_fLifeTime < 0.f )
+		return true;
+	return false;
 }
 
 CBanana* CBanana::Create( NxActor* pActor, COL_GROUP eMaster )
@@ -66,6 +75,10 @@ int CBanana::Update( const float& fTimeDelta )
 		if( m_vOption.w < 0.f ) m_vOption.w = 0;
 	}
 
+	else if( COL_DYNAMIC != m_eMasterGroup )
+		if( Timer( fTimeDelta ) )
+			m_pActor->setName( "Banana1" );
+
 	else if( m_vOption.w == 0.f )
 		Frozen();
 
@@ -82,6 +95,7 @@ void CBanana::Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster )
 	m_pActor->setLinearVelocity( vDir * 200.f );
 	m_pActor->setAngularVelocity( NxVec3( 90.f, 0.f, 180.f ) );
 	m_eMasterGroup = eMaster;
+	m_fLifeTime = 5.f;
 }
 
 void CBanana::Frozen( void )
@@ -91,6 +105,7 @@ void CBanana::Frozen( void )
 	m_pActor->setGlobalPosition( NxVec3( 0.f, 0.f, -1000.f ) );
 	m_eMasterGroup = COL_DYNAMIC;
 	m_vOption.w = 1.f;
+	m_fLifeTime = 0.f;
 }
 
 void CBanana::Render( ID3D11DeviceContext* pContext )
@@ -101,7 +116,7 @@ void CBanana::Render( ID3D11DeviceContext* pContext )
 
 DWORD CBanana::Release( void )
 {
-	CPhysics::GetInstance()->GetSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
+	// CPhysics::GetInstance()->GetSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
 	CGameObject::Release();
 
 	delete this;

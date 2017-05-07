@@ -344,7 +344,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER3, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
-	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH );
+	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH );
 
 	// Create the default material
 	NxMaterial* pDefaultMaterial = m_pScene->getMaterialFromIndex( 0 );
@@ -753,14 +753,14 @@ void CPhysics::CreateBanana( void )
 	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
 	
 	// CCD 충돌체크
-	NxShape *shape = pActor->getShapes()[0];
+	/*NxShape *shape = pActor->getShapes()[0];
 	NxSimpleTriangleMesh triMesh;
 	CreateMeshFromShape(triMesh, shape);
 	NxCCDSkeleton *newSkeleton = m_pPhysicsSDK->createCCDSkeleton(triMesh);
 	delete[] triMesh.points;
 	delete[] triMesh.triangles;
 
-	shape->setCCDSkeleton(newSkeleton);
+	shape->setCCDSkeleton(newSkeleton);*/
 
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;

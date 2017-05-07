@@ -14,10 +14,11 @@ private:
 	virtual ~CBanana();
 private:
 	HRESULT		Initialize( NxActor* pActor, COL_GROUP eMaster );
+	bool		Timer( const float& fTimeDelta );
 public:
 	static CBanana* Create( NxActor* pActor, COL_GROUP eMaster );
 public:
-	XMFLOAT4X4 GetWorld();
+	XMFLOAT4X4	GetWorld();
 public:
 	int			Update( const float& fTimeDelta );
 	void		Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster );
@@ -28,6 +29,7 @@ public:
 private:
 	XMFLOAT3	m_vScale;
 	COL_GROUP	m_eMasterGroup;
+	float		m_fLifeTime;
 };
 
 #endif // Banana_h__
