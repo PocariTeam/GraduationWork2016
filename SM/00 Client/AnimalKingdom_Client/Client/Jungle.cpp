@@ -71,13 +71,13 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 		player_iter->second->SetSection( m_dpSection, 3 );
 
 	// Timer UI
-	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI" );
+	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
 	m_dpTime_UI = new CNumber_UI*[ NUM_END ];
-	pShader->Add_RenderObject( m_dpTime_UI[ NUM_TEN ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( -0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
-	pShader->Add_RenderObject( m_dpTime_UI[ NUM_ONE ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( -0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
-	pShader->Add_RenderObject( m_dpTime_UI[ NUM_COLON ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.f, 0.9f, 0.05f, 0.1f ), 10 ) );
-	pShader->Add_RenderObject( m_dpTime_UI[ NUM_PROCENT ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
-	pShader->Add_RenderObject( m_dpTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
+	pShader->Add_RenderObject( m_dpTime_UI[ NUM_TEN ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( -0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
+	pShader->Add_RenderObject( m_dpTime_UI[ NUM_ONE ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( -0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
+	pShader->Add_RenderObject( m_dpTime_UI[ NUM_COLON ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( 0.f, 0.9f, 0.05f, 0.1f ), 10 ) );
+	pShader->Add_RenderObject( m_dpTime_UI[ NUM_PROCENT ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( 0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
+	pShader->Add_RenderObject( m_dpTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( 0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	// Time 글자
@@ -106,6 +106,20 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// Ready / Start / End 표시
 	m_pStateNotify = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -1.f, 1.f, 2.f, 2.f ) );
 	pShader->Add_RenderObject( m_pStateNotify );
+	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	// 체력바 옆 ID 표시
+	/* ID */
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI" );
+	player_iter = m_mapPlayer.begin();
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+	{
+		if( player_iter->first == m_iPlayerID )
+			pShader->Add_RenderObject( CNumber_UI::Create( CNumber_UI::NUMBER_MY_ID, XMFLOAT4( -0.985f + i * 0.5f, -0.74f, 0.15f, 0.15f ), m_iPlayerID ) );
+		else
+			pShader->Add_RenderObject( CNumber_UI::Create( CNumber_UI::NUMBER_OTHER_ID, XMFLOAT4( -0.985f + i * 0.5f, -0.74f, 0.15f, 0.15f ), player_iter->first ) );
+		player_iter++;
+	}
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
@@ -298,7 +312,7 @@ void CJungle::Check_Key( const float& fTimeDelta )
 
 void CJungle::NotifyGameStart( void )
 {
-	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Master" ) );
+	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Preview_Jungle" ) );
 	m_bStart = true;
 }
 

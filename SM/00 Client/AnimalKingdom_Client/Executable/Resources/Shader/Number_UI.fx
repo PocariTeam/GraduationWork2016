@@ -1,11 +1,11 @@
 Texture2D Texture : register( t0 );
 SamplerState g_SamplerState : register( s0 );
 
-struct VS_IN
+cbuffer cbWorld : register( b0 )
 {
-	matrix mtxPosSize : WORLD;
-	float4 vOption : OPTION;
-};
+	matrix g_mtxWorld;
+	float4 g_vOption;
+}
 
 struct VS_OUT
 {
@@ -13,16 +13,16 @@ struct VS_OUT
 	float2 vUV : TEXCOORD0;
 };
 
-VS_OUT VS( VS_IN In, uint iVertexNum : SV_VertexID )
+VS_OUT VS( uint iVertexNum : SV_VertexID )
 {
 	VS_OUT Out = ( VS_OUT )0;
 
-	if( iVertexNum == 0 ) { Out.vPos = float4( In.mtxPosSize._11, In.mtxPosSize._12, 0.5f, 1.f ); Out.vUV = float2( In.vOption.x, 0.f ); }
-	else if( iVertexNum == 1 ) { Out.vPos = float4( In.mtxPosSize._11 + In.mtxPosSize._13, In.mtxPosSize._12, 0.5f, 1.f ); Out.vUV = float2( In.vOption.y, 0.f ); }
-	else if( iVertexNum == 2 ) { Out.vPos = float4( In.mtxPosSize._11 + In.mtxPosSize._13, In.mtxPosSize._12 - In.mtxPosSize._14, 0.5f, 1.f ); Out.vUV = float2( In.vOption.y, 1.f ); }
-	else if( iVertexNum == 3 ) { Out.vPos = float4( In.mtxPosSize._11, In.mtxPosSize._12, 0.5f, 1.f ); Out.vUV = float2( In.vOption.x, 0.f ); }
-	else if( iVertexNum == 4 ) { Out.vPos = float4( In.mtxPosSize._11 + In.mtxPosSize._13, In.mtxPosSize._12 - In.mtxPosSize._14, 0.5f, 1.f ); Out.vUV = float2( In.vOption.y, 1.f ); }
-	else if( iVertexNum == 5 ) { Out.vPos = float4( In.mtxPosSize._11, In.mtxPosSize._12 - In.mtxPosSize._14, 0.5f, 1.f ); Out.vUV = float2( In.vOption.x, 1.f ); }
+	if( iVertexNum == 0 ) { Out.vPos = float4( g_mtxWorld._11, g_mtxWorld._12, 0.5f, 1.f ); Out.vUV = float2( g_vOption.x, g_vOption.z ); }
+	else if( iVertexNum == 1 ) { Out.vPos = float4( g_mtxWorld._11 + g_mtxWorld._13, g_mtxWorld._12, 0.5f, 1.f ); Out.vUV = float2( g_vOption.y, g_vOption.z ); }
+	else if( iVertexNum == 2 ) { Out.vPos = float4( g_mtxWorld._11 + g_mtxWorld._13, g_mtxWorld._12 - g_mtxWorld._14, 0.5f, 1.f ); Out.vUV = float2( g_vOption.y, g_vOption.w ); }
+	else if( iVertexNum == 3 ) { Out.vPos = float4( g_mtxWorld._11, g_mtxWorld._12, 0.5f, 1.f ); Out.vUV = float2( g_vOption.x, g_vOption.z ); }
+	else if( iVertexNum == 4 ) { Out.vPos = float4( g_mtxWorld._11 + g_mtxWorld._13, g_mtxWorld._12 - g_mtxWorld._14, 0.5f, 1.f ); Out.vUV = float2( g_vOption.y, g_vOption.w ); }
+	else if( iVertexNum == 5 ) { Out.vPos = float4( g_mtxWorld._11, g_mtxWorld._12 - g_mtxWorld._14, 0.5f, 1.f ); Out.vUV = float2( g_vOption.x, g_vOption.w ); }
 
 	return Out;
 }

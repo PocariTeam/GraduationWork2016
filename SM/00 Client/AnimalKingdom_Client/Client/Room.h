@@ -10,6 +10,7 @@ class CShader;
 class CButton_UI;
 class CNormal_UI;
 class CThreeD_UI;
+class CNumber_UI;
 class CRenderer;
 class CTextureMgr;
 class CAnimationMgr;
@@ -43,6 +44,7 @@ private:
 	CButton_UI**	m_dpBtns;
 	CNormal_UI**	m_dpReady;
 	CThreeD_UI**	m_dpThreeD;
+	CNumber_UI**	m_dpID;
 	/* Player Information */
 	PlayerInfo*		m_pPlayerInfo;
 	UINT			m_dwPlayerCnt;

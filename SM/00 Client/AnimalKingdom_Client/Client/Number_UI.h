@@ -8,13 +8,16 @@
 class CNumber_UI
 	: public CUserInterface
 {
+public:
+	enum eNumberType { NUMBER_MY_ID, NUMBER_OTHER_ID, NUMBER_TIME, NUMBER_END };
+	using NUMTYPE = eNumberType;
 private:
 	explicit CNumber_UI();
 	virtual ~CNumber_UI();
 private:
-	HRESULT		Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, UINT iNum, float fSpeed );
+	HRESULT		Initialize( NUMTYPE eNumType, const XMFLOAT4& vPosSize, UINT iNum, float fSpeed );
 public:
-	static CNumber_UI*	Create( CTexture* pTexture, const XMFLOAT4& vPosSize, UINT iNum, float fSpeed = 2.f );
+	static CNumber_UI*	Create( NUMTYPE eNumType, const XMFLOAT4& vPosSize, UINT iNum, float fSpeed = 2.f );
 public:
 	void Render( ID3D11DeviceContext* pContext );
 	int Update( const float& fTimeDelta );
@@ -25,6 +28,7 @@ public:
 	void Hide() { m_bHide = true; }
 	void Show() { m_bHide = false; }
 private:
+	NUMTYPE m_eType;
 	bool	m_bHide;
 	float	m_fSpeed;
 	UINT	m_iValue;

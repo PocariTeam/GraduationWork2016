@@ -15,6 +15,7 @@
 #include "OrthoCamera.h"
 #include "AnimateMeshMgr.h"
 #include "AnimationMgr.h"
+#include "Number_UI.h"
 #include "ThreeD_UI.h"
 
 CRoom::CRoom()
@@ -32,6 +33,7 @@ CRoom::CRoom()
 	, m_pTextureMgr( CTextureMgr::GetInstance() )
 	, m_pAnimateMeshMgr( CAnimateMeshMgr::GetInstance() )
 	, m_pAnimationMgr( CAnimationMgr::GetInstance() )
+	, m_dpID( nullptr )
 {
 }
 
@@ -58,6 +60,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_dpBtns = new CButton_UI*[ BTN_END ];
 	m_dpReady = new CNormal_UI*[ PLAYER_CAPACITY ];
 	m_dpThreeD = new CThreeD_UI*[ PLAYER_CAPACITY ];
+	m_dpID = new CNumber_UI*[ PLAYER_CAPACITY ];
 
 	pShader->Add_RenderObject( m_dpBtns[ BTN_READY ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Ready" ), XMFLOAT4( -1.f, -0.5f, 0.6f, 0.3f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_BACK ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -1.f, -0.8f, 0.6f, 0.2f ) ) );
@@ -90,6 +93,18 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( m_dpReady[ 1 ] = CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -0.3f, 0.45f, 0.35f, 0.2f ) ) );
 	pShader->Add_RenderObject( m_dpReady[ 2 ] = CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.15f, 0.45f, 0.35f, 0.2f ) ) );
 	pShader->Add_RenderObject( m_dpReady[ 3 ] = CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( 0.6f, 0.45f, 0.35f, 0.2f ) ) );
+	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	/* ID */
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI" );
+	pShader->Add_RenderObject( m_dpID[ 0 ] = CNumber_UI::Create( CNumber_UI::NUMBER_MY_ID, XMFLOAT4( -0.85f, 1.f, 0.3f, 0.3f ), CNetworkMgr::GetInstance()->getID() ) );
+	pShader->Add_RenderObject( m_dpID[ 1 ] = CNumber_UI::Create( CNumber_UI::NUMBER_OTHER_ID, XMFLOAT4( -0.2f, 0.92f, 0.15f, 0.15f ), 0 ) );
+	pShader->Add_RenderObject( m_dpID[ 2 ] = CNumber_UI::Create( CNumber_UI::NUMBER_OTHER_ID, XMFLOAT4( 0.25f, 0.92f, 0.15f, 0.15f ), 0 ) );
+	pShader->Add_RenderObject( m_dpID[ 3 ] = CNumber_UI::Create( CNumber_UI::NUMBER_OTHER_ID, XMFLOAT4( 0.7f, 0.92f, 0.15f, 0.15f ), 0 ) );
+
+	m_dpID[ 1 ]->Hide();
+	m_dpID[ 2 ]->Hide();
+	m_dpID[ 3 ]->Hide();
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
@@ -119,6 +134,9 @@ DWORD CRoom::Release( void )
 
 	delete[] m_dpThreeD;
 	m_dpThreeD = nullptr;
+
+	delete[] m_dpID;
+	m_dpID = nullptr;
 
 	m_pRenderer = nullptr;
 	m_pInputMgr = nullptr;
@@ -204,6 +222,7 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 	{
 		m_dpReady[ i ]->Hide();
 		m_dpThreeD[ i ]->Hide();
+		m_dpID[ i ]->Hide();
 	}
 
 	m_dwPlayerCnt = dwPlayerCnt;
@@ -221,6 +240,8 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 	{
+		m_dpID[ i ]->Show();
+		m_dpID[ i ]->SetNumber( pTempArray[ i ].id );
 		switch( pTempArray[ i ].character )
 		{
 		case CHARACTER_CHM:

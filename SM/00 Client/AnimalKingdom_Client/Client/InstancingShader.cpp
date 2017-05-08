@@ -53,7 +53,7 @@ void CInstancingShader::Render( ID3D11DeviceContext* pContext )
 	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
 	{
 		SetConstantBuffer( pContext, *m_vecRenderObject[ i ]->GetWorld(), m_vecRenderObject[ i ]->GetOption() );
-		m_vecRenderObject[ i ]->Render( pContext );
+		m_vecRenderObject[i]->Render( pContext );
 	}
 }
 
