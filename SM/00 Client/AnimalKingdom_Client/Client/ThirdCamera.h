@@ -16,6 +16,8 @@ private:
 	HRESULT Initialize( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset );
 public:
 	static CThirdCamera*	Create( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset );
+public:
+	void   SetDestWorldTranspose( XMFLOAT4X4* pWorldTranspose ) { m_pDestWorldTranspose = pWorldTranspose; }
 private:
 	XMFLOAT4X4*	m_pDestWorldTranspose;
 	XMFLOAT3	m_vOffset;

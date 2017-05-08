@@ -34,6 +34,7 @@ public:
 private:
 	map<int, CPlayer*>		m_mapPlayer;
 	int						m_iPlayerID;
+	int						m_iFocus;		// 자신이 죽고, 다른 플레이어 볼 때 사용( 다른 플레이어 ID )
 	PlayerInfo*				m_pPlayerInfo;
 	UINT					m_dwPlayerCnt;
 	CNumber_UI**			m_dpTime_UI;

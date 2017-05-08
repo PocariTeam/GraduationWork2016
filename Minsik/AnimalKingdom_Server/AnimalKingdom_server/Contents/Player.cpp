@@ -43,7 +43,7 @@ Player::~Player()
 
 void Player::update( float fTimeDelta )
 {
-	if( 0 > hp_ ) stateMachine_->Change_State( STATE_DOWN );
+	if( 0 >= hp_ ) stateMachine_->Change_State( STATE_DOWN );
 
 	if( stateMachine_ ) stateMachine_->Update( fTimeDelta );
 

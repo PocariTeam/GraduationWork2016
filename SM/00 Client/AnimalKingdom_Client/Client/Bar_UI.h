@@ -26,6 +26,7 @@ private:
 	bool	m_bHide;
 	float	m_fSpeed;
 	int		m_iMax;
+	int		m_iPrevious;
 	int*	m_pData;
 };
 

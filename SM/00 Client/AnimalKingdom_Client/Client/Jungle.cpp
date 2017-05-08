@@ -17,6 +17,7 @@
 #include "MeshMgr.h"
 #include "Section.h"
 #include "Bar_UI.h"
+#include "StateMachine.h"
 
 CJungle::CJungle()
 	: CScene()
@@ -30,6 +31,7 @@ CJungle::CJungle()
 	, m_pStateNotify( nullptr )
 	, m_bStart( false )
 	, m_dpHP_Bar( nullptr )
+	, m_iFocus( 0 )
 {
 }
 
@@ -45,6 +47,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CLightMgr::GetInstance()->Initialize( pDevice );
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
+	m_iFocus = m_iPlayerID;
 	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
 	m_dwPlayerCnt = ( UINT )m_mapPlayer.size();
 
@@ -82,13 +85,20 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CGameObject* pTime = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Time" ), XMFLOAT4( -0.3f, 0.9f, 0.15f, 0.1f ) );
 	pShader->Add_RenderObject( pTime );
 
+	// Status
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+	{
+		CGameObject* pStatus = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Status" ), XMFLOAT4( -0.98f + i * 0.5f, -0.7f, 0.45f, 0.225f ) );
+		pShader->Add_RenderObject( pStatus );
+	}
+
 	// HP Bar
 	m_dpHP_Bar = new CBar_UI*[ m_dwPlayerCnt ];
 	player_iter = m_mapPlayer.begin();
 
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 	{
-		m_dpHP_Bar[ i ] = CBar_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_HP_Bar" ), XMFLOAT4( -0.8f + i * 0.5f, -0.8f, 0.4f, 0.1f ), player_iter->second->GetHP(), 100 );
+		m_dpHP_Bar[ i ] = CBar_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_HP_Bar" ), XMFLOAT4( -0.83f + i * 0.5f, -0.77f, 0.285f, 0.079f ), player_iter->second->GetHP(), 100 );
 		pShader->Add_RenderObject( m_dpHP_Bar[ i ] );
 		player_iter++;
 	}
@@ -125,13 +135,28 @@ int CJungle::Update( const float& fTimeDelta )
 	if( m_bStart )
 	{
 		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
-		if( m_mapPlayer.find( m_iPlayerID )->second->GetAlpha() )
+		if( m_mapPlayer.find( m_iFocus )->second->GetAlpha() )
 			CRenderer::GetInstance()->InCave();
 		else
 			CRenderer::GetInstance()->OutCave();
 
 		AccumulateTime( fTimeDelta );
 	}
+
+	if( STATE_DEAD == m_mapPlayer[ m_iFocus ]->GetFSM()->GetCurrentState() && !m_bDebug )
+	{
+		auto player_iter = m_mapPlayer.find( m_iFocus );
+		auto advance_iter = player_iter;
+		advance_iter++;
+
+		if( advance_iter != m_mapPlayer.end() )
+			m_iFocus = advance_iter->first;
+		else
+			m_iFocus = m_mapPlayer.begin()->first;
+
+		( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
+	}
+
 	Check_Key( fTimeDelta );
 
 	return 0;
@@ -219,7 +244,7 @@ void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 
 void CJungle::Check_Key( const float& fTimeDelta )
 {
-	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) && m_bOverlapped )
+	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_RETURN ) && m_bOverlapped )
 	{
 		// 카메라 전환
 		::Safe_Release( m_pCamera );
@@ -228,12 +253,46 @@ void CJungle::Check_Key( const float& fTimeDelta )
 		if( m_bDebug )
 			m_pCamera = CDebugCamera::Create( m_hWnd, m_pDevice );
 		else
-			m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
+			m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ m_iFocus ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
 		
 		m_bOverlapped = false;
 	}
 
-	else if( !CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) )
+	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) && m_bOverlapped
+		&& STATE_DEAD == m_mapPlayer[ m_iPlayerID ]->GetCurrentState() && !m_bDebug )
+	{
+		auto player_iter = m_mapPlayer.find( m_iFocus );
+		auto advance_iter = player_iter;
+		advance_iter++;
+
+		int iFocus{};
+
+		if( advance_iter != m_mapPlayer.end() && STATE_DEAD != advance_iter->second->GetCurrentState() )
+			iFocus = advance_iter->first;
+		else
+		{
+			advance_iter = m_mapPlayer.begin();
+			iFocus = advance_iter->first;
+
+			for( ; advance_iter != player_iter; ++advance_iter )
+				if( STATE_DEAD != advance_iter->second->GetCurrentState() )
+				{
+					iFocus = advance_iter->first;
+					break;
+				}
+		}
+
+		if( m_iFocus != iFocus )
+		{
+			m_iFocus = iFocus;
+			( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
+		}
+
+		m_bOverlapped = false;
+	}
+
+	else if( !CInputMgr::GetInstance()->Get_KeyboardState( DIK_RETURN )
+		&& !CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) )
 		m_bOverlapped = true;
 }
 

@@ -6,6 +6,7 @@ CBar_UI::CBar_UI()
 	: CUserInterface()
 	, m_bHide( false )
 	, m_iMax( 0 )
+	, m_iPrevious( 0 )
 	, m_pData( nullptr )
 	, m_fSpeed( 0.f )
 {
@@ -23,6 +24,7 @@ HRESULT CBar_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, int* 
 	m_vPosSize_Src = XMFLOAT4( vPosSize.x + vPosSize.z * 0.5f, vPosSize.y - vPosSize.w * 0.5f, 0.f, 0.f );
 	m_iMax = iMax;
 	m_pData = pDest;
+	m_iPrevious = *m_pData;
 
 	return S_OK;
 }
@@ -54,7 +56,10 @@ int CBar_UI::Update( const float& fTimeDelta )
 
 	if( m_fLerpTime == 1.f )
 	{
-		m_mtxWorld._31 = m_vPosSize_Dest.z * float( *m_pData ) / float( m_iMax );
+		if( m_iPrevious != *m_pData )
+			m_iPrevious = int( *m_pData * fTimeDelta * m_fSpeed + m_iPrevious * ( 1.f - fTimeDelta * m_fSpeed ) );
+
+		m_mtxWorld._31 = m_vPosSize_Dest.z * float( m_iPrevious ) / float( m_iMax );
 		return 0;
 	}
 

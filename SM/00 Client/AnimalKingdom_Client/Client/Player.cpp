@@ -156,6 +156,11 @@ XMFLOAT4X4* CPlayer::GetWorld()
 	return &m_mtxWorld;
 }
 
+STATE CPlayer::GetCurrentState()
+{
+	return m_pStateMachine->GetCurrentState();
+}
+
 void CPlayer::Change_State( STATE eState )
 {
 	m_pStateMachine->Change_State( eState );

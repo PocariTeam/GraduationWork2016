@@ -43,6 +43,7 @@ public:
 	virtual XMFLOAT4X4*	GetWorld();
 	bool			GetAlpha() { return m_bAlpha; }
 	int*			GetHP() { return &m_iHp; }
+	STATE			GetCurrentState();
 public:
 	void			Change_State( STATE eState );
 public:
