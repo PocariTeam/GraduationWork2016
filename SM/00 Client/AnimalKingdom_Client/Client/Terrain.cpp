@@ -22,7 +22,7 @@ HRESULT CTerrain::Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMe
 	m_pMesh = pMesh;
 	m_pTexture = pTexture;
 	m_vScale = vScale;
-	m_vOption.w = 0.5f;
+	m_vOption.w = 0.2f;
 
 	return S_OK;
 }
@@ -60,9 +60,10 @@ void CTerrain::Render( ID3D11DeviceContext* pContext )
 
 DWORD CTerrain::Release( void )
 {
-	CGameObject::Release();
-
-	delete this;
+	if( 0 == CGameObject::Release() )
+	{
+		delete this;
+	}
 
 	return 0;
 }

@@ -21,11 +21,11 @@ HRESULT CThirdCamera::Initialize( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTrans
 	m_pDestWorldTranspose = pWorldTranspose;
 	m_vOffset = vOffset;
 	m_vAt = XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 );
-	m_vCurrent = XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 );
+	m_vCurrent = m_vAt;
 	m_vEye = XMFLOAT3( m_vAt.x + m_vOffset.x, m_vAt.y + m_vOffset.y, m_vAt.z + m_vOffset.z );
 	
 	CalculateViewMatrix( &m_mtxView, m_vEye, m_vCurrent );
-	m_fSpeed = 1.f;
+	m_fSpeed = 5.f;
 
 	return CCamera::Initialize( pDevice );
 }
@@ -50,7 +50,7 @@ int CThirdCamera::Update( const float& fTimeDelta )
 	XMVECTOR	vCurrent{ XMLoadFloat3( &m_vCurrent ) };
 	XMVECTOR	vEye{ XMLoadFloat3( &m_vOffset ) };
 
-	vCurrent = XMVectorLerp( vAt, vCurrent, fTimeDelta * fTimeDelta );
+	vCurrent = XMVectorLerp( vCurrent, vAt, fTimeDelta * m_fSpeed );
 
 	vEye += vCurrent;
 

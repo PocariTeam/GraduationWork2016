@@ -29,13 +29,15 @@ int	CGameObject::Update( const float& fTimeDelta )
 
 DWORD	CGameObject::Release()
 {
-	CBase::Release();
+	if( 0 == CBase::Release() )
+	{
+		::Safe_Release( m_pTexture );
+		::Safe_Release( m_pMesh );
+		m_pActor = nullptr;
+	}
 
-	::Safe_Release( m_pTexture );
-	::Safe_Release( m_pMesh );
-	m_pActor = nullptr;
 
-	return 0;
+	return CBase::Release();
 }
 
 void CGameObject::SetDir( NxVec3 vDir )

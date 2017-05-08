@@ -18,6 +18,7 @@ public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext );
 	virtual DWORD	Release( void );
+	XMFLOAT4X4*		GetWorld();
 	void			ThrowBanana();
 public:
 	static CMonkey* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose );

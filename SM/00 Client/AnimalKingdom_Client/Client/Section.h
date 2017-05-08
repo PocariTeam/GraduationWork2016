@@ -18,6 +18,7 @@ public:
 public:
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );
+	bool	Check_InPlane( XMFLOAT3 vPos );
 private:
 	XMFLOAT3	m_vPos;
 	XMFLOAT3	m_vScale;

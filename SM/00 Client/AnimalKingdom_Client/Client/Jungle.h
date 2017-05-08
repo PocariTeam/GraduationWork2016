@@ -7,6 +7,7 @@
 
 class CPlayer;
 class CNumber_UI;
+class CSection;
 class CJungle
 	: public CScene
 {
@@ -33,6 +34,7 @@ private:
 	PlayerInfo*				m_pPlayerInfo;
 	UINT					m_dwPlayerCnt;
 	CNumber_UI**			m_dpTime_UI;
+	CSection**				m_dpSection;
 	float					m_fAccTime;
 	bool					m_bDebug;
 	/* Check Key */

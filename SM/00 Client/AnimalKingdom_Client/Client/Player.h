@@ -9,6 +9,7 @@
 class CAnimator;
 class CStateMachine;
 class NxController;
+class CSection;
 class CInputMgr;
 class CPlayer
 	: public CGameObject
@@ -33,12 +34,14 @@ public:
 	virtual void	Render( ID3D11DeviceContext* pContext );
 	virtual DWORD	Release( void );
 public:
+	void			SetSection( CSection** dpSections, UINT iSectionCnt );
 	CAnimator*		GetAnimator( void ) { return m_pAnimator; }
 	CStateMachine*	GetFSM( void ) { return m_pStateMachine; }
 	DWORD			GetActorCnt( void ) { return m_dwActorCnt; }
 	NxController*	GetCharacterController( void ) { return m_pCharacterController; }
 	NxMat34*		GetActorsOriginPose( void ) { return m_pActorsOriginPose; }
-	XMFLOAT4X4*		GetWorld();
+	virtual XMFLOAT4X4*	GetWorld();
+	bool			GetAlpha() { return m_bAlpha; }
 public:
 	void			Change_State( STATE eState );
 public:
@@ -56,6 +59,9 @@ protected:
 	bool					m_bSweap;
 	float					m_fSpeed;
 	float					m_fJumpHeight;
+	CSection**				m_dpSections;
+	UINT					m_iSectionCnt;
+	bool					m_bAlpha;
 };
 
 #endif // Player_h__

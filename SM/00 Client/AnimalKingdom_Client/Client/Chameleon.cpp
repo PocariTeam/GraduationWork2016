@@ -32,7 +32,6 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 int CChameleon::Update( const float& fTimeDelta )
 {
 	CPlayer::Update( fTimeDelta );
-
 	XMMATRIX mtxWorld;
 	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
 	m_mtxWorld._24 -= 2.f;
@@ -80,17 +79,18 @@ void CChameleon::Attack( STATE eState )
 
 	/*pActor->linearSweep( pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
 		( NxUserEntityReport<NxSweepQueryHit>* )&CPhysics::m_EntityReport );*/
+}
 
-	/*NxSphere tRealShape;
-	UINT ActiveGroup = ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) ^ MyGroup;
-	pActor->getShapes()[ 0 ]->isSphere()->getWorldSphere( tRealShape );
-	NxCapsule tColBody;
-	tColBody.radius = tRealShape.radius;
-	tColBody.p0 = tRealShape.center;
-	tColBody.p1 = tRealShape.center;
+XMFLOAT4X4* CChameleon::GetWorld()
+{
+	/*XMMATRIX mtxWorld;
+	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+	m_mtxWorld._24 -= 2.f;
+	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
 
-	CPhysics::GetInstance()->GetScene()->linearCapsuleSweep( tColBody, pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
-		( NxUserEntityReport<NxSweepQueryHit>* )&CPhysics::m_EntityReport, ActiveGroup );*/
+	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );*/
+
+	return &m_mtxWorld;
 }
 
 CChameleon* CChameleon::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )

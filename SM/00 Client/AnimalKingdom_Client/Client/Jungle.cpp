@@ -21,6 +21,7 @@ CJungle::CJungle()
 	: CScene()
 	, m_iPlayerID( -1 )
 	, m_pPlayerInfo( nullptr )
+	, m_dpSection( nullptr )
 	, m_dwPlayerCnt( 0 )
 	, m_fAccTime( 120.f )
 	, m_bOverlapped( true )
@@ -42,19 +43,24 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 
-	// Section 1
+	// Section 1 ~ 3
 	CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
-	CSection*	pSection = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -20.f, 130.f, 360.f ), XMFLOAT3( 180.f, 45.f, 45.f ) );
-	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pSection );
+	m_dpSection = new CSection*[ 3 ];
+	m_dpSection[ 0 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -20.f, 130.f, 360.f ), XMFLOAT3( 180.f, 45.f, 45.f ) );
+	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 0 ] );
 	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
-	pSection = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -170.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
-	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pSection );
+	m_dpSection[ 1 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -170.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
+	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 1 ] );
 	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
-	pSection = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( 130.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
-	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( pSection );
+	m_dpSection[ 2 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( 130.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
+	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 2 ] );
+
+	auto player_iter = m_mapPlayer.begin();
+	for( ; player_iter != m_mapPlayer.end(); ++player_iter )
+		player_iter->second->SetSection( m_dpSection, 3 );
 
 	// Timer UI
 	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI" );
@@ -95,7 +101,14 @@ int CJungle::Update( const float& fTimeDelta )
 {
 	CPhysics::GetInstance()->Update( fTimeDelta );
 	CScene::Update( fTimeDelta );
-	if( -1 != m_iPlayerID )	m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
+	if( -1 != m_iPlayerID )
+	{
+		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
+		if( m_mapPlayer.find( m_iPlayerID )->second->GetAlpha() )
+			CRenderer::GetInstance()->InCave();
+		else
+			CRenderer::GetInstance()->OutCave();
+	}
 
 	AccumulateTime( fTimeDelta );
 	Check_Key( fTimeDelta );
@@ -109,6 +122,9 @@ DWORD CJungle::Release( void )
 
 	delete[] m_dpTime_UI;
 	m_dpTime_UI = nullptr;
+
+	delete[] m_dpSection;
+	m_dpSection = nullptr;
 
 	CScene::Release();
 

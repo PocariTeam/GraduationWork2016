@@ -13,6 +13,7 @@
 #include <NxQuat.h>
 #include "NetworkMgr.h"
 #include "Monkey.h"
+#include "Section.h"
 
 CPlayer::CPlayer()
 	: CGameObject()
@@ -26,7 +27,10 @@ CPlayer::CPlayer()
 	, m_fSpeed(80.f)
 	, m_bSweap(false)
 	, m_fJumpHeight(100.f)
+	, m_dpSections( nullptr )
+	, m_iSectionCnt( 0 )
 	, m_iHp(100)
+	, m_bAlpha( false )
 {
 }
 
@@ -99,6 +103,19 @@ int CPlayer::Update( const float& fTimeDelta )
 	m_pCharacterController->move( m_vDir, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 	m_vDir = NxVec3{ 0.f, 0.f, 0.f };
 
+	if( nullptr == m_dpSections ) return 0;
+
+	UINT i = 0;
+	NxVec3 vPos = m_pCharacterController->getActor()->getGlobalPosition();
+	for( ; i < m_iSectionCnt; ++i )
+		if( m_dpSections[ i ]->Check_InPlane( XMFLOAT3( vPos.x, vPos.y, vPos.z ) ) )
+		{
+			m_bAlpha = true;
+			break;
+		}
+
+	if( i == m_iSectionCnt ) m_bAlpha = false;
+
 	return 0;
 }
 
@@ -120,6 +137,12 @@ DWORD CPlayer::Release( void )
 	delete[]( ( NxActor** )m_pCharacterController->getUserData() );
 
 	return 0;
+}
+
+void CPlayer::SetSection( CSection** dpSections, UINT iSectionCnt )
+{
+	m_dpSections = dpSections;
+	m_iSectionCnt = iSectionCnt;
 }
 
 XMFLOAT4X4* CPlayer::GetWorld()
@@ -150,9 +173,9 @@ void CPlayer::Move( const float& fTimeDelta )
 
 void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
 {
-	// NxU32	dwCollisionFlag;
-	// vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
-	// m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	//NxU32	dwCollisionFlag;
+	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
+	//m_pCharacterController->move( vPos, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
 	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
 	m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;

@@ -37,6 +37,7 @@ HRESULT CSection::Initialize( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pTe
 		vPlane = vTransform = XMLoadFloat4( &m_vPlane[ i ] );
 		vTransform = XMVector3TransformCoord( vTransform, mtxWorld );
 		vPlane = XMPlaneFromPointNormal( vTransform, vPlane );
+		vPlane = XMPlaneNormalize( vPlane );
 		XMStoreFloat4( &m_vPlane[ i ], vPlane );
 	}
 
@@ -59,8 +60,8 @@ CSection* CSection::Create( ID3D11Device* pDevice, CMesh* pMesh, CTexture* pText
 
 void CSection::Render( ID3D11DeviceContext* pContext )
 {
-	m_pTexture->Render( pContext );
-	m_pMesh->Render( pContext );
+	// m_pTexture->Render( pContext );
+	// m_pMesh->Render( pContext );
 }
 
 DWORD CSection::Release( void )
@@ -70,4 +71,24 @@ DWORD CSection::Release( void )
 	delete this;
 
 	return 0;
+}
+
+bool CSection::Check_InPlane( XMFLOAT3 vPos )
+{
+	bool bResult{ true };
+	XMVECTOR vPlane, vInputPos;
+	float fDot{};
+
+	vInputPos = XMLoadFloat3( &vPos );
+
+	for( int i = 0; i < 6; ++i )
+	{
+		vPlane = XMLoadFloat4( &m_vPlane[ i ] );
+		vPlane = XMPlaneDotCoord( vPlane, vInputPos );
+		XMStoreFloat( &fDot, vPlane );
+		if( 0.f < fDot )
+			bResult = false;
+	}
+
+	return bResult;
 }

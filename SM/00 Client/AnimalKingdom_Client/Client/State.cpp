@@ -104,7 +104,7 @@ void CRunState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 
 void CRunState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
-	pOwner->SetDir( NxVec3( 0.f ) );
+	pOwner->SetDir( NxVec3( 0.f, 0.f, 0.f ) );
 }
 
 STATE CRunState::GetState( void )

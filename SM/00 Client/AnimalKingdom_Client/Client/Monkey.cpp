@@ -32,7 +32,6 @@ HRESULT CMonkey::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 int CMonkey::Update( const float& fTimeDelta )
 {
 	CPlayer::Update( fTimeDelta );
-
 	XMMATRIX mtxWorld;
 	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
 	m_mtxWorld._24 -= 2.8f;
@@ -55,6 +54,18 @@ DWORD CMonkey::Release( void )
 	delete this;
 
 	return 0;
+}
+
+XMFLOAT4X4* CMonkey::GetWorld()
+{
+	/*XMMATRIX mtxWorld;
+	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+	m_mtxWorld._24 -= 2.8f;
+	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 21.209435f, 21.209435f, 21.209435f ) );
+
+	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );*/
+
+	return &m_mtxWorld;
 }
 
 void CMonkey::ThrowBanana()
