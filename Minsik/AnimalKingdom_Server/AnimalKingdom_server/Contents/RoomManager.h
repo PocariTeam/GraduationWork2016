@@ -31,7 +31,7 @@ public:
 	UINT			getPlayerCountRoom(UINT32 roomNum);
 
 	void			sendPlayerList(UINT32 roomNum);
-	void			sendStartGame(UINT32 roomNum);
+	void			sendReadyGame(UINT32 roomNum);
 
 	BOOL			getPlaying(UINT roomNum);
 };

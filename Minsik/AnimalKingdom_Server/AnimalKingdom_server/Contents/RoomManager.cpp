@@ -103,11 +103,11 @@ void RoomManager::sendPlayerList( UINT32 roomNum )
 	roomArray_[roomNum]->sendPlayerList();
 }
 
-void RoomManager::sendStartGame(UINT32 roomNum)
+void RoomManager::sendReadyGame(UINT32 roomNum)
 {
 	SAFE_LOCK(lock_);
 
-	roomArray_[roomNum]->sendStartGame();
+	roomArray_[roomNum]->sendReadyGame();
 }
 
 BOOL RoomManager::getPlaying(UINT roomNum)
@@ -155,7 +155,7 @@ BOOL RoomManager::startRoom(Session * session)
 		return false;
 	}
 
-	return roomArray_[roomNum]->startGame(session);
+	return roomArray_[roomNum]->startRoom(session);
 }
 
 BOOL RoomManager::setupRoom(UINT32 roomNum)

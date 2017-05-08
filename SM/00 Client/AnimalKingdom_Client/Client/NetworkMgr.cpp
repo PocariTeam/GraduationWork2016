@@ -203,13 +203,22 @@ void CNetworkMgr::processPacket()
 		m_pScene->NotifyPlayerInfo( m_tPlayerInfo, m_dwPlayerCnt );
 		break;
 	}
-	case PAK_ID::PAK_ANS_StartGame:
+	case PAK_ID::PAK_ANS_ReadyGame:
 	{
 		HEADER* packet = ( HEADER* )m_saveBuf;
 		printf( "========================================= \n" );
-		printf( "\t\t [게임시작] \t\t \n" );
+		printf( "\t\t [게임준비] \t\t \n" );
 		printf( "========================================= \n" );
 		m_pScene->NotifyGameStart();
+		break;
+	}
+	case PAK_ID::PAK_ANS_StartGame:
+	{
+		HEADER* packet = (HEADER*)m_saveBuf;
+		printf("========================================= \n");
+		printf("\t\t [게임시작] \t\t \n");
+		printf("========================================= \n");
+		//m_pScene->NotifyGameStart();
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:
@@ -289,7 +298,7 @@ void CNetworkMgr::sendReadyRoom()
 {
 	C_RoomReady *pRoomReady = ( C_RoomReady* )m_sendBuf;
 	pRoomReady->header.size = sizeof( C_RoomReady );
-	pRoomReady->header.packetID = PAK_ID::PAK_REQ_Ready;
+	pRoomReady->header.packetID = PAK_ID::PAK_REQ_ReadyRoom;
 	m_bReady = !m_bReady;
 	pRoomReady->ready = m_bReady;
 
@@ -300,7 +309,7 @@ void CNetworkMgr::sendStartRoom()
 {
 	HEADER *pStartGame = ( HEADER* )m_sendBuf;
 	pStartGame->size = sizeof( HEADER );
-	pStartGame->packetID = PAK_ID::PAK_REQ_StartGame;
+	pStartGame->packetID = PAK_ID::PAK_REQ_StartRoom;
 
 	sendBufData();
 }

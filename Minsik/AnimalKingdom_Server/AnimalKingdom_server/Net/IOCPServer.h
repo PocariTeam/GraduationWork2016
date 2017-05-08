@@ -1,12 +1,14 @@
 #pragma once
 #include "stdafx.h"
 
-#define MAX_IOCP_THREAD		SIZE_64
+#define		THREAD_COUNT		4
+#define		MAX_IOCP_THREAD		SIZE_64
 
 typedef enum {
 	IO_RECV,
 	IO_SEND,
 	EVENT_BANANA,
+	EVENT_START,
 	IO_ERROR
 } IO_OPERATION;
 

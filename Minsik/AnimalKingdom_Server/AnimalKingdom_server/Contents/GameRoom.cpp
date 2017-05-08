@@ -43,7 +43,7 @@ BOOL GameRoom::enter(Session* session)
 	}
 }
 
-BOOL GameRoom::startGame(Session* session)
+BOOL GameRoom::startRoom(Session* session)
 {
 	SAFE_LOCK(lock_);
 
@@ -264,9 +264,27 @@ void GameRoom::sendPlayerList()
 	
 }
 
+void GameRoom::sendReadyGame()
+{
+	SAFE_LOCK(lock_);
+
+	HEADER packet;
+	packet.packetID = PAK_ID::PAK_ANS_ReadyGame;
+	packet.size = sizeof(packet);
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+}
+
 void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
+
+	// 업데이트 시작
+	TIMECAPS caps;
+	timeGetDevCaps(&caps, sizeof(caps));
+	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC * 1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
 
 	HEADER packet;
 	packet.packetID = PAK_ID::PAK_ANS_StartGame;
@@ -303,9 +321,10 @@ BOOL GameRoom::setupGame()
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
-	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC*1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
 	syncTimerID_ = timeSetEvent((UINT)(SYNC_TIME_SEC*1000), caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
 	
+	IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + GAME_START_DELAY, EVENT_START);
+
 	return true;
 }
 

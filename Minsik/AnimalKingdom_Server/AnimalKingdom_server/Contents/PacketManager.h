@@ -10,5 +10,5 @@ public:
 	void	sendRoomList(Session* session);
 	void	sendRejectRequest(Session* session);
 	void	sendPlayerList(UINT roomNum);
-	void	sendStartGame(UINT roomNum);
+	void	sendReadyGame(UINT roomNum);
 };

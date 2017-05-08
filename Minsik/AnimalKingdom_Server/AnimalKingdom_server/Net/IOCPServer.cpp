@@ -152,10 +152,9 @@ bool IOCPServer::createListenSocket()
 	int nSendSize = 0;
 	int nIntSize = sizeof(int);
 	getsockopt(listenSocket_, SOL_SOCKET, SO_SNDBUF, (char*)&nSendSize, &nIntSize);
-	printf("original send buffer size: bytes %d \n", nSendSize);
 	nSendSize = 65536*10;
 	setsockopt(listenSocket_, SOL_SOCKET, SO_SNDBUF, (char*)&nSendSize, nIntSize);
-	printf("new send buffer size: %d bytes \n", nSendSize);
+	SLog(L"* new send buffer size: %d bytes.", nSendSize);
 
 
 	int retval = ::bind(listenSocket_, (SOCKADDR *)&serverAddr, sizeof(serverAddr));
@@ -244,6 +243,16 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			if (RoomManager::getInstance().getPlaying(((event_obj*)session)->sceneNum))
 			{
 				((CBanana*)((event_obj*)session)->obj_ptr)->Frozen();
+			}
+			delete session;
+			delete ioData;
+			continue;
+		}
+		case EVENT_START:
+		{
+			if (RoomManager::getInstance().getPlaying(((event_obj*)session)->sceneNum))
+			{
+				((GameRoom*)((event_obj*)session)->obj_ptr)->sendStartGame();
 			}
 			delete session;
 			delete ioData;

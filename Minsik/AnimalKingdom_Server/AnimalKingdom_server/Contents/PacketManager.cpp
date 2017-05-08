@@ -33,7 +33,7 @@ void PacketManager::recvProcess(Session* session, char* buf)
 			PacketManager::sendRoomList(session);
 		}
 		break;
-	case PAK_ID::PAK_REQ_Ready:
+	case PAK_ID::PAK_REQ_ReadyRoom:
 		result = RoomManager::getInstance().setPlayerReady(session, ((C_RoomReady*)buf)->ready);
 		if (result)
 		{
@@ -47,11 +47,11 @@ void PacketManager::recvProcess(Session* session, char* buf)
 			PacketManager::sendPlayerList(session->getRoomNumber());
 		}
 		break;
-	case PAK_ID::PAK_REQ_StartGame:
+	case PAK_ID::PAK_REQ_StartRoom:
 		result = RoomManager::getInstance().startRoom(session);
 		if (result)
 		{
-			PacketManager::sendStartGame(session->getRoomNumber());
+			PacketManager::sendReadyGame(session->getRoomNumber());
 		}
 		break;
 	case PAK_ID::PAK_REQ_Move:
@@ -103,7 +103,7 @@ void PacketManager::sendPlayerList(UINT roomNum)
 
 }
 
-void PacketManager::sendStartGame(UINT roomNum)
+void PacketManager::sendReadyGame(UINT roomNum)
 {
 	if (roomNum == NOT_IN_ROOM)
 	{
@@ -111,7 +111,7 @@ void PacketManager::sendStartGame(UINT roomNum)
 		return;
 	}
 
-	RoomManager::getInstance().sendStartGame(roomNum);
+	RoomManager::getInstance().sendReadyGame(roomNum);
 
 	SLog(L"* the [%d] room's start request was sent. ", roomNum);
 }
