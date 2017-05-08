@@ -412,10 +412,10 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			// Collision Grouping
 			if( pActor->isDynamic() )
 			{
-				if( 0 == strcmp( pActor->getName(), "player1" )
-					|| 0 == strcmp( pActor->getName(), "player2" ) 
-					|| 0 == strcmp( pActor->getName(), "player3" ) 
-					|| 0 == strcmp( pActor->getName(), "player4" ) )
+				if( 0 == strcmp( pActor->getName(), "Player1" )
+					|| 0 == strcmp( pActor->getName(), "Player2" ) 
+					|| 0 == strcmp( pActor->getName(), "Player3" ) 
+					|| 0 == strcmp( pActor->getName(), "Player4" ) )
 				{
 					if( iPlayerCnt == iCreatePlayerCnt )
 					{
@@ -497,6 +497,20 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
 				}
 
+				else if( 0 == strcmp( pActor->getName(), "Bridge" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Bridge" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Bridge" );
+					CGameObject* pBridge = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pBridge->Add_Ref();
+					pBridge->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pBridge );
+					pShader_Mesh_Alpha->Add_RenderObject( pBridge );
+				}
+
 				else if( 0 == strcmp( pActor->getName(), "Tree00" ) )
 				{
 					pActor->setGroup( COL_STATIC );
@@ -504,7 +518,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree00" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree00" );
-					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.25f, 0.25f, 0.25f ) );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
 					pShader_Mesh->Add_RenderObject( pTree );
@@ -518,7 +532,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree01" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree01" );
-					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.3f, 0.3f, 0.3f ) );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
 					pShader_Mesh->Add_RenderObject( pTree );
@@ -532,7 +546,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree02" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree02" );
-					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.5f, 0.5f, 0.5f ) );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
 					pShader_Mesh->Add_RenderObject( pTree );
@@ -546,7 +560,35 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Rock00" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Rock00" );
-					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.20f, 0.20f, 0.20f ) );
+					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pRock->Add_Ref();
+					pRock->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Mesh_Alpha->Add_RenderObject( pRock );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Rock01" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Rock01" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Rock01" );
+					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pRock->Add_Ref();
+					pRock->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Mesh_Alpha->Add_RenderObject( pRock );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Rock02" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Rock02" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Rock02" );
+					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pRock->Add_Ref();
 					pRock->Add_Ref();
 					pShader_Mesh->Add_RenderObject( pRock );

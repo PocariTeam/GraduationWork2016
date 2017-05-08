@@ -1,4 +1,4 @@
-13
+16
 Mesh_Test ../Executable/Resources/Mesh/Inanimate/Normal/Test.jsm
 Mesh_Banana ../Executable/Resources/Mesh/Inanimate/Normal/Banana.jsm
 Mesh_Ground1 ../Executable/Resources/Mesh/Inanimate/Normal/Ground1.jsm
@@ -12,3 +12,6 @@ Mesh_Tree00 ../Executable/Resources/Mesh/Inanimate/Normal/Tree00.jsm
 Mesh_Tree01 ../Executable/Resources/Mesh/Inanimate/Normal/Tree01.jsm
 Mesh_Tree02 ../Executable/Resources/Mesh/Inanimate/Normal/Tree02.jsm
 Mesh_Rock00 ../Executable/Resources/Mesh/Inanimate/Normal/Rock00.jsm
+Mesh_Rock01 ../Executable/Resources/Mesh/Inanimate/Normal/Rock01.jsm
+Mesh_Rock02 ../Executable/Resources/Mesh/Inanimate/Normal/Rock02.jsm
+Mesh_Bridge ../Executable/Resources/Mesh/Inanimate/Normal/Bridge.jsm

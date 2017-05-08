@@ -21,7 +21,7 @@ HRESULT CEnvironment::Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh*
 	m_pMesh = pMesh;
 	m_pTexture = pTexture;
 	m_vScale = vScale;
-	m_vOption.w = 0.2f;
+	m_vOption.w = 0.1f;
 
 	return S_OK;
 }

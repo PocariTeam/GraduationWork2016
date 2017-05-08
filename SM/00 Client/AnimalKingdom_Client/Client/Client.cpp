@@ -57,7 +57,7 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	CTimer* pFixedTimer{ CTimer::Create() };
 
 	float fFrameTime{ 0.f };
-	// float fFrameLimit{ 1.f / 60.f };
+	float fFrameLimit{ 1.f / 60.f };
 
 	// 기본 메시지 루프입니다.
 	while( true )
@@ -79,7 +79,7 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 
 		else
 		{
-			// if( fFrameTime >= fFrameLimit )	// d
+			if( fFrameTime >= fFrameLimit )	// d
 			{
 				if( -1 == g_pMainFrm->Update( fFrameTime ) ) // 축척된 프레임(델타)타임을 넣어주도록 수정했음
 					break;

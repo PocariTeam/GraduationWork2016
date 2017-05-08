@@ -25,7 +25,7 @@ HRESULT CThirdCamera::Initialize( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTrans
 	m_vEye = XMFLOAT3( m_vAt.x + m_vOffset.x, m_vAt.y + m_vOffset.y, m_vAt.z + m_vOffset.z );
 	
 	CalculateViewMatrix( &m_mtxView, m_vEye, m_vCurrent );
-	m_fSpeed = 5.f;
+	m_fSpeed = 3.f;
 
 	return CCamera::Initialize( pDevice );
 }

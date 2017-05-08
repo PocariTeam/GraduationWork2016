@@ -115,11 +115,11 @@ XMFLOAT4X4 Player::GetWorld()
 	switch( character_ )
 	{
 	case CHARACTER_CHM:
-		mtxWorld._24 -= 2.f;
+		mtxWorld._24 -= 1.1f;
 		fScale = 1.5f;
 		break;
 	case CHARACTER_MON:
-		mtxWorld._24 -= 2.8f;
+		mtxWorld._24 -= 2.5f;
 		fScale = 21.209435f;
 		break;
 	default:

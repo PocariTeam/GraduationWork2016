@@ -34,7 +34,7 @@ int CChameleon::Update( const float& fTimeDelta )
 	CPlayer::Update( fTimeDelta );
 	XMMATRIX mtxWorld;
 	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	m_mtxWorld._24 -= 2.f;
+	m_mtxWorld._24 -= 1.1f;
 	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
 
 	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
@@ -85,7 +85,7 @@ XMFLOAT4X4* CChameleon::GetWorld()
 {
 	/*XMMATRIX mtxWorld;
 	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	m_mtxWorld._24 -= 2.f;
+	m_mtxWorld._24 -= 1.f;
 	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
 
 	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );*/
