@@ -104,5 +104,13 @@ class CDownState
 	STATE GetState( void );
 };
 
+class CDeadState
+	: public CState, public Singleton<CDeadState>
+{
+	void Enter( Player* pOwner, const float& fTImeDelta );
+	void Execute( Player* pOwner, const float& fTImeDelta );
+	void Exit( Player* pOwner, const float& fTimeDelta );
+	STATE GetState( void );
+};
 
 #endif // State_h__

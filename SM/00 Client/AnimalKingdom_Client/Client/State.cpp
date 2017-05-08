@@ -15,6 +15,7 @@ CDefendState*	CSingleton<CDefendState>::m_pInstance;
 CBeatenState*	CSingleton<CBeatenState>::m_pInstance;
 CBeatenState2*	CSingleton<CBeatenState2>::m_pInstance;
 CDownState*		CSingleton<CDownState>::m_pInstance;
+CDeadState*		CSingleton<CDeadState>::m_pInstance;
 
 DWORD CState::Release( void )
 {
@@ -256,4 +257,25 @@ void CDownState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 STATE CDownState::GetState( void )
 {
 	return STATE_DOWN;
+}
+
+///////////////////// Down State /////////////////////
+
+void CDeadState::Enter( CPlayer* pOwner, const float& fTImeDelta )
+{
+	pOwner->GetAnimator()->Change_Animation( STATE_DEAD );
+}
+
+void CDeadState::Execute( CPlayer* pOwner, const float& fTImeDelta )
+{
+}
+
+void CDeadState::Exit( CPlayer* pOwner, const float& fTimeDelta )
+{
+
+}
+
+STATE CDeadState::GetState( void )
+{
+	return STATE_DEAD;
 }

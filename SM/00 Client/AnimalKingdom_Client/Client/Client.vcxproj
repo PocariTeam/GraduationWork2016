@@ -201,6 +201,7 @@
     <ClInclude Include="AnimationMgr.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Banana.h" />
+    <ClInclude Include="Bar_UI.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="Button_UI.h" />
     <ClInclude Include="Camera.h" />
@@ -366,6 +367,7 @@
     <ClCompile Include="AnimationMgr.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Banana.cpp" />
+    <ClCompile Include="Bar_UI.cpp" />
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="Button_UI.cpp" />
     <ClCompile Include="Camera.cpp" />

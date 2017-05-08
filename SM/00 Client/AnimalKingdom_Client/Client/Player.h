@@ -42,6 +42,7 @@ public:
 	NxMat34*		GetActorsOriginPose( void ) { return m_pActorsOriginPose; }
 	virtual XMFLOAT4X4*	GetWorld();
 	bool			GetAlpha() { return m_bAlpha; }
+	int*			GetHP() { return &m_iHp; }
 public:
 	void			Change_State( STATE eState );
 public:

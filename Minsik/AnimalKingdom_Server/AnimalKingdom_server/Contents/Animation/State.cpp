@@ -190,7 +190,7 @@ void CBeatenState::Execute( Player* pOwner, const float& fTImeDelta )
 
 void CBeatenState::Exit( Player* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->setBeaten( true );
 }
 
 STATE CBeatenState::GetState( void )
@@ -213,7 +213,7 @@ void CBeatenState2::Execute( Player* pOwner, const float& fTImeDelta )
 
 void CBeatenState2::Exit( Player* pOwner, const float& fTimeDelta )
 {
-
+	pOwner->setBeaten( true );
 }
 
 STATE CBeatenState2::GetState( void )
@@ -232,7 +232,7 @@ void CDownState::Enter( Player* pOwner, const float& fTImeDelta )
 void CDownState::Execute( Player* pOwner, const float& fTImeDelta )
 {
 	if( pOwner->getAnimator()->GetCurrentAnimationFinished() )
-		pOwner->getFSM()->Change_State( STATE_IDLE );
+		pOwner->getFSM()->Change_State( STATE_DEAD );
 }
 
 void CDownState::Exit( Player* pOwner, const float& fTimeDelta )
@@ -243,4 +243,26 @@ void CDownState::Exit( Player* pOwner, const float& fTimeDelta )
 STATE CDownState::GetState( void )
 {
 	return STATE_DOWN;
+}
+
+///////////////////// Dead State /////////////////////
+
+void CDeadState::Enter( Player* pOwner, const float& fTImeDelta )
+{
+	pOwner->getAnimator()->Change_Animation( STATE_DEAD );
+	pOwner->setBeaten( false );
+}
+
+void CDeadState::Execute( Player* pOwner, const float& fTImeDelta )
+{
+}
+
+void CDeadState::Exit( Player* pOwner, const float& fTimeDelta )
+{
+
+}
+
+STATE CDeadState::GetState( void )
+{
+	return STATE_DEAD;
 }

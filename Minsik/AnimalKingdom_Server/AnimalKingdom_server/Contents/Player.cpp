@@ -6,7 +6,7 @@
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
 	, m_vRotate( 0.f, 0.f, 0.f ), actorsOriginPose_( nullptr ), m_bSweap( false )
-	, m_fJumpHeight( 100.f )
+	, m_fJumpHeight( 130.f ), damage_( 50 ), beaten_( true )
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 80.0f;
@@ -43,6 +43,8 @@ Player::~Player()
 
 void Player::update( float fTimeDelta )
 {
+	if( 0 > hp_ ) stateMachine_->Change_State( STATE_DOWN );
+
 	if( stateMachine_ ) stateMachine_->Update( fTimeDelta );
 
 	moveDir_.y += -9.81f * 9.81f * fTimeDelta;
@@ -208,7 +210,7 @@ void Player::Attack( STATE eState )
 	{
 		NxSweepQueryHit result[ 100 ];
 		UINT MyGroup = UINT( pActor->getGroup() );
-		LPVOID pUserdata = LPVOID( LONGLONG( MyGroup ) );
+		LPVOID pUserdata = this;
 		pActor->linearSweep( pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
 			( NxUserEntityReport<NxSweepQueryHit>* )&PhysXManager::getInstance().entityReport_ );
 	}

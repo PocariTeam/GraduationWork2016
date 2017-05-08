@@ -50,6 +50,7 @@ STATE CStateMachine::GetCurrentState()
 void CStateMachine::Change_State( CState* pState )
 {
 	if( m_pCurrentState == pState ) return;
+	if( STATE_DEAD == m_pCurrentState->GetState() ) return;
 
 	m_pPreviousState = m_pCurrentState;
 	m_pCurrentState->Exit( m_pOwner, 0.f );
@@ -87,6 +88,9 @@ void CStateMachine::Change_State( STATE eState )
 		break;
 	case STATE_DOWN:
 		Change_State(&CDownState::getInstance());
+		break;
+	case STATE_DEAD:
+		Change_State( &CDeadState::getInstance() );
 		break;
 	}
 }

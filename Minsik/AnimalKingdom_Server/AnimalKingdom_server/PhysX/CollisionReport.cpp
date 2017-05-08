@@ -12,13 +12,22 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 	for( NxU32 i = 0; i < nbEntities; ++i )
 	{
 		LONGLONG temp{ ( LONGLONG )entities[ i ].hitShape->getGroup() };
+		Player* pAttacker = ( Player* )entities->userData;
+		LONGLONG Attacker_Group = ( LONGLONG )( pAttacker->getActors()[0]->getGroup() );
 		if( 0 == temp ) return true;
-		if( !( ( LONGLONG )entities->userData & temp ) )
+		if( !( Attacker_Group & temp ) )
 		{
 			// printf( "내 그룹 : %lld\n", ( LONGLONG )entities->userData );
 			// printf( "얘 그룹 : %lld\n", temp );
 			// printf( "E [ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
-			( ( Player* )entities[ i ].hitShape->getActor().userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			if( ( ( Player* )entities[ i ].hitShape->getActor().userData )->getBeaten() )
+			{
+				( ( Player* )entities[ i ].hitShape->getActor().userData )->setBeaten( false );
+				int iHP = ( ( Player* )entities[ i ].hitShape->getActor().userData )->getHp();
+				int iDamage = pAttacker->getDamage();
+				( ( Player* )entities[ i ].hitShape->getActor().userData )->setHp( iHP - iDamage );
+				( ( Player* )entities[ i ].hitShape->getActor().userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			}
 			return true;
 		}
 	}
@@ -80,7 +89,14 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 
 		else if( !( COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->GetMasterCollisionGroup() ) )
 		{
-			( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			if( ( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getBeaten() )
+			{
+				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->setBeaten( false );
+				int iHP = ( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getHp();
+				int iDamage = ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->getDamage();
+				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->setHp( iHP - iDamage );
+				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
+			}
 			( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->Frozen();
 		}
 	}

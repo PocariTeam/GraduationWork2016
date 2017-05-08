@@ -16,6 +16,7 @@
 #include "ThirdCamera.h"
 #include "MeshMgr.h"
 #include "Section.h"
+#include "Bar_UI.h"
 
 CJungle::CJungle()
 	: CScene()
@@ -25,7 +26,10 @@ CJungle::CJungle()
 	, m_dwPlayerCnt( 0 )
 	, m_fAccTime( 120.f )
 	, m_bOverlapped( true )
-	, m_bDebug( true )
+	, m_bDebug( false )
+	, m_pStateNotify( nullptr )
+	, m_bStart( false )
+	, m_dpHP_Bar( nullptr )
 {
 }
 
@@ -38,25 +42,26 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_pDevice = pDevice;
 	m_hWnd = hWnd;
 
-	m_pCamera = CDebugCamera::Create( hWnd, pDevice );
 	CLightMgr::GetInstance()->Initialize( pDevice );
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
+	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
+	m_dwPlayerCnt = ( UINT )m_mapPlayer.size();
 
 	// Section 1 ~ 3
 	CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
 	m_dpSection = new CSection*[ 3 ];
 	m_dpSection[ 0 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -20.f, 130.f, 360.f ), XMFLOAT3( 180.f, 45.f, 45.f ) );
-	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 0 ] );
+	// m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 0 ] );
 	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
 	m_dpSection[ 1 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -170.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
-	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 1 ] );
+	// m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 1 ] );
 	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
 	m_dpSection[ 2 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( 130.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
-	m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 2 ] );
+	// m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 2 ] );
 
 	auto player_iter = m_mapPlayer.begin();
 	for( ; player_iter != m_mapPlayer.end(); ++player_iter )
@@ -70,14 +75,27 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_COLON ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.f, 0.9f, 0.05f, 0.1f ), 10 ) );
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_PROCENT ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Number" ), XMFLOAT4( 0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
-
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	// Time 글자
-
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 	CGameObject* pTime = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Time" ), XMFLOAT4( -0.3f, 0.9f, 0.15f, 0.1f ) );
 	pShader->Add_RenderObject( pTime );
+
+	// HP Bar
+	m_dpHP_Bar = new CBar_UI*[ m_dwPlayerCnt ];
+	player_iter = m_mapPlayer.begin();
+
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+	{
+		m_dpHP_Bar[ i ] = CBar_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_HP_Bar" ), XMFLOAT4( -0.8f + i * 0.5f, -0.8f, 0.4f, 0.1f ), player_iter->second->GetHP(), 100 );
+		pShader->Add_RenderObject( m_dpHP_Bar[ i ] );
+		player_iter++;
+	}
+
+	// Ready / Start / End 표시
+	m_pStateNotify = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -1.f, 1.f, 2.f, 2.f ) );
+	pShader->Add_RenderObject( m_pStateNotify );
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
@@ -95,22 +113,25 @@ void CJungle::AccumulateTime( const float& fTimeDelta )
 
 	if( iInput == 0 ) return; // 게임 종료
 	m_fAccTime -= fTimeDelta;
+
+	if( 119.0f > m_fAccTime ) m_pStateNotify->Hide();
 }
 
 int CJungle::Update( const float& fTimeDelta )
 {
 	CPhysics::GetInstance()->Update( fTimeDelta );
 	CScene::Update( fTimeDelta );
-	if( -1 != m_iPlayerID )
+
+	if( m_bStart )
 	{
 		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
 		if( m_mapPlayer.find( m_iPlayerID )->second->GetAlpha() )
 			CRenderer::GetInstance()->InCave();
 		else
 			CRenderer::GetInstance()->OutCave();
-	}
 
-	AccumulateTime( fTimeDelta );
+		AccumulateTime( fTimeDelta );
+	}
 	Check_Key( fTimeDelta );
 
 	return 0;
@@ -123,8 +144,13 @@ DWORD CJungle::Release( void )
 	delete[] m_dpTime_UI;
 	m_dpTime_UI = nullptr;
 
+	for( int i = 0; i < 3; ++i )
+		m_dpSection[ i ]->Release();
 	delete[] m_dpSection;
 	m_dpSection = nullptr;
+
+	delete[] m_dpHP_Bar;
+	m_dpHP_Bar = nullptr;
 
 	CScene::Release();
 
@@ -137,6 +163,8 @@ DWORD CJungle::Release( void )
 	CBeatenState::DestroyInstance();
 	CBeatenState2::DestroyInstance();
 	CDefendState::DestroyInstance();
+	CDownState::DestroyInstance();
+	CDeadState::DestroyInstance();
 
 	CPhysics::GetInstance()->Release_Scene();
 
@@ -207,6 +235,12 @@ void CJungle::Check_Key( const float& fTimeDelta )
 
 	else if( !CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) )
 		m_bOverlapped = true;
+}
+
+void CJungle::NotifyGameStart( void )
+{
+	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Master" ) );
+	m_bStart = true;
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )

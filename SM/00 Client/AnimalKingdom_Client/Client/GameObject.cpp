@@ -13,7 +13,7 @@ CGameObject::CGameObject()
 	, m_pTexture( nullptr )
 	, m_pActor( nullptr )
 	, m_vDir( 0.f, 0.f, 0.f )
-	, m_vOption( 0.f, 0.f, 0.f, 0.f )
+	, m_vOption( 0.f, 0.f, 0.f, 1.f )
 {
 	memset( &m_mtxWorld, 0, sizeof( XMFLOAT4X4 ) );
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-#define		GAME_START_DELAY		5000
+#define		GAME_START_DELAY		3000
 
 #define		UPDATE_TIME_SEC			(1.0f/60.0f)
 #define		SYNC_TIME_SEC			(1.0f/60.0f)

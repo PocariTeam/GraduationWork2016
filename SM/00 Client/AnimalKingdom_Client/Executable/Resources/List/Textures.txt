@@ -1,4 +1,4 @@
-36
+37
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
 Texture_Billboard_Ready 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Ready.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
@@ -14,6 +14,7 @@ Texture_Refresh 3 ../Executable/Resources/Texture/UI/Refresh/Refresh%d.png
 Texture_Ready 4 ../Executable/Resources/Texture/UI/Ready/Ready%d.png
 Texture_Start 4 ../Executable/Resources/Texture/UI/Start/Start%d.png
 Texture_Wnd 1 ../Executable/Resources/Texture/UI/Wnd/Wnd.png
+Texture_HP_Bar 1 ../Executable/Resources/Texture/UI/HP_Bar/HP_Bar.png
 Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
 Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
 Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds

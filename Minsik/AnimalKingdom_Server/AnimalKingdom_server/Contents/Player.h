@@ -8,6 +8,8 @@ class CStateMachine;
 
 class Player {
 	int				hp_;
+	int				damage_;
+	bool			beaten_;
 	Session*		session_;
 	CHARACTER		character_;
 
@@ -68,4 +70,8 @@ public:
 	void			setMoveDir(Vector3 vDir);
 	void			setState(STATE state);
 	int				getHp() { return hp_; }
+	void			setHp( int hp ) { hp_ = hp; }
+	bool			getBeaten() { return beaten_; }
+	void			setBeaten( bool bBeaten ) { beaten_ = bBeaten; }
+	int				getDamage() { return damage_; }
 };

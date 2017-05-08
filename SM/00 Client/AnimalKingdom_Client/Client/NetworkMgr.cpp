@@ -218,7 +218,7 @@ void CNetworkMgr::processPacket()
 		printf("========================================= \n");
 		printf("\t\t [게임시작] \t\t \n");
 		printf("========================================= \n");
-		//m_pScene->NotifyGameStart();
+		m_pScene->NotifyGameStart();
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:

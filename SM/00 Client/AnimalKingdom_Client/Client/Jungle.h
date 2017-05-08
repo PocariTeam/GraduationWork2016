@@ -5,6 +5,8 @@
 
 #include "Scene.h"
 
+class CNormal_UI;
+class CBar_UI;
 class CPlayer;
 class CNumber_UI;
 class CSection;
@@ -26,6 +28,7 @@ public:
 	void  Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state );
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
+	void  NotifyGameStart( void );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:
@@ -39,6 +42,11 @@ private:
 	bool					m_bDebug;
 	/* Check Key */
 	bool					m_bOverlapped;
+	/* Ready / Start / End */
+	bool					m_bStart;
+	CNormal_UI*				m_pStateNotify;
+	/* HP Bar */
+	CBar_UI**			m_dpHP_Bar;
 };
 
 #endif // Jungle_h__

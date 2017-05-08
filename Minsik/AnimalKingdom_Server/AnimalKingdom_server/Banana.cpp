@@ -15,6 +15,7 @@ HRESULT CBanana::Initialize( NxActor* pActor, COL_GROUP eMaster, UINT iSceneNum 
 	m_pActor = pActor;
 	m_eMasterGroup = eMaster;
 	m_iSceneNum = iSceneNum;
+	m_iDamage = 30;
 
 	return S_OK;
 }

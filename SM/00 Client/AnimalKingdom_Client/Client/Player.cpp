@@ -26,7 +26,7 @@ CPlayer::CPlayer()
 	, m_pInputMgr(CInputMgr::GetInstance())
 	, m_fSpeed(80.f)
 	, m_bSweap(false)
-	, m_fJumpHeight(100.f)
+	, m_fJumpHeight(130.f)
 	, m_dpSections( nullptr )
 	, m_iSectionCnt( 0 )
 	, m_iHp(100)
@@ -53,6 +53,8 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 {
 	STATE eState = m_pStateMachine->GetCurrentState();
 	NxVec3 vDir{ 0.f, 0.f, 0.f };
+
+	if( STATE_DEAD == eState ) return;
 
 	if( m_pInputMgr->Get_KeyboardState( DIK_UP ) )
 		vDir += NxVec3{ 0.f, 0.f, 1.f };
@@ -95,6 +97,10 @@ void CPlayer::Jump( const float& fTimeDelta, float fAnimatePercent )
 
 int CPlayer::Update( const float& fTimeDelta )
 {
+	/*printf( "컨트롤러 : %f, %f, %f\n", m_pCharacterController->getPosition().x, m_pCharacterController->getPosition().y, m_pCharacterController->getPosition().z );
+	printf( "컨트롤러의 액터 : %f, %f, %f\n", m_pCharacterController->getActor()->getGlobalPosition().x, m_pCharacterController->getActor()->getGlobalPosition().y, m_pCharacterController->getActor()->getGlobalPosition().z );
+	printf( "행렬 : %f, %f, %f\n", m_mtxWorld._14, m_mtxWorld._24, m_mtxWorld._34 );*/
+
 	m_pStateMachine->Update( fTimeDelta );
 
 	m_vDir.y += -GRAVITY * GRAVITY * fTimeDelta;
@@ -179,6 +185,7 @@ void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
 	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
 	m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
+	m_iHp = hp;
 	m_pStateMachine->Change_State(state);
 }
 

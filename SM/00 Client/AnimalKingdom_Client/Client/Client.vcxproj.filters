@@ -256,6 +256,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\04 Section">
       <UniqueIdentifier>{ff9edfbc-5bdc-409d-aa33-c43b0de1530b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\05 Bar_UI">
+      <UniqueIdentifier>{3060d1ea-21b5-4a39-8b6f-2cae12a439d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -564,6 +567,9 @@
     <ClInclude Include="Section.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\04 Section</Filter>
     </ClInclude>
+    <ClInclude Include="Bar_UI.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\05 Bar_UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -820,6 +826,9 @@
     </ClCompile>
     <ClCompile Include="Section.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\04 Section</Filter>
+    </ClCompile>
+    <ClCompile Include="Bar_UI.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\05 Bar_UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
