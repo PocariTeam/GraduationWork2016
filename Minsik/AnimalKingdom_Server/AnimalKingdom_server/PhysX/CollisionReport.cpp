@@ -20,14 +20,9 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 			// printf( "내 그룹 : %lld\n", ( LONGLONG )entities->userData );
 			// printf( "얘 그룹 : %lld\n", temp );
 			// printf( "E [ %d ]번째 충돌한 도형: %s \n", i, entities[ i ].hitShape->getName() );
-			if( ( ( Player* )entities[ i ].hitShape->getActor().userData )->getBeaten() )
-			{
-				( ( Player* )entities[ i ].hitShape->getActor().userData )->setBeaten( false );
-				int iHP = ( ( Player* )entities[ i ].hitShape->getActor().userData )->getHp();
-				int iDamage = pAttacker->getDamage();
-				( ( Player* )entities[ i ].hitShape->getActor().userData )->setHp( iHP - iDamage );
-				( ( Player* )entities[ i ].hitShape->getActor().userData )->getFSM()->Change_State( STATE_BEATEN1 );
-			}
+			
+			((Player*)entities[i].hitShape->getActor().userData)->proceedBeaten(pAttacker->getDamage());
+
 			return true;
 		}
 	}
@@ -89,14 +84,8 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 
 		else if( !( COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->GetMasterCollisionGroup() ) )
 		{
-			if( ( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getBeaten() )
-			{
-				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->setBeaten( false );
-				int iHP = ( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getHp();
-				int iDamage = ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->getDamage();
-				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->setHp( iHP - iDamage );
-				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->getFSM()->Change_State( STATE_BEATEN1 );
-			}
+			int iDamage = ((CBanana*)pair.actors[iBananaIndex]->userData)->getDamage();
+			((Player*)pair.actors[iNoBananaIndex]->userData)->proceedBeaten(iDamage);
 			( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->Frozen();
 		}
 	}

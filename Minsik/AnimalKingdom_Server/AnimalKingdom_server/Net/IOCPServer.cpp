@@ -250,9 +250,46 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 		}
 		case EVENT_START:
 		{
-			if (RoomManager::getInstance().getPlaying(((event_obj*)session)->sceneNum))
+			int roomNum = ((event_obj*)session)->sceneNum;
+			if (RoomManager::getInstance().getPlaying(roomNum))
 			{
 				((GameRoom*)((event_obj*)session)->obj_ptr)->sendStartGame();
+				IOCPServer::getInstance().pushEvent(new event_obj{ roomNum, ((event_obj*)session)->obj_ptr }, GetTickCount() + (GAME_PLAYING_SEC*1000), EVENT_TIMEOUT);
+			}
+			delete session;
+			delete ioData;
+			continue;
+		}
+		case EVENT_TIMEOUT:
+		{
+			int roomNum = ((event_obj*)session)->sceneNum;
+			if (RoomManager::getInstance().getPlaying(roomNum))
+			{
+				((GameRoom*)((event_obj*)session)->obj_ptr)->checkWinner(true);
+			}
+			delete session;
+			delete ioData;
+			continue;
+		}
+		case EVENT_FINISH:
+		{
+			int roomNum = ((event_obj*)session)->sceneNum;
+			if (RoomManager::getInstance().getPlaying(roomNum))
+			{
+				((GameRoom*)((event_obj*)session)->obj_ptr)->finishGame();
+			}
+			delete session;
+			delete ioData;
+			continue;
+		}
+		case EVENT_RELEASE:
+		{
+			int roomNum = ((event_obj*)session)->sceneNum;
+			if (RoomManager::getInstance().getPlaying(roomNum))
+			{
+				((GameRoom*)((event_obj*)session)->obj_ptr)->setPlaying(false);
+				((GameRoom*)((event_obj*)session)->obj_ptr)->sendFinishGame();
+				PhysXManager::getInstance().ReleaseScene(roomNum);
 			}
 			delete session;
 			delete ioData;

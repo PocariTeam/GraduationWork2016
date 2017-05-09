@@ -205,20 +205,33 @@ void CNetworkMgr::processPacket()
 	}
 	case PAK_ID::PAK_ANS_ReadyGame:
 	{
-		HEADER* packet = ( HEADER* )m_saveBuf;
 		printf( "========================================= \n" );
-		printf( "\t\t [게임준비] \t\t \n" );
+		printf( "\t\t [게임 준비] \t\t \n" );
 		printf( "========================================= \n" );
 		m_pScene->NotifyGameStart();
 		break;
 	}
 	case PAK_ID::PAK_ANS_StartGame:
 	{
-		HEADER* packet = (HEADER*)m_saveBuf;
 		printf("========================================= \n");
-		printf("\t\t [게임시작] \t\t \n");
+		printf("\t\t [게임 시작] \t\t \n");
 		printf("========================================= \n");
 		m_pScene->NotifyGameStart();
+		break;
+	}
+	case PAK_ID::PAK_ANS_Winner:
+	{
+		S_Winner* packet = (S_Winner*)m_saveBuf;
+		printf("========================================= \n");
+		printf("\t\t 승자는 id[%d] \t\t \n",packet->id);
+		printf("========================================= \n");
+		break;
+	}
+	case PAK_ID::PAK_ANS_FinishGame:
+	{
+		printf("========================================= \n");
+		printf("\t\t [게임 완료] \t\t \n");
+		printf("========================================= \n");
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:

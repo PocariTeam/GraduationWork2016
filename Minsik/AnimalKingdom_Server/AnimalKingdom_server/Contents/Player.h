@@ -74,4 +74,5 @@ public:
 	bool			getBeaten() { return beaten_; }
 	void			setBeaten( bool bBeaten ) { beaten_ = bBeaten; }
 	int				getDamage() { return damage_; }
+	void			proceedBeaten(int damage);
 };

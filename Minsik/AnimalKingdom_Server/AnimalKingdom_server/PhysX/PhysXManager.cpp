@@ -329,7 +329,7 @@ void PhysXManager::ReleaseScene(UINT roomNum)
 {
 	SAFE_LOCK(lock_);
 
-	while( !m_BananaQueue[ roomNum ].empty() )
+	while( false == m_BananaQueue[ roomNum ].empty() )
 	{
 		m_BananaQueue[ roomNum ].front()->Release();
 		m_BananaQueue[ roomNum ].pop();
@@ -343,6 +343,7 @@ void PhysXManager::ReleaseScene(UINT roomNum)
 	}
 	if (scenes_[roomNum])
 	{
+		scenes_[roomNum]->shutdownWorkerThreads();
 		physicsSDK_->releaseScene(*scenes_[roomNum]);
 		scenes_[roomNum] = nullptr;
 		sceneSeedNum--;

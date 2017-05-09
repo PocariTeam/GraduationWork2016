@@ -117,6 +117,21 @@ BOOL RoomManager::getPlaying(UINT roomNum)
 	return roomArray_[roomNum]->getPlaying();
 }
 
+void RoomManager::checkWinner(UINT roomNum, bool timeOut)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		roomArray_[roomNum]->checkWinner(timeOut);
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+	}
+
+}
+
 BOOL RoomManager::setPlayerReady(Session* session, BOOL b)
 {
 	SAFE_LOCK(lock_);

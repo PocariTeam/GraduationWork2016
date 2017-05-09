@@ -157,6 +157,22 @@ void Player::setState( STATE state )
 	stateMachine_->Change_State(state);
 }
 
+void Player::proceedBeaten(int damage)
+{
+	if ((beaten_ == false) || hp_ <=0) return;
+
+	beaten_ = false;
+	hp_ -= damage;
+	stateMachine_->Change_State(STATE_BEATEN1);
+
+	if (hp_ <= 0)
+	{
+		hp_ = 0;
+		RoomManager::getInstance().checkWinner(roomNum_, false);
+	}
+	
+}
+
 void Player::setMoveDir( Vector3 vDir)
 {
 	moveDir_.x = vDir.x;

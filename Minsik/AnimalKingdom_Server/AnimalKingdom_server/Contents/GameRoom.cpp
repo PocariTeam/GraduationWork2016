@@ -81,6 +81,10 @@ BOOL GameRoom::startRoom(Session* session)
 		if (loadCheck && GameRoom::setupGame())
 		{
 			isPlaying_ = true;
+			for (auto p = players_.begin(); p != players_.end(); p++)
+			{
+				(p->second)->setReady(false);
+			}
 			SLog(L"* the [%d] room is starting now. ", roomNum_);
 			return true;
 		}
@@ -117,8 +121,7 @@ BOOL GameRoom::exit(Session* session)
 	{
 		timeKillEvent(updateTimerID_);
 		timeKillEvent(syncTimerID_);
-		PhysXManager::getInstance().ReleaseScene(roomNum_);
-		isPlaying_ = false;
+		IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + 1000, EVENT_FINISH);
 	}
 
 	PacketManager::getInstance().sendPlayerList(session->getRoomNumber());
@@ -207,6 +210,8 @@ BOOL GameRoom::moveRequest(Session* session, Vector3 vDir)
 {
 	SAFE_LOCK(lock_);
 
+	if (isPlaying_ == false) return true;
+
 	auto find_iter = players_.find(session->getID());
 	if (find_iter == players_.end())
 	{
@@ -221,6 +226,8 @@ BOOL GameRoom::moveRequest(Session* session, Vector3 vDir)
 BOOL GameRoom::stateRequest(Session * session, STATE state)
 {
 	SAFE_LOCK(lock_);
+
+	if (isPlaying_ == false) return true;
 
 	auto find_iter = players_.find(session->getID());
 	if (find_iter == players_.end())
@@ -294,6 +301,35 @@ void GameRoom::sendStartGame()
 		(iter->second)->getSession()->send((char*)&packet);
 	}
 }
+
+void GameRoom::sendWinner(int winner_id)
+{
+	SAFE_LOCK(lock_);
+
+	S_Winner packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_Winner;
+	packet.header.size = sizeof(packet);
+	packet.id = winner_id;
+
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+
+	IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + GAME_FINISH_DELAY, EVENT_FINISH);
+}
+
+void GameRoom::sendFinishGame()
+{
+	HEADER packet;
+	packet.packetID = PAK_ID::PAK_ANS_FinishGame;
+	packet.size = sizeof(packet);
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+}
+
 
 BOOL GameRoom::setupGame()
 {
@@ -372,7 +408,6 @@ void GameRoom::sendPlayerSync()
 		(iter->second)->getSession()->send((char*)&playerPacket);
 	}
 
-
 }
 
 void GameRoom::sendDynamicSync()
@@ -409,4 +444,54 @@ BOOL GameRoom::getPlaying()
 {
 	SAFE_LOCK(lock_);
 	return isPlaying_;
+}
+
+void GameRoom::checkWinner(bool bTimeOut)
+{
+	SAFE_LOCK(lock_);
+
+	if (players_.empty()) return;
+
+	int winner_id = players_.begin()->first;
+	int aliveCount = playerCount_;
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		if ((iter->second)->getHp() <= 0) --aliveCount;
+		else if (players_[winner_id]->getHp() < (iter->second)->getHp())
+		{
+			winner_id = iter->first;
+		}
+	}
+
+	if (aliveCount == 0)
+	{
+		SLog(L"* the room [%d] game draw.. winner: nobody(0) ", roomNum_);
+		sendWinner(0);
+		return;
+	}
+
+	if (bTimeOut || aliveCount == 1) // е╦юс╬ф©Т
+	{
+		SLog(L"* the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
+		sendWinner(winner_id);
+	}
+
+}
+
+void GameRoom::finishGame()
+{
+	SAFE_LOCK(lock_);
+
+	timeKillEvent(updateTimerID_);
+	timeKillEvent(syncTimerID_);
+
+	IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + 1000, EVENT_RELEASE);
+	
+}
+
+void GameRoom::setPlaying(bool b)
+{
+	SAFE_LOCK(lock_);
+
+	isPlaying_ = b;
 }

@@ -153,6 +153,7 @@ void CPhysics::Release_Scene( void )
 	if( nullptr != m_pScene )
 	{
 		m_pCharacterControllerMgr->purgeControllers();
+		m_pScene->shutdownWorkerThreads();
 		m_pPhysicsSDK->releaseScene( *m_pScene );
 		m_pScene = nullptr;
 	}
