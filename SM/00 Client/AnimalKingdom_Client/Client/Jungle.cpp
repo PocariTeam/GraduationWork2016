@@ -45,6 +45,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
 	m_pDevice = pDevice;
 	m_hWnd = hWnd;
+	CScene::Initialize( hWnd, pDevice );
 
 	CNetworkMgr::GetInstance()->unreadyAllPlayer();
 	CLightMgr::GetInstance()->Initialize( pDevice );
@@ -132,7 +133,9 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	}
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
-	return CScene::Initialize( hWnd, pDevice );
+	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
+
+	return S_OK;
 }
 
 void CJungle::AccumulateTime( const float& fTimeDelta )
@@ -190,6 +193,7 @@ int CJungle::Update( const float& fTimeDelta )
 
 DWORD CJungle::Release( void )
 {
+	CRenderer::GetInstance()->OutCave();
 	m_mapPlayer.erase( m_mapPlayer.begin(), m_mapPlayer.end() );
 
 	delete[] m_dpTime_UI;
@@ -338,6 +342,7 @@ void CJungle::NotifyWinner( UINT ID )
 {
 	m_iFocus = ID; 
 	::Safe_Release( m_pCamera );
+	m_bStart = false;
 	m_bDebug = false;
 	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ m_iFocus ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
 	( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );

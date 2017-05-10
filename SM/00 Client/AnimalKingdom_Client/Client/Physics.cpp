@@ -624,8 +624,6 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			CreateBanana();
 	}
 
-	CRenderer::GetInstance()->Copy_RenderGroup( plistShader );
-
 	return S_OK;
 }
 

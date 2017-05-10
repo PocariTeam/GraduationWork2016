@@ -167,26 +167,25 @@ void Player::setState( STATE state )
 
 bool Player::checkBlocking( NxVec3& vDir )
 {
-	// if( !defend ) return false;
+	if( !defend ) return false;
 	vDir.y = 0.f;
 	vDir.normalize();
-	NxVec3 vDefaultDir = NxVec3( 0.f, 0.f, 1.f );
-	float fDot = vDefaultDir.dot( vDir );
+	NxVec3 vDefaultDir = NxVec3( -sinf( m_vRotate.y ), 0.f, cosf( m_vRotate.y ) );
+	// printf( "b %f, %f, %f\n", vDir.x, vDir.y, vDir.z );
+	vDefaultDir.normalize();
+	// printf( "C %f, %f, %f\n", vDefaultDir.x, vDefaultDir.y, vDefaultDir.z );
+	vDefaultDir = vDefaultDir + vDir;
 
-	return true;
+	if( 1.f/*sqrt( 2.0 )*/ > vDefaultDir.magnitude() )
+		return true;
+
+	return false;
 }
 
 bool Player::checkBlocking( float fRotateY )
 {
-	// if( !defend ) return false;
-
-	float fTemp = m_vRotate.y - fRotateY;
-	if( -1.f * XM_PI - XM_PIDIV4 < fTemp
-		&&  -1.f * XM_PI + XM_PIDIV4 > fTemp )
-
-		return true;
-
-	return false;
+	NxVec3 vDefaultDir = NxVec3( -sinf( fRotateY ), 0.f, cosf( fRotateY ) );
+	return checkBlocking( vDefaultDir );
 }
 
 void Player::proceedBeaten( int damage )
