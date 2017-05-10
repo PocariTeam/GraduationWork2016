@@ -226,6 +226,14 @@ void CAnimator::Update( CGameObject* pOwner, const float& fTimeDelta )
 			( ( CPlayer* )pOwner )->SweapOn();
 			m_mapEvent.erase( map_iter );
 			break;
+		case 3:
+			// 막기 시작
+			m_mapEvent.erase( map_iter );
+			break;
+		case 4:
+			// 막기 끝
+			m_mapEvent.erase( map_iter );
+			break;
 		default:
 			break;
 		}

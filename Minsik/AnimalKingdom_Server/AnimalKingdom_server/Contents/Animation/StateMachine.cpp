@@ -47,6 +47,11 @@ STATE CStateMachine::GetCurrentState()
 	return m_pCurrentState->GetState();
 }
 
+STATE CStateMachine::GetPreviousState()
+{
+	return m_pPreviousState->GetState();
+}
+
 void CStateMachine::Change_State( CState* pState )
 {
 	if( m_pCurrentState == pState ) return;

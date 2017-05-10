@@ -69,14 +69,12 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	{
 		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
-		else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
-			eState = ( STATE_BEATEN1 == m_pStateMachine->GetPreviousState() ) ? STATE_BEATEN2 : STATE_BEATEN1;
+		// else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
+		//	eState = ( STATE_BEATEN1 == m_pStateMachine->GetPreviousState() ) ? STATE_BEATEN2 : STATE_BEATEN1;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
 			eState = STATE_DEFEND;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 			eState = STATE_JUMP;
-		else if( m_pInputMgr->Get_KeyboardState( DIK_Q ) )
-			eState = STATE_DOWN;
 		else if( !vDir.isZero()
 			&& ( STATE_RUN == eState || STATE_IDLE == eState ) )
 			eState = STATE_RUN;

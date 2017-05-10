@@ -367,6 +367,12 @@ void CNetworkMgr::sendCharacterState( STATE state )
 	sendBufData();
 }
 
+void CNetworkMgr::unreadyAllPlayer( void )
+{
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+		m_tPlayerInfo[ i ].isReady = FALSE;
+}
+
 DWORD CNetworkMgr::Release( void )
 {
 	closesocket( m_Socket );

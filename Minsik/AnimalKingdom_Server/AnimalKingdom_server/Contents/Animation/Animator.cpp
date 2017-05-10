@@ -210,6 +210,14 @@ void CAnimator::Update( Player* pOwner, const float& fTimeDelta )
 			pOwner->sweapOn();
 			m_mapEvent.erase( map_iter );
 			break;
+		case 3:
+			pOwner->defendOn();
+			m_mapEvent.erase( map_iter );
+			break;
+		case 4:
+			pOwner->defendOff();
+			m_mapEvent.erase( map_iter );
+			break;
 		default:
 			break;
 		}

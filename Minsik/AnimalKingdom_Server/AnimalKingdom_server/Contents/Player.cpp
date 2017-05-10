@@ -10,6 +10,7 @@ Player::Player(Session * s, UINT room, BOOL master)
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 80.0f;
+	defend = false;
 	initialize();
 }
 
@@ -164,13 +165,38 @@ void Player::setState( STATE state )
 	stateMachine_->Change_State(state);
 }
 
-void Player::proceedBeaten(int damage)
+bool Player::checkBlocking( NxVec3& vDir )
+{
+	// if( !defend ) return false;
+	vDir.y = 0.f;
+	vDir.normalize();
+	NxVec3 vDefaultDir = NxVec3( 0.f, 0.f, 1.f );
+	float fDot = vDefaultDir.dot( vDir );
+
+	return true;
+}
+
+bool Player::checkBlocking( float fRotateY )
+{
+	// if( !defend ) return false;
+
+	float fTemp = m_vRotate.y - fRotateY;
+	if( -1.f * XM_PI - XM_PIDIV4 < fTemp
+		&&  -1.f * XM_PI + XM_PIDIV4 > fTemp )
+
+		return true;
+
+	return false;
+}
+
+void Player::proceedBeaten( int damage )
 {
 	if ((beaten_ == false) || hp_ <=0) return;
 
 	beaten_ = false;
 	hp_ -= damage;
-	stateMachine_->Change_State(STATE_BEATEN1);
+	
+	stateMachine_->Change_State( ( STATE_BEATEN1 == stateMachine_->GetPreviousState() )? STATE_BEATEN2 : STATE_BEATEN1);
 
 	if (hp_ <= 0)
 	{

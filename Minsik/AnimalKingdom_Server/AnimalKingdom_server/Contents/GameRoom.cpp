@@ -360,6 +360,7 @@ BOOL GameRoom::setupGame()
 		pController->getActor()->setGroup( COL_GROUP( COL_PLAYER1 << i ) );
 		(p->second)->setCCT(pController);
 		(p->second)->setAnimator(CAnimationMgr::getInstance().Clone(character));
+		( p->second )->setReady( FALSE );
 		i++;
 	}
 

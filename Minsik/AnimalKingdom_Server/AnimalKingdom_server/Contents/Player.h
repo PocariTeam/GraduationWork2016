@@ -35,6 +35,7 @@ class Player {
 	XMFLOAT3				m_vRotate;
 	float					m_fJumpHeight;
 	bool					m_bSweap;
+	bool					defend;
 public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 	void			Move( const float& fTimeDelta );
@@ -72,8 +73,12 @@ public:
 	void			setState(STATE state);
 	int				getHp() { return hp_; }
 	void			setHp( int hp ) { hp_ = hp; }
+	bool			checkBlocking( NxVec3& vDir );
+	bool			checkBlocking( float fRotateY );
 	bool			getBeaten() { return beaten_; }
 	void			setBeaten( bool bBeaten ) { beaten_ = bBeaten; }
+	void			defendOn() { defend = true; }
+	void			defendOff() { defend = false; }
 	int				getDamage() { return damage_; }
 	void			proceedBeaten(int damage);
 	void			minimizeController();
