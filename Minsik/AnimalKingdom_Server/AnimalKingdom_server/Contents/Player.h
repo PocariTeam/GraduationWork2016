@@ -46,6 +46,7 @@ public:
 public:
 	Player(Session* s, UINT room, BOOL master = false);
 	~Player();
+	void			initialize();
 	void			update( float fTimeDelta );
 	Session*		getSession() { return session_; };
 	PlayerInfo		getPlayerInfo();

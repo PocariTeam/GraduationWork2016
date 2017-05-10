@@ -81,10 +81,6 @@ BOOL GameRoom::startRoom(Session* session)
 		if (loadCheck && GameRoom::setupGame())
 		{
 			isPlaying_ = true;
-			for (auto p = players_.begin(); p != players_.end(); p++)
-			{
-				(p->second)->setReady(false);
-			}
 			SLog(L"* the [%d] room is starting now. ", roomNum_);
 			return true;
 		}
@@ -331,6 +327,8 @@ void GameRoom::sendWinner(int winner_id)
 
 void GameRoom::sendFinishGame()
 {
+	SAFE_LOCK(lock_);
+
 	HEADER packet;
 	packet.packetID = PAK_ID::PAK_ANS_FinishGame;
 	packet.size = sizeof(packet);
@@ -494,6 +492,12 @@ void GameRoom::finishGame()
 
 	timeKillEvent(updateTimerID_);
 	timeKillEvent(syncTimerID_);
+
+	for (auto p = players_.begin(); p != players_.end(); p++)
+	{
+		(p->second)->setReady(false);
+		(p->second)->initialize();
+	}
 
 	IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + 1000, EVENT_RELEASE);
 	

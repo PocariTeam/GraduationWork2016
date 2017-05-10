@@ -10,8 +10,7 @@ Player::Player(Session * s, UINT room, BOOL master)
 {
 	stateMachine_ = CStateMachine::Create( this );
 	speed_ = 80.0f;
-	moveDir_ = NxVec3(0.0f, 0.0f, 0.0f);
-	hp_ = 100;
+	initialize();
 }
 
 Player::~Player()
@@ -39,6 +38,13 @@ Player::~Player()
 		stateMachine_->Release();
 		stateMachine_ = nullptr;
 	}
+}
+
+void Player::initialize()
+{
+	moveDir_ = NxVec3(0.0f, 0.0f, 0.0f);
+	stateMachine_->Change_State(STATE_IDLE);
+	hp_ = 100;
 }
 
 void Player::update( float fTimeDelta )
