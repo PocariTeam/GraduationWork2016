@@ -109,6 +109,16 @@ BOOL GameRoom::exit(Session* session)
 		return false;
 	}
 
+	// Ã¼·Â 0
+	if (isPlaying_)
+	{
+		find_iter->second->setHp(0);
+		find_iter->second->setState(STATE::STATE_DOWN);
+		checkWinner(false);
+		sendPlayerSync();
+	}
+	
+
 	SAFE_DELETE(find_iter->second);
 	players_.erase(find_iter);
 	--playerCount_;

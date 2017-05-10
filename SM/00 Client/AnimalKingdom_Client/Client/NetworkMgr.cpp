@@ -51,9 +51,12 @@ HRESULT CNetworkMgr::connectServer( HWND hwnd )
 	m_tServerAdrr.sin_addr.s_addr = inet_addr( serverAddr );
 
 	int retval = connect( m_Socket, ( SOCKADDR * )&m_tServerAdrr, sizeof( m_tServerAdrr ) );
-	if( retval == SOCKET_ERROR )
+	if (retval == SOCKET_ERROR)
 	{
-		printf( " connect() error! \n" );
+		strcat_s(serverAddr, "\nnetwork connect fail!");
+		MessageBox(hwnd, serverAddr, nullptr, MB_OK);
+		printf(" connect() error! \n");
+		exit(0);
 		return E_FAIL;
 	}
 
