@@ -18,10 +18,12 @@ public:
 	static CThirdCamera*	Create( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTranspose, XMFLOAT3& vOffset );
 public:
 	void   SetDestWorldTranspose( XMFLOAT4X4* pWorldTranspose ) { m_pDestWorldTranspose = pWorldTranspose; }
+	void   WinnerEvent();
 private:
 	XMFLOAT4X4*	m_pDestWorldTranspose;
 	XMFLOAT3	m_vOffset;
 	XMFLOAT3	m_vCurrent;
+	bool		m_bWinnerEvent;
 public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );

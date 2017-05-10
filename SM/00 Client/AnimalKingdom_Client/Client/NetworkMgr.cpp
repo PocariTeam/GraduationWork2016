@@ -230,6 +230,7 @@ void CNetworkMgr::processPacket()
 		printf("========================================= \n");
 		printf("\t\t ½ÂÀÚ´Â id[%d] \t\t \n",packet->id);
 		printf("========================================= \n");
+		m_pScene->NotifyWinner( packet->id );
 		break;
 	}
 	case PAK_ID::PAK_ANS_FinishGame:

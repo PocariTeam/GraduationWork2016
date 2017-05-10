@@ -23,6 +23,7 @@ public:
 	virtual void NotifyPlayerInfo(PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt) {}
 	virtual void NotifyGameStart(void) {}
 	virtual void NotifyGameFinished( void ) {}
+	virtual void NotifyWinner( UINT ID ) {}
 	virtual void Sync( UINT id, int hp, XMFLOAT3 vDir, float fRotateY, STATE state ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );

@@ -32,6 +32,12 @@ VS_OUT VS( uint iVertexNum : SV_VertexID )
 	else if( iVertexNum == 4 ) { Out.vPos = float4( 0.5f, 0.5f, 0.f, 1.f ); Out.vUV = float2( g_vOption.y, g_vOption.z ); }
 	else if( iVertexNum == 5 ) { Out.vPos = float4( 0.5f, -0.5f, 0.f, 1.f ); Out.vUV = float2( g_vOption.y, g_vOption.w ); }
 
+	matrix mtxBill = g_mtxView;
+	mtxBill._41 = 0.f;
+	mtxBill._42 = 0.f;
+	mtxBill._43 = 0.f;
+
+	Out.vPos = mul( mtxBill, Out.vPos );
 	Out.vPos = mul( Out.vPos, g_mtxWorld );
 	Out.vPos = mul( Out.vPos, g_mtxView );
 	Out.vPos = mul( Out.vPos, g_mtxProj );

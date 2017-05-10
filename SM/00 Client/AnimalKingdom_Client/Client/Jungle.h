@@ -30,6 +30,7 @@ public:
 	void  Check_Key( const float& fTimeDelta );
 	void  NotifyGameStart( void );
 	void  NotifyGameFinished();
+	void  NotifyWinner( UINT ID );
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:

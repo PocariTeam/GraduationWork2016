@@ -146,7 +146,7 @@ void CJungle::AccumulateTime( const float& fTimeDelta )
 	if( iInput == 0 ) return; // 게임 종료
 	m_fAccTime -= fTimeDelta;
 
-	if( 119.0f > m_fAccTime ) m_pStateNotify->Hide();
+	if( 119.0f > m_fAccTime && m_fAccTime > 118.f ) m_pStateNotify->Hide();
 }
 
 int CJungle::Update( const float& fTimeDelta )
@@ -216,6 +216,7 @@ DWORD CJungle::Release( void )
 	CDownState::DestroyInstance();
 	CDeadState::DestroyInstance();
 
+	CLightMgr::DestroyInstance();
 	CPhysics::GetInstance()->Release_Scene();
 
 	delete this;
@@ -330,6 +331,18 @@ void CJungle::NotifyGameStart( void )
 void CJungle::NotifyGameFinished()
 {
 	m_bFinished = true;
+}
+
+void CJungle::NotifyWinner( UINT ID )
+{
+	m_iFocus = ID; 
+	::Safe_Release( m_pCamera );
+	m_bDebug = false;
+	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ m_iFocus ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
+	( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
+	( ( CThirdCamera* )m_pCamera )->WinnerEvent();
+	m_pStateNotify->Show();
+	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_ID0" ) );
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )
