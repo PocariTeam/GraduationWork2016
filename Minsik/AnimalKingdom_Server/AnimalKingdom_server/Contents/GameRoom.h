@@ -18,12 +18,14 @@ private:
 	Lock				lock_;
 	UINT				updateTimerID_;
 	UINT				syncTimerID_;
+	float				playingTime_;
 
 public:
 	GameRoom(UINT roomNum);
 	~GameRoom();
 	BOOL			enter(Session* s);
 	BOOL			startRoom(Session* s);
+	void			startGame();
 	BOOL			setupGame();
 	BOOL			exit(Session* s);
 	BOOL			setPlayerReady(Session* s, BOOL b);

@@ -253,19 +253,7 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			int roomNum = ((event_obj*)session)->sceneNum;
 			if (RoomManager::getInstance().getPlaying(roomNum))
 			{
-				((GameRoom*)((event_obj*)session)->obj_ptr)->sendStartGame();
-				IOCPServer::getInstance().pushEvent(new event_obj{ roomNum, ((event_obj*)session)->obj_ptr }, GetTickCount() + (GAME_PLAYING_SEC*1000), EVENT_TIMEOUT);
-			}
-			delete session;
-			delete ioData;
-			continue;
-		}
-		case EVENT_TIMEOUT:
-		{
-			int roomNum = ((event_obj*)session)->sceneNum;
-			if (RoomManager::getInstance().getPlaying(roomNum))
-			{
-				((GameRoom*)((event_obj*)session)->obj_ptr)->checkWinner(true);
+				((GameRoom*)((event_obj*)session)->obj_ptr)->startGame();
 			}
 			delete session;
 			delete ioData;

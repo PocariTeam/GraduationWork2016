@@ -94,6 +94,18 @@ BOOL GameRoom::startRoom(Session* session)
 	return false;
 }
 
+void GameRoom::startGame()
+{
+	playingTime_ = 0.0f;
+
+	// 업데이트 시작
+	TIMECAPS caps;
+	timeGetDevCaps(&caps, sizeof(caps));
+	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC * 1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
+	
+	sendStartGame();
+}
+
 BOOL GameRoom::exit(Session* session)
 {
 	SAFE_LOCK(lock_);
@@ -294,11 +306,6 @@ void GameRoom::sendStartGame()
 {
 	SAFE_LOCK(lock_);
 
-	// 업데이트 시작
-	TIMECAPS caps;
-	timeGetDevCaps(&caps, sizeof(caps));
-	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC * 1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
-
 	HEADER packet;
 	packet.packetID = PAK_ID::PAK_ANS_StartGame;
 	packet.size = sizeof(packet);
@@ -389,6 +396,13 @@ void GameRoom::update( float fTimeDelta )
 {
 	SAFE_LOCK(lock_);
 
+	playingTime_ += fTimeDelta;
+
+	if (playingTime_ >= GAME_PLAYING_SEC)
+	{
+		checkWinner(true);
+	}
+
 	for(auto iter = players_.begin(); iter != players_.end(); ++iter )
 		(iter->second)->update( fTimeDelta );
 }
@@ -475,13 +489,15 @@ void GameRoom::checkWinner(bool bTimeOut)
 	if (aliveCount == 0)
 	{
 		SLog(L"* the room [%d] game draw.. winner: nobody(0) ", roomNum_);
+		playingTime_ = -GAME_FINISH_DELAY;
 		sendWinner(0);
 		return;
 	}
 
-	if (bTimeOut || aliveCount == 1) // 타임아웃
+	if (bTimeOut || aliveCount == 1) // 타임아웃 또는 승자1명
 	{
 		SLog(L"* the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
+		playingTime_ = -GAME_FINISH_DELAY;
 		sendWinner(winner_id);
 	}
 
