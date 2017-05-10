@@ -194,7 +194,7 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
 
-	if( !m_bInCave ) iter++;
+	if( !m_bInCave ) iter_end--;
 
 	for( ; iter != iter_end; ++iter )
 	{

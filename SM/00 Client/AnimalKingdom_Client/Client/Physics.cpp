@@ -610,8 +610,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
 		plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
 		plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
-		plistShader[ RENDER_ALPHA ].push_back( pShader_Mesh_Alpha );
 		plistShader[ RENDER_ALPHA ].push_back( CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" ) );
+		plistShader[ RENDER_ALPHA ].push_back( pShader_Mesh_Alpha );
 		plistShader[ RENDER_DEBUG ].push_back( pShader_Debug );
 
 		auto set_iter_begin = setReleaseActorIndex.begin();
@@ -622,7 +622,6 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 		for( int i = 0; i < BANANA_COUNT; ++i )
 			CreateBanana();
-
 	}
 
 	CRenderer::GetInstance()->Copy_RenderGroup( plistShader );
@@ -823,7 +822,7 @@ void CPhysics::CreateBanana( void )
 
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;
-	m_pShaderlist[ RENDER_ALPHA ].back()->Add_RenderObject( pBanana );
+	m_pShaderlist[ RENDER_ALPHA ].front()->Add_RenderObject( pBanana );
 	m_BananaQueue.push( pBanana );
 }
 
@@ -834,4 +833,9 @@ void CPhysics::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 	pBanana->Throw( vPos, vDir, eColGroup );
 	m_BananaQueue.pop();
 	m_BananaQueue.push( pBanana );
+}
+
+queue<CBanana*>* CPhysics::GetBananaQueue( void )
+{
+	return &m_BananaQueue;
 }

@@ -232,6 +232,7 @@ void CNetworkMgr::processPacket()
 		printf("========================================= \n");
 		printf("\t\t [게임 완료] \t\t \n");
 		printf("========================================= \n");
+		m_pScene->NotifyGameFinished();
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:

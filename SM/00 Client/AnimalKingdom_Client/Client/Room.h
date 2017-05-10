@@ -50,6 +50,7 @@ private:
 	UINT			m_dwPlayerCnt;
 	/* Game Start */
 	bool			m_bStart;
+	bool			m_bReady;
 	/* Check Key */
 	bool			m_bOverlapped;
 	/* Singleton */

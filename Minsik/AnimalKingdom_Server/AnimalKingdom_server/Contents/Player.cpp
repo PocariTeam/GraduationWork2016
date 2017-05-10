@@ -173,7 +173,13 @@ void Player::proceedBeaten(int damage)
 	
 }
 
-void Player::setMoveDir( Vector3 vDir)
+void Player::minimizeController()
+{
+	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setRadius( 0.f );
+	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setHeight( 0.f );
+}
+
+void Player::setMoveDir( Vector3 vDir )
 {
 	moveDir_.x = vDir.x;
 	moveDir_.y = vDir.y;

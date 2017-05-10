@@ -75,4 +75,5 @@ public:
 	void			setBeaten( bool bBeaten ) { beaten_ = bBeaten; }
 	int				getDamage() { return damage_; }
 	void			proceedBeaten(int damage);
+	void			minimizeController();
 };

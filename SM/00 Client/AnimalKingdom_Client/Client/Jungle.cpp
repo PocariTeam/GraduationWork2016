@@ -32,6 +32,7 @@ CJungle::CJungle()
 	, m_bStart( false )
 	, m_dpHP_Bar( nullptr )
 	, m_iFocus( 0 )
+	, m_bFinished( false )
 {
 }
 
@@ -172,6 +173,9 @@ int CJungle::Update( const float& fTimeDelta )
 	}
 
 	Check_Key( fTimeDelta );
+
+	if( m_bFinished )
+		return SCENE_ROOM;
 
 	return 0;
 }
@@ -314,6 +318,11 @@ void CJungle::NotifyGameStart( void )
 {
 	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Preview_Jungle" ) );
 	m_bStart = true;
+}
+
+void CJungle::NotifyGameFinished()
+{
+	m_bFinished = true;
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )

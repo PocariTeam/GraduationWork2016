@@ -29,6 +29,7 @@ public:
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
 	void  NotifyGameStart( void );
+	void  NotifyGameFinished();
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:
@@ -45,6 +46,7 @@ private:
 	bool					m_bOverlapped;
 	/* Ready / Start / End */
 	bool					m_bStart;
+	bool					m_bFinished;
 	CNormal_UI*				m_pStateNotify;
 	/* HP Bar */
 	CBar_UI**			m_dpHP_Bar;

@@ -145,6 +145,12 @@ DWORD CPlayer::Release( void )
 	return 0;
 }
 
+void CPlayer::MinimizeController( void )
+{
+	( ( NxCapsuleShape* )m_pCharacterController->getActor()->getShapes()[ 0 ] )->setRadius( 0.f );
+	( ( NxCapsuleShape* )m_pCharacterController->getActor()->getShapes()[ 0 ] )->setHeight( 0.f );
+}
+
 void CPlayer::SetSection( CSection** dpSections, UINT iSectionCnt )
 {
 	m_dpSections = dpSections;

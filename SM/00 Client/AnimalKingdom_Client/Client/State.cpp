@@ -264,6 +264,7 @@ STATE CDownState::GetState( void )
 void CDeadState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Change_Animation( STATE_DEAD );
+	pOwner->MinimizeController();
 }
 
 void CDeadState::Execute( CPlayer* pOwner, const float& fTImeDelta )

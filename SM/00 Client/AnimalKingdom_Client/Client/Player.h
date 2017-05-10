@@ -34,6 +34,7 @@ public:
 	virtual void	Render( ID3D11DeviceContext* pContext );
 	virtual DWORD	Release( void );
 public:
+	void			MinimizeController( void );
 	void			SetSection( CSection** dpSections, UINT iSectionCnt );
 	CAnimator*		GetAnimator( void ) { return m_pAnimator; }
 	CStateMachine*	GetFSM( void ) { return m_pStateMachine; }

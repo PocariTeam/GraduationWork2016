@@ -72,7 +72,9 @@ int CBanana::Update( const float& fTimeDelta )
 		Frozen();
 
 	else if( 0 == strcmp( m_pActor->getName(), "Banana1" ) )
-		m_vOption.w -= fTimeDelta;
+	{
+		m_vOption.w -= fTimeDelta * 0.5f;
+	}
 
 	else if( COL_DYNAMIC != m_eMasterGroup )
 		if( Timer( fTimeDelta ) )
@@ -113,7 +115,6 @@ DWORD CBanana::Release( void )
 {
 	// CPhysics::GetInstance()->GetSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
 	CGameObject::Release();
-
 	delete this;
 
 	return 0;

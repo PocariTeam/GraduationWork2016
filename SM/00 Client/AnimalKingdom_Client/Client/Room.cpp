@@ -21,6 +21,7 @@
 CRoom::CRoom()
 	: CScene()
 	, m_bStart( false )
+	, m_bReady( false )
 	, m_bOverlapped( true )
 	, m_pPlayerInfo( nullptr )
 	, m_dpReady( nullptr )
@@ -183,14 +184,20 @@ int CRoom::Check_Key( void )
 				m_pNetworkMgr->sendExitRoom();
 				return SCENE_LOBBY;
 			case BTN_CHAMELEON:
-				m_pNetworkMgr->sendSelectCharacter( CHARACTER_CHM );
-				m_dpBtns[ BTN_MONKEY ]->Normal();
-				m_dpBtns[ BTN_CHAMELEON ]->Fix();
+				if( !m_pNetworkMgr->isReady() )
+				{
+					m_pNetworkMgr->sendSelectCharacter( CHARACTER_CHM );
+					m_dpBtns[ BTN_MONKEY ]->Normal();
+					m_dpBtns[ BTN_CHAMELEON ]->Fix();
+				}
 				break;
 			case BTN_MONKEY:
-				m_pNetworkMgr->sendSelectCharacter( CHARACTER_MON );
-				m_dpBtns[ BTN_CHAMELEON ]->Normal();
-				m_dpBtns[ BTN_MONKEY ]->Fix();
+				if( !m_pNetworkMgr->isReady() )
+				{
+					m_pNetworkMgr->sendSelectCharacter( CHARACTER_MON );
+					m_dpBtns[ BTN_CHAMELEON ]->Normal();
+					m_dpBtns[ BTN_MONKEY ]->Fix();
+				}
 				break;
 			case BTN_MAP_NEXT:
 			case BTN_MAP_PREVIOUS:

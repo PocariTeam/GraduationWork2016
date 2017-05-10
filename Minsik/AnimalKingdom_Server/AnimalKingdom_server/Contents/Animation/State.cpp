@@ -251,6 +251,7 @@ void CDeadState::Enter( Player* pOwner, const float& fTImeDelta )
 {
 	pOwner->getAnimator()->Change_Animation( STATE_DEAD );
 	pOwner->setBeaten( false );
+	pOwner->minimizeController();
 }
 
 void CDeadState::Execute( Player* pOwner, const float& fTImeDelta )

@@ -35,6 +35,7 @@ public:
 
 public:
 	bool	isMaster() { return m_bMaster; }
+	bool	isReady() { return m_bReady;  }
 	void	setScene( CScene* pScene ) { m_pScene = pScene; }
 	int		getID( void ) { return m_nPlayerID; }
 	void	getPlayerInfo( PlayerInfo* pOut, UINT& iArraySize ) { memcpy_s( pOut, sizeof( m_tPlayerInfo ), m_tPlayerInfo, sizeof( m_tPlayerInfo ) ); iArraySize = m_dwPlayerCnt; }

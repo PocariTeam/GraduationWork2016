@@ -59,6 +59,8 @@ public:
 	NxActor*	CreateActor( const char* pActorName, const ACTOR_INFO& tActor_Info, COL_GROUP eColGroup );
 	void		CreateBanana( void );
 	void		ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup );
+
+	queue<CBanana*>*	GetBananaQueue( void );
 private:
 	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_END ];
 	list<CShader*>*				m_pShaderlist{ nullptr };
