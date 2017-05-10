@@ -259,7 +259,7 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\05 Bar_UI">
       <UniqueIdentifier>{3060d1ea-21b5-4a39-8b6f-2cae12a439d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\06 ID_UI">
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\06 Sign_UI">
       <UniqueIdentifier>{1fc2e729-bd40-414d-8ac5-28b7859a4249}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -573,8 +573,8 @@
     <ClInclude Include="Bar_UI.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\05 Bar_UI</Filter>
     </ClInclude>
-    <ClInclude Include="ID_UI.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Sign_UI.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\06 Sign_UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -836,8 +836,8 @@
     <ClCompile Include="Bar_UI.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\05 Bar_UI</Filter>
     </ClCompile>
-    <ClCompile Include="ID_UI.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Sign_UI.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\06 Sign_UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -891,6 +891,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Number_UI_I.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Sign_UI.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

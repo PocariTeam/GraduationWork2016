@@ -246,7 +246,7 @@ void CDownState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 void CDownState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 {
 	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
-		pOwner->GetFSM()->Change_State( STATE_IDLE );
+		pOwner->GetFSM()->Change_State( STATE_DEAD );
 }
 
 void CDownState::Exit( CPlayer* pOwner, const float& fTimeDelta )

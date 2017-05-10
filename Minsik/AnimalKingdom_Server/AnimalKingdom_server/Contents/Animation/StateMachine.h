@@ -25,6 +25,7 @@ public:
 	STATE	GetCurrentState();
 	void	Change_State( CState* pState );
 	void	Change_State( STATE	eState );
+	void	Set_State( STATE eState );
 	void	RevertToPreviousState( void );
 };
 

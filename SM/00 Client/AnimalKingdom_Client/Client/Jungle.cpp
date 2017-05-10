@@ -17,6 +17,7 @@
 #include "MeshMgr.h"
 #include "Section.h"
 #include "Bar_UI.h"
+#include "Sign_UI.h"
 #include "StateMachine.h"
 
 CJungle::CJungle()
@@ -71,8 +72,15 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	for( ; player_iter != m_mapPlayer.end(); ++player_iter )
 		player_iter->second->SetSection( m_dpSection, 3 );
 
+	// 머리 위의 ID
+	player_iter = m_mapPlayer.begin();
+	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Sign_UI" );
+	for( ; player_iter != m_mapPlayer.end(); ++player_iter )
+		pShader->Add_RenderObject( CSign_UI::Create( CTextureMgr::GetInstance()->Clone( ( player_iter->first == m_iPlayerID ) ? "Texture_ID2" : "Texture_ID3" ), player_iter->second->GetWorld(), player_iter->first ) );
+	m_listShader[ RENDER_ALPHA ].push_front( pShader );
+
 	// Timer UI
-	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
 	m_dpTime_UI = new CNumber_UI*[ NUM_END ];
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_TEN ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( -0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_ONE ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( -0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
@@ -121,7 +129,6 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 			pShader->Add_RenderObject( CNumber_UI::Create( CNumber_UI::NUMBER_OTHER_ID, XMFLOAT4( -0.985f + i * 0.5f, -0.74f, 0.15f, 0.15f ), player_iter->first ) );
 		player_iter++;
 	}
-
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	return CScene::Initialize( hWnd, pDevice );

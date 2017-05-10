@@ -10,6 +10,7 @@ HRESULT CNetworkMgr::Initialize()
 	ZeroMemory( m_sendBuf, sizeof( m_sendBuf ) );
 	ZeroMemory( m_recvBuf, sizeof( m_recvBuf ) );
 	ZeroMemory( m_saveBuf, sizeof( m_saveBuf ) );
+	ZeroMemory( m_tPlayerInfo, sizeof( m_tPlayerInfo ) );
 	m_wsaSendBuf.buf = m_sendBuf;
 	m_wsaSendBuf.len = sizeof( m_sendBuf );
 	m_wsaRecvBuf.buf = m_recvBuf;
@@ -20,6 +21,7 @@ HRESULT CNetworkMgr::Initialize()
 	m_nRoomNum = -1;
 	m_bReady = false;
 	m_bMaster = false;
+	m_dwPlayerCnt = 0;
 
 	WSADATA	wsa;
 
