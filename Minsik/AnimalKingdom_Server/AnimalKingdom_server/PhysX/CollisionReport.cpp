@@ -78,19 +78,31 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 	{
 		int iNoBananaIndex = ( iBananaIndex == 0 ) ? 1 : 0;
 
-		if( COL_STATIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() )
-			|| COL_DYNAMIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) )
+		if (COL_STATIC == COL_GROUP(pair.actors[iNoBananaIndex]->getGroup())
+			|| COL_DYNAMIC == COL_GROUP(pair.actors[iNoBananaIndex]->getGroup()))
+		{
 			return;
-
+		}
 		else if( !( COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) & ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->GetMasterCollisionGroup() ) )
 		{
 			if( !( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->checkBlocking( pair.actors[ iBananaIndex ]->getLinearVelocity() ) )
 			{
-				int iDamage = ( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->getDamage();
-				( ( Player* )pair.actors[ iNoBananaIndex ]->userData )->proceedBeaten( iDamage );
+				// 속도체크
+				NxVec3 velocity = pair.actors[iBananaIndex]->getLinearVelocity();
+				const float minimunVelocity = 50.0f;
+				if (velocity.magnitude() > minimunVelocity)
+				{
+					int iDamage = ((CBanana*)pair.actors[iBananaIndex]->userData)->getDamage();
+					((Player*)pair.actors[iNoBananaIndex]->userData)->proceedBeaten(iDamage);
+
+				}
+				
 			}
+			pair.actors[iBananaIndex]->setLinearVelocity(NxVec3(0.0f, 0.0f, 0.0f));
 			( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->Frozen();
 		}
+
+
 	}
 
 	//UINT roomNum = (UINT)pair.actors[0]->getScene().userData;

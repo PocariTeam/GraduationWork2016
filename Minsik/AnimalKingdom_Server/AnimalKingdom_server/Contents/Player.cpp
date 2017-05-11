@@ -43,7 +43,8 @@ Player::~Player()
 
 void Player::initialize()
 {
-	moveDir_ = NxVec3(0.0f, 0.0f, 0.0f);
+	ResetDir();
+	setRotateY(-XM_PI);
 	stateMachine_->Set_State(STATE_IDLE);
 	hp_ = 100;
 	beaten_ = true;
