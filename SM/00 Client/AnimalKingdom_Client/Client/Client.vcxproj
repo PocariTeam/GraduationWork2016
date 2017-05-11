@@ -78,7 +78,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Executable/</OutDir>
     <IncludePath>$(IncludePath);$(ProjectDir);../Executable/ThirdParty/DX11/include;../Executable/ThirdParty/Physics/SampleCommonCode/src/win;../Executable/ThirdParty/Physics/SDKs/Foundation/include;../Executable/ThirdParty/Physics/SDKs/Foundation/include/win;../Executable/ThirdParty/Physics/SDKs/Physics/include;../Executable/ThirdParty/Physics/SDKs/Cooking/include;../Executable/ThirdParty/Physics/SDKs/PhysXLoader/include;../Executable/ThirdParty/Physics/SDKs/NxCharacter/include;../Executable/ThirdParty/Physics/NxuStream2;../Executable/ThirdParty/Physics/SampleCommonCode/src</IncludePath>
-    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <ReferencePath>../Executable\ThirdParty\DX11\Lib;$(ReferencePath)</ReferencePath>
     <GenerateManifest>false</GenerateManifest>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -90,7 +90,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../Executable/</OutDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);../Executable/ThirdParty/DX11/include;../Executable/ThirdParty/Physics/SampleCommonCode/src/win;../Executable/ThirdParty/Physics/SDKs/Foundation/include;../Executable/ThirdParty/Physics/SDKs/Foundation/include/win;../Executable/ThirdParty/Physics/SDKs/Physics/include;../Executable/ThirdParty/Physics/SDKs/Cooking/include;../Executable/ThirdParty/Physics/SDKs/PhysXLoader/include;../Executable/ThirdParty/Physics/SDKs/NxCharacter/include;../Executable/ThirdParty/Physics/NxuStream2;../Executable/ThirdParty/Physics/SampleCommonCode/src</IncludePath>
-    <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
+    <ReferencePath>../Executable\ThirdParty\DX11\Lib;$(VC_ReferencesPath_x64);</ReferencePath>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
