@@ -170,18 +170,7 @@ int CJungle::Update( const float& fTimeDelta )
 	}
 
 	if( STATE_DEAD == m_mapPlayer[ m_iFocus ]->GetFSM()->GetCurrentState() && !m_bDebug )
-	{
-		auto player_iter = m_mapPlayer.find( m_iFocus );
-		auto advance_iter = player_iter;
-		advance_iter++;
-
-		if( advance_iter != m_mapPlayer.end() )
-			m_iFocus = advance_iter->first;
-		else
-			m_iFocus = m_mapPlayer.begin()->first;
-
-		( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
-	}
+		Change_CameraDest();
 
 	Check_Key( fTimeDelta );
 
@@ -275,6 +264,8 @@ void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 
 void CJungle::Check_Key( const float& fTimeDelta )
 {
+	if( m_bFinished ) return;
+
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_RETURN ) && m_bOverlapped )
 	{
 		// 카메라 전환
@@ -292,39 +283,42 @@ void CJungle::Check_Key( const float& fTimeDelta )
 	else if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) && m_bOverlapped
 		&& STATE_DEAD == m_mapPlayer[ m_iPlayerID ]->GetCurrentState() && !m_bDebug )
 	{
-		auto player_iter = m_mapPlayer.find( m_iFocus );
-		auto advance_iter = player_iter;
-		advance_iter++;
-
-		int iFocus{};
-
-		if( advance_iter != m_mapPlayer.end() && STATE_DEAD != advance_iter->second->GetCurrentState() )
-			iFocus = advance_iter->first;
-		else
-		{
-			advance_iter = m_mapPlayer.begin();
-			iFocus = advance_iter->first;
-
-			for( ; advance_iter != player_iter; ++advance_iter )
-				if( STATE_DEAD != advance_iter->second->GetCurrentState() )
-				{
-					iFocus = advance_iter->first;
-					break;
-				}
-		}
-
-		if( m_iFocus != iFocus )
-		{
-			m_iFocus = iFocus;
-			( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
-		}
-
+		Change_CameraDest();
 		m_bOverlapped = false;
 	}
 
 	else if( !CInputMgr::GetInstance()->Get_KeyboardState( DIK_RETURN )
 		&& !CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) )
 		m_bOverlapped = true;
+}
+
+void CJungle::Change_CameraDest( void )
+{
+	auto player_iter = m_mapPlayer.find( m_iFocus );
+	auto advance_iter = player_iter;
+	advance_iter++;
+
+	int iFocus{};
+
+	if( advance_iter != m_mapPlayer.end() && STATE_DEAD != advance_iter->second->GetCurrentState() )
+		iFocus = advance_iter->first;
+	else
+	{
+		advance_iter = m_mapPlayer.begin();
+
+		for( ; advance_iter != player_iter; ++advance_iter )
+			if( STATE_DEAD != advance_iter->second->GetCurrentState() )
+			{
+				iFocus = advance_iter->first;
+				break;
+			}
+	}
+
+	if( m_iFocus != iFocus )
+	{
+		m_iFocus = iFocus;
+		( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
+	}
 }
 
 void CJungle::NotifyGameStart( void )

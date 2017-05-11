@@ -208,6 +208,8 @@ void Player::proceedBeaten( int damage )
 
 void Player::minimizeController()
 {
+	NxExtendedVec3 vPos{ 0.f, 0.f, -1000.f };
+	cct_->setPosition( vPos );
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setRadius( 0.f );
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setHeight( 0.f );
 }

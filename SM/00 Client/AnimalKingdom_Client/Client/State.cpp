@@ -135,6 +135,7 @@ void CJumpState::Execute( CPlayer* pOwner, const float& fTImeDelta )
 
 void CJumpState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 {
+	pOwner->GetAnimator()->Play();
 }
 
 STATE CJumpState::GetState( void )

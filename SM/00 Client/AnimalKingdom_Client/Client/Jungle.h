@@ -28,6 +28,7 @@ public:
 	void  Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state );
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
+	void  Change_CameraDest( void );
 	void  NotifyGameStart( void );
 	void  NotifyGameFinished();
 	void  NotifyWinner( UINT ID );

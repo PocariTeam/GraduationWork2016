@@ -6,6 +6,7 @@
 #include "Animator.h"
 #include "Mathematics.h"
 #include "Player.h"
+#include "StateMachine.h"
 
 CMonkey::CMonkey()
 	: CPlayer()
@@ -32,12 +33,16 @@ HRESULT CMonkey::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 int CMonkey::Update( const float& fTimeDelta )
 {
 	CPlayer::Update( fTimeDelta );
-	XMMATRIX mtxWorld;
-	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	m_mtxWorld._24 -= 2.5f;
-	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 21.209435f, 21.209435f, 21.209435f ) );
 
-	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+	if( STATE_DEAD != m_pStateMachine->GetCurrentState() )
+	{
+		XMMATRIX mtxWorld;
+		m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+		m_mtxWorld._24 -= 2.5f;
+		mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 21.209435f, 21.209435f, 21.209435f ) );
+
+		XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+	}
 
 	return 0;
 }

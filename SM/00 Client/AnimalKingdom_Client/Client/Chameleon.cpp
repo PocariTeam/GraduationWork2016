@@ -6,6 +6,7 @@
 #include "Animator.h"
 #include "Player.h"
 #include "Mathematics.h"
+#include "StateMachine.h"
 
 CChameleon::CChameleon()
 	: CPlayer()
@@ -32,12 +33,16 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 int CChameleon::Update( const float& fTimeDelta )
 {
 	CPlayer::Update( fTimeDelta );
-	XMMATRIX mtxWorld;
-	m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
-	m_mtxWorld._24 -= 1.1f;
-	mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
 
-	XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+	if( STATE_DEAD != m_pStateMachine->GetCurrentState() )
+	{
+		XMMATRIX mtxWorld;
+		m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
+		m_mtxWorld._24 -= 1.1f;
+		mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 1.5f, 1.5f, 1.5f ) );
+
+		XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+	}
 
 	return 0;
 }
