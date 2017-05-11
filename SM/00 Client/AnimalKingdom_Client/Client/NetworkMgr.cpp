@@ -371,6 +371,7 @@ void CNetworkMgr::unreadyAllPlayer( void )
 {
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
 		m_tPlayerInfo[ i ].isReady = FALSE;
+	m_bReady = false;
 }
 
 DWORD CNetworkMgr::Release( void )

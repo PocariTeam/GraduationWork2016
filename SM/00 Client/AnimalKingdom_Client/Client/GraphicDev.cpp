@@ -205,7 +205,7 @@ DWORD CGraphicDev::Release( void )
 	}
 
 	if( nullptr != m_pDevice ) {
-		while( 1 != dwRef )
+		while( 1 < dwRef )
 			dwRef = m_pDevice->Release();
 
 		if( 1 < dwRef )
