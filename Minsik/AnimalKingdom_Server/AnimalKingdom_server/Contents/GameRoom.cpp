@@ -479,8 +479,6 @@ void GameRoom::checkWinner(bool bTimeOut)
 
 	if (hasWinner_) return;
 
-	hasWinner_ = true;
-
 	if (players_.empty()) return;
 
 	int winner_id = players_.begin()->first;
@@ -496,15 +494,15 @@ void GameRoom::checkWinner(bool bTimeOut)
 
 	if (aliveCount == 0)
 	{
-		SLog(L"* the room [%d] game draw.. winner: nobody(0) ", roomNum_);
+		hasWinner_ = true;
 		sendWinner(0);
-		return;
+		SLog(L"* the room [%d] game draw.. winner: nobody(0) ", roomNum_);
 	}
-
-	if (bTimeOut || aliveCount == 1) // Å¸ÀÓ¾Æ¿ô ¶Ç´Â ½ÂÀÚ1¸í
+	else if (aliveCount == 1 || bTimeOut) // Å¸ÀÓ¾Æ¿ô ¶Ç´Â ½ÂÀÚ1¸í
 	{
-		SLog(L"* the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
+		hasWinner_ = true;
 		sendWinner(winner_id);
+		SLog(L"* the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
 	}
 
 }
