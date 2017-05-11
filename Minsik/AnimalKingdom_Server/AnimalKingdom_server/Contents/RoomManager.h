@@ -34,6 +34,7 @@ public:
 	void			sendReadyGame(UINT32 roomNum);
 
 	BOOL			getPlaying(UINT roomNum);
+	BOOL			hasWinner(UINT roomNum);
 
 	void			checkWinner(UINT roomNum, bool timeOut);
 };

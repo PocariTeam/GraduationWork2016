@@ -27,6 +27,7 @@ public:
 	virtual void Sync( UINT id, int hp, XMFLOAT3 vDir, float fRotateY, STATE state ) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
+	virtual void	SetPlayingTime(const float& fTimeDelta) {};
 protected:
 	CScene();
 	virtual ~CScene() = default;
@@ -34,6 +35,7 @@ protected:
 	ID3D11Device*		 m_pDevice;
 	HWND				 m_hWnd;
 	CCamera*			 m_pCamera;
+	float				m_fPlayingTime;
 	using SHADERLIST = list<CShader*>;
 	SHADERLIST		m_listShader[ RENDER_END ];
 };

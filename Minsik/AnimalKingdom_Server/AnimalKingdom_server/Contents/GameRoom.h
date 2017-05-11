@@ -15,10 +15,12 @@ private:
 	UINT				roomNum_;
 	UINT				playerCount_;
 	BOOL				isPlaying_;
-	Lock				lock_;
 	UINT				updateTimerID_;
 	UINT				syncTimerID_;
-	float				playingTime_;
+	float				leftPlayingTime_;
+	BOOL				hasWinner_;
+
+	Lock				lock_;
 
 public:
 	GameRoom(UINT roomNum);
@@ -52,4 +54,5 @@ public:
 	void			checkWinner(bool bTimeOut);
 	void			finishGame();
 	void			setPlaying(bool b);
+	BOOL			hasWinner();
 };

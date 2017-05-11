@@ -26,7 +26,6 @@ CJungle::CJungle()
 	, m_pPlayerInfo( nullptr )
 	, m_dpSection( nullptr )
 	, m_dwPlayerCnt( 0 )
-	, m_fAccTime( 120.f )
 	, m_bOverlapped( true )
 	, m_bDebug( false )
 	, m_pStateNotify( nullptr )
@@ -138,9 +137,9 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	return S_OK;
 }
 
-void CJungle::AccumulateTime( const float& fTimeDelta )
+void CJungle::SetPlayingTime( const float& fTime )
 {
-	UINT	iInput = UINT( m_fAccTime );
+	UINT	iInput = UINT( m_fPlayingTime );
 
 	m_dpTime_UI[ NUM_TEN ]->SetNumber( iInput / 600 );
 	m_dpTime_UI[ NUM_ONE ]->SetNumber( ( iInput / 60 ) % 10 );
@@ -148,9 +147,9 @@ void CJungle::AccumulateTime( const float& fTimeDelta )
 	m_dpTime_UI[ NUM_CENTI ]->SetNumber( iInput % 10 );
 
 	if( iInput == 0 ) return; // 게임 종료
-	m_fAccTime -= fTimeDelta;
+	m_fPlayingTime = fTime;
 
-	if( 119.0f > m_fAccTime && m_fAccTime > 118.f ) m_pStateNotify->Hide();
+	if( (GAME_PLAYING_SEC-1.0f) > m_fPlayingTime && m_fPlayingTime > (GAME_PLAYING_SEC-2.0f)) m_pStateNotify->Hide();
 }
 
 int CJungle::Update( const float& fTimeDelta )
@@ -165,8 +164,6 @@ int CJungle::Update( const float& fTimeDelta )
 			CRenderer::GetInstance()->InCave();
 		else
 			CRenderer::GetInstance()->OutCave();
-
-		AccumulateTime( fTimeDelta );
 	}
 
 	if( STATE_DEAD == m_mapPlayer[ m_iFocus ]->GetFSM()->GetCurrentState() && !m_bDebug )

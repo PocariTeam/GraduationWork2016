@@ -9,7 +9,8 @@
 #define		GAMEROOM_CAPACITY		8
 #define		DYNAMIC_CAPACITY		32
 
-#define		GAME_PLAYING_SEC		120
+
+#define		GAME_PLAYING_SEC		120.0f
 
 typedef enum {
 	PAK_REQ_RoomList,
@@ -147,6 +148,7 @@ struct S_SyncPlayer
 {
 	HEADER			header;
 	PlayerSyncInfo	playerPositions[PLAYER_CAPACITY];
+	FLOAT			playingTime;
 };
 
 struct S_SyncDynamic

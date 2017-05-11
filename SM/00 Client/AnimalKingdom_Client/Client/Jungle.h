@@ -20,7 +20,7 @@ private:
 	virtual ~CJungle();
 private:
 	HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
-	void	AccumulateTime( const float& fTimeDelta );
+	void	SetPlayingTime( const float& fTime );
 public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
@@ -42,7 +42,6 @@ private:
 	UINT					m_dwPlayerCnt;
 	CNumber_UI**			m_dpTime_UI;
 	CSection**				m_dpSection;
-	float					m_fAccTime;
 	bool					m_bDebug;
 	/* Check Key */
 	bool					m_bOverlapped;

@@ -201,6 +201,8 @@ bool Player::checkFalling( void )
 
 void Player::proceedBeaten( int damage )
 {
+	if (RoomManager::getInstance().hasWinner(roomNum_)) return;
+
 	if ((beaten_ == false) || hp_ <=0) return;
 
 	beaten_ = false;

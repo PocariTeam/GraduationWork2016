@@ -37,10 +37,12 @@ CScene * CScene::Create( HWND hWnd, ID3D11Device * pDevice, BYTE byStageNum )
 	return pScene;
 }
 
+
 CScene::CScene()
 	:m_hWnd( nullptr )
 	, m_pCamera( nullptr )
 	, m_pDevice( nullptr )
+	, m_fPlayingTime( GAME_PLAYING_SEC )
 {
 }
 

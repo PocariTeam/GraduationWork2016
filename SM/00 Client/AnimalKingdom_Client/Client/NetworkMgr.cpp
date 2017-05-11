@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "NetworkMgr.h"
 #include "Scene.h"
+#include "Jungle.h"
 #include <fstream>
 
 CNetworkMgr*	CSingleton<CNetworkMgr>::m_pInstance;
@@ -129,90 +130,90 @@ void CNetworkMgr::assemblePacket( int recvByte )
 
 		int restSize = m_iCurrPacketSize - m_iStoredPacketSize;
 
-		if( restSize <= recvByte )
-		{
-			memcpy( m_saveBuf + m_iStoredPacketSize, pRecvBuf, restSize );
+if (restSize <= recvByte)
+{
+	memcpy(m_saveBuf + m_iStoredPacketSize, pRecvBuf, restSize);
 
-			CNetworkMgr::processPacket();
+	CNetworkMgr::processPacket();
 
-			m_iCurrPacketSize = m_iStoredPacketSize = 0;
+	m_iCurrPacketSize = m_iStoredPacketSize = 0;
 
-			pRecvBuf += restSize;
-			recvByte -= restSize;
-		}
-		else
-		{
-			memcpy( m_saveBuf + m_iStoredPacketSize, pRecvBuf, recvByte );
+	pRecvBuf += restSize;
+	recvByte -= restSize;
+}
+else
+{
+	memcpy(m_saveBuf + m_iStoredPacketSize, pRecvBuf, recvByte);
 
-			m_iStoredPacketSize += recvByte;
-			recvByte = 0;
-		}
+	m_iStoredPacketSize += recvByte;
+	recvByte = 0;
+}
 	}
 }
 
 void CNetworkMgr::processPacket()
 {
-	HEADER* header = ( HEADER* )m_saveBuf;
+	HEADER* header = (HEADER*)m_saveBuf;
 
-	switch( header->packetID )
+	switch (header->packetID)
 	{
 	case PAK_ANS_Login:
 	{
-		S_Login *packet = ( S_Login* )m_saveBuf;
+		S_Login *packet = (S_Login*)m_saveBuf;
 		m_nPlayerID = packet->id;
-		printf( "로그인:: 아이디는 [%d] 입니다. \n", m_nPlayerID );
+		printf("로그인:: 아이디는 [%d] 입니다. \n", m_nPlayerID);
 		break;
 	}
 	case PAK_ID::PAK_ANS_RoomList:
 	{
-		S_RoomList* packet = ( S_RoomList* )m_saveBuf;
-		for( int i = 0; i < GAMEROOM_CAPACITY; ++i )
+		S_RoomList* packet = (S_RoomList*)m_saveBuf;
+		for (int i = 0; i < GAMEROOM_CAPACITY; ++i)
 		{
-			RoomInfo r = packet->roomInfo[ i ];
-			printf( "[%d]번 방 - 인원: %d명, 플레이 상태: %d \n", i, r.playerCount, r.playing );
+			RoomInfo r = packet->roomInfo[i];
+			printf("[%d]번 방 - 인원: %d명, 플레이 상태: %d \n", i, r.playerCount, r.playing);
 		}
-		if( m_nRoomNum >= 0 )
+		if (m_nRoomNum >= 0)
 		{
 			m_nRoomNum = -1;
 			m_bMaster = m_bReady = false;
 		}
-		m_pScene->NotifyRoomInfo( packet );
+		m_pScene->NotifyRoomInfo(packet);
 		break;
 	}
 	case PAK_ID::PAK_ANS_PlayerList:
 	{
-		S_PlayerList* packet = ( S_PlayerList* )m_saveBuf;
-		printf( "========================================= \n" );
-		printf( "\t\t [방 정보] \t\t \n" );
+		S_PlayerList* packet = (S_PlayerList*)m_saveBuf;
+		printf("========================================= \n");
+		printf("\t\t [방 정보] \t\t \n");
 		m_dwPlayerCnt = packet->playerCount;
 
-		for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+		for (UINT i = 0; i < m_dwPlayerCnt; ++i)
 		{
-			m_tPlayerInfo[ i ] = packet->playerInfo[ i ];
-			printf( " id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", ( int )m_tPlayerInfo[ i ].id, m_tPlayerInfo[ i ].character, m_tPlayerInfo[ i ].isReady, m_tPlayerInfo[ i ].isMaster );
-			if( m_tPlayerInfo[ i ].id == m_nPlayerID )
+			m_tPlayerInfo[i] = packet->playerInfo[i];
+			printf(" id[%d] 캐릭터[%d] 레디[%d] 방장[%d] \n", (int)m_tPlayerInfo[i].id, m_tPlayerInfo[i].character, m_tPlayerInfo[i].isReady, m_tPlayerInfo[i].isMaster);
+			if (m_tPlayerInfo[i].id == m_nPlayerID)
 			{
-				if( m_nRoomNum == -1 )
+				if (m_nRoomNum == -1)
 				{
 					m_nRoomNum = packet->roomNum;
 				}
 
-				if( m_tPlayerInfo[ i ].isMaster == TRUE && m_bMaster == false )
+				if (m_tPlayerInfo[i].isMaster == TRUE && m_bMaster == false)
 				{
-					printf( " --> 내가 방장이 되었습니다. <-- \n" );
+					printf(" --> 내가 방장이 되었습니다. <-- \n");
 					m_bMaster = true;
 				}
 			}
 		}
-		printf( "========================================= \n" );
-		m_pScene->NotifyPlayerInfo( m_tPlayerInfo, m_dwPlayerCnt );
+		printf("========================================= \n");
+		m_pScene->NotifyPlayerInfo(m_tPlayerInfo, m_dwPlayerCnt);
 		break;
 	}
 	case PAK_ID::PAK_ANS_ReadyGame:
 	{
-		printf( "========================================= \n" );
-		printf( "\t\t [게임 준비] \t\t \n" );
-		printf( "========================================= \n" );
+		printf("========================================= \n");
+		printf("\t\t [게임 준비] \t\t \n");
+		printf("========================================= \n");
 		m_pScene->NotifyGameStart();
 		break;
 	}
@@ -227,10 +228,20 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_ANS_Winner:
 	{
 		S_Winner* packet = (S_Winner*)m_saveBuf;
-		printf("========================================= \n");
-		printf("\t\t 승자는 id[%d] \t\t \n",packet->id);
-		printf("========================================= \n");
-		m_pScene->NotifyWinner( packet->id );
+		if (packet->id == 0)
+		{
+			printf("========================================= \n");
+			printf("\t\t 무승부 \t\t \n");
+			printf("========================================= \n");
+			m_pScene->NotifyWinner(m_nPlayerID);
+		}
+		else
+		{
+			printf("========================================= \n");
+			printf("\t\t 승자는 id[%d] \t\t \n", packet->id);
+			printf("========================================= \n");
+			m_pScene->NotifyWinner(packet->id);
+		}
 		break;
 	}
 	case PAK_ID::PAK_ANS_FinishGame:
@@ -258,6 +269,7 @@ void CNetworkMgr::processPacket()
 			position.z = packet->playerPositions[i].position.z;
 			m_pScene->Sync( packet->playerPositions[ i ].id, packet->playerPositions[i].hp, position, packet->playerPositions[ i ].rotY , packet->playerPositions[i].state );
 		}
+		m_pScene->SetPlayingTime(packet->playingTime);
 		break;
 	}
 	case PAK_ID::PAK_ANS_SyncDynamic:

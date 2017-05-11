@@ -3,7 +3,7 @@
 #include "NxControllerManager.h"
 
 GameRoom::GameRoom(UINT num)
-	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), updateTimerID_(-1)
+	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), updateTimerID_(-1), hasWinner_(false)
 {
 }
 
@@ -96,8 +96,6 @@ BOOL GameRoom::startRoom(Session* session)
 
 void GameRoom::startGame()
 {
-	playingTime_ = 0.0f;
-
 	// 업데이트 시작
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
@@ -371,6 +369,9 @@ BOOL GameRoom::setupGame()
 		i++;
 	}
 
+	leftPlayingTime_ = GAME_PLAYING_SEC;
+	hasWinner_ = false;
+
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
 	syncTimerID_ = timeSetEvent((UINT)(SYNC_TIME_SEC*1000), caps.wPeriodMin, (LPTIMECALLBACK)syncTimer, roomNum_, TIME_PERIODIC);
@@ -396,10 +397,11 @@ void GameRoom::update( float fTimeDelta )
 {
 	SAFE_LOCK(lock_);
 
-	playingTime_ += fTimeDelta;
+	leftPlayingTime_ -= fTimeDelta;
 
-	if (playingTime_ >= GAME_PLAYING_SEC)
+	if (leftPlayingTime_ < 0.0f )
 	{
+		leftPlayingTime_ = 0.0f;
 		checkWinner(true);
 	}
 
@@ -414,6 +416,8 @@ void GameRoom::sendPlayerSync()
 	S_SyncPlayer playerPacket;
 	playerPacket.header.packetID = PAK_ID::PAK_ANS_SyncPlayer;
 	playerPacket.header.size = sizeof(playerPacket);
+	playerPacket.playingTime = leftPlayingTime_;
+
 	int i = 0;
 	for (auto iter = players_.begin(); iter != players_.end(); iter++, i++)
 	{
@@ -473,6 +477,10 @@ void GameRoom::checkWinner(bool bTimeOut)
 {
 	SAFE_LOCK(lock_);
 
+	if (hasWinner_) return;
+
+	hasWinner_ = true;
+
 	if (players_.empty()) return;
 
 	int winner_id = players_.begin()->first;
@@ -489,7 +497,6 @@ void GameRoom::checkWinner(bool bTimeOut)
 	if (aliveCount == 0)
 	{
 		SLog(L"* the room [%d] game draw.. winner: nobody(0) ", roomNum_);
-		playingTime_ = -GAME_FINISH_DELAY;
 		sendWinner(0);
 		return;
 	}
@@ -497,7 +504,6 @@ void GameRoom::checkWinner(bool bTimeOut)
 	if (bTimeOut || aliveCount == 1) // 타임아웃 또는 승자1명
 	{
 		SLog(L"* the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
-		playingTime_ = -GAME_FINISH_DELAY;
 		sendWinner(winner_id);
 	}
 
@@ -525,4 +531,10 @@ void GameRoom::setPlaying(bool b)
 	SAFE_LOCK(lock_);
 
 	isPlaying_ = b;
+}
+
+BOOL GameRoom::hasWinner()
+{
+	SAFE_LOCK(lock_);
+	return hasWinner_;
 }
