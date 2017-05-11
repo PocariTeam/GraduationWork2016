@@ -57,6 +57,7 @@ STATE CIdleState::GetState( void )
 
 void CDefendState::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_DEFEND );
 }
 
@@ -90,7 +91,6 @@ void CRunState::Execute( Player* pOwner, const float& fTImeDelta )
 
 void CRunState::Exit( Player* pOwner, const float& fTimeDelta )
 {
-	pOwner->ResetDir();
 }
 
 STATE CRunState::GetState( void )
@@ -131,6 +131,7 @@ STATE CJumpState::GetState( void )
 
 void CAttackState::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_ATT1 );
 }
 
@@ -155,6 +156,7 @@ STATE CAttackState::GetState( void )
 
 void CAttackState2::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_ATT2 );
 }
 
@@ -179,6 +181,7 @@ STATE CAttackState2::GetState( void )
 
 void CBeatenState::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_BEATEN1 );
 }
 
@@ -202,6 +205,7 @@ STATE CBeatenState::GetState( void )
 
 void CBeatenState2::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_BEATEN2 );
 }
 
@@ -226,6 +230,7 @@ STATE CBeatenState2::GetState( void )
 
 void CDownState::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_DOWN );
 }
 
@@ -249,6 +254,7 @@ STATE CDownState::GetState( void )
 
 void CDeadState::Enter( Player* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation( STATE_DEAD );
 	pOwner->setBeaten( false );
 	pOwner->minimizeController();

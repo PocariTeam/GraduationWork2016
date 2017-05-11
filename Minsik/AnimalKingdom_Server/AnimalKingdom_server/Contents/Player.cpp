@@ -52,15 +52,13 @@ void Player::initialize()
 
 void Player::update( float fTimeDelta )
 {
-	if( 0 >= hp_ ) stateMachine_->Change_State( STATE_DOWN );
-
 	if( stateMachine_ ) stateMachine_->Update( fTimeDelta );
+	checkFalling();
 
 	moveDir_.y += -9.81f * 9.81f * fTimeDelta;
-
 	NxU32	dwCollisionFlag;
 	cct_->move( moveDir_, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
-	moveDir_ = NxVec3{ 0.f, 0.f, 0.f };
+	moveDir_.y = 0.f;
 }
 
 PlayerInfo Player::getPlayerInfo()
@@ -189,6 +187,18 @@ bool Player::checkBlocking( float fRotateY )
 	return checkBlocking( vDefaultDir );
 }
 
+bool Player::checkFalling( void )
+{
+	if( hp_ > 0 && cct_->getPosition().y < 0.f )
+	{
+		hp_ = 0;
+		RoomManager::getInstance().checkWinner( roomNum_, false );
+		stateMachine_->Change_State( STATE_DOWN );
+		return true;
+	}
+	return false;
+}
+
 void Player::proceedBeaten( int damage )
 {
 	if ((beaten_ == false) || hp_ <=0) return;
@@ -202,13 +212,14 @@ void Player::proceedBeaten( int damage )
 	{
 		hp_ = 0;
 		RoomManager::getInstance().checkWinner(roomNum_, false);
+		stateMachine_->Change_State( STATE_DOWN );
 	}
 	
 }
 
 void Player::minimizeController()
 {
-	NxExtendedVec3 vPos{ 0.f, 0.f, -1000.f };
+	NxExtendedVec3 vPos{ 0.f, 100.f, -1000.f };
 	cct_->setPosition( vPos );
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setRadius( 0.f );
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setHeight( 0.f );

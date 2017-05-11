@@ -42,6 +42,7 @@ public:
 	NxController*	GetCharacterController( void ) { return m_pCharacterController; }
 	NxMat34*		GetActorsOriginPose( void ) { return m_pActorsOriginPose; }
 	virtual XMFLOAT4X4*	GetWorld();
+	void			ResetOverlapped();
 	bool			GetAlpha() { return m_bAlpha; }
 	int*			GetHP() { return &m_iHp; }
 	STATE			GetCurrentState();
@@ -52,6 +53,7 @@ public:
 protected:
 	int						m_iHp;
 
+	NxVec3					m_vOverlapped;
 	CStateMachine*			m_pStateMachine;
 	CAnimator*				m_pAnimator;
 	NxController*			m_pCharacterController;

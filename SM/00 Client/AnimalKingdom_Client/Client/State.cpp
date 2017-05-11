@@ -72,6 +72,7 @@ STATE CIdleState::GetState( void )
 
 void CDefendState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_DEFEND );
 }
 
@@ -147,6 +148,7 @@ STATE CJumpState::GetState( void )
 
 void CAttackState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_ATT1 );
 }
 
@@ -171,6 +173,7 @@ STATE CAttackState::GetState( void )
 
 void CAttackState2::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_ATT2 );
 }
 
@@ -195,6 +198,7 @@ STATE CAttackState2::GetState( void )
 
 void CBeatenState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_BEATEN1 );
 }
 
@@ -218,6 +222,7 @@ STATE CBeatenState::GetState( void )
 
 void CBeatenState2::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_BEATEN2 );
 }
 
@@ -241,6 +246,7 @@ STATE CBeatenState2::GetState( void )
 
 void CDownState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_DOWN );
 }
 
@@ -264,6 +270,7 @@ STATE CDownState::GetState( void )
 
 void CDeadState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
+	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_DEAD );
 	pOwner->MinimizeController();
 }

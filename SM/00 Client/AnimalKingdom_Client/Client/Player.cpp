@@ -31,6 +31,7 @@ CPlayer::CPlayer()
 	, m_iSectionCnt( 0 )
 	, m_iHp(100)
 	, m_bAlpha( false )
+	, m_vOverlapped( 0.f, 1.f, 0.f )
 {
 }
 
@@ -65,7 +66,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
 
-	if( m_pAnimator->GetCurrentAnimationFinished() && STATE_JUMP != eState )
+	if( m_pAnimator->GetCurrentAnimationFinished() && STATE_JUMP != eState && STATE_DOWN != eState && STATE_DEAD != eState )
 	{
 		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
@@ -84,8 +85,11 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	
 	if( eState != m_pStateMachine->GetCurrentState() )
 		CNetworkMgr::GetInstance()->sendCharacterState( eState );
-	if( false == m_vDir.equals( vDir, 1.f ) && ( STATE_RUN == eState || STATE_JUMP == eState || STATE_IDLE == eState ) )
+	if( ( STATE_RUN == eState || STATE_JUMP == eState || STATE_IDLE == eState ) && false == m_vOverlapped.equals( vDir, 1.f ) )
+	{
+		m_vOverlapped = vDir;
 		CNetworkMgr::GetInstance()->sendMoveCharacter( vDir );
+	}
 }
 
 void CPlayer::Jump( const float& fTimeDelta, float fAnimatePercent )
@@ -158,6 +162,11 @@ void CPlayer::SetSection( CSection** dpSections, UINT iSectionCnt )
 XMFLOAT4X4* CPlayer::GetWorld()
 {
 	return &m_mtxWorld;
+}
+
+void CPlayer::ResetOverlapped()
+{
+	m_vOverlapped = NxVec3( 0.f, 1.f, 0.f );
 }
 
 STATE CPlayer::GetCurrentState()

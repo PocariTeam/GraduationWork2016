@@ -75,6 +75,7 @@ public:
 	void			setHp( int hp ) { hp_ = hp; }
 	bool			checkBlocking( NxVec3& vDir );
 	bool			checkBlocking( float fRotateY );
+	bool			checkFalling( void );
 	bool			getBeaten() { return beaten_; }
 	void			setBeaten( bool bBeaten ) { beaten_ = bBeaten; }
 	void			defendOn() { defend = true; }

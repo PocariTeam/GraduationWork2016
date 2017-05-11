@@ -298,7 +298,7 @@ void CJungle::Change_CameraDest( void )
 	auto advance_iter = player_iter;
 	advance_iter++;
 
-	int iFocus{};
+	int iFocus{ m_iFocus };
 
 	if( advance_iter != m_mapPlayer.end() && STATE_DEAD != advance_iter->second->GetCurrentState() )
 		iFocus = advance_iter->first;
@@ -317,7 +317,7 @@ void CJungle::Change_CameraDest( void )
 	if( m_iFocus != iFocus )
 	{
 		m_iFocus = iFocus;
-		( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
+		( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer.find( m_iFocus )->second->GetWorld() );
 	}
 }
 
