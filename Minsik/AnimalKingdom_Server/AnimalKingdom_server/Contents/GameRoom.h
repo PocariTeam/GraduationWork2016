@@ -18,6 +18,7 @@ private:
 	UINT				updateTimerID_;
 	UINT				syncTimerID_;
 	float				leftPlayingTime_;
+	UINT				crownOwnerID_;
 	BOOL				hasWinner_;
 
 	Lock				lock_;
@@ -40,6 +41,7 @@ public:
 	void			sendStartGame();
 	void			sendWinner(int winner_id);
 	void			sendFinishGame();
+	void			sendGetCrown(Player* player);
 
 	UINT			getPlayerCount() { return playerCount_; }
 

@@ -225,6 +225,12 @@ void CNetworkMgr::processPacket()
 		m_pScene->NotifyGameStart();
 		break;
 	}
+	case PAK_ID::PAK_ANS_Crown:
+	{
+		S_Crown* packet = (S_Crown*)m_saveBuf;
+		printf(" --> [%d] ÇÃ·¹ÀÌ¾î°¡ ¿Õ°ü È¹µæ! \n",packet->id);
+		break;
+	}
 	case PAK_ID::PAK_ANS_Winner:
 	{
 		S_Winner* packet = (S_Winner*)m_saveBuf;

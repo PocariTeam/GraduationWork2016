@@ -105,17 +105,17 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 
 	// ¿Õ°ü Å×½ºÆ®
 	int iCrownIndex{ -1 };
-	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Crown" ) )
-		iCrownIndex = 1;
-	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Crown" ) )
-		iCrownIndex = 0;
+	if (0 == strcmp(pair.actors[1]->getName(), "Crown"))	iCrownIndex = 1;
+	else if (0 == strcmp(pair.actors[0]->getName(), "Crown"))	iCrownIndex = 0;
 
 	if( -1 != iCrownIndex )
 	{
 		int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
 		if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
-			|| COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
+			&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
 		{
+			UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
+			RoomManager::getInstance().sendGetCrown(roomNum, ((Player*)pair.actors[iNoCrownIndex]->userData));
 			pair.actors[ iCrownIndex ]->raiseBodyFlag( NX_BF_KINEMATIC );
 		}
 	}

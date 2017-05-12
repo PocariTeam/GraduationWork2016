@@ -26,6 +26,7 @@ typedef enum {
 	PAK_ANS_PlayerList,
 	PAK_ANS_ReadyGame,
 	PAK_ANS_StartGame,
+	PAK_ANS_Crown,
 	PAK_ANS_Winner,
 	PAK_ANS_FinishGame,
 	PAK_ANS_SyncPlayer,
@@ -162,6 +163,12 @@ struct S_SyncDynamicOne
 {
 	HEADER			header;
 	DynamicActor	dynamicActor;
+};
+
+struct S_Crown
+{
+	HEADER		header;
+	UINT		id;
 };
 
 struct S_Winner

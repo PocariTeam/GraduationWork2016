@@ -110,6 +110,20 @@ void RoomManager::sendReadyGame(UINT32 roomNum)
 	roomArray_[roomNum]->sendReadyGame();
 }
 
+void RoomManager::sendGetCrown(UINT roomNum, Player* player)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		roomArray_[roomNum]->sendGetCrown(player);
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+	}
+}
+
 BOOL RoomManager::getPlaying(UINT roomNum)
 {
 	SAFE_LOCK(lock_);

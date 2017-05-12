@@ -24,7 +24,7 @@ public:
 	void		Frozen( void );
 	int			getDamage( void ) { return m_iDamage; }
 public:
-	DWORD	Release( void );
+	DWORD		Release( void );
 private:
 	NxActor*	m_pActor;
 	COL_GROUP	m_eMasterGroup;

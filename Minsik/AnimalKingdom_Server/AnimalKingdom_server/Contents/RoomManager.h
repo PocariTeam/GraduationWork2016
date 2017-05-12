@@ -32,6 +32,7 @@ public:
 
 	void			sendPlayerList(UINT32 roomNum);
 	void			sendReadyGame(UINT32 roomNum);
+	void			sendGetCrown(UINT roomNum, Player* player);
 
 	BOOL			getPlaying(UINT roomNum);
 	BOOL			hasWinner(UINT roomNum);

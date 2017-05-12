@@ -343,6 +343,36 @@ void GameRoom::sendFinishGame()
 	}
 }
 
+void GameRoom::sendGetCrown(Player* player)
+{
+	SAFE_LOCK(lock_);
+
+	int id = -1;
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		if (iter->second == player)
+		{
+			id = iter->first;
+			break;
+		}
+	}
+
+	if (id == -1) return;
+
+	crownOwnerID_ = id;
+
+	S_Crown packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_Crown;
+	packet.header.size = sizeof(packet);
+	packet.id = crownOwnerID_;
+
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+
+}
+
 
 BOOL GameRoom::setupGame()
 {

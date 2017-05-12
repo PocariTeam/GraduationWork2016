@@ -335,11 +335,11 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	m_pPhysicsSDK->setParameter(NX_CCD_EPSILON, 0.1f);
 	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15);
 	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14);
-	m_pPhysicsSDK->setParameter(NX_BOUNCE_THRESHOLD, -200);
+	m_pPhysicsSDK->setParameter(NX_BOUNCE_THRESHOLD, -20);
 	m_pPhysicsSDK->setParameter(NX_DYN_FRICT_SCALING, 100);
 	m_pPhysicsSDK->setParameter(NX_STA_FRICT_SCALING, 100);
 
-	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.2f );
+	m_pScene->setGravity(NxVec3(0.0f, -9.81f * 3, 0.0f));
 	m_pScene->setUserContactReport( &m_CollisionReport );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER1, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER2, NX_NOTIFY_ON_START_TOUCH );
