@@ -332,6 +332,7 @@ void CJungle::NotifyGameFinished()
 void CJungle::NotifyWinner( UINT ID )
 {
 	CPhysics::GetInstance()->SetCrownOwner(m_mapPlayer[ID]);
+
 	m_iFocus = ID; 
 	::Safe_Release( m_pCamera );
 	m_bStart = false;

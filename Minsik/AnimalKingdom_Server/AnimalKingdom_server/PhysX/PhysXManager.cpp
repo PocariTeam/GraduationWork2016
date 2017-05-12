@@ -220,9 +220,9 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 	physicsSDK_->setParameter(NX_CCD_EPSILON,0.1f); // 고속충돌 정밀도
 	physicsSDK_->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15); // 객체가 잠드는 최소한 선속도
 	physicsSDK_->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14); // 객체가 잠드는 최소한 각속도
-	physicsSDK_->setParameter(NX_BOUNCE_THRESHOLD, -20); //  통통 튀는 최소 속도
-	physicsSDK_->setParameter(NX_DYN_FRICT_SCALING, 100); // 동적객체 마찰
-	physicsSDK_->setParameter(NX_STA_FRICT_SCALING, 100); // 정적객체 마찰
+	physicsSDK_->setParameter(NX_BOUNCE_THRESHOLD, -5); //  통통 튀는 최소 속도
+	physicsSDK_->setParameter(NX_DYN_FRICT_SCALING, 10); // 동적객체 마찰
+	physicsSDK_->setParameter(NX_STA_FRICT_SCALING, 10); // 정적객체 마찰
 
 	scenes_[roomNum]->setGravity(NxVec3(0.0f, -9.81f * 3, 0.0f));
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
@@ -294,6 +294,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 				a->setGroup( COL_DYNAMIC );
 				m_pCrownActor[roomNum] = a;
 				SetCollisionGroup( a, COL_DYNAMIC );
+				m_pCrownActor[roomNum]->setGlobalPosition(getRandomCrownPosition());
 			}
 
 			else
@@ -637,11 +638,18 @@ void PhysXManager::setCrownPosition(UINT roomNum, NxMat34 posMat)
 
 void PhysXManager::checkCrownFalling(UINT roomNum)
 {
+	if (RoomManager::getInstance().hasWinner(roomNum)) return;
 	if (m_pCrownActor[roomNum]->getGlobalPosition().y > 20.0f) return;
 	
 	RoomManager::getInstance().sendGetCrown(roomNum, nullptr);
 
 	m_pCrownActor[roomNum]->clearBodyFlag(NX_BF_KINEMATIC);
-	m_pCrownActor[roomNum]->setGlobalPosition(NxVec3(-20.0f,230.0f,230.0f));
+	m_pCrownActor[roomNum]->setLinearVelocity(NxVec3(0.f,0.f,0.f));
+	m_pCrownActor[roomNum]->setGlobalPosition(getRandomCrownPosition());
+}
+
+NxVec3 PhysXManager::getRandomCrownPosition()
+{
+	return NxVec3((float)(rand() % 160 - 80), 230.0f, (float)(rand() % 160 + 70));
 }
 

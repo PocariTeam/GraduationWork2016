@@ -334,9 +334,9 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	m_pPhysicsSDK->setParameter(NX_CCD_EPSILON, 0.1f);
 	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15);
 	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14);
-	m_pPhysicsSDK->setParameter(NX_BOUNCE_THRESHOLD, -20);
-	m_pPhysicsSDK->setParameter(NX_DYN_FRICT_SCALING, 100);
-	m_pPhysicsSDK->setParameter(NX_STA_FRICT_SCALING, 100);
+	m_pPhysicsSDK->setParameter(NX_BOUNCE_THRESHOLD, -5);
+	m_pPhysicsSDK->setParameter(NX_DYN_FRICT_SCALING, 10);
+	m_pPhysicsSDK->setParameter(NX_STA_FRICT_SCALING, 10);
 
 	m_pScene->setGravity(NxVec3(0.0f, -9.81f * 3, 0.0f));
 	m_pScene->setUserContactReport( &m_CollisionReport );

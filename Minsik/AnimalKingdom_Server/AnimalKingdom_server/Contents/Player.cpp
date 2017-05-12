@@ -192,6 +192,7 @@ bool Player::checkFalling( void )
 	if( hp_ > 0 && cct_->getPosition().y < 0.f )
 	{
 		hp_ = 0;
+		RoomManager::getInstance().loseCrown(roomNum_, this);
 		RoomManager::getInstance().checkWinner( roomNum_, false );
 		stateMachine_->Change_State( STATE_DOWN );
 		return true;
