@@ -62,11 +62,11 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 0 ] );
 	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
-	m_dpSection[ 1 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -170.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
+	m_dpSection[ 1 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( -170.f, 120.f, 265.f ), XMFLOAT3( 30.f, 25.f, 50.f ) );
 	// m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 1 ] );
 	pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Test" );
 	pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Test" );
-	m_dpSection[ 2 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( 130.f, 120.f, 265.f ), XMFLOAT3( 30.f, 20.f, 50.f ) );
+	m_dpSection[ 2 ] = CSection::Create( pDevice, pMesh, pTexture, XMFLOAT3( 130.f, 120.f, 265.f ), XMFLOAT3( 30.f, 25.f, 50.f ) );
 	// m_listShader[ RENDER_DEPTHTEST ].front()->Add_RenderObject( m_dpSection[ 2 ] );
 
 	auto player_iter = m_mapPlayer.begin();
@@ -261,8 +261,6 @@ void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 
 void CJungle::Check_Key( const float& fTimeDelta )
 {
-	if( m_bFinished ) return;
-
 	if( CInputMgr::GetInstance()->Get_KeyboardState( DIK_RETURN ) && m_bOverlapped )
 	{
 		// 카메라 전환
@@ -334,7 +332,6 @@ void CJungle::NotifyWinner( UINT ID )
 	CPhysics::GetInstance()->SetCrownOwner(m_mapPlayer[ID]);
 	m_iFocus = ID; 
 	::Safe_Release( m_pCamera );
-	m_bStart = false;
 	m_bDebug = false;
 	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ m_iFocus ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
 	( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
