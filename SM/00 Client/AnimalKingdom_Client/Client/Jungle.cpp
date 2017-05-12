@@ -339,7 +339,7 @@ void CJungle::NotifyWinner( UINT ID )
 	( ( CThirdCamera* )m_pCamera )->SetDestWorldTranspose( m_mapPlayer[ m_iFocus ]->GetWorld() );
 	( ( CThirdCamera* )m_pCamera )->WinnerEvent();
 	m_pStateNotify->Show();
-	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_ID0" ) );
+	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Winner" ) );
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )
