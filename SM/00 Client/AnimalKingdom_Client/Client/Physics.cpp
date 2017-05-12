@@ -29,6 +29,7 @@
 #include "NormalShader.h"
 #include "Banana.h"
 #include "Normal_UI.h"
+#include "Crown.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -452,6 +453,15 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pShader_Animate->Add_RenderObject( pPlayer );
 					pmapPlayer->insert( make_pair( ( int )pPlayerInfo[ iCreatePlayerCnt ].id, ( CPlayer* )pPlayer ) );
 					iCreatePlayerCnt++;
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Crown" ) )
+				{
+					CCrown* pCrown = CCrown::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Crown" ), CTextureMgr::GetInstance()->Clone( "Texture_Crown" ), XMFLOAT3( 0.2f, 0.2f, 0.2f ) );
+					pShader_Cave->Add_RenderObject( pCrown );
+					pActor->setGroup( COL_DYNAMIC );
+					pActor->userData = pCrown;
+					SetCollisionGroup( pActor, COL_DYNAMIC );
 				}
 
 				else

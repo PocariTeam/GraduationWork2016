@@ -71,4 +71,7 @@ public:
 
 	NxScene*				getScene( UINT roomNum );
 	NxPhysicsSDK*			getSDK();
+
+	/* Å×½ºÆ® */
+	NxActor*				m_pCrownActor;
 };

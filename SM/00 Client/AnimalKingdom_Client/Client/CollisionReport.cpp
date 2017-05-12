@@ -11,6 +11,7 @@
 #include <NxShape.h>
 #include "Enum.h"
 #include "Banana.h"
+#include "Crown.h"
 
 bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 {
@@ -81,7 +82,6 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		if( COL_STATIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() )
 			|| COL_DYNAMIC == COL_GROUP( pair.actors[ iNoBananaIndex ]->getGroup() ) )
 		{
-			// printf( "C %s 와 %s가 충돌! \n", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
 			pair.actors[ iBananaIndex ]->setName( "Banana1" );
 		}
 
@@ -89,6 +89,23 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		{
 			( ( CPlayer* )pair.actors[ iNoBananaIndex ]->userData )->GetFSM()->Change_State( STATE_BEATEN1 );
 			pair.actors[ iBananaIndex ]->setName( "Banana1" );
+		}
+	}
+
+	// 왕관 테스트
+	int iCrownIndex{ -1 };
+	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Crown" ) )
+		iCrownIndex = 1;
+	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Crown" ) )
+		iCrownIndex = 0;
+
+	if( -1 != iCrownIndex )
+	{
+		int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
+		if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
+			&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
+		{
+			( ( CCrown* )pair.actors[ iCrownIndex ]->userData )->SetOwner( ( CPlayer* )pair.actors[ iNoCrownIndex ]->userData );
 		}
 	}
 }

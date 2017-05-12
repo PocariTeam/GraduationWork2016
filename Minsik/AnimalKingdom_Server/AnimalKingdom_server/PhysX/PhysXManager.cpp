@@ -286,6 +286,14 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 				currentPlayer++;
 				player_iter++;
 			}
+
+			else if( 0 == strcmp( a->getName(), "Crown" ) )
+			{
+				a->setGroup( COL_DYNAMIC );
+				m_pCrownActor = a;
+				SetCollisionGroup( a, COL_DYNAMIC );
+			}
+
 			else
 			{
 				a->setGroup(CollGroup::COL_DYNAMIC);

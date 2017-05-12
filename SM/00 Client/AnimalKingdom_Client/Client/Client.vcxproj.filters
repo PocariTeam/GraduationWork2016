@@ -262,6 +262,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\03 UI\06 Sign_UI">
       <UniqueIdentifier>{1fc2e729-bd40-414d-8ac5-28b7859a4249}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\01 InGame\04 Crown">
+      <UniqueIdentifier>{3505ef21-1dc8-468e-a17f-c6510c116291}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -576,6 +579,9 @@
     <ClInclude Include="Sign_UI.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\06 Sign_UI</Filter>
     </ClInclude>
+    <ClInclude Include="Crown.h">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\04 Crown</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -838,6 +844,9 @@
     </ClCompile>
     <ClCompile Include="Sign_UI.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\03 UI\06 Sign_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Crown.cpp">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\04 Crown</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

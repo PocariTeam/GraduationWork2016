@@ -119,6 +119,48 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 	pWorld = nullptr;
 }
 
+NxMat34 CAnimator::GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey )
+{
+	DWORD i = 0;
+	XMFLOAT4X4*	pWorld{ new XMFLOAT4X4[ m_dwJointCnt ] };
+	m_pCurrentAnimationSet->GetAnimationMatrix( pWorld );
+	NxController* pCharacterController = ( ( CPlayer* )pOwner )->GetCharacterController();
+
+	DWORD dwActorCnt = ( ( CPlayer* )pOwner )->GetActorCnt();
+
+	for( ; i < m_dwJointCnt; ++i )
+		if( 0 == strcmp( m_pArrJointName[ i ].c_str(), pKey ) )
+			break;
+
+	NxMat34 mtxLocal;
+	XMFLOAT4X4 mtxTemp = *pOwner->GetWorld();
+	XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
+	XMFLOAT3 vTest{};
+	/*pWorld[ i ]._14 = 0.f;
+	pWorld[ i ]._24 = 0.f;
+	pWorld[ i ]._34 = 0.f;*/
+	vTest.x = pWorld[ i ]._13;
+	vTest.y = pWorld[ i ]._23;
+	vTest.z = pWorld[ i ]._33;
+	pWorld[ i ]._13 = pWorld[ i ]._12;
+	pWorld[ i ]._23 = pWorld[ i ]._22;
+	pWorld[ i ]._33 = pWorld[ i ]._32;
+	pWorld[ i ]._12 = vTest.x;
+	pWorld[ i ]._22 = vTest.y;
+	pWorld[ i ]._32 = vTest.z;
+
+	mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
+	//mtxLoadOrigin = XMMatrixRotationY( ( ( CPlayer* )pOwner )->GetRotateY() );/*XMMatrixSet( 1.f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f );*/
+	mtxLoadAnimation = /*mtxLoadOrigin**/mtxLoadAnimation;
+	XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &mtxTemp ), mtxLoadAnimation );
+	NxMat34 mtxOut = CMathematics::ConvertToNxMat34( mtxResult );
+
+	delete[] pWorld;
+	pWorld = nullptr;
+
+	return mtxOut;
+}
+
 HRESULT CAnimator::Add( STATE eState, const char* pFilePath )
 {
 	if( m_vecAnimationSet.size() != ( size_t )eState )

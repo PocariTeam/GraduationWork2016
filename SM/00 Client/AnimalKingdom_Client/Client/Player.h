@@ -46,6 +46,7 @@ public:
 	bool			GetAlpha() { return m_bAlpha; }
 	int*			GetHP() { return &m_iHp; }
 	STATE			GetCurrentState();
+	float			GetRotateY() { return m_vRotate.y; }
 public:
 	void			Change_State( STATE eState );
 public:
