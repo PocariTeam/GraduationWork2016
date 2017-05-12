@@ -6,6 +6,14 @@ class NxActor;
 class CAnimator;
 class CStateMachine;
 
+#define		JUMP_HEIGHT			130.f
+
+#define		MONKEY_DAMAGE		12
+#define		MONKEY_SPEED		80.0f
+
+#define		CHAMEL_DAMAGE		23
+#define		CHAMEL_SPEED		90.0f
+
 class Player {
 	int				hp_;
 	int				damage_;
@@ -84,4 +92,6 @@ public:
 	void			proceedBeaten(int damage);
 	void			minimizeController();
 	CHARACTER		GetCharacterType() { return character_; }
+	void			powerUp();
+	void			powerDown();
 };

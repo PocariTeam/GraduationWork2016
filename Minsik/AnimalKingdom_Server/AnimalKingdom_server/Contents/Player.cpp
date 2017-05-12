@@ -4,13 +4,11 @@
 #include <NxActor.h>
 
 Player::Player(Session * s, UINT room, BOOL master)
-	: lock_( L"Player" ), session_( s ), character_( CHARACTER::CHRACTER_NONE ), roomNum_( room ), isReady_( false ), isMaster_( master ), cct_( nullptr ), actorArray_( nullptr ), animator_( nullptr ), stateMachine_( nullptr )
-	, m_vRotate( 0.f, 0.f, 0.f ), actorsOriginPose_( nullptr ), m_bSweap( false )
-	, m_fJumpHeight( 130.f ), damage_( 50 ), beaten_( true )
+	: lock_(L"Player"), session_(s), character_(CHARACTER::CHRACTER_NONE), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_(nullptr), animator_(nullptr), stateMachine_(nullptr)
+	, m_vRotate(0.f, 0.f, 0.f), actorsOriginPose_(nullptr), m_bSweap(false), defend(false), m_fJumpHeight(0.0f), damage_(0), speed_(0.0f)
 {
 	stateMachine_ = CStateMachine::Create( this );
-	speed_ = 80.0f;
-	defend = false;
+
 	initialize();
 }
 
@@ -88,6 +86,22 @@ void Player::setCharacter( CHARACTER c)
 {
 	SAFE_LOCK(lock_);
 	character_ = c;
+
+	switch (character_)
+	{
+	case CHARACTER::CHARACTER_CHM:
+		m_fJumpHeight = JUMP_HEIGHT;
+		damage_ = CHAMEL_DAMAGE;
+		speed_ = CHAMEL_SPEED;
+		break;
+	case CHARACTER::CHARACTER_MON:
+		m_fJumpHeight = JUMP_HEIGHT;
+		damage_ = MONKEY_DAMAGE;
+		speed_ = MONKEY_SPEED;
+		break;
+	default:
+		SLog(L"! unknown character type set! ");
+	}
 }
 
 void Player::setCCT( NxController* cct )
@@ -146,7 +160,7 @@ void Player::ThrowBanana( void )
 	XMVECTOR vDir = XMVector3Normalize( XMLoadFloat3( &XMFLOAT3( mtxWorld._13, mtxWorld._23, mtxWorld._33 ) ) );
 	XMFLOAT3 vNormalDir;
 	XMStoreFloat3( &vNormalDir, vDir );
-	PhysXManager::getInstance().ThrowBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast< COL_GROUP >( cct_->getActor()->getGroup() ), roomNum_ );
+	PhysXManager::getInstance().ThrowBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast< COL_GROUP >( cct_->getActor()->getGroup() ), roomNum_, this);
 }
 
 void Player::sweapOn( void )
@@ -189,6 +203,8 @@ bool Player::checkBlocking( float fRotateY )
 
 bool Player::checkFalling( void )
 {
+	if (RoomManager::getInstance().hasWinner(roomNum_)) return false;
+
 	if( hp_ > 0 && cct_->getPosition().y < 0.f )
 	{
 		hp_ = 0;
@@ -228,6 +244,18 @@ void Player::minimizeController()
 	cct_->setPosition( vPos );
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setRadius( 0.f );
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setHeight( 0.f );
+}
+
+void Player::powerUp()
+{
+	damage_ = damage_ * 2;
+	speed_ = speed_ * 0.5f;
+}
+
+void Player::powerDown()
+{
+	damage_ = damage_ * 0.5f;
+	speed_ = speed_ * 2;
 }
 
 void Player::setMoveDir( Vector3 vDir )

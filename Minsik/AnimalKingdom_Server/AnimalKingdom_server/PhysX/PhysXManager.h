@@ -65,7 +65,7 @@ public:
 
 	void					CreateMeshFromShape( NxSimpleTriangleMesh &triMesh, NxShape *shape );
 	void					CreateBanana( UINT iSceneNum );
-	void					ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum );
+	void					ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum, Player* player);
 
 	S_SyncDynamic*			getDynamicInfo( UINT roomNum );
 	S_SyncDynamicOne*		getDynamicOneInfo( NxActor *actor );

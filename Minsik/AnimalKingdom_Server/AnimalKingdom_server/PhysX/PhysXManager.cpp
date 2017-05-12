@@ -194,10 +194,11 @@ void PhysXManager::CreateBanana( UINT iSceneNum )
 	m_BananaQueue[ iSceneNum ].push( pBanana );
 }
 
-void PhysXManager::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum )
+void PhysXManager::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup, UINT iSceneNum, Player* player )
 {
 	CBanana* pBanana = m_BananaQueue[ iSceneNum ].front();
 	if( pBanana->GetMasterCollisionGroup() > COL_DYNAMIC ) return;
+	pBanana->m_pPlayer = player;
 	pBanana->Throw( vPos, vDir, eColGroup );
 	m_BananaQueue[ iSceneNum ].pop();
 	m_BananaQueue[ iSceneNum ].push( pBanana );

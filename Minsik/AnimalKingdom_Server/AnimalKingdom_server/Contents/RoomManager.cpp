@@ -133,8 +133,6 @@ BOOL RoomManager::getPlaying(UINT roomNum)
 
 BOOL RoomManager::hasWinner(UINT roomNum)
 {
-	SAFE_LOCK(lock_);
-
 	if (roomNum < GAMEROOM_CAPACITY)
 	{
 		return roomArray_[roomNum]->hasWinner();

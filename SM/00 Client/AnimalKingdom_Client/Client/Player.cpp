@@ -24,9 +24,7 @@ CPlayer::CPlayer()
 	, m_dwActorCnt(0)
 	, m_vRotate(0.f, -XM_PI, 0.f)
 	, m_pInputMgr(CInputMgr::GetInstance())
-	, m_fSpeed(80.f)
 	, m_bSweap(false)
-	, m_fJumpHeight(130.f)
 	, m_dpSections( nullptr )
 	, m_iSectionCnt( 0 )
 	, m_iHp(100)
@@ -93,7 +91,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 
 void CPlayer::Jump( const float& fTimeDelta, float fAnimatePercent )
 {
-	m_vDir.y += m_fJumpHeight * cos( fAnimatePercent * XM_PI ) * fTimeDelta + GRAVITY * GRAVITY * fTimeDelta;
+	/*m_vDir.y += m_fJumpHeight * cos( fAnimatePercent * XM_PI ) * fTimeDelta + GRAVITY * GRAVITY * fTimeDelta;*/
 }
 
 int CPlayer::Update( const float& fTimeDelta )
@@ -176,7 +174,7 @@ void CPlayer::Change_State( STATE eState )
 
 void CPlayer::Move( const float& fTimeDelta )
 {
-	if( m_vDir.isZero() ) return;
+	/*if( m_vDir.isZero() ) return;
 
 	m_vDir.normalize();
 	NxVec3	vDefault_Dir{ 0.f, 0.f, 1.f };
@@ -187,7 +185,7 @@ void CPlayer::Move( const float& fTimeDelta )
 	fRotateY *= ( vCross.y >= 0.0f ) ? -1.0f : 1.0f;
 	m_vRotate.y = fRotateY;
 
-	m_vDir = m_vDir * m_fSpeed * fTimeDelta;
+	m_vDir = m_vDir * m_fSpeed * fTimeDelta;*/
 }
 
 void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)

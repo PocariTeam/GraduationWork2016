@@ -530,8 +530,6 @@ BOOL GameRoom::getPlaying()
 
 void GameRoom::checkWinner(bool bTimeOut)
 {
-	SAFE_LOCK(lock_);
-
 	if (hasWinner_) return;
 
 	if (players_.empty()) return;
@@ -579,7 +577,7 @@ void GameRoom::checkWinner(bool bTimeOut)
 
 }
 
-void GameRoom::loseCrown(Player * player)
+void GameRoom::loseCrown(Player *player)
 {
 	SAFE_LOCK(lock_);
 
@@ -588,6 +586,7 @@ void GameRoom::loseCrown(Player * player)
 	if (find_iter->second != player) return;
 
 	sendGetCrown(nullptr);
+	player->powerDown();
 
 	NxMat34 mtxAnimation = player->getAnimator()->GetCurrentAnimationMatrix(player, "Head");
 	NxMat33 mtxRotation{};
@@ -637,6 +636,5 @@ void GameRoom::setPlaying(bool b)
 
 BOOL GameRoom::hasWinner()
 {
-	SAFE_LOCK(lock_);
 	return hasWinner_;
 }

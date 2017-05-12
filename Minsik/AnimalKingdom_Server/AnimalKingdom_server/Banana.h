@@ -7,6 +7,7 @@
 
 #define FROZEN_DELAY_TICK		3000
 
+class Player;
 
 class CBanana
 {
@@ -22,14 +23,15 @@ public:
 	COL_GROUP	GetMasterCollisionGroup() const;
 	void		Throw( NxVec3& vPos, NxVec3& vDir, COL_GROUP eMaster );
 	void		Frozen( void );
-	int			getDamage( void ) { return m_iDamage; }
 public:
 	DWORD		Release( void );
 private:
 	NxActor*	m_pActor;
 	COL_GROUP	m_eMasterGroup;
 	UINT		m_iSceneNum;
-	int			m_iDamage;
+
+public:
+	Player*		m_pPlayer;
 };
 
 #endif // Banana_h__

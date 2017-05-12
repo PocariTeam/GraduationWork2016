@@ -64,8 +64,6 @@ protected:
 	DWORD					m_dwActorCnt;
 	CInputMgr*				m_pInputMgr;
 	bool					m_bSweap;
-	float					m_fSpeed;
-	float					m_fJumpHeight;
 	CSection**				m_dpSections;
 	UINT					m_iSectionCnt;
 	bool					m_bAlpha;

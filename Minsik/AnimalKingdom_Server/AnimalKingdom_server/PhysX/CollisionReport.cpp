@@ -92,7 +92,7 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 				const float minimunVelocity = 50.0f;
 				if (velocity.magnitude() > minimunVelocity)
 				{
-					int iDamage = ((CBanana*)pair.actors[iBananaIndex]->userData)->getDamage();
+					int iDamage = ((CBanana*)pair.actors[iBananaIndex]->userData)->m_pPlayer->getDamage();
 					((Player*)pair.actors[iNoBananaIndex]->userData)->proceedBeaten(iDamage);
 
 				}
@@ -114,8 +114,10 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
 			&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
 		{
+			Player* crownOwner = (Player*)pair.actors[iNoCrownIndex]->userData;
 			UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
-			RoomManager::getInstance().sendGetCrown(roomNum, ((Player*)pair.actors[iNoCrownIndex]->userData));
+			RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
+			crownOwner->powerUp();
 			pair.actors[ iCrownIndex ]->raiseBodyFlag( NX_BF_KINEMATIC );
 			pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
 		}
