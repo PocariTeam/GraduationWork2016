@@ -35,6 +35,7 @@ public:
 	virtual DWORD	Release( void );
 public:
 	void			MinimizeController( void );
+	CHARACTER		GetCharacterType( void ) { return m_eCharactor; }
 	void			SetSection( CSection** dpSections, UINT iSectionCnt );
 	CAnimator*		GetAnimator( void ) { return m_pAnimator; }
 	CStateMachine*	GetFSM( void ) { return m_pStateMachine; }
@@ -53,7 +54,7 @@ public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType );
 protected:
 	int						m_iHp;
-
+	CHARACTER				m_eCharactor;
 	NxVec3					m_vOverlapped;
 	CStateMachine*			m_pStateMachine;
 	CAnimator*				m_pAnimator;

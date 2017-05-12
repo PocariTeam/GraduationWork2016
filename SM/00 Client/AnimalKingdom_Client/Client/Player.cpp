@@ -32,6 +32,7 @@ CPlayer::CPlayer()
 	, m_iHp(100)
 	, m_bAlpha( false )
 	, m_vOverlapped( 0.f, 1.f, 0.f )
+	, m_eCharactor( CHARACTER_CHM )
 {
 }
 
@@ -232,10 +233,10 @@ CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterControl
 	switch( eType )
 	{
 	case CHARACTER_CHM:
-		pPlayer = CChameleon::Create( pDevice, pCharacterController, pActorOriginPoseArray );
+		pPlayer = CChameleon::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
 		break;
 	case CHARACTER_MON:
-		pPlayer = CMonkey::Create( pDevice, pCharacterController, pActorOriginPoseArray );
+		pPlayer = CMonkey::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
 		break;
 	}
 

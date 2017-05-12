@@ -132,13 +132,9 @@ NxMat34 CAnimator::GetCurrentAnimationMatrix( CGameObject* pOwner, const char* p
 		if( 0 == strcmp( m_pArrJointName[ i ].c_str(), pKey ) )
 			break;
 
-	NxMat34 mtxLocal;
 	XMFLOAT4X4 mtxTemp = *pOwner->GetWorld();
 	XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
 	XMFLOAT3 vTest{};
-	/*pWorld[ i ]._14 = 0.f;
-	pWorld[ i ]._24 = 0.f;
-	pWorld[ i ]._34 = 0.f;*/
 	vTest.x = pWorld[ i ]._13;
 	vTest.y = pWorld[ i ]._23;
 	vTest.z = pWorld[ i ]._33;
@@ -150,8 +146,6 @@ NxMat34 CAnimator::GetCurrentAnimationMatrix( CGameObject* pOwner, const char* p
 	pWorld[ i ]._32 = vTest.z;
 
 	mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
-	//mtxLoadOrigin = XMMatrixRotationY( ( ( CPlayer* )pOwner )->GetRotateY() );/*XMMatrixSet( 1.f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f );*/
-	mtxLoadAnimation = /*mtxLoadOrigin**/mtxLoadAnimation;
 	XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( &mtxTemp ), mtxLoadAnimation );
 	NxMat34 mtxOut = CMathematics::ConvertToNxMat34( mtxResult );
 

@@ -13,7 +13,7 @@ public:
 	explicit CChameleon();
 	virtual ~CChameleon();
 private:
-	HRESULT	Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose );
+	HRESULT	Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType );
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );
@@ -21,7 +21,7 @@ public:
 	virtual void Attack( STATE eState );
 	XMFLOAT4X4*	GetWorld();
 public:
-	static CChameleon* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose );
+	static CChameleon* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType );
 };
 
 #endif // Chameleon_h__

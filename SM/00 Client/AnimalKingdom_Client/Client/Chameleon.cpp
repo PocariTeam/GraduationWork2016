@@ -17,7 +17,7 @@ CChameleon::~CChameleon()
 {
 }
 
-HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )
+HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
 {
 	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose );
 
@@ -26,6 +26,7 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 	m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Chameleon" );
 	m_pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM );
 	m_dwActorCnt = 7;
+	m_eCharactor = eType;
 
 	return S_OK;
 }
@@ -100,11 +101,11 @@ XMFLOAT4X4* CChameleon::GetWorld()
 	return &m_mtxWorld;
 }
 
-CChameleon* CChameleon::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )
+CChameleon* CChameleon::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
 {
 	CChameleon* pChameleon = new CChameleon;
 
-	if ( FAILED( pChameleon->Initialize( pDevice, pCharacterController, pActorOriginPose ) ) )
+	if ( FAILED( pChameleon->Initialize( pDevice, pCharacterController, pActorOriginPose, eType ) ) )
 	{
 		pChameleon->Release();
 		pChameleon = nullptr;

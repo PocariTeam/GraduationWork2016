@@ -46,11 +46,22 @@ int CCrown::Update( const float& fTimeDelta )
 	{
 		NxMat34 mtxAnimation = m_pOwner->GetAnimator()->GetCurrentAnimationMatrix( m_pOwner, "Head" );
 		NxMat33 mtxRotation{};
-		mtxRotation.rotX( XM_PI );
-		NxMat34 mtxLocal{ mtxRotation, NxVec3( 0.f, -0.7f, -0.05f ) };
-		// mtxLocal.t = NxVec3( 0.f, 0.f, 8.f );
-		//mtxLocal.t = ;
+		NxVec3	vOffset{};
 		
+		switch( m_pOwner->GetCharacterType() )
+		{
+		case CHARACTER_CHM:
+			mtxRotation.rotX( 0 );
+			vOffset = NxVec3( 0.f, 9.75f, 0.f );
+			break;
+		case CHARACTER_MON:
+			mtxRotation.rotX( XM_PI );
+			vOffset = NxVec3( 0.f, -0.7f, -0.05f );
+			break;
+		default:
+			break;
+		}
+		NxMat34 mtxLocal{ mtxRotation, vOffset };
 		m_pActor->setGlobalPose( mtxAnimation * mtxLocal );
 	}
 
