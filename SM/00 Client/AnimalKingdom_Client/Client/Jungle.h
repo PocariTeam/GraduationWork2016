@@ -43,6 +43,8 @@ private:
 	PlayerInfo*				m_pPlayerInfo;
 	UINT					m_dwPlayerCnt;
 	CNumber_UI**			m_dpTime_UI;
+	CNumber_UI**			m_dpCrownTime_UI;
+	CNormal_UI*				m_pCrownmark_UI;
 	CSection**				m_dpSection;
 	bool					m_bDebug;
 	/* Check Key */

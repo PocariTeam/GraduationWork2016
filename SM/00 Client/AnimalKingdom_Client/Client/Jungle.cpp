@@ -33,6 +33,8 @@ CJungle::CJungle()
 	, m_dpHP_Bar( nullptr )
 	, m_iFocus( 0 )
 	, m_bFinished( false )
+	, m_dpCrownTime_UI( nullptr )
+	, m_pCrownmark_UI( nullptr )
 {
 }
 
@@ -90,10 +92,28 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( 0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
+	// Crown Time UI
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
+	m_dpCrownTime_UI = new CNumber_UI*[ NUM_END ];
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_TEN ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.875f, -0.07f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_ONE ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.84f, -0.07f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_COLON ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.805f, -0.07f, 0.035f, 0.07f ), 10 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_PROCENT ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.77f, -0.07f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.735f, -0.07f, 0.035f, 0.07f ), 0 ) );
+	m_listShader[ RENDER_UI ].push_back( pShader );
+	m_dpCrownTime_UI[ NUM_TEN ]->Hide();
+	m_dpCrownTime_UI[ NUM_ONE ]->Hide();
+	m_dpCrownTime_UI[ NUM_COLON ]->Hide();
+	m_dpCrownTime_UI[ NUM_PROCENT ]->Hide();
+	m_dpCrownTime_UI[ NUM_CENTI ]->Hide();
+
 	// Time 글자
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 	CGameObject* pTime = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Time" ), XMFLOAT4( -0.3f, 0.9f, 0.15f, 0.1f ) );
 	pShader->Add_RenderObject( pTime );
+	m_pCrownmark_UI = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Crown_UI" ), XMFLOAT4( -0.98f, 0.f, 0.1f, 0.15f ) );
+	m_pCrownmark_UI->Hide();
+	pShader->Add_RenderObject( m_pCrownmark_UI );
 
 	// Status
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
@@ -149,12 +169,35 @@ void CJungle::SetPlayingTime( const float& fTime )
 	if( iInput == 0 ) return; // 게임 종료
 	m_fPlayingTime = fTime;
 
-	if( (GAME_PLAYING_SEC-1.0f) > m_fPlayingTime && m_fPlayingTime > (GAME_PLAYING_SEC-2.0f)) m_pStateNotify->Hide();
+	if( ( GAME_PLAYING_SEC - 1.0f ) > m_fPlayingTime && m_fPlayingTime > ( GAME_PLAYING_SEC - 2.0f ) ) m_pStateNotify->Hide();
 }
 
-void CJungle::SetWinningTime(const float & fTime)
+void CJungle::SetWinningTime( const float & fTime )
 {
 	m_fWinningTime = fTime;
+
+	UINT iInput = UINT( m_fWinningTime * 100 );
+	if( iInput == 2000 )
+	{
+		m_dpCrownTime_UI[ NUM_TEN ]->Hide();
+		m_dpCrownTime_UI[ NUM_ONE ]->Hide();
+		m_dpCrownTime_UI[ NUM_PROCENT ]->Hide();
+		m_dpCrownTime_UI[ NUM_CENTI ]->Hide();
+		m_pCrownmark_UI->Hide();
+
+		return;
+	}
+
+	m_dpCrownTime_UI[ NUM_TEN ]->SetNumber( iInput / 1000 );
+	m_dpCrownTime_UI[ NUM_ONE ]->SetNumber( ( iInput % 1000 ) / 100 );
+	m_dpCrownTime_UI[ NUM_PROCENT ]->SetNumber( ( iInput % 100 ) / 10 );
+	m_dpCrownTime_UI[ NUM_CENTI ]->SetNumber( iInput % 10 );
+
+	m_dpCrownTime_UI[ NUM_TEN ]->Show();
+	m_dpCrownTime_UI[ NUM_ONE ]->Show();
+	m_dpCrownTime_UI[ NUM_PROCENT ]->Show();
+	m_dpCrownTime_UI[ NUM_CENTI ]->Show();
+	m_pCrownmark_UI->Show();
 }
 
 int CJungle::Update( const float& fTimeDelta )
@@ -189,6 +232,9 @@ DWORD CJungle::Release( void )
 
 	delete[] m_dpTime_UI;
 	m_dpTime_UI = nullptr;
+
+	delete[] m_dpCrownTime_UI;
+	m_dpCrownTime_UI = nullptr;
 
 	for( int i = 0; i < 3; ++i )
 		m_dpSection[ i ]->Release();
@@ -235,10 +281,10 @@ void CJungle::Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state 
 {
 	auto find_iter = m_mapPlayer.find( id );
 	if( find_iter == m_mapPlayer.end() ) return;
-	
+
 	NxVec3	vPosition{ vPos.x, vPos.y, vPos.z };
 
-	find_iter->second->Sync( vPosition, hp, fRotateY, state);
+	find_iter->second->Sync( vPosition, hp, fRotateY, state );
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
@@ -276,7 +322,7 @@ void CJungle::Check_Key( const float& fTimeDelta )
 			m_pCamera = CDebugCamera::Create( m_hWnd, m_pDevice );
 		else
 			m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ m_iFocus ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
-		
+
 		m_bOverlapped = false;
 	}
 
@@ -334,9 +380,9 @@ void CJungle::NotifyGameFinished()
 
 void CJungle::NotifyWinner( UINT ID )
 {
-	CPhysics::GetInstance()->SetCrownOwner(m_mapPlayer[ID]);
+	CPhysics::GetInstance()->SetCrownOwner( m_mapPlayer[ ID ] );
 
-	m_iFocus = ID; 
+	m_iFocus = ID;
 	::Safe_Release( m_pCamera );
 	m_bDebug = false;
 	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ m_iFocus ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
@@ -346,16 +392,16 @@ void CJungle::NotifyWinner( UINT ID )
 	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Winner" ) );
 }
 
-void CJungle::NotifyCrownOwner(UINT ID)
+void CJungle::NotifyCrownOwner( UINT ID )
 {
 	CPlayer *owner = nullptr;
-	auto find_iter = m_mapPlayer.find(ID);
-	
-	if (find_iter != m_mapPlayer.end()) {
+	auto find_iter = m_mapPlayer.find( ID );
+
+	if( find_iter != m_mapPlayer.end() ) {
 		owner = find_iter->second;
 	}
 
-	CPhysics::GetInstance()->SetCrownOwner(owner);
+	CPhysics::GetInstance()->SetCrownOwner( owner );
 
 }
 
