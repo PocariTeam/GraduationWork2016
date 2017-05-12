@@ -3,7 +3,7 @@
 #include "NxControllerManager.h"
 
 GameRoom::GameRoom(UINT num)
-	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), updateTimerID_(-1), hasWinner_(false)
+	: lock_(L"GameRoom"), isPlaying_(false), playerCount_(0), roomNum_(num), updateTimerID_(-1), hasWinner_(false), crownOwnerID_(0)
 {
 }
 
@@ -347,17 +347,19 @@ void GameRoom::sendGetCrown(Player* player)
 {
 	SAFE_LOCK(lock_);
 
-	int id = -1;
-	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	int id = 0;
+
+	if (player != nullptr)
 	{
-		if (iter->second == player)
+		for (auto iter = players_.begin(); iter != players_.end(); iter++)
 		{
-			id = iter->first;
-			break;
+			if (iter->second == player)
+			{
+				id = iter->first;
+				break;
+			}
 		}
 	}
-
-	if (id == -1) return;
 
 	crownOwnerID_ = id;
 
@@ -401,6 +403,7 @@ BOOL GameRoom::setupGame()
 
 	leftPlayingTime_ = GAME_PLAYING_SEC;
 	hasWinner_ = false;
+	crownOwnerID_ = 0;
 
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
@@ -537,6 +540,11 @@ void GameRoom::checkWinner(bool bTimeOut)
 	else if (bTimeOut) // е╦юс╬ф©Т
 	{
 		hasWinner_ = true;
+		if (crownOwnerID_ != 0)
+		{
+			winner_id = crownOwnerID_;
+		}
+
 		for (auto iter = players_.begin(); iter != players_.end(); iter++)
 		{
 			if (iter->first == winner_id) continue;
@@ -547,6 +555,38 @@ void GameRoom::checkWinner(bool bTimeOut)
 		SLog(L"* TIME OUT:: the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
 	}
 
+}
+
+void GameRoom::loseCrown(Player * player)
+{
+	SAFE_LOCK(lock_);
+
+	auto find_iter = players_.find(crownOwnerID_);
+	if (find_iter == players_.end()) return;
+	if (find_iter->second != player) return;
+
+	sendGetCrown(nullptr);
+
+	NxMat34 mtxAnimation = player->getAnimator()->GetCurrentAnimationMatrix(player, "Head");
+	NxMat33 mtxRotation{};
+	NxVec3	vOffset{};
+
+	switch (player->GetCharacterType())
+	{
+	case CHARACTER_CHM:
+		mtxRotation.rotX(0);
+		vOffset = NxVec3(0.f, 9.75f +3.0f, 0.f);
+		break;
+	case CHARACTER_MON:
+		mtxRotation.rotX(XM_PI);
+		vOffset = NxVec3(0.f, -0.7f - 1.0f, -0.05f);
+		break;
+	default:
+		break;
+	}
+	NxMat34 mtxLocal{ mtxRotation, vOffset };
+
+	PhysXManager::getInstance().setCrownPosition(roomNum_, mtxAnimation * mtxLocal);
 }
 
 void GameRoom::finishGame()

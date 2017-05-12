@@ -54,7 +54,9 @@ public:
 	void			sendDynamicOneSync(NxActor* actor);
 	BOOL			getPlaying();
 	void			checkWinner(bool bTimeOut);
+	void			loseCrown(Player* player);
 	void			finishGame();
 	void			setPlaying(bool b);
 	BOOL			hasWinner();
+	
 };

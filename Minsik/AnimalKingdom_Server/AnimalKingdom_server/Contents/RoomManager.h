@@ -37,5 +37,6 @@ public:
 	BOOL			getPlaying(UINT roomNum);
 	BOOL			hasWinner(UINT roomNum);
 
+	void			loseCrown(UINT roomNum, Player* player);
 	void			checkWinner(UINT roomNum, bool timeOut);
 };

@@ -31,6 +31,7 @@ public:
 	void	Pause();
 	void	Play();
 	bool	isPause() { return m_bPause; }
+	NxMat34 GetCurrentAnimationMatrix(Player* pOwner, const char* pKey);
 private:
 	CAnimationSet*			m_pCurrentAnimationSet;
 	CAnimationSet*			m_pPreviousAnimationSet;

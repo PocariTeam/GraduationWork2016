@@ -229,6 +229,7 @@ void CNetworkMgr::processPacket()
 	{
 		S_Crown* packet = (S_Crown*)m_saveBuf;
 		printf(" --> [%d] ÇÃ·¹ÀÌ¾î°¡ ¿Õ°ü È¹µæ! \n",packet->id);
+		m_pScene->NotifyCrownOwner(packet->id);
 		break;
 	}
 	case PAK_ID::PAK_ANS_Winner:

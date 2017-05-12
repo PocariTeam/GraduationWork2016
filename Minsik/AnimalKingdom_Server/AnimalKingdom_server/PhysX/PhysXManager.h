@@ -31,6 +31,7 @@ private:
 	UINT						sceneSeedNum;
 	NxScene*					scenes_[ GAMEROOM_CAPACITY ];
 	NxControllerManager*		CCTManager_[ GAMEROOM_CAPACITY ];
+	NxActor*					m_pCrownActor[GAMEROOM_CAPACITY];
 	// 엔티티와 컨트롤러는 도형충돌그룹, 충돌리포트는 액터그룹
 public:
 	CEntityReport				entityReport_;		// P v P ( Sweep Collision )
@@ -38,7 +39,6 @@ public:
 	CCollisionReport			collisionReport_;	// Normal Collision
 private:
 	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_MAX ];
-
 	Lock						lock_;
 	queue<CBanana*>				m_BananaQueue[ GAMEROOM_CAPACITY ];
 public:
@@ -72,6 +72,6 @@ public:
 	NxScene*				getScene( UINT roomNum );
 	NxPhysicsSDK*			getSDK();
 
-	/* 테스트 */
-	NxActor*				m_pCrownActor;
+	void					setCrownPosition(UINT roomNum, NxMat34 posMat);
+	void					checkCrownFalling(UINT roomNum);
 };

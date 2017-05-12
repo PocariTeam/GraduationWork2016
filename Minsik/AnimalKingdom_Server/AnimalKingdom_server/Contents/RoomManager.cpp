@@ -146,6 +146,20 @@ BOOL RoomManager::hasWinner(UINT roomNum)
 	}
 }
 
+void RoomManager::loseCrown(UINT roomNum, Player * player)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		roomArray_[roomNum]->loseCrown(player);
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+	}
+}
+
 void RoomManager::checkWinner(UINT roomNum, bool timeOut)
 {
 	SAFE_LOCK(lock_);

@@ -29,9 +29,10 @@ public:
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
 	void  Change_CameraDest( void );
-	void  NotifyGameStart( void );
-	void  NotifyGameFinished();
-	void  NotifyWinner( UINT ID );
+	virtual void  NotifyGameStart( void );
+	virtual void  NotifyGameFinished();
+	virtual void  NotifyWinner( UINT ID );
+	virtual void NotifyCrownOwner(UINT ID);
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:

@@ -83,4 +83,5 @@ public:
 	int				getDamage() { return damage_; }
 	void			proceedBeaten(int damage);
 	void			minimizeController();
+	CHARACTER		GetCharacterType() { return character_; }
 };

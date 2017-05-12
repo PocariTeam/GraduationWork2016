@@ -51,6 +51,7 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 		default:
 			break;
 		}
+
 		/*if( 0.f == hit.dir.y )
 		{
 		NxF32 coeff = actor.getMass() * hit.length * 10.0f;
@@ -92,20 +93,20 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		}
 	}
 
-	// ¿Õ°ü Å×½ºÆ®
-	int iCrownIndex{ -1 };
-	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Crown" ) )
-		iCrownIndex = 1;
-	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Crown" ) )
-		iCrownIndex = 0;
+	//// ¿Õ°ü Å×½ºÆ®
+	//int iCrownIndex{ -1 };
+	//if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Crown" ) )
+	//	iCrownIndex = 1;
+	//else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Crown" ) )
+	//	iCrownIndex = 0;
 
-	if( -1 != iCrownIndex )
-	{
-		int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
-		if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
-			&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
-		{
-			( ( CCrown* )pair.actors[ iCrownIndex ]->userData )->SetOwner( ( CPlayer* )pair.actors[ iNoCrownIndex ]->userData );
-		}
-	}
+	//if( -1 != iCrownIndex )
+	//{
+	//	int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
+	//	if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
+	//		&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
+	//	{
+	//		( ( CCrown* )pair.actors[ iCrownIndex ]->userData )->SetOwner( ( CPlayer* )pair.actors[ iNoCrownIndex ]->userData );
+	//	}
+	//}
 }

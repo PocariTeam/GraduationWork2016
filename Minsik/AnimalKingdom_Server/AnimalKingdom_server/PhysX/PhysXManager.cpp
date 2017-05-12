@@ -292,7 +292,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 			else if( 0 == strcmp( a->getName(), "Crown" ) )
 			{
 				a->setGroup( COL_DYNAMIC );
-				m_pCrownActor = a;
+				m_pCrownActor[roomNum] = a;
 				SetCollisionGroup( a, COL_DYNAMIC );
 			}
 
@@ -363,6 +363,8 @@ void PhysXManager::ReleaseScene(UINT roomNum)
 void PhysXManager::updateScene(UINT roomNum, float fTimeDelta)
 {
 	SAFE_LOCK(lock_);
+
+	checkCrownFalling(roomNum);
 
 	CCTManager_[roomNum]->updateControllers();
 	scenes_[roomNum]->simulate(fTimeDelta);
@@ -623,5 +625,23 @@ NxScene* PhysXManager::getScene( UINT roomNum )
 NxPhysicsSDK* PhysXManager::getSDK()
 {
 	return physicsSDK_;
+}
+
+void PhysXManager::setCrownPosition(UINT roomNum, NxMat34 posMat)
+{
+	m_pCrownActor[roomNum]->clearBodyFlag(NX_BF_KINEMATIC);
+	m_pCrownActor[roomNum]->setGlobalPose(posMat);
+	m_pCrownActor[roomNum]->setLinearVelocity(NxVec3(0.0f,1.0f,0.0f) * 50.f);
+	m_pCrownActor[roomNum]->setAngularVelocity(NxVec3(90.f, 0.f, 180.f));
+}
+
+void PhysXManager::checkCrownFalling(UINT roomNum)
+{
+	if (m_pCrownActor[roomNum]->getGlobalPosition().y > 20.0f) return;
+	
+	RoomManager::getInstance().sendGetCrown(roomNum, nullptr);
+
+	m_pCrownActor[roomNum]->clearBodyFlag(NX_BF_KINEMATIC);
+	m_pCrownActor[roomNum]->setGlobalPosition(NxVec3(-20.0f,230.0f,230.0f));
 }
 

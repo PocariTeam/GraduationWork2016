@@ -29,7 +29,6 @@
 #include "NormalShader.h"
 #include "Banana.h"
 #include "Normal_UI.h"
-#include "Crown.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -457,10 +456,10 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 				else if( 0 == strcmp( pActor->getName(), "Crown" ) )
 				{
-					CCrown* pCrown = CCrown::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Crown" ), CTextureMgr::GetInstance()->Clone( "Texture_Crown" ), XMFLOAT3( 0.2f, 0.2f, 0.2f ) );
-					pShader_Cave->Add_RenderObject( pCrown );
+					m_pCrown = CCrown::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Crown" ), CTextureMgr::GetInstance()->Clone( "Texture_Crown" ), XMFLOAT3( 0.2f, 0.2f, 0.2f ) );
+					pShader_Cave->Add_RenderObject( m_pCrown );
 					pActor->setGroup( COL_DYNAMIC );
-					pActor->userData = pCrown;
+					pActor->userData = m_pCrown;
 					SetCollisionGroup( pActor, COL_DYNAMIC );
 				}
 
@@ -841,6 +840,11 @@ void CPhysics::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 	pBanana->Throw( vPos, vDir, eColGroup );
 	m_BananaQueue.pop();
 	m_BananaQueue.push( pBanana );
+}
+
+void CPhysics::SetCrownOwner(CPlayer * p)
+{
+	m_pCrown->SetOwner(p);
 }
 
 queue<CBanana*>* CPhysics::GetBananaQueue( void )

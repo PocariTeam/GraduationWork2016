@@ -226,3 +226,39 @@ void CAnimator::Update( Player* pOwner, const float& fTimeDelta )
 		ConnectActorShape( pOwner );
 	}
 }
+
+NxMat34 CAnimator::GetCurrentAnimationMatrix(Player* pOwner, const char* pKey)
+{
+	DWORD i = 0;
+	XMFLOAT4X4*	pWorld{ new XMFLOAT4X4[m_dwJointCnt] };
+	m_pCurrentAnimationSet->GetAnimationMatrix(pWorld);
+	NxController* pCharacterController = pOwner->getCCT();
+
+	DWORD dwActorCnt = pOwner->getActorCount();
+
+	for (; i < m_dwJointCnt; ++i)
+		if (0 == strcmp(m_pArrJointName[i].c_str(), pKey))
+			break;
+
+	XMFLOAT4X4 mtxTemp = pOwner->GetWorld();
+	XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
+	XMFLOAT3 vTest{};
+	vTest.x = pWorld[i]._13;
+	vTest.y = pWorld[i]._23;
+	vTest.z = pWorld[i]._33;
+	pWorld[i]._13 = pWorld[i]._12;
+	pWorld[i]._23 = pWorld[i]._22;
+	pWorld[i]._33 = pWorld[i]._32;
+	pWorld[i]._12 = vTest.x;
+	pWorld[i]._22 = vTest.y;
+	pWorld[i]._32 = vTest.z;
+
+	mtxLoadAnimation = XMLoadFloat4x4(&pWorld[i]);
+	XMMATRIX mtxResult = XMMatrixMultiply(XMLoadFloat4x4(&mtxTemp), mtxLoadAnimation);
+	NxMat34 mtxOut = CMathematics::ConvertToNxMat34(mtxResult);
+
+	delete[] pWorld;
+	pWorld = nullptr;
+
+	return mtxOut;
+}

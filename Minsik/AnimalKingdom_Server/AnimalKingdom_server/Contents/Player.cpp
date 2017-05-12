@@ -210,6 +210,8 @@ void Player::proceedBeaten( int damage )
 	
 	stateMachine_->Change_State( ( STATE_BEATEN1 == stateMachine_->GetPreviousState() )? STATE_BEATEN2 : STATE_BEATEN1);
 
+	RoomManager::getInstance().loseCrown(roomNum_,this);
+
 	if (hp_ <= 0)
 	{
 		hp_ = 0;

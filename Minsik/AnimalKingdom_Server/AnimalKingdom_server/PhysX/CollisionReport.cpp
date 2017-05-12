@@ -117,6 +117,7 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 			UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
 			RoomManager::getInstance().sendGetCrown(roomNum, ((Player*)pair.actors[iNoCrownIndex]->userData));
 			pair.actors[ iCrownIndex ]->raiseBodyFlag( NX_BF_KINEMATIC );
+			pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
 		}
 	}
 

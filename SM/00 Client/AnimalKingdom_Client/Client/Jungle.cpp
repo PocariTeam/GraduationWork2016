@@ -331,6 +331,7 @@ void CJungle::NotifyGameFinished()
 
 void CJungle::NotifyWinner( UINT ID )
 {
+	CPhysics::GetInstance()->SetCrownOwner(m_mapPlayer[ID]);
 	m_iFocus = ID; 
 	::Safe_Release( m_pCamera );
 	m_bStart = false;
@@ -340,6 +341,19 @@ void CJungle::NotifyWinner( UINT ID )
 	( ( CThirdCamera* )m_pCamera )->WinnerEvent();
 	m_pStateNotify->Show();
 	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Winner" ) );
+}
+
+void CJungle::NotifyCrownOwner(UINT ID)
+{
+	CPlayer *owner = nullptr;
+	auto find_iter = m_mapPlayer.find(ID);
+	
+	if (find_iter != m_mapPlayer.end()) {
+		owner = find_iter->second;
+	}
+
+	CPhysics::GetInstance()->SetCrownOwner(owner);
+
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )
