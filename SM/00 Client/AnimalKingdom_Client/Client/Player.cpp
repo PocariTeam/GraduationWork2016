@@ -71,8 +71,6 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	{
 		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
-		// else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
-		//	eState = ( STATE_BEATEN1 == m_pStateMachine->GetPreviousState() ) ? STATE_BEATEN2 : STATE_BEATEN1;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
 			eState = STATE_DEFEND;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
@@ -100,10 +98,6 @@ void CPlayer::Jump( const float& fTimeDelta, float fAnimatePercent )
 
 int CPlayer::Update( const float& fTimeDelta )
 {
-	/*printf( "컨트롤러 : %f, %f, %f\n", m_pCharacterController->getPosition().x, m_pCharacterController->getPosition().y, m_pCharacterController->getPosition().z );
-	printf( "컨트롤러의 액터 : %f, %f, %f\n", m_pCharacterController->getActor()->getGlobalPosition().x, m_pCharacterController->getActor()->getGlobalPosition().y, m_pCharacterController->getActor()->getGlobalPosition().z );
-	printf( "행렬 : %f, %f, %f\n", m_mtxWorld._14, m_mtxWorld._24, m_mtxWorld._34 );*/
-
 	m_pStateMachine->Update( fTimeDelta );
 
 	m_vDir.y += -GRAVITY * GRAVITY * fTimeDelta;
