@@ -9,7 +9,7 @@ class CNumber_UI
 	: public CUserInterface
 {
 public:
-	enum eNumberType { NUMBER_MY_ID, NUMBER_OTHER_ID, NUMBER_TIME, NUMBER_END };
+	enum eNumberType { NUMBER_MY_ID, NUMBER_OTHER_ID, NUMBER_TIME, NUMBER_CROWN, NUMBER_END };
 	using NUMTYPE = eNumberType;
 private:
 	explicit CNumber_UI();

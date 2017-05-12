@@ -27,7 +27,10 @@ HRESULT CNumber_UI::Initialize( NUMTYPE eNumType, const XMFLOAT4& vPosSize, UINT
 		m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_ID0" );
 		break;
 	case NUMBER_TIME:
-		m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Number" );
+		m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Number1" );
+		break;
+	case NUMBER_CROWN:
+		m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Number0" );
 		break;
 	}
 
@@ -65,6 +68,7 @@ void CNumber_UI::Render( ID3D11DeviceContext* pContext )
 		pContext->Draw( 6, 0 );
 		break;
 	case NUMBER_TIME:
+	case NUMBER_CROWN:
 		pContext->DrawInstanced( 6, m_iInstanceCnt, 0, 0 );
 		break;
 	}
@@ -115,6 +119,7 @@ void CNumber_UI::SetNumber( UINT iNum )
 		m_vOption.w = m_vOption.z + 1.f / 10.f;
 		break;
 	case NUMBER_TIME:
+	case NUMBER_CROWN:
 		if( m_iValue == iNum ) return;
 		if( iNum > 12 ) return;
 		m_iValue = iNum;

@@ -1,4 +1,4 @@
-44
+45
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
 Texture_Billboard_Ready 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Ready.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
@@ -40,6 +40,7 @@ Texture_Chameleon 1 ../Executable/Resources/Texture/Chameleon/Chameleon.png
 Texture_Monkey 1 ../Executable/Resources/Texture/Monkey/Monkey.png
 Texture_L_Room 4 ../Executable/Resources/Texture/UI/L_Room/L_Room%d.png
 Texture_Ascii 1 ../Executable/Resources/Texture/UI/Ascii/Ascii.png
-Texture_Number 1 ../Executable/Resources/Texture/UI/Number/Number.png
+Texture_Number0 1 ../Executable/Resources/Texture/UI/Number/Number0.png
+Texture_Number1 1 ../Executable/Resources/Texture/UI/Number/Number1.png
 Texture_Time 1 ../Executable/Resources/Texture/UI/Time/Time.png
 Texture_Winner 1 ../Executable/Resources/Texture/UI/SceneMessage/Winner.png

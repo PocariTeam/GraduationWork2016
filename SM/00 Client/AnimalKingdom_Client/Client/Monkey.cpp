@@ -37,7 +37,7 @@ int CMonkey::Update( const float& fTimeDelta )
 
 	float fFalling = m_pCharacterController->getActor()->getGlobalPosition().y;
 
-	if( STATE_DEAD != m_pStateMachine->GetCurrentState() || fFalling < 0.f )
+	if( fFalling <= 0.f || STATE_DEAD != m_pStateMachine->GetCurrentState() )
 	{
 		XMMATRIX mtxWorld;
 		m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
