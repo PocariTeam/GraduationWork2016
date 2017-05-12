@@ -73,7 +73,7 @@ public:
 	NxScene*				getScene( UINT roomNum );
 	NxPhysicsSDK*			getSDK();
 
-	void					setCrownPosition(UINT roomNum, NxMat34 posMat);
+	void					missCrown(UINT roomNum, NxMat34 posMat);
 	void					checkCrownFalling(UINT roomNum);
 	NxVec3					getRandomCrownPosition();
 };

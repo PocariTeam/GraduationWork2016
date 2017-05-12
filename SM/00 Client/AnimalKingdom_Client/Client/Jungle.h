@@ -20,7 +20,8 @@ private:
 	virtual ~CJungle();
 private:
 	HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
-	void	SetPlayingTime( const float& fTime );
+	virtual void	SetPlayingTime( const float& fTime );
+	virtual void	SetWinningTime(const float& fTime);
 public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );

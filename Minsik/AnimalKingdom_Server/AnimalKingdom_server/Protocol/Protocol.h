@@ -9,7 +9,7 @@
 #define		GAMEROOM_CAPACITY		8
 #define		DYNAMIC_CAPACITY		32
 
-
+#define		CROWN_WIN_SEC			20.0f
 #define		GAME_PLAYING_SEC		120.0f
 
 typedef enum {
@@ -150,6 +150,7 @@ struct S_SyncPlayer
 	HEADER			header;
 	PlayerSyncInfo	playerPositions[PLAYER_CAPACITY];
 	FLOAT			playingTime;
+	FLOAT			winningTime;
 };
 
 struct S_SyncDynamic

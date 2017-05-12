@@ -628,12 +628,14 @@ NxPhysicsSDK* PhysXManager::getSDK()
 	return physicsSDK_;
 }
 
-void PhysXManager::setCrownPosition(UINT roomNum, NxMat34 posMat)
+void PhysXManager::missCrown(UINT roomNum, NxMat34 posMat)
 {
 	m_pCrownActor[roomNum]->clearBodyFlag(NX_BF_KINEMATIC);
 	m_pCrownActor[roomNum]->setGlobalPose(posMat);
-	m_pCrownActor[roomNum]->setLinearVelocity(NxVec3(0.0f,1.0f,0.0f) * 50.f);
 	m_pCrownActor[roomNum]->setAngularVelocity(NxVec3(90.f, 0.f, 180.f));
+	float randomX = (rand() % 200 - 100)*0.01f;
+	float randomZ = (rand() % 200 - 100)*0.01f;
+	m_pCrownActor[roomNum]->setLinearVelocity(NxVec3(randomX, 2.0f, randomZ)*20.0f);
 }
 
 void PhysXManager::checkCrownFalling(UINT roomNum)

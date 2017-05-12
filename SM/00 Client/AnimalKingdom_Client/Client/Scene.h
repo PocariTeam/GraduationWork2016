@@ -28,7 +28,8 @@ public:
 	virtual void NotifyCrownOwner(UINT ID) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
-	virtual void	SetPlayingTime(const float& fTimeDelta) {};
+	virtual void	SetPlayingTime(const float& fTime) {};
+	virtual void	SetWinningTime(const float& fTime) {};
 protected:
 	CScene();
 	virtual ~CScene() = default;
@@ -37,6 +38,7 @@ protected:
 	HWND				 m_hWnd;
 	CCamera*			 m_pCamera;
 	float				m_fPlayingTime;
+	float				m_fWinningTime;
 	using SHADERLIST = list<CShader*>;
 	SHADERLIST		m_listShader[ RENDER_END ];
 };

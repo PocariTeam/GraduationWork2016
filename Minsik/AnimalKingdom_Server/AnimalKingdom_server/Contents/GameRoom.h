@@ -18,6 +18,7 @@ private:
 	UINT				updateTimerID_;
 	UINT				syncTimerID_;
 	float				leftPlayingTime_;
+	float				leftWinningTime_;
 	UINT				crownOwnerID_;
 	BOOL				hasWinner_;
 

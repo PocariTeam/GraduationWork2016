@@ -66,5 +66,5 @@ public:
     }
 };
 
-static MemoryLeckDetct leck;
+//static MemoryLeckDetct leck;
 #endif //USE_VISUAL_LEAK_DETECTOR

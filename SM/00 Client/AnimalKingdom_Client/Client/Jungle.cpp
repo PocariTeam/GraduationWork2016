@@ -152,6 +152,11 @@ void CJungle::SetPlayingTime( const float& fTime )
 	if( (GAME_PLAYING_SEC-1.0f) > m_fPlayingTime && m_fPlayingTime > (GAME_PLAYING_SEC-2.0f)) m_pStateNotify->Hide();
 }
 
+void CJungle::SetWinningTime(const float & fTime)
+{
+	m_fWinningTime = fTime;
+}
+
 int CJungle::Update( const float& fTimeDelta )
 {
 	CPhysics::GetInstance()->Update( fTimeDelta );
