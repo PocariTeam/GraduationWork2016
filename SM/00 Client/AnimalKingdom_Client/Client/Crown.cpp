@@ -52,11 +52,11 @@ int CCrown::Update( const float& fTimeDelta )
 		{
 		case CHARACTER_CHM:
 			mtxRotation.rotX( 0 );
-			vOffset = NxVec3( 0.f, 9.75f, 0.f );
+			vOffset = NxVec3( 0.f, 8.75f, 0.3f );
 			break;
 		case CHARACTER_MON:
 			mtxRotation.rotX( XM_PI );
-			vOffset = NxVec3( 0.f, -0.7f, -0.05f );
+			vOffset = NxVec3( 0.f, -0.6f, -0.05f );
 			break;
 		default:
 			break;

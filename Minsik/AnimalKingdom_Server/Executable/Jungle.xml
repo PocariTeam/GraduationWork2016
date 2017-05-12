@@ -728,43 +728,42 @@
         <cookedData></cookedData>
       </NxConvexMeshDesc>
       <NxConvexMeshDesc id="ConvexMesh_25">
-        <points>0.842834473 1.741974831 4.195072174  0.184004307 1.441743851 4.195072174  0.002597809 1.684756279 4.195072174  2.81738615 0.093702517 1.21096015  
-          2.029153347 -0.030041121 -1.969963193  -1.3839463 -0.121820934 -2.466578722  -2.155480385 -0.121552959 -1.950482488  -2.548479795 -0.109260179 -1.324117661  
-          -2.651260853 -0.030030869 1.112569094  0.000470877 0.093556546 3.061638117  7.215067863 5.158285141 -0.0003407  1.233122826 4.995338917 -2.9156003  
-          0.917845726 2.537791252 -4.149027348  1.151162386 2.361293793 -4.115945339  -5.36671257 4.509525299 0.409153938  -1.197440147 5.150156975 2.816670895  
-          -1.608752251 2.57679081 3.807190895  -5.882910728 3.979763031 0.331447601  -5.977747917 4.246169567 -0.380481601  -1.195174456 5.151314259 -2.816786051  
-          -0.517876625 5.450652122 -2.671908379  -0.000139236 6.574457169 0.000589609  -5.442211151 4.601309776 0.073131561  5.050796032 1.836642027 0.000474215  
-          2.864002466 1.189127564 2.87400198  1.71703434 2.527910233 3.913811207  1.063523293 5.109539032 2.896978617  1.190042257 5.149858475 2.817256451  
-          -4.263520241 2.913987637 -2.049592495  -6.139713287 4.062534332 -0.37146759  -6.301368713 3.683019638 0.013906598  -6.118736267 2.873419285 0.201710224  
-          -5.726863384 2.340806007 -0.001488209  -2.849386215 1.195693016 -2.885378361  2.492402077 0.946850896 -3.126136303  2.179666996 0.104344845 -2.175824165  
-          2.82597065 1.164032936 -2.902217865  -2.826485634 0.105041027 1.208873034  -2.866206408 1.195732474 2.878637314  -1.098768234 2.621133566 -4.09019804  
-          -1.217538834 2.528476715 -4.063407898  1.450676084 1.259166956 -3.864165783  -0.027503014 0.715724945 -3.676522732  1.320162892 1.903680086 4.145046711  
-          0.0004704 1.188235283 4.042813301  -0.804839611 0.597005904 -3.617785454  -1.586873174 1.195694208 -3.730368376  
+        <points>-2.679851055 -0.065986991 4.847062588  0.017301507 -0.052859738 5.572593689  2.782330275 -0.045092955 4.832612514  4.821079254 -0.045092963 2.79386282  
+          5.547667027 -0.052730158 0.076016501  2.640621901 -0.082811072 -4.859977722  -0.010589327 -0.095696129 -5.568310738  -2.773620844 -0.10345038 -4.827054977  
+          -4.807693481 -0.10345038 -2.792981148  -5.514364243 -0.096068472 -0.1616216  5.273123741 7.027077675 2.656336308  0.64470911 7.41729784 5.409726143  
+          -0.560395241 8.23754406 4.641461849  0.234910011 10.086535454 0.208633423  5.456168652 7.522109032 1.492513657  5.889416695 7.033648968 0.349925995  
+          2.39980793 7.913199902 -4.30723381  2.792739391 5.951945305 -5.782357216  6.105329514 6.470070839 0.091380596  -5.190021515 6.653007507 -3.042504072  
+          -0.171548843 6.686215878 -5.977922916  0.077266157 7.916212082 -4.922493935  -4.301166534 7.869616508 -2.378684044  -4.779193878 7.677948475 -2.283373833  
+          -5.237911224 7.040390491 -2.635436058  -2.673825264 7.073688507 5.275453568  -4.914933205 7.86598587 -0.075893641  -5.012995243 2.186991692 3.056208611  
+          -2.807853222 4.718990326 5.844736099  -2.793308258 -0.012066841 4.828291416  -4.88296175 0.475160003 2.814983368  2.794230461 -0.01111412 -4.830260277  
+          4.879624367 0.475120306 -2.821061611  4.88560915 0.513080597 -2.821120739  5.837862968 4.700737 2.80765748  -2.850422859 0.456801414 -4.871851921  
+          -5.831043243 4.699836731 -2.812152624  -5.843911648 4.678297043 -2.794609547  -6.383562088 5.944782734 -0.466639519  -0.454761505 5.946955204 6.398022175  
+          0.463896751 5.943531513 -6.405024529  5.578253746 -0.012025833 -0.005185127  6.459206581 4.705013275 0.48462534  -0.939218521 5.115740776 6.431001663  
+          -5.578933239 -0.010132313 0.009820938  -6.424987793 5.110408783 -0.975614548  
         </points>
-        <triangles>0 2 1  9 8 7  9 7 6  9 6 5  
-          9 5 4  9 4 3  13 12 11  13 11 10  
-          17 16 15  17 15 14  22 21 20  22 20 19  
-          22 19 18  23 24 3  10 27 26  10 26 25  
-          33 32 31  33 31 30  33 30 29  33 29 28  
-          36 23 35  36 35 34  38 31 32  38 32 37  
-          40 28 29  40 29 18  40 18 19  40 19 39  
-          21 15 26  21 26 27  20 21 10  20 10 11  
-          42 41 34  42 34 35  44 9 24  44 24 43  
-          44 43 0  44 0 1  44 38 9  21 22 14  
-          21 14 15  10 21 27  43 25 26  43 26 15  
-          43 15 16  43 16 2  43 2 0  33 46 45  
-          33 45 5  33 5 6  37 32 7  37 7 8  
-          10 25 43  10 43 24  13 10 36  13 36 34  
-          13 34 41  39 19 20  39 20 11  39 11 12  
-          41 42 45  41 45 46  41 46 40  41 40 39  
-          41 39 12  41 12 13  30 31 38  30 38 16  
-          30 16 17  35 23 3  35 3 4  40 46 33  
-          40 33 28  10 23 36  16 38 44  16 44 1  
-          16 1 2  3 24 9  9 37 8  9 38 37  
-          22 18 29  22 29 30  22 30 17  22 17 14  
-          45 42 35  45 35 4  45 4 5  23 10 24  
-          32 33 6  32 6 7  
-        </triangles>
+        <triangles>9 8 7  9 7 6  9 6 5  9 5 4  
+          9 4 3  9 3 2  9 2 1  9 1 0  
+          14 13 12  14 12 11  14 11 10  18 17 16  
+          18 16 15  24 23 22  24 22 21  24 21 20  
+          24 20 19  26 25 12  26 12 13  30 29 28  
+          30 28 27  33 32 31  33 31 17  3 34 2  
+          37 36 35  37 35 7  37 7 8  16 21 13  
+          38 27 28  38 28 25  34 10 11  34 11 39  
+          19 20 40  19 40 35  19 35 36  42 41 32  
+          42 32 33  39 43 1  39 1 2  45 44 30  
+          45 30 27  45 27 38  15 16 13  15 13 14  
+          40 17 31  40 31 5  40 5 6  38 26 23  
+          38 23 24  22 13 21  34 42 18  34 18 15  
+          34 15 14  34 14 10  39 11 12  39 12 25  
+          42 33 17  42 17 18  44 45 37  44 37 8  
+          44 8 9  40 20 21  40 21 16  40 16 17  
+          43 28 29  43 29 0  43 0 1  41 42 34  
+          41 34 3  41 3 4  35 40 6  35 6 7  
+          36 37 45  36 45 38  36 38 24  36 24 19  
+          29 30 44  29 44 9  29 9 0  31 32 41  
+          31 41 4  31 4 5  28 39 25  28 43 39  
+          34 39 2  26 38 25  26 13 22  26 22 23  
+          </triangles>
         <cookedDataSize>0</cookedDataSize>
         <cookedData></cookedData>
       </NxConvexMeshDesc>
@@ -1767,9 +1766,8 @@
           <restitution>0.100000001</restitution>
         </NxMaterialDesc>
         <NxMaterialDesc id="Material_31" materialIndex="31">
-          <dynamicFriction>0.200000003</dynamicFriction>
+          <dynamicFriction>0.400000006</dynamicFriction>
           <staticFriction>0.5</staticFriction>
-          <restitution>0.400000006</restitution>
         </NxMaterialDesc>
         <NxActorDesc id="Actor_0" name="Bridge">
           <globalPose>1 0 0  0 1 0  0 0 1  -85.066970825 98.568939209 71.235572815</globalPose>
@@ -1806,7 +1804,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>12.576882362</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -1845,7 +1843,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>12.576882362</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -1885,7 +1883,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>0.045450196</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -1925,7 +1923,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>0.045450196</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -1965,7 +1963,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>0.206978068</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2005,7 +2003,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>0.206978068</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2045,7 +2043,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>0.386314929</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2084,7 +2082,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>2.823008537</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2123,7 +2121,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>2.823008537</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2162,7 +2160,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>2.823008537</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2201,7 +2199,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>2.823008537</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2240,7 +2238,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>2.823008537</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2279,7 +2277,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>3.31680131</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2318,7 +2316,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2357,7 +2355,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2396,7 +2394,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2435,7 +2433,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2474,7 +2472,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2513,7 +2511,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2552,7 +2550,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>3.31680131</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2591,7 +2589,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>3.31680131</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2630,7 +2628,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>3.31680131</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2669,7 +2667,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>2.823008537</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2708,7 +2706,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>3.31680131</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2747,7 +2745,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>4.539029598</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>
@@ -2803,7 +2801,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.488067985</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
@@ -2859,7 +2857,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.488067985</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
@@ -2915,7 +2913,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.488067985</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
@@ -2971,7 +2969,7 @@
               <shapeDensity>0.0005</shapeDensity>
               <shapeMass>1.488067985</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxCapsuleShapeDesc>
         </NxActorDesc>
@@ -3007,16 +3005,16 @@
               <shapeDensity>0.008</shapeDensity>
               <shapeMass>11876.298828125</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxTriangleMeshShapeDesc>
         </NxActorDesc>
         <NxActorDesc id="Actor_30" hasBody="true" name="Crown">
-          <globalPose>1 0 0  0 1 0  0 0 1  -21.462493896 235.822906494 226.604553223</globalPose>
+          <globalPose>0.965925813 0.258819044 0  -0.258819044 0.965925813 0  0 0 1  -19.016662598 306.740539551 242.427459717</globalPose>
           <NxBodyDesc id="body">
-            <massLocalPose>0.995289564 -0.093697466 -0.024889136  0.094425403 0.995083213 0.029886119  0.021966508 -0.032095511 0.999243379  0.165075764 2.882988214 -0.028115528</massLocalPose>
-            <massSpaceInertia>6.367502689 11.250240326 10.236757278</massSpaceInertia>
-            <mass>1.240950346</mass>
+            <massLocalPose>0.899668157 -0.006553533 -0.436525166  0.003993168 0.999969006 -0.006782666  0.436556101 0.004359031 0.899666488  -0.020842988 4.077274799 0.009440827</massLocalPose>
+            <massSpaceInertia>65.774559021 76.427566528 66.062980652</massSpaceInertia>
+            <mass>4.878650188</mass>
             <maxAngularVelocity>7</maxAngularVelocity>
             <NxBodyFlag id="flags">
               <NX_BF_DISABLE_GRAVITY>false</NX_BF_DISABLE_GRAVITY>
@@ -3063,10 +3061,10 @@
                 <NX_SF_SOFTBODY_TWOWAY>true</NX_SF_SOFTBODY_TWOWAY>
               </NxShapeFlag>
               <materialIndex>31</materialIndex>
-              <shapeDensity>0.004856931</shapeDensity>
-              <shapeMass>1.240950346</shapeMass>
+              <shapeDensity>0.006208765</shapeDensity>
+              <shapeMass>4.878650188</shapeMass>
               <skinWidth>0.100000001</skinWidth>
-              <NxGroupsMask id="groupsMask" bits0="2" bits2="2"/>
+              <NxGroupsMask id="groupsMask" bits0="1" bits2="1"/>
             </NxShapeDesc>
           </NxConvexShapeDesc>
         </NxActorDesc>

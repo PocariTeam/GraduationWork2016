@@ -456,7 +456,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 				else if( 0 == strcmp( pActor->getName(), "Crown" ) )
 				{
-					m_pCrown = CCrown::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Crown" ), CTextureMgr::GetInstance()->Clone( "Texture_Crown" ), XMFLOAT3( 0.2f, 0.2f, 0.2f ) );
+					m_pCrown = CCrown::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Crown" ), CTextureMgr::GetInstance()->Clone( "Texture_Crown" ), XMFLOAT3( 0.17f, 0.17f, 0.17f ) );
 					pShader_Cave->Add_RenderObject( m_pCrown );
 					pActor->setGroup( COL_DYNAMIC );
 					pActor->userData = m_pCrown;
