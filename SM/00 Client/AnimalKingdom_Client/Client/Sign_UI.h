@@ -23,6 +23,7 @@ public:
 	void Hide() { m_bHide = true; }
 	void Show() { m_bHide = false; }
 	void SetNumber( UINT iNum );
+	void SetPosition( XMFLOAT2& vPos ) {}
 private:
 	bool		m_bHide;
 	XMFLOAT4X4*	m_pDestWorld;

@@ -35,6 +35,7 @@ CJungle::CJungle()
 	, m_bFinished( false )
 	, m_dpCrownTime_UI( nullptr )
 	, m_pCrownmark_UI( nullptr )
+	, m_iCrownIndex( 4 )
 {
 }
 
@@ -95,11 +96,11 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// Crown Time UI
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
 	m_dpCrownTime_UI = new CNumber_UI*[ NUM_END ];
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_TEN ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.875f, -0.07f, 0.035f, 0.07f ), 0 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_ONE ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.84f, -0.07f, 0.035f, 0.07f ), 0 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_COLON ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.805f, -0.07f, 0.035f, 0.07f ), 10 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_PROCENT ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.77f, -0.07f, 0.035f, 0.07f ), 0 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.735f, -0.07f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_TEN ]		= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.775f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_ONE ]		= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.74f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_COLON ]	= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.705f, -0.62f, 0.035f, 0.07f ), 10 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_PROCENT ]	= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.67f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_CENTI ]	= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.635f, -0.62f, 0.035f, 0.07f ), 0 ) );
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	m_dpCrownTime_UI[ NUM_TEN ]->Hide();
 	m_dpCrownTime_UI[ NUM_ONE ]->Hide();
@@ -111,7 +112,8 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
 	CGameObject* pTime = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Time" ), XMFLOAT4( -0.3f, 0.9f, 0.15f, 0.1f ) );
 	pShader->Add_RenderObject( pTime );
-	m_pCrownmark_UI = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Crown_UI" ), XMFLOAT4( -0.98f, 0.f, 0.1f, 0.15f ) );
+	// Crown ±×¸²
+	m_pCrownmark_UI = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Crown_UI" ), XMFLOAT4( -0.88f, -0.55f, 0.1f, 0.15f ) );
 	m_pCrownmark_UI->Hide();
 	pShader->Add_RenderObject( m_pCrownmark_UI );
 
@@ -177,27 +179,45 @@ void CJungle::SetWinningTime( const float & fTime )
 	m_fWinningTime = fTime;
 
 	UINT iInput = UINT( m_fWinningTime * 100 );
-	if( iInput == 2000 )
+	if( iInput == 2000 )	return;
+
+	m_dpCrownTime_UI[ NUM_TEN ]->SetNumber( iInput / 1000 );
+	m_dpCrownTime_UI[ NUM_ONE ]->SetNumber( ( iInput % 1000 ) / 100 );
+	m_dpCrownTime_UI[ NUM_PROCENT ]->SetNumber( ( iInput % 100 ) / 10 );
+	m_dpCrownTime_UI[ NUM_CENTI ]->SetNumber( iInput % 10 );
+}
+
+void CJungle::Change_CrownUI_Position( void )
+{
+	if( nullptr == m_dpCrownTime_UI )	return;
+	if( m_iCrownIndex == m_mapPlayer.size() )
 	{
 		m_dpCrownTime_UI[ NUM_TEN ]->Hide();
 		m_dpCrownTime_UI[ NUM_ONE ]->Hide();
+		m_dpCrownTime_UI[ NUM_COLON ]->Hide();
 		m_dpCrownTime_UI[ NUM_PROCENT ]->Hide();
 		m_dpCrownTime_UI[ NUM_CENTI ]->Hide();
 		m_pCrownmark_UI->Hide();
 
 		return;
 	}
+	else
+	{
+		m_dpCrownTime_UI[ NUM_TEN ]->SetPosition( XMFLOAT2( -0.775f + ( float )m_iCrownIndex * 0.5f, -0.62f ) );
+		m_dpCrownTime_UI[ NUM_ONE ]->SetPosition( XMFLOAT2( -0.74f + ( float )m_iCrownIndex * 0.5f, -0.62f ) );
+		m_dpCrownTime_UI[ NUM_COLON ]->SetPosition( XMFLOAT2( -0.705f + ( float )m_iCrownIndex * 0.5f, -0.62f ) );
+		m_dpCrownTime_UI[ NUM_PROCENT ]->SetPosition( XMFLOAT2( -0.67f + ( float )m_iCrownIndex * 0.5f, -0.62f ) );
+		m_dpCrownTime_UI[ NUM_CENTI ]->SetPosition( XMFLOAT2( -0.635f + ( float )m_iCrownIndex * 0.5f, -0.62f ) );
+		m_pCrownmark_UI->SetPosition( XMFLOAT2( -0.88f + ( float )m_iCrownIndex * 0.5f, -0.55f ) );
 
-	m_dpCrownTime_UI[ NUM_TEN ]->SetNumber( iInput / 1000 );
-	m_dpCrownTime_UI[ NUM_ONE ]->SetNumber( ( iInput % 1000 ) / 100 );
-	m_dpCrownTime_UI[ NUM_PROCENT ]->SetNumber( ( iInput % 100 ) / 10 );
-	m_dpCrownTime_UI[ NUM_CENTI ]->SetNumber( iInput % 10 );
-
-	m_dpCrownTime_UI[ NUM_TEN ]->Show();
-	m_dpCrownTime_UI[ NUM_ONE ]->Show();
-	m_dpCrownTime_UI[ NUM_PROCENT ]->Show();
-	m_dpCrownTime_UI[ NUM_CENTI ]->Show();
-	m_pCrownmark_UI->Show();
+		m_dpCrownTime_UI[ NUM_TEN ]->Show();
+		m_dpCrownTime_UI[ NUM_ONE ]->Show();
+		m_dpCrownTime_UI[ NUM_COLON ]->Show();
+		m_dpCrownTime_UI[ NUM_PROCENT ]->Show();
+		m_dpCrownTime_UI[ NUM_CENTI ]->Show();
+		m_pCrownmark_UI->Show();
+	}
+	
 }
 
 int CJungle::Update( const float& fTimeDelta )
@@ -345,15 +365,25 @@ void CJungle::Check_Key( const float& fTimeDelta )
 void CJungle::Change_CameraDest( void )
 {
 	auto player_iter = m_mapPlayer.find( m_iFocus );
-	if (player_iter == m_mapPlayer.end()) return;
+	if( player_iter == m_mapPlayer.end() ) return;
 
 	auto advance_iter = player_iter;
 	advance_iter++;
 
 	int iFocus{ m_iFocus };
 
-	if( advance_iter != m_mapPlayer.end() && STATE_DEAD != advance_iter->second->GetCurrentState() )
-		iFocus = advance_iter->first;
+	if( advance_iter != m_mapPlayer.end() )
+	{
+		if( STATE_DEAD != advance_iter->second->GetCurrentState() )
+			iFocus = advance_iter->first;
+		else
+			while( ++advance_iter != m_mapPlayer.end() )
+				if( STATE_DEAD != advance_iter->second->GetCurrentState() )
+				{
+					iFocus = advance_iter->first;
+					break;
+				}
+	}
 	else
 	{
 		advance_iter = m_mapPlayer.begin();
@@ -402,13 +432,19 @@ void CJungle::NotifyCrownOwner( UINT ID )
 {
 	CPlayer *owner = nullptr;
 	auto find_iter = m_mapPlayer.find( ID );
+	int iCrownIndex = int( distance( m_mapPlayer.begin(), find_iter ) );
+
+	if( m_iCrownIndex != iCrownIndex )
+	{
+		m_iCrownIndex = iCrownIndex;
+		Change_CrownUI_Position();
+	}
 
 	if( find_iter != m_mapPlayer.end() ) {
 		owner = find_iter->second;
 	}
 
 	CPhysics::GetInstance()->SetCrownOwner( owner );
-
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )

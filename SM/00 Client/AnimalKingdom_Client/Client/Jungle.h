@@ -22,6 +22,7 @@ private:
 	HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
 	virtual void	SetPlayingTime( const float& fTime );
 	virtual void	SetWinningTime(const float& fTime);
+	void			Change_CrownUI_Position( void );
 public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
@@ -40,6 +41,7 @@ private:
 	map<int, CPlayer*>		m_mapPlayer;
 	int						m_iPlayerID;
 	int						m_iFocus;		// 자신이 죽고, 다른 플레이어 볼 때 사용( 다른 플레이어 ID )
+	int						m_iCrownIndex;
 	PlayerInfo*				m_pPlayerInfo;
 	UINT					m_dwPlayerCnt;
 	CNumber_UI**			m_dpTime_UI;
@@ -54,7 +56,7 @@ private:
 	bool					m_bFinished;
 	CNormal_UI*				m_pStateNotify;
 	/* HP Bar */
-	CBar_UI**			m_dpHP_Bar;
+	CBar_UI**				m_dpHP_Bar;
 };
 
 #endif // Jungle_h__
