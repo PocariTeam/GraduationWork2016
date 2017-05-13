@@ -73,7 +73,7 @@ void CBanana::Frozen( void )
 
 DWORD CBanana::Release( void )
 {
-	PhysXManager::getInstance().getSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
+	//PhysXManager::getInstance().getSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
 	delete this;
 
 	return 0;

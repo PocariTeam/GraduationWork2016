@@ -230,7 +230,7 @@ void CNetworkMgr::processPacket()
 		S_Crown* packet = (S_Crown*)m_saveBuf;
 		if (packet->id == 0)
 		{
-			printf(" --> 왕관이 떨어졌다! \n", packet->id);
+			printf(" --> 왕관이 떨어졌다! \n");
 		}
 		else
 		{

@@ -806,9 +806,10 @@ void CPhysics::CreateBanana( void )
 	if( nullptr == m_pShaderlist ) return;
 
 	ACTOR_INFO	tActor_Info;
-	tActor_Info.m_dwType = 2;
+	tActor_Info.m_dwType = NX_SHAPE_CAPSULE;
+	tActor_Info.m_fRadius = 2.5f;
 	tActor_Info.m_fWidth = 2.5f;
-	tActor_Info.m_fHeight = 8.f;
+	tActor_Info.m_fHeight = 7.0f;
 	tActor_Info.m_fLength = 2.5f;
 	tActor_Info.m_vGlobalPosition.x = 0.f;
 	tActor_Info.m_vGlobalPosition.y = 0.f;
@@ -817,16 +818,6 @@ void CPhysics::CreateBanana( void )
 	NxActor* pActor = CreateActor( "Banana", tActor_Info, COL_DYNAMIC );
 	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
 	
-	// CCD 충돌체크
-	/*NxShape *shape = pActor->getShapes()[0];
-	NxSimpleTriangleMesh triMesh;
-	CreateMeshFromShape(triMesh, shape);
-	NxCCDSkeleton *newSkeleton = m_pPhysicsSDK->createCCDSkeleton(triMesh);
-	delete[] triMesh.points;
-	delete[] triMesh.triangles;
-
-	shape->setCCDSkeleton(newSkeleton);*/
-
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;
 	m_pShaderlist[ RENDER_ALPHA ].front()->Add_RenderObject( pBanana );

@@ -169,9 +169,10 @@ void PhysXManager::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *s
 void PhysXManager::CreateBanana( UINT iSceneNum )
 {
 	ACTOR_INFO	tActor_Info;
-	tActor_Info.m_dwType = 2;
+	tActor_Info.m_dwType = NX_SHAPE_CAPSULE;
+	tActor_Info.m_fRadius = 2.5f;
 	tActor_Info.m_fWidth = 2.5f;
-	tActor_Info.m_fHeight = 8.f;
+	tActor_Info.m_fHeight = 7.0f;
 	tActor_Info.m_fLength = 2.5f;
 	tActor_Info.m_vGlobalPosition.x = 0.f;
 	tActor_Info.m_vGlobalPosition.y = 0.f;
@@ -181,13 +182,13 @@ void PhysXManager::CreateBanana( UINT iSceneNum )
 	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
 
 	// CCD 충돌체크
-	NxShape *shape = pActor->getShapes()[ 0 ];
-	NxSimpleTriangleMesh triMesh;
-	CreateMeshFromShape( triMesh, shape );
-	NxCCDSkeleton *newSkeleton = physicsSDK_->createCCDSkeleton( triMesh );
-	shape->setCCDSkeleton( newSkeleton );
-	delete[] triMesh.points;
-	delete[] triMesh.triangles;
+	//NxShape *shape = pActor->getShapes()[ 0 ];
+	//NxSimpleTriangleMesh triMesh;
+	//CreateMeshFromShape( triMesh, shape );
+	//NxCCDSkeleton *newSkeleton = physicsSDK_->createCCDSkeleton( triMesh );
+	//shape->setCCDSkeleton( newSkeleton );
+	//delete[] triMesh.points;
+	//delete[] triMesh.triangles;
 
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC, iSceneNum );
 	pActor->userData = pBanana;
@@ -217,8 +218,8 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 	CCTManager_[roomNum] = NxCreateControllerManager(userAllocator_);
 
 	physicsSDK_->setParameter(NX_SKIN_WIDTH, 2.5f); // 피부두께 (민감도)
-	physicsSDK_->setParameter(NX_CONTINUOUS_CD, true); // 고속충돌
-	physicsSDK_->setParameter(NX_CCD_EPSILON,0.1f); // 고속충돌 정밀도
+	//physicsSDK_->setParameter(NX_CONTINUOUS_CD, true); // 고속충돌
+	//physicsSDK_->setParameter(NX_CCD_EPSILON,0.1f); // 고속충돌 정밀도
 	physicsSDK_->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15); // 객체가 잠드는 최소한 선속도
 	physicsSDK_->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14); // 객체가 잠드는 최소한 각속도
 	physicsSDK_->setParameter(NX_BOUNCE_THRESHOLD, -5); //  통통 튀는 최소 속도

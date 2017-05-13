@@ -101,6 +101,10 @@ void GameRoom::startGame()
 	timeGetDevCaps(&caps, sizeof(caps));
 	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC * 1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
 	
+	// 스타트 이후부터 승자체크 ( 그 사이 나간 사람이 있는지 한번 체크 )
+	hasWinner_ = false;
+	checkWinner(false);
+
 	sendStartGame();
 }
 
@@ -135,8 +139,6 @@ BOOL GameRoom::exit(Session* session)
 	}
 	else if (playerCount_ == 0 && isPlaying_)
 	{
-		timeKillEvent(updateTimerID_);
-		timeKillEvent(syncTimerID_);
 		IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + 1000, EVENT_FINISH);
 	}
 
@@ -403,7 +405,7 @@ BOOL GameRoom::setupGame()
 
 	leftPlayingTime_ = GAME_PLAYING_SEC;
 	leftWinningTime_ = CROWN_WIN_SEC;
-	hasWinner_ = false;
+	hasWinner_ = true; // 후에 start 패킷 보낸 이후에 false로 전환
 	crownOwnerID_ = 0;
 
 	TIMECAPS caps;

@@ -251,7 +251,7 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 		case EVENT_START:
 		{
 			int roomNum = ((event_obj*)session)->sceneNum;
-			if (RoomManager::getInstance().getPlaying(roomNum))
+			if (RoomManager::getInstance().getPlayerCountRoom(roomNum) > 0)
 			{
 				((GameRoom*)((event_obj*)session)->obj_ptr)->startGame();
 			}
@@ -275,9 +275,9 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			int roomNum = ((event_obj*)session)->sceneNum;
 			if (RoomManager::getInstance().getPlaying(roomNum))
 			{
-				((GameRoom*)((event_obj*)session)->obj_ptr)->setPlaying(false);
 				((GameRoom*)((event_obj*)session)->obj_ptr)->sendFinishGame();
 				PhysXManager::getInstance().ReleaseScene(roomNum);
+				((GameRoom*)((event_obj*)session)->obj_ptr)->setPlaying(false);
 			}
 			delete session;
 			delete ioData;
