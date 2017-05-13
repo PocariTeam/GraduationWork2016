@@ -44,8 +44,9 @@ void Player::initialize()
 	ResetDir();
 	setRotateY(-XM_PI);
 	stateMachine_->Set_State(STATE_IDLE);
-	hp_ = 100;
 	beaten_ = true;
+	hp_ = 100;
+	setCharacter(character_);
 }
 
 void Player::update( float fTimeDelta )
@@ -89,6 +90,11 @@ void Player::setCharacter( CHARACTER c)
 
 	switch (character_)
 	{
+	case CHARACTER::CHRACTER_NONE:
+		m_fJumpHeight = 0;
+		damage_ = 0;
+		speed_ = 0;
+		break;
 	case CHARACTER::CHARACTER_CHM:
 		m_fJumpHeight = JUMP_HEIGHT;
 		damage_ = CHAMEL_DAMAGE;

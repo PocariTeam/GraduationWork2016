@@ -446,15 +446,15 @@ void GameRoom::update( float fTimeDelta )
 		else
 		{
 			leftWinningTime_ = CROWN_WIN_SEC;
-		}
 
-		// 게임 플레이 시간 체크
-		leftPlayingTime_ -= fTimeDelta;
+			// 게임 플레이 시간 체크
+			leftPlayingTime_ -= fTimeDelta;
 
-		if (leftPlayingTime_ < 0.0f)
-		{
-			leftPlayingTime_ = 0.0f;
-			checkWinner(true);
+			if (leftPlayingTime_ < 0.0f)
+			{
+				leftPlayingTime_ = 0.0f;
+				checkWinner(true);
+			}
 		}
 	}
 	

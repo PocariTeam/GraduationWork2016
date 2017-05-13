@@ -285,7 +285,6 @@ void CNetworkMgr::processPacket()
 		}
 		m_pScene->SetPlayingTime(packet->playingTime);
 		m_pScene->SetWinningTime(packet->winningTime);
-		printf("왕관 남은 시간: %f \n", packet->winningTime);
 		break;
 	}
 	case PAK_ID::PAK_ANS_SyncDynamic:
