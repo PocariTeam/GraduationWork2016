@@ -92,6 +92,7 @@ public:
 	void			proceedBeaten(int damage);
 	void			minimizeController();
 	CHARACTER		GetCharacterType() { return character_; }
+	void			setStatByCharacter();
 	void			powerUp();
 	void			powerDown();
 };

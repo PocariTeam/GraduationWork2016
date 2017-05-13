@@ -382,6 +382,7 @@ void PhysXManager::updateCCT(UINT roomNum)
 
 BOOL PhysXManager::initPhysX()
 {
+	srand(time(0));
 
 	userAllocator_ = new UserAllocator;
 
@@ -649,11 +650,12 @@ void PhysXManager::checkCrownFalling(UINT roomNum)
 
 	m_pCrownActor[roomNum]->clearBodyFlag(NX_BF_KINEMATIC);
 	m_pCrownActor[roomNum]->setLinearVelocity(NxVec3(0.f,0.f,0.f));
+	m_pCrownActor[roomNum]->setAngularVelocity(NxVec3(0.f, 0.f, 0.f));
 	m_pCrownActor[roomNum]->setGlobalPosition(getRandomCrownPosition());
 }
 
 NxVec3 PhysXManager::getRandomCrownPosition()
 {
-	return NxVec3((float)(rand() % 160 - 80), 230.0f, (float)(rand() % 160 + 70));
+	return NxVec3((float)(rand() % 160 - 80), 230.0f, (float)(rand() % 170 + 100));
 }
 

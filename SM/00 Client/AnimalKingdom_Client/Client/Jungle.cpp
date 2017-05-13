@@ -205,16 +205,20 @@ int CJungle::Update( const float& fTimeDelta )
 	CPhysics::GetInstance()->Update( fTimeDelta );
 	CScene::Update( fTimeDelta );
 
+	auto focus_iter = m_mapPlayer.find(m_iFocus);
 	if( m_bStart )
 	{
-		m_mapPlayer.find( m_iPlayerID )->second->Check_Key( fTimeDelta );
-		if( m_mapPlayer.find( m_iFocus )->second->GetAlpha() )
-			CRenderer::GetInstance()->InCave();
-		else
-			CRenderer::GetInstance()->OutCave();
+		m_mapPlayer[ m_iPlayerID ]->Check_Key( fTimeDelta );
+		if (focus_iter != m_mapPlayer.end())
+		{
+			if (focus_iter->second->GetAlpha())
+				CRenderer::GetInstance()->InCave();
+			else
+				CRenderer::GetInstance()->OutCave();
+		}
 	}
 
-	if( STATE_DEAD == m_mapPlayer[ m_iFocus ]->GetFSM()->GetCurrentState() && !m_bDebug )
+	if(focus_iter != m_mapPlayer.end() && STATE_DEAD == focus_iter->second->GetFSM()->GetCurrentState() && !m_bDebug )
 		Change_CameraDest();
 
 	Check_Key( fTimeDelta );
@@ -341,6 +345,8 @@ void CJungle::Check_Key( const float& fTimeDelta )
 void CJungle::Change_CameraDest( void )
 {
 	auto player_iter = m_mapPlayer.find( m_iFocus );
+	if (player_iter == m_mapPlayer.end()) return;
+
 	auto advance_iter = player_iter;
 	advance_iter++;
 

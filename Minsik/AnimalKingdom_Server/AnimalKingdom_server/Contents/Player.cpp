@@ -46,7 +46,7 @@ void Player::initialize()
 	stateMachine_->Set_State(STATE_IDLE);
 	beaten_ = true;
 	hp_ = 100;
-	setCharacter(character_);
+	setStatByCharacter();
 }
 
 void Player::update( float fTimeDelta )
@@ -88,26 +88,7 @@ void Player::setCharacter( CHARACTER c)
 	SAFE_LOCK(lock_);
 	character_ = c;
 
-	switch (character_)
-	{
-	case CHARACTER::CHRACTER_NONE:
-		m_fJumpHeight = 0;
-		damage_ = 0;
-		speed_ = 0;
-		break;
-	case CHARACTER::CHARACTER_CHM:
-		m_fJumpHeight = JUMP_HEIGHT;
-		damage_ = CHAMEL_DAMAGE;
-		speed_ = CHAMEL_SPEED;
-		break;
-	case CHARACTER::CHARACTER_MON:
-		m_fJumpHeight = JUMP_HEIGHT;
-		damage_ = MONKEY_DAMAGE;
-		speed_ = MONKEY_SPEED;
-		break;
-	default:
-		SLog(L"! unknown character type set! ");
-	}
+	setStatByCharacter();
 }
 
 void Player::setCCT( NxController* cct )
@@ -252,16 +233,53 @@ void Player::minimizeController()
 	( ( NxCapsuleShape* )cct_->getActor()->getShapes()[ 0 ] )->setHeight( 0.f );
 }
 
+void Player::setStatByCharacter()
+{
+	switch (character_)
+	{
+	case CHARACTER::CHRACTER_NONE:
+		m_fJumpHeight = 0;
+		damage_ = 0;
+		speed_ = 0;
+		break;
+	case CHARACTER::CHARACTER_CHM:
+		m_fJumpHeight = JUMP_HEIGHT;
+		damage_ = CHAMEL_DAMAGE;
+		speed_ = CHAMEL_SPEED;
+		break;
+	case CHARACTER::CHARACTER_MON:
+		m_fJumpHeight = JUMP_HEIGHT;
+		damage_ = MONKEY_DAMAGE;
+		speed_ = MONKEY_SPEED;
+		break;
+	default:
+		SLog(L"! unknown character type set! ");
+	}
+}
+
 void Player::powerUp()
 {
-	damage_ = damage_ * 2;
-	speed_ = speed_ * 0.5f;
+	int defaultDamage;
+	float defaultSpeed;
+
+	switch (character_)
+	{
+	case CHARACTER_CHM:
+		defaultDamage = CHAMEL_DAMAGE;
+		defaultSpeed = CHAMEL_SPEED;
+		break;
+	case CHARACTER_MON:
+		defaultDamage = MONKEY_DAMAGE;
+		defaultSpeed = MONKEY_SPEED;
+		break;
+	}
+	damage_ = defaultDamage * 1.5;
+	speed_ = defaultSpeed * 0.5f;
 }
 
 void Player::powerDown()
 {
-	damage_ = damage_ * 0.5f;
-	speed_ = speed_ * 2;
+	setStatByCharacter();
 }
 
 void Player::setMoveDir( Vector3 vDir )

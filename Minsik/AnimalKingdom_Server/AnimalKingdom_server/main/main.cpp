@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+
 int main()
 {
 	CAnimationMgr::getInstance().Load( "../Executable/Animations.txt" );

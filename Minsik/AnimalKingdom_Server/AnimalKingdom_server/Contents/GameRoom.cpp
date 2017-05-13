@@ -100,12 +100,13 @@ void GameRoom::startGame()
 	TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
 	updateTimerID_ = timeSetEvent((UINT)(UPDATE_TIME_SEC * 1000), caps.wPeriodMin, (LPTIMECALLBACK)updateTimer, roomNum_, TIME_PERIODIC);
-	
+
+	sendStartGame();
+
 	// 스타트 이후부터 승자체크 ( 그 사이 나간 사람이 있는지 한번 체크 )
 	hasWinner_ = false;
 	checkWinner(false);
 
-	sendStartGame();
 }
 
 BOOL GameRoom::exit(Session* session)
@@ -120,7 +121,7 @@ BOOL GameRoom::exit(Session* session)
 	}
 
 	// 체력 0
-	if (isPlaying_)
+	if (isPlaying_ && hasWinner_ == false)
 	{
 		find_iter->second->setHp(0);
 		find_iter->second->setState(STATE::STATE_DOWN);
@@ -447,8 +448,6 @@ void GameRoom::update( float fTimeDelta )
 		}
 		else
 		{
-			leftWinningTime_ = CROWN_WIN_SEC;
-
 			// 게임 플레이 시간 체크
 			leftPlayingTime_ -= fTimeDelta;
 
@@ -587,6 +586,7 @@ void GameRoom::loseCrown(Player *player)
 	if (find_iter == players_.end()) return;
 	if (find_iter->second != player) return;
 
+	leftWinningTime_ = CROWN_WIN_SEC;
 	sendGetCrown(nullptr);
 	player->powerDown();
 
