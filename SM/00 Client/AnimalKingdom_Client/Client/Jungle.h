@@ -19,7 +19,7 @@ private:
 	CJungle();
 	virtual ~CJungle();
 private:
-	HRESULT Initialize( HWND hWnd, ID3D11Device* pDevice );
+	HRESULT			Initialize( HWND hWnd, ID3D11Device* pDevice );
 	virtual void	SetPlayingTime( const float& fTime );
 	virtual void	SetWinningTime(const float& fTime);
 	void			Change_CrownUI_Position( void );
@@ -52,7 +52,9 @@ private:
 	/* Check Key */
 	bool					m_bOverlapped;
 	/* Ready / Start / End */
-	bool					m_bStart;
+public:
+	static	bool			m_bStart;
+private:
 	bool					m_bFinished;
 	CNormal_UI*				m_pStateNotify;
 	/* HP Bar */
