@@ -519,6 +519,48 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
 				}
 
+				else if( 0 == strcmp( pActor->getName(), "SideGround0" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_SideGround0" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_SideGround0" );
+					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 0.97493f, 1.f, 2.0422f ) );
+					pTerrain->Add_Ref();
+					pTerrain->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pTerrain );
+					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "SideGround1" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_SideGround1" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_SideGround1" );
+					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.00757f ) );
+					pTerrain->Add_Ref();
+					pTerrain->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pTerrain );
+					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "ground3" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Ground3" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Ground3" );
+					CGameObject* pTerrain = CTerrain::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 0.32454f, 1.f ) );
+					pTerrain->Add_Ref();
+					pTerrain->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pTerrain );
+					pShader_Mesh_Alpha->Add_RenderObject( pTerrain );
+				}
+
 				else if( 0 == strcmp( pActor->getName(), "Bridge" ) )
 				{
 					pActor->setGroup( COL_STATIC );
@@ -624,11 +666,11 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Palmtree" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Palmtree" );
-					CGameObject* pMushroom = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
-					pMushroom->Add_Ref();
-					pMushroom->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pMushroom );
-					pShader_Mesh_Alpha->Add_RenderObject( pMushroom );
+					CGameObject* pPalmtree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pPalmtree->Add_Ref();
+					pPalmtree->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pPalmtree );
+					pShader_Mesh_Alpha->Add_RenderObject( pPalmtree );
 				}
 
 				else if( 0 == strcmp( pActor->getName(), "Flower00" ) )
@@ -639,11 +681,11 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Flower00" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Flower00" );
-					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
-					pTree->Add_Ref();
-					pTree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pTree );
-					pShader_Mesh_Alpha->Add_RenderObject( pTree );
+					CGameObject* pFlower = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pFlower->Add_Ref();
+					pFlower->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pFlower );
+					pShader_Mesh_Alpha->Add_RenderObject( pFlower );
 				}
 
 				else if( 0 == strcmp( pActor->getName(), "Rock00" ) )
@@ -700,6 +742,36 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pRock->Add_Ref();
 					pShader_Mesh->Add_RenderObject( pRock );
 					pShader_Mesh_Alpha->Add_RenderObject( pRock );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Bush00" ) )
+				{
+					pActor->raiseActorFlag( NX_AF_DISABLE_COLLISION );
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Bush00" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Bush00" );
+					CGameObject* pBush = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 0.0372f, 1.f ) );
+					pBush->Add_Ref();
+					pBush->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pBush );
+					pShader_Mesh_Alpha->Add_RenderObject( pBush );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Bush01" ) )
+				{
+					pActor->raiseActorFlag( NX_AF_DISABLE_COLLISION );
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Bush01" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Bush01" );
+					CGameObject* pBush = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 0.0372f, 1.f ) );
+					pBush->Add_Ref();
+					pBush->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pBush );
+					pShader_Mesh_Alpha->Add_RenderObject( pBush );
 				}
 
 				else
@@ -775,7 +847,7 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dp
 		tCapsuleDesc.position.z = pActor->getGlobalPosition().z;
 		tCapsuleDesc.upDirection = NX_Y;
 		// tCapsuleDesc.slopeLimit = cosf(NxMath::degToRad(45.0f));
-		tCapsuleDesc.slopeLimit = cosf( NxMath::degToRad( 45.0f ) );
+		tCapsuleDesc.slopeLimit = 0.f/*cosf( NxMath::degToRad( 45.0f ) )*/;
 		tCapsuleDesc.skinWidth = fSkinWidth;
 		tCapsuleDesc.stepOffset = 0.5f;
 		//tCapsuleDesc.stepOffset = fRadius * 0.5f * fScale;

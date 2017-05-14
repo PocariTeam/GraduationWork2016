@@ -125,7 +125,7 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
 		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
-		desc.slopeLimit = cosf( NxMath::degToRad( 45.0f ) );
+		desc.slopeLimit = 0.f;
 		desc.skinWidth = fSKINWIDTH;
 		desc.stepOffset = 0.5f;
 		// desc.stepOffset = InitialRadius * 0.5f * scale;
@@ -307,7 +307,9 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 		}
 		else
 		{
-			if( 0 == strcmp( a->getName(), "Flower00" ) )
+			if( 0 == strcmp( a->getName(), "Flower00" )
+				|| 0 == strcmp( a->getName(), "Bush00" )
+				|| 0 == strcmp( a->getName(), "Bush01" ) )
 				a->raiseActorFlag( NX_AF_DISABLE_COLLISION );
 
 			a->setGroup(CollGroup::COL_STATIC);

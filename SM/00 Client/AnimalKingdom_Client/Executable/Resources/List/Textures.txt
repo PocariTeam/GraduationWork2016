@@ -1,4 +1,4 @@
-55
+60
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
 Texture_Billboard_Ready 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Ready.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
@@ -28,8 +28,13 @@ Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
 Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Ground1 1 ../Executable/Resources/Texture/map/ground1.png
 Texture_Ground2 1 ../Executable/Resources/Texture/map/ground2.png
+Texture_Ground3 1 ../Executable/Resources/Texture/map/ground3.png
+Texture_SideGround0 1 ../Executable/Resources/Texture/map/SideGround0.png
+Texture_SideGround1 1 ../Executable/Resources/Texture/map/SideGround1.png
 Texture_Cave 1 ../Executable/Resources/Texture/map/cave.png
 Texture_Water 1 ../Executable/Resources/Texture/map/water.png
+Texture_Bush00 1 ../Executable/Resources/Texture/Bush/Bush00.png
+Texture_Bush01 1 ../Executable/Resources/Texture/Bush/Bush01.png
 Texture_Tree00 1 ../Executable/Resources/Texture/Tree/Tree00.png
 Texture_Tree01 1 ../Executable/Resources/Texture/Tree/Tree01.png
 Texture_Tree02 1 ../Executable/Resources/Texture/Tree/Tree02.png
