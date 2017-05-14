@@ -599,7 +599,7 @@ void GameRoom::loseCrown(Player *player)
 	{
 	case CHARACTER_CHM:
 		mtxRotation.rotX(0);
-		vOffset = NxVec3(0.f, 9.75f + 2.0f, 0.f);
+		vOffset = NxVec3(0.f, 9.75f + 2.5f, 0.f);
 		break;
 	case CHARACTER_MON:
 		mtxRotation.rotX(XM_PI);
