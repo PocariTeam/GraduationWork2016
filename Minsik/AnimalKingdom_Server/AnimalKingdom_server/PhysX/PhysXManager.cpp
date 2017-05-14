@@ -119,15 +119,15 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		// NxF32	InitialHeight = 2.0f;
 		NxCapsuleControllerDesc desc;
 		desc.radius = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getRadius();
-		desc.height = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getHeight() * 1.f;
+		desc.height = ( ( NxCapsuleShape* )actor->getShapes()[ 0 ] )->getHeight();
 		desc.position.x = startPos.x;
 		desc.position.y = startPos.y; //+ gSpace;
 		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
 		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
-		desc.slopeLimit = 0;
+		desc.slopeLimit = cosf( NxMath::degToRad( 45.0f ) );
 		desc.skinWidth = fSKINWIDTH;
-		desc.stepOffset = 0.1f;
+		desc.stepOffset = 0.5f;
 		// desc.stepOffset = InitialRadius * 0.5f * scale;
 		// desc.userData = (NxActor*)actor;
 		desc.callback = &controllerReport_;
@@ -225,7 +225,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 	physicsSDK_->setParameter(NX_BOUNCE_THRESHOLD, -5); //  ÅëÅë Æ¢´Â ÃÖ¼Ò ¼Óµµ
 	physicsSDK_->setParameter(NX_DYN_FRICT_SCALING, 10); // µ¿Àû°´Ã¼ ¸¶Âû
 	physicsSDK_->setParameter(NX_STA_FRICT_SCALING, 10); // Á¤Àû°´Ã¼ ¸¶Âû
-
+	
 	scenes_[roomNum]->setGravity(NxVec3(0.0f, -9.81f * 3, 0.0f));
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
 	scenes_[roomNum]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER1, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
@@ -307,6 +307,9 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 		}
 		else
 		{
+			if( 0 == strcmp( a->getName(), "Flower00" ) )
+				a->raiseActorFlag( NX_AF_DISABLE_COLLISION );
+
 			a->setGroup(CollGroup::COL_STATIC);
 			SetCollisionGroup(a, CollGroup::COL_STATIC);
 		}

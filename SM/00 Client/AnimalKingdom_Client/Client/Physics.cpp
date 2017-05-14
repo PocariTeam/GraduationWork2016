@@ -127,10 +127,10 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				fRadius = ( ( NxCapsuleShape* )( *dpShape ) )->getRadius() * 2.f;
 				fHeight = ( ( NxCapsuleShape* )( *dpShape ) )->getHeight();
 				mtxRealWorld = ( *dpShape )->getGlobalPose();
-				mtxScale.M.diagonal( NxVec3( fRadius, fHeight + fRadius * 0.5f, fRadius ) );
+				mtxScale.M.diagonal( NxVec3( fRadius, ( fHeight + fRadius ) * 0.5f, fRadius ) );
 				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
 				mtxRealWorld.getRowMajor44( mtxWorld );
-				mtxWorld[ 7 ] -= ( fRadius + fHeight ) * 0.5f;
+				// mtxWorld[ 7 ] -= ( fRadius + fHeight ) * 0.5f;
 				pShader->SetConstantBuffer( pContext, XMFLOAT4X4( mtxWorld ) );
 				pCapsule->Render( pContext );
 				break;
@@ -464,6 +464,17 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					SetCollisionGroup( pActor, COL_DYNAMIC );
 				}
 
+				else if( 0 == strcmp( pActor->getName(), "Branch00" ) )
+				{
+					CGameObject* pBranch = CEnvironment::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Branch00" ), CTextureMgr::GetInstance()->Clone( "Texture_Branch00" ), XMFLOAT3( 0.79901f, 0.79901f, 0.79901f ) );
+					pActor->setGroup( COL_DYNAMIC );
+					pBranch->Add_Ref();
+					pBranch->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pBranch );
+					pShader_Mesh_Alpha->Add_RenderObject( pBranch );
+					SetCollisionGroup( pActor, COL_DYNAMIC );
+				}
+
 				else
 				{
 					pActor->setGroup( COL_DYNAMIC );
@@ -564,6 +575,77 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
+				else if( 0 == strcmp( pActor->getName(), "Tree03" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree03" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree03" );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pTree->Add_Ref();
+					pTree->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Mesh_Alpha->Add_RenderObject( pTree );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Tree04" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Tree04" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Tree04" );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pTree->Add_Ref();
+					pTree->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Mesh_Alpha->Add_RenderObject( pTree );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Mushroom" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Mushroom" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Mushroom" );
+					CGameObject* pMushroom = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.95783f, 1.95783f, 1.95783f ) );
+					pMushroom->Add_Ref();
+					pMushroom->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pMushroom );
+					pShader_Mesh_Alpha->Add_RenderObject( pMushroom );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Palmtree" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Palmtree" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Palmtree" );
+					CGameObject* pMushroom = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pMushroom->Add_Ref();
+					pMushroom->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pMushroom );
+					pShader_Mesh_Alpha->Add_RenderObject( pMushroom );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Flower00" ) )
+				{
+					pActor->raiseActorFlag( NX_AF_DISABLE_COLLISION );
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Flower00" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Flower00" );
+					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pTree->Add_Ref();
+					pTree->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Mesh_Alpha->Add_RenderObject( pTree );
+				}
+
 				else if( 0 == strcmp( pActor->getName(), "Rock00" ) )
 				{
 					pActor->setGroup( COL_STATIC );
@@ -600,6 +682,20 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Rock02" );
 					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Rock02" );
 					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
+					pRock->Add_Ref();
+					pRock->Add_Ref();
+					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Mesh_Alpha->Add_RenderObject( pRock );
+				}
+
+				else if( 0 == strcmp( pActor->getName(), "Rock03" ) )
+				{
+					pActor->setGroup( COL_STATIC );
+					SetCollisionGroup( pActor, COL_STATIC );
+
+					CMesh* pMesh = CMeshMgr::GetInstance()->Clone( "Mesh_Rock03" );
+					CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Rock03" );
+					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.54092f, 1.54092f, 1.54092f ) );
 					pRock->Add_Ref();
 					pRock->Add_Ref();
 					pShader_Mesh->Add_RenderObject( pRock );
@@ -679,9 +775,9 @@ NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dp
 		tCapsuleDesc.position.z = pActor->getGlobalPosition().z;
 		tCapsuleDesc.upDirection = NX_Y;
 		// tCapsuleDesc.slopeLimit = cosf(NxMath::degToRad(45.0f));
-		tCapsuleDesc.slopeLimit = 0;
+		tCapsuleDesc.slopeLimit = cosf( NxMath::degToRad( 45.0f ) );
 		tCapsuleDesc.skinWidth = fSkinWidth;
-		tCapsuleDesc.stepOffset = 0.1f;
+		tCapsuleDesc.stepOffset = 0.5f;
 		//tCapsuleDesc.stepOffset = fRadius * 0.5f * fScale;
 		tCapsuleDesc.userData = dpActors;
 		tCapsuleDesc.callback = &m_ControllerReport;

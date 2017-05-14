@@ -56,7 +56,7 @@ void Player::update( float fTimeDelta )
 
 	moveDir_.y += -9.81f * 9.81f * fTimeDelta;
 	NxU32	dwCollisionFlag;
-	cct_->move( moveDir_, COLLIDABLE_MASK, 0.0001f, dwCollisionFlag );
+	cct_->move( moveDir_, COLLIDABLE_MASK, 0.1f, dwCollisionFlag );
 	moveDir_.y = 0.f;
 }
 
