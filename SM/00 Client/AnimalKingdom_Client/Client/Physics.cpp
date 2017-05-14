@@ -124,15 +124,15 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 				pSphere->Render( pContext );
 				break;
 			case NX_SHAPE_CAPSULE:
-				fRadius = ( ( NxCapsuleShape* )( *dpShape ) )->getRadius() * 2.f;
-				fHeight = ( ( NxCapsuleShape* )( *dpShape ) )->getHeight();
-				mtxRealWorld = ( *dpShape )->getGlobalPose();
-				mtxScale.M.diagonal( NxVec3( fRadius, ( fHeight + fRadius ) * 0.5f, fRadius ) );
-				mtxRealWorld.multiply( mtxRealWorld, mtxScale );
-				mtxRealWorld.getRowMajor44( mtxWorld );
-				// mtxWorld[ 7 ] -= ( fRadius + fHeight ) * 0.5f;
-				pShader->SetConstantBuffer( pContext, XMFLOAT4X4( mtxWorld ) );
-				pCapsule->Render( pContext );
+				//fRadius = ( ( NxCapsuleShape* )( *dpShape ) )->getRadius() * 2.f;
+				//fHeight = ( ( NxCapsuleShape* )( *dpShape ) )->getHeight();
+				//mtxRealWorld = ( *dpShape )->getGlobalPose();
+				//mtxScale.M.diagonal( NxVec3( fRadius, ( fHeight + fRadius ) * 0.5f, fRadius ) );
+				//mtxRealWorld.multiply( mtxRealWorld, mtxScale );
+				//mtxRealWorld.getRowMajor44( mtxWorld );
+				//// mtxWorld[ 7 ] -= ( fRadius + fHeight ) * 0.5f;
+				//pShader->SetConstantBuffer( pContext, XMFLOAT4X4( mtxWorld ) );
+				//pCapsule->Render( pContext );
 				break;
 			}
 		}

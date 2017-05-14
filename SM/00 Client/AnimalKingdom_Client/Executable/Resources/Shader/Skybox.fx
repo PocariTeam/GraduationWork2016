@@ -1,4 +1,4 @@
-#define CUBESIZE	-400.f
+#define CUBESIZE	-5.f
 
 TextureCube gTexture : register( t0 );
 SamplerState gSamplerState : register( s0 );
@@ -73,7 +73,7 @@ void GS( point VS_OUT In[ 1 ], inout TriangleStream<GS_OUT> TriStream )
 		for( int i = 0; i < 4; ++i ) {
 			int iIndex = i + j * 4;
 			Out.vLocalPos = pVertex[ iIndex ].xyz;
-			Out.vPos = mul( mul( pVertex[ iIndex ], g_mtxView ), g_mtxProj );
+			Out.vPos = mul( /*mul( */pVertex[ iIndex ]/*, g_mtxView )*/, g_mtxProj );
 			TriStream.Append( Out );
 		}
 		TriStream.RestartStrip();
