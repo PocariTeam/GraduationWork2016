@@ -382,7 +382,7 @@ void PhysXManager::updateCCT(UINT roomNum)
 
 BOOL PhysXManager::initPhysX()
 {
-	srand(time(0));
+	srand((unsigned int)time(0));
 
 	userAllocator_ = new UserAllocator;
 
