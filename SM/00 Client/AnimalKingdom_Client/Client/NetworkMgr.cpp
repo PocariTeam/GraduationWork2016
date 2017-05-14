@@ -206,6 +206,7 @@ void CNetworkMgr::processPacket()
 			}
 		}
 		printf("========================================= \n");
+		m_pScene->NotifyEnterRoom();
 		m_pScene->NotifyPlayerInfo(m_tPlayerInfo, m_dwPlayerCnt);
 		break;
 	}

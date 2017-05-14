@@ -34,6 +34,7 @@ public:
 	void	Render( ID3D11DeviceContext* pContext );
 public:
 	void	NotifyRoomInfo( S_RoomList* pRoomlistPacket );
+	void	NotifyEnterRoom();
 private:
 	int		Check_Key( void );
 	void	Change_Page( void );
@@ -49,6 +50,7 @@ private:
 	CButton_UI**	m_dpBtns;
 	/* Check Key */
 	bool			m_bOverlapped;
+	bool			m_bEnter;
 	/* Singleton */
 	CRenderer*		m_pRenderer;
 	CInputMgr*		m_pInputMgr;

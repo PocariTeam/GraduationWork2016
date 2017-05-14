@@ -65,15 +65,15 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	pShader->Add_RenderObject( m_dpBtns[ BTN_READY ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Ready" ), XMFLOAT4( -1.f, -0.5f, 0.6f, 0.3f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_BACK ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -1.f, -0.8f, 0.6f, 0.2f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_NEXT ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -0.4f, 0.2f, 0.2f, 0.55f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_PREVIOUS ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( 0.8f, 0.2f, 0.2f, 0.55f ) ) );
+	// pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_NEXT ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -0.4f, 0.2f, 0.2f, 0.55f ) ) );
+	// pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_PREVIOUS ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( 0.8f, 0.2f, 0.2f, 0.55f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_CHAMELEON ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Chameleon" ), XMFLOAT4( -0.4f, -0.35f, 0.28f, 0.65f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_MONKEY ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Monkey" ), XMFLOAT4( -0.12f, -0.35f, 0.28f, 0.65f ) ) );
 	
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( -0.35f, 1.f, 0.45f, 0.8f ) ) );
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( 0.1f, 1.f, 0.45f, 0.8f ) ) );
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( 0.55f, 1.f, 0.45f, 0.8f ) ) );
-	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Preview_Jungle" ), XMFLOAT4( -0.2f, 0.2f, 1.f, 0.55f ) ) );
+	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Preview_Jungle" ), XMFLOAT4( -0.4f, 0.2f, 1.4f, 0.55f ) ) );
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
@@ -206,9 +206,9 @@ int CRoom::Check_Key( void )
 					m_dpBtns[ BTN_MONKEY ]->Fix();
 				}
 				break;
-			case BTN_MAP_NEXT:
-			case BTN_MAP_PREVIOUS:
-				break;
+				/*case BTN_MAP_NEXT:
+				case BTN_MAP_PREVIOUS:
+					break;*/
 			}
 		}
 
@@ -264,6 +264,11 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 			m_dpThreeD[ i ]->SetAnimator( m_pAnimationMgr->Clone( CHARACTER_CHM ) );
 			m_dpThreeD[ i ]->SetSize( ( i == 0 )? XMFLOAT2( 0.0415f, 0.072f ) : XMFLOAT2( 0.0103f, 0.018f ) );
 			m_dpThreeD[ i ]->Show();
+			if( i == 0 )
+			{
+				m_dpBtns[ BTN_MONKEY ]->Normal();
+				m_dpBtns[ BTN_CHAMELEON ]->Fix();
+			}
 			break;
 		case CHARACTER_MON:
 			m_dpThreeD[ i ]->SetTexture( m_pTextureMgr->Clone( "Texture_Monkey" ) );
@@ -271,6 +276,11 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 			m_dpThreeD[ i ]->SetAnimator( m_pAnimationMgr->Clone( CHARACTER_MON ) );
 			m_dpThreeD[ i ]->SetSize( ( i == 0 ) ? XMFLOAT2( 0.0415f * 16.f, 0.072f * 16.f ) : XMFLOAT2( 0.0103f * 16.f, 0.018f * 16.f ) );
 			m_dpThreeD[ i ]->Show();
+			if( i == 0 )
+			{
+				m_dpBtns[ BTN_CHAMELEON ]->Normal();
+				m_dpBtns[ BTN_MONKEY ]->Fix();
+			}
 			break;
 		default:
 			break;

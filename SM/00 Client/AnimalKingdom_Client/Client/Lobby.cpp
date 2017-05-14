@@ -22,6 +22,7 @@ CLobby::CLobby()
 	, m_dwMaxRoomCnt( 0 )
 	, m_pRenderer( nullptr )
 	, m_pInputMgr( nullptr )
+	, m_bEnter( false )
 {
 }
 
@@ -122,6 +123,11 @@ void CLobby::NotifyRoomInfo( S_RoomList* pRoomlistPacket )
 	else m_dpBtns[ BTN_NEXT ]->Normal();
 }
 
+void CLobby::NotifyEnterRoom()
+{
+	m_bEnter = true;
+}
+
 int	 CLobby::Check_Key( void )
 {
 	POINT ptMouse = CScene::GetMousePosition( m_hWnd );
@@ -160,9 +166,12 @@ int	 CLobby::Check_Key( void )
 					|| m_pRoomInfo[ i + ( ( int )m_dwCurrentPage - 1 ) * ( int )ROOM_PRESENT_CNT ].playing )
 					break;
 				CNetworkMgr::GetInstance()->sendEnterRoom( i );
-				return CScene::SCENE_ROOM;
+				break;
 			}
 		}
+
+	if( m_bEnter )
+		return SCENE_ROOM;
 
 	return 0;
 }
