@@ -265,6 +265,7 @@ DWORD IOCPServer::workerThread(LPVOID serverPtr)
 			if (RoomManager::getInstance().getPlaying(roomNum))
 			{
 				((GameRoom*)((event_obj*)session)->obj_ptr)->finishGame();
+				
 			}
 			delete session;
 			delete ioData;

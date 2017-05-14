@@ -401,6 +401,7 @@ BOOL GameRoom::setupGame()
 		(p->second)->setCCT(pController);
 		(p->second)->setAnimator(CAnimationMgr::getInstance().Clone(character));
 		( p->second )->setReady( FALSE );
+		(p->second)->initialize();
 		i++;
 	}
 
@@ -618,12 +619,6 @@ void GameRoom::finishGame()
 
 	timeKillEvent(updateTimerID_);
 	timeKillEvent(syncTimerID_);
-
-	for (auto p = players_.begin(); p != players_.end(); p++)
-	{
-		(p->second)->setReady(false);
-		(p->second)->initialize();
-	}
 
 	IOCPServer::getInstance().pushEvent(new event_obj{ roomNum_, this }, GetTickCount() + 1000, EVENT_RELEASE);
 	

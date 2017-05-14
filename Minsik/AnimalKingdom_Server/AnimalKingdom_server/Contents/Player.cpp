@@ -273,7 +273,7 @@ void Player::powerUp()
 		defaultSpeed = MONKEY_SPEED;
 		break;
 	}
-	damage_ = defaultDamage * 1.5;
+	damage_ = int(defaultDamage * 1.5);
 	speed_ = defaultSpeed * 0.5f;
 }
 

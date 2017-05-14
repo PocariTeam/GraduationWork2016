@@ -5,7 +5,7 @@
 
 #include "PhysX\CollisionReport.h"
 
-#define FROZEN_DELAY_TICK		3000
+#define FROZEN_DELAY_TICK		2000
 
 class Player;
 
