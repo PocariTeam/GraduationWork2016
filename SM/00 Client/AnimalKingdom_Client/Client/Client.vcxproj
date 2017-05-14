@@ -212,6 +212,7 @@
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="EventCamera.h" />
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
     <ClInclude Include="ThirdCamera.h" />
@@ -379,6 +380,7 @@
     <ClCompile Include="Crown.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="EventCamera.cpp" />
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />

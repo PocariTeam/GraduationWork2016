@@ -19,6 +19,9 @@
 #include "Bar_UI.h"
 #include "Sign_UI.h"
 #include "StateMachine.h"
+#include "EventCamera.h"
+
+bool CJungle::m_bStart = false;
 
 CJungle::CJungle()
 	: CScene()
@@ -29,7 +32,6 @@ CJungle::CJungle()
 	, m_bOverlapped( true )
 	, m_bDebug( false )
 	, m_pStateNotify( nullptr )
-	, m_bStart( false )
 	, m_dpHP_Bar( nullptr )
 	, m_iFocus( 0 )
 	, m_bFinished( false )
@@ -49,12 +51,13 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_hWnd = hWnd;
 	CScene::Initialize( hWnd, pDevice );
 
+	m_pCamera = CEventCamera::Create( pDevice, XMFLOAT3( 20.f, 130.f, 0.f ), XMFLOAT3( -50.f, 180.f, -200.f ), XMFLOAT3( 200.f, 260.f, -230.f ) );
 	CNetworkMgr::GetInstance()->unreadyAllPlayer();
 	CLightMgr::GetInstance()->Initialize( pDevice );
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 	m_iFocus = m_iPlayerID;
-	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
+	
 	m_dwPlayerCnt = ( UINT )m_mapPlayer.size();
 
 	// Section 1 ~ 3
@@ -136,7 +139,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	}
 
 	// Ready / Start / End Ç¥½Ã
-	m_pStateNotify = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Billboard_Ready" ), XMFLOAT4( -1.f, 1.f, 2.f, 2.f ) );
+	m_pStateNotify = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_RUReady" ), XMFLOAT4( -1.f, 1.f, 2.f, 2.f ) );
 	pShader->Add_RenderObject( m_pStateNotify );
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
@@ -251,6 +254,7 @@ int CJungle::Update( const float& fTimeDelta )
 
 DWORD CJungle::Release( void )
 {
+	m_bStart = false;
 	CRenderer::GetInstance()->OutCave();
 	m_mapPlayer.erase( m_mapPlayer.begin(), m_mapPlayer.end() );
 
@@ -405,8 +409,10 @@ void CJungle::Change_CameraDest( void )
 
 void CJungle::NotifyGameStart( void )
 {
-	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Preview_Jungle" ) );
+	m_pStateNotify->SetTexture( CTextureMgr::GetInstance()->Clone( "Texture_Go" ) );
 	m_bStart = true;
+	::Safe_Release( m_pCamera );
+	m_pCamera = CThirdCamera::Create( m_pDevice, m_mapPlayer[ CNetworkMgr::GetInstance()->getID() ]->GetWorld(), XMFLOAT3( 0.f, 100.f, -200.f ) );
 }
 
 void CJungle::NotifyGameFinished()

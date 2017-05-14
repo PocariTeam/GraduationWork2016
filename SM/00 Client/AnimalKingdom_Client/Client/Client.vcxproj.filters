@@ -265,6 +265,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\04 Crown">
       <UniqueIdentifier>{3505ef21-1dc8-468e-a17f-c6510c116291}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\00 Public\01 Camera\03 Event">
+      <UniqueIdentifier>{fc429611-7702-45dc-9ed1-54c44927be7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -582,6 +585,9 @@
     <ClInclude Include="Crown.h">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\04 Crown</Filter>
     </ClInclude>
+    <ClInclude Include="EventCamera.h">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\03 Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -847,6 +853,9 @@
     </ClCompile>
     <ClCompile Include="Crown.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\04 Crown</Filter>
+    </ClCompile>
+    <ClCompile Include="EventCamera.cpp">
+      <Filter>소스 파일\00 Client\03 Object\00 Public\01 Camera\03 Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

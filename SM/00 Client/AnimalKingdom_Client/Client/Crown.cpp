@@ -7,6 +7,7 @@
 #include "NxActor.h"
 #include "Animator.h"
 #include "Player.h"
+#include "Jungle.h"
 
 CCrown::CCrown()
 	: CGameObject()
@@ -92,8 +93,11 @@ void CCrown::SetOwner( CPlayer* pPlayer )
 
 void CCrown::Render( ID3D11DeviceContext* pContext )
 {
-	m_pTexture->Render( pContext );
-	m_pMesh->Render( pContext );
+	if( CJungle::m_bStart )
+	{
+		m_pTexture->Render( pContext );
+		m_pMesh->Render( pContext );
+	}
 }
 
 DWORD CCrown::Release( void )
