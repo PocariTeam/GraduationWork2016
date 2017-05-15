@@ -381,13 +381,28 @@ void CJungle::Change_CameraDest( void )
 		if( STATE_DEAD != advance_iter->second->GetCurrentState() )
 			iFocus = advance_iter->first;
 		else
+		{
 			while( ++advance_iter != m_mapPlayer.end() )
 				if( STATE_DEAD != advance_iter->second->GetCurrentState() )
 				{
 					iFocus = advance_iter->first;
 					break;
 				}
+
+			if( advance_iter == m_mapPlayer.end() )
+			{
+				advance_iter = m_mapPlayer.begin();
+
+				for( ; advance_iter != player_iter; ++advance_iter )
+					if( STATE_DEAD != advance_iter->second->GetCurrentState() )
+					{
+						iFocus = advance_iter->first;
+						break;
+					}
+			}
+		}
 	}
+
 	else
 	{
 		advance_iter = m_mapPlayer.begin();
