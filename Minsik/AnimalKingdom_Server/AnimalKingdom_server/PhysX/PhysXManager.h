@@ -6,7 +6,7 @@
 #include "CollisionReport.h"
 #include "Banana.h"
 
-#define BANANA_COUNT 20
+#define BANANA_COUNT 40
 
 class UserAllocator;
 class NxControllerManager;

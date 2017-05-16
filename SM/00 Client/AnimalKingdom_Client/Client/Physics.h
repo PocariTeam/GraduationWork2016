@@ -13,7 +13,7 @@
 #include "Crown.h"
 
 #define GRAVITY -9.81f
-#define BANANA_COUNT 20
+#define BANANA_COUNT 40
 
 class CShader;
 class CMesh;

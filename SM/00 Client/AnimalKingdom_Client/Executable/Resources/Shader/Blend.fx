@@ -34,8 +34,8 @@ float4 PS( VS_OUT In ) : SV_Target
 	float4 vLight = g_LightTexture.Load( float3( In.vUV.x, In.vUV.y, 0.f ) );
 	float4 vSpecular = g_SpecularTexture.Load( float3( In.vUV.x, In.vUV.y, 0.f ) );
 
-	float4 vOut = float4( mad( vAlbedo, vLight, vSpecular ).xyz, 0.f );
-	if( !any( vOut ) ) discard;
-	vOut.a = 1.f;
+	if( !dot( vAlbedo.xyz, float3( 1.f, 1.f, 1.f ) ) ) discard;
+
+	float4 vOut = float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f );
 	return vOut;
 }

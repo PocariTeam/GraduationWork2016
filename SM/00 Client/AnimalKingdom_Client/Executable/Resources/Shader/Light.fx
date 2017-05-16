@@ -41,7 +41,6 @@ cbuffer cbLight : register( b2 )
 Texture2D g_NormalTexture : register( t0 );
 Texture2D g_DepthTexture : register( t1 );
 
-
 float4 Directional_Specular( LIGHT tLight, float4 vWorldNormal, float3 vLookInv );
 float4 Point_Lighting( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal );
 float4 Point_Specular( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal, float3 vLookInv );
@@ -122,6 +121,24 @@ PS_OUT	PS( VS_OUT	In )
 
 	Out.vLight = saturate( vLight );
 	Out.vSpecular = saturate( vSpecular );
+
+	float Filter[ 9 ] = { -1000.f, -1000.f, -1000.f
+		, -1000.f, 8000.f, -1000.f
+		, -1000.f, -1000.f, -1000.f };
+
+	float vTest[ 9 ];
+	vTest[ 0 ] = Filter[ 0 ] * g_DepthTexture.Load( float3( In.vTexUV.x - 1.f, In.vTexUV.y - 1.f, 0.f ) ).r;
+	vTest[ 1 ] = Filter[ 1 ] * g_DepthTexture.Load( float3( In.vTexUV.x, In.vTexUV.y - 1.f, 0.f ) ).r;
+	vTest[ 2 ] = Filter[ 2 ] * g_DepthTexture.Load( float3( In.vTexUV.x + 1.f, In.vTexUV.y - 1.f, 0.f ) ).r;
+	vTest[ 3 ] = Filter[ 3 ] * g_DepthTexture.Load( float3( In.vTexUV.x - 1.f, In.vTexUV.y, 0.f ) ).r;
+	vTest[ 4 ] = Filter[ 4 ] * g_DepthTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).r;
+	vTest[ 5 ] = Filter[ 5 ] * g_DepthTexture.Load( float3( In.vTexUV.x + 1.f, In.vTexUV.y, 0.f ) ).r;
+	vTest[ 6 ] = Filter[ 6 ] * g_DepthTexture.Load( float3( In.vTexUV.x - 1.f, In.vTexUV.y + 1.f, 0.f ) ).r;
+	vTest[ 7 ] = Filter[ 7 ] * g_DepthTexture.Load( float3( In.vTexUV.x, In.vTexUV.y + 1.f, 0.f ) ).r;
+	vTest[ 8 ] = Filter[ 8 ] * g_DepthTexture.Load( float3( In.vTexUV.x + 1.f, In.vTexUV.y + 1.f, 0.f ) ).r;
+
+	float fTemp = vTest[ 0 ] + vTest[ 1 ] + vTest[ 2 ] + vTest[ 3 ] + vTest[ 4 ] + vTest[ 5 ] + vTest[ 6 ] + vTest[ 7 ] + vTest[ 8 ];
+	Out.vLight.xyz *= ( fTemp <= 0.07f ) ? 1.f : 0.f;
 
 	return Out;
 }
