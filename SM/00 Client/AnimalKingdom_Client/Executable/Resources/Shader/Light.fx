@@ -137,6 +137,7 @@ PS_OUT	PS( VS_OUT	In )
 	float fTemp = vTest.x/* * 0.3f*/ + vTest.y/* * 0.59f*/ + vTest.z/* * 0.11f*/;
 	vTest = float3( fTemp, fTemp, fTemp );
 	Out.vLight.xyz = ( fTemp < vDepth.y * 5.f ) ? Out.vLight.xyz : 0.f;
+	Out.vLight.xyz = float3( int3( Out.vLight.xyz * 3.f ) * 0.3f );
 
 	return Out;
 }
