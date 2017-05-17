@@ -8,6 +8,11 @@ Texture2D g_AlbedoTexture : register( t0 );
 Texture2D g_LightTexture : register( t1 );
 Texture2D g_SpecularTexture : register( t2 );
 
+static float	Filter[ 9 ] = { 1.f / 16.f, 1.f / 8.f, 1.f / 16.f, 1.f / 8.f, 1.f / 4.f, 1.f / 8.f, 1.f / 16.f, 1.f / 8.f, 1.f / 16.f };		// 가우시안 필터
+static float2	TextureOffsetUV[ 9 ] = { { -1.f, -1.f },{ 0.f, -1.f },{ 1.f, -1.f },{ -1.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f },{ -1.f, 1.f },{ 0.f, 1.f },{ 1.f, 1.f } };
+
+float4 Blur( float2 vUV );
+
 struct VS_OUT
 {
 	float4 vPos : SV_POSITION;
@@ -36,6 +41,22 @@ float4 PS( VS_OUT In ) : SV_Target
 
 	if( !dot( vAlbedo.xyz, float3( 1.f, 1.f, 1.f ) ) ) discard;
 
-	float4 vOut = float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f );
+	float4 vOut = float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f )/*Blur( In.vUV.xy )*/;
 	return vOut;
+}
+
+float4 Blur( float2 vUV )
+{
+	float3 vAlbedo = ( float3 )0;
+	float3 vLight = ( float3 )0;
+	float3 vSpecular = ( float3 )0;
+
+	for( int j = 0; j < 9; ++j )
+	{
+		vAlbedo += Filter[ j ] * g_AlbedoTexture.Load( float3( vUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz;
+		vLight += Filter[ j ] * g_LightTexture.Load( float3( vUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz;
+		vSpecular += Filter[ j ] * g_SpecularTexture.Load( float3( vUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz;
+	}
+
+	return float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f );
 }

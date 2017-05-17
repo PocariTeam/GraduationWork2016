@@ -27,6 +27,7 @@ HRESULT CMonkey::Initialize( ID3D11Device* pDevice, NxController* pCharacterCont
 	m_pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_MON );
 	m_dwActorCnt = 3;
 	m_eCharactor = eType;
+	m_vOption.x = 1.f;		// Ä«Å÷ ÇÑ´Ù
 
 	return S_OK;
 }

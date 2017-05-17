@@ -123,21 +123,28 @@ PS_OUT	PS( VS_OUT	In )
 	}
 
 	Out.vLight = saturate( vLight );
-	Out.vSpecular = saturate( vSpecular );
+	Out.vSpecular = ( float4 )0;
 
-	/*float vTest[ 9 ];
-	for( int j = 0; j < 9; ++j )
-		vTest[ j ] = Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).r;
-	float fTemp = vTest[ 0 ] + vTest[ 1 ] + vTest[ 2 ] + vTest[ 3 ] + vTest[ 4 ] + vTest[ 5 ] + vTest[ 6 ] + vTest[ 7 ] + vTest[ 8 ];
-	Out.vLight.xyz *= ( fTemp <= 0.0001f ) ? 1.f : 0.f;*/
+	if( vDepth.z > 0.9f )
+	{
+		float3 vTest = ( float3 )0;
+		for( int j = 0; j < 9; ++j )
+			vTest += Filter[ j ] * mad( g_NormalTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz, 2.f, -1.f );
+		float fTemp = vTest.x/* * 0.3f*/ + vTest.y/* * 0.59f*/ + vTest.z/* * 0.11f*/;
+		vTest = float3( fTemp, fTemp, fTemp );
+		Out.vLight.xyz = ( fTemp < vDepth.y * 5.f ) ? Out.vLight.xyz : 0.f;
+		Out.vLight.xyz = float3( int3( Out.vLight.xyz * 3.f ) * 0.3f );
+		Out.vSpecular = saturate( vSpecular );
+	}
 
-	float3 vTest = (float3)0;
-	for( int j = 0; j < 9; ++j )
-		vTest += Filter[ j ] * mad( g_NormalTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz, 2.f, -1.f );
-	float fTemp = vTest.x/* * 0.3f*/ + vTest.y/* * 0.59f*/ + vTest.z/* * 0.11f*/;
-	vTest = float3( fTemp, fTemp, fTemp );
-	Out.vLight.xyz = ( fTemp < vDepth.y * 5.f ) ? Out.vLight.xyz : 0.f;
-	Out.vLight.xyz = float3( int3( Out.vLight.xyz * 3.f ) * 0.3f );
+	else
+	{
+		float vTest[ 9 ];
+		for( int j = 0; j < 9; ++j )
+			vTest[ j ] = Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).z;
+		float fTemp = vTest[ 0 ] + vTest[ 1 ] + vTest[ 2 ] + vTest[ 3 ] + vTest[ 4 ] + vTest[ 5 ] + vTest[ 6 ] + vTest[ 7 ] + vTest[ 8 ];
+		Out.vLight.xyz = ( fTemp > -0.01f ) ? Out.vLight.xyz : 0.f;
+	}
 
 	return Out;
 }

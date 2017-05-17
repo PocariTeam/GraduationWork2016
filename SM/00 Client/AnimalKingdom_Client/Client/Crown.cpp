@@ -25,6 +25,7 @@ HRESULT CCrown::Initialize( ID3D11Device* pDevice, NxActor* pActor, CMesh* pMesh
 	m_pMesh = pMesh;
 	m_pTexture = pTexture;
 	m_vScale = vScale;
+	m_vOption.x = 1.f;
 
 	return S_OK;
 }

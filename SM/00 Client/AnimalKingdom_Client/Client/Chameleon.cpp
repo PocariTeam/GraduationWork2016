@@ -27,6 +27,7 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 	m_pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_CHM );
 	m_dwActorCnt = 7;
 	m_eCharactor = eType;
+	m_vOption.x = 1.f;		// Ä«Å÷ ÇÑ´Ù
 
 	return S_OK;
 }
