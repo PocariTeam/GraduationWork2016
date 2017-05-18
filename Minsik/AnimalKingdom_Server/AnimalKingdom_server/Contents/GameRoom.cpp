@@ -258,7 +258,11 @@ BOOL GameRoom::stateRequest(Session * session, STATE state)
 		return false;
 	}
 
-	((find_iter->second))->setState(state);
+	STATE cur = ((find_iter->second))->getFSM()->GetCurrentState();
+	if (cur != STATE_DOWN && cur != STATE_DEAD)
+	{
+		((find_iter->second))->setState(state);
+	}
 	return true;
 }
 
@@ -436,8 +440,6 @@ void CALLBACK GameRoom::syncTimer(UINT, UINT, DWORD_PTR roomNum, DWORD_PTR, DWOR
 
 void GameRoom::update( float fTimeDelta )
 {
-	SAFE_LOCK(lock_);
-
 	if (hasWinner_ == false)
 	{
 		// 왕관 남은 시간 체크
