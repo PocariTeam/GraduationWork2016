@@ -29,6 +29,13 @@ HRESULT CAnimationMgr::Load( const char* pFilePath )
 	m_vecAnimator.reserve( ( size_t )CHARACTER_MAX );
 
 	ifstream pIn{ pFilePath };
+
+	if (pIn.is_open() == false)
+	{
+		SLog(L"! '%S' open fail! ", pFilePath);
+		return S_FALSE;
+	}
+
 	int iCharacterCnt{}, iCharacterType{}, iStateCnt{}, iState{};
 	char szPath[ MAX_PATH ]{""};
 	
@@ -51,6 +58,8 @@ HRESULT CAnimationMgr::Load( const char* pFilePath )
 		}
 	}
 
+	pIn.close();
+
 	return S_OK;
 }
 
@@ -66,11 +75,8 @@ DWORD CAnimationMgr::Release( void )
 			m_vecAnimator[ i ] = nullptr;
 		}
 	}
-		
 	m_vecAnimator.erase( m_vecAnimator.begin(), m_vecAnimator.end() );
 	m_vecAnimator.swap( vector<CAnimator*>{} );
-
-	delete this;
 
 	return 0;
 }

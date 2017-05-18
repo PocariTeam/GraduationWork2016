@@ -62,7 +62,7 @@ BOOL PhysXManager::LoadSceneFromFile(UINT roomNum, map<UINT, Player*>* pmapPlaye
 	if (physicsSDK_)
 	{
 
-		NXU::NxuPhysicsCollection *c = NXU::loadCollection(fileName, NXU::FT_XML);
+		NXU::NxuPhysicsCollection *c = NXU::loadCollection(xmlFileName, NXU::FT_XML);
 
 		if (c)
 		{
@@ -83,7 +83,7 @@ BOOL PhysXManager::LoadSceneFromFile(UINT roomNum, map<UINT, Player*>* pmapPlaye
 
 	if (success)
 	{
-		SLog(L"* Room [%d]'s Scene loaded from file '%S'.", roomNum, fileName);
+		SLog(L"* Room [%d]'s Scene loaded from file '%S'.", roomNum, xmlFileName);
 		return SetupScene(roomNum, pmapPlayers );
 	}
 
@@ -392,6 +392,20 @@ void PhysXManager::updateCCT(UINT roomNum)
 
 BOOL PhysXManager::initPhysX()
 {
+
+	if (CAnimationMgr::getInstance().Load("../Executable/Animations.txt") == S_FALSE)
+		return false;
+
+	ifstream	xmlFile{ xmlFileName };
+
+	if (xmlFile.is_open() == false)
+	{
+		SLog(L"! '%S' open fail! ", xmlFileName);
+		return false;
+	}
+
+	xmlFile.close();
+
 	srand((unsigned int)time(0));
 
 	userAllocator_ = new UserAllocator;
@@ -416,14 +430,23 @@ BOOL PhysXManager::initPhysX()
 
 	SLog(L"# Initialize PhysX SDK.");
 
-	Load_Kinematic();
+	if (Load_Kinematic() == false)
+		return false;
 
 	return true;
 }
 
 BOOL PhysXManager::Load_Kinematic( void )
 {
-	ifstream	In{ "../Executable/KinematicActor.txt" };
+	const char *filePath = "../Executable/KinematicActor.txt";
+	ifstream	In{ filePath };
+
+	if (In.is_open() == false)
+	{
+		SLog(L"! '%S' open fail! ", filePath);
+		return false;
+	}
+
 	int			iCharacterType{}, iActorCnt{};
 	char		szJointName[ MAX_PATH ]{ "" };
 	ACTOR_INFO	tActorInfo;

@@ -45,6 +45,13 @@ CAnimationSet* CAnimationSet::Create( const char* pFilePath )
 HRESULT CAnimationSet::Load( const char* pFilePath )
 {
 	ifstream pIn{ pFilePath };
+
+	if (pIn.is_open() == false)
+	{
+		SLog(L"! '%S' open fail! ", pFilePath);
+		return S_FALSE;
+	}
+
 	int		 iEventCnt{};
 	char szType{};
 	pIn >> szType;
@@ -93,8 +100,9 @@ DWORD CAnimationSet::Release( void )
 
 	if( 0 == dwRefCnt )
 	{
-		if( !m_mapEvent.empty() )
-			m_mapEvent.erase( m_mapEvent.begin(), m_mapEvent.end() );
+		if (!m_mapEvent.empty())
+			m_mapEvent.clear();
+			//m_mapEvent.erase( m_mapEvent.begin(), m_mapEvent.end() );
 
 		for( DWORD i = 0; i < m_dwLength; ++i )
 		{

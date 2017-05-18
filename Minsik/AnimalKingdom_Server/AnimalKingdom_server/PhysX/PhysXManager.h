@@ -25,7 +25,7 @@ typedef struct tagActorInfo
 
 class PhysXManager : public Singleton<PhysXManager> {
 private:
-	const char*					fileName = "../Executable/Jungle.xml";
+	const char*					xmlFileName = "../Executable/Jungle.xml";
 	UserAllocator*				userAllocator_;
 	NxPhysicsSDK*				physicsSDK_;
 	UINT						sceneSeedNum;

@@ -60,6 +60,12 @@ HRESULT CAnimator::Load( const char* pFilePath )
 {
 	ifstream pIn( pFilePath );
 
+	if (pIn.is_open() == false)
+	{
+		SLog(L"! '%s' open fail! ", pFilePath);
+		return S_FALSE;
+	}
+
 	char szType{};
 	pIn >> szType;
 

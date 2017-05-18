@@ -3,8 +3,9 @@
 
 int main()
 {
-	CAnimationMgr::getInstance().Load( "../Executable/Animations.txt" );
-	PhysXManager::getInstance().initPhysX();
+	if (PhysXManager::getInstance().initPhysX() == false)	return 0;
+
 	IOCPServer::getInstance().run();
+
 	return 0;
 }
