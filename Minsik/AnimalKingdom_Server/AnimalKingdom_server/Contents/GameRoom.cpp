@@ -552,12 +552,23 @@ void GameRoom::checkWinner(bool bTimeOut)
 		hasWinner_ = true;
 		sendWinner(0);
 		SLog(L"* the room [%d] game draw.. winner: nobody(0) ", roomNum_);
+		for (auto iter = players_.begin(); iter != players_.end(); iter++)
+		{
+			iter->second->setHp(0);
+			iter->second->getFSM()->Change_State(STATE_DOWN);
+		}
 	}
 	else if (aliveCount == 1) // 생존자 1명
 	{
 		hasWinner_ = true;
 		sendWinner(winner_id);
 		SLog(L"* the winner is id[%d] in the [%d] room ", winner_id, roomNum_);
+		for (auto iter = players_.begin(); iter != players_.end(); iter++)
+		{
+			if (iter->first == winner_id) continue;
+			iter->second->setHp(0);
+			iter->second->getFSM()->Change_State(STATE_DOWN);
+		}
 	}
 	else if (bTimeOut) // 타임아웃
 	{

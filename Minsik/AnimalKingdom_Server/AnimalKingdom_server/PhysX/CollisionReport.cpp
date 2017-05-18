@@ -116,12 +116,15 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
 			&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
 		{
-			Player* crownOwner = (Player*)pair.actors[iNoCrownIndex]->userData;
 			UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
-			RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
-			crownOwner->powerUp();
-			pair.actors[ iCrownIndex ]->raiseBodyFlag( NX_BF_KINEMATIC );
-			pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
+			Player* crownOwner = (Player*)pair.actors[iNoCrownIndex]->userData;
+			if (crownOwner->getHp() > 0 &&RoomManager::getInstance().hasWinner(roomNum) == false)
+			{
+				RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
+				crownOwner->powerUp();
+				pair.actors[iCrownIndex]->raiseBodyFlag(NX_BF_KINEMATIC);
+				pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
+			}
 		}
 	}
 
