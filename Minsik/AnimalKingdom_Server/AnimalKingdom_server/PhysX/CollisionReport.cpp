@@ -12,7 +12,7 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 	for( NxU32 i = 0; i < nbEntities; ++i )
 	{
 		LONGLONG temp{ ( LONGLONG )entities[ i ].hitShape->getGroup() };
-		if (0 == temp || temp & COL_DYNAMIC) return true;
+		if (COL_STATIC == temp || temp & COL_DYNAMIC) return true;
 		Player* pAttacker = ( Player* )entities [ i ].userData;
 		LONGLONG Attacker_Group = ( LONGLONG )( pAttacker->getActors()[0]->getGroup() );
 		if( !( Attacker_Group & temp ) )
@@ -32,31 +32,48 @@ bool CEntityReport::onEvent( NxU32 nbEntities, NxSweepQueryHit* entities )
 	return true;
 }
 
-NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& hit )
+NxControllerAction  CControllerReport::onShapeHit(const NxControllerShapeHit& hit)
 {
 	//printf("컨트롤러와 충돌액터: %s \n", hit.shape->getActor().getName());
 
 	NxActor* actor = hit.controller->getActor();
+	NxActor& hitActor = hit.shape->getActor();
 	NxCollisionGroup group = actor->getGroup();
 
-	if( ( COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4 ) & group )
+	// 점프체크
+	if ((COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4) & group)
 	{
-		STATE eState = ( ( Player* )actor->userData )->getFSM()->GetCurrentState();
-		switch( eState )
+		STATE eState = ((Player*)actor->userData)->getFSM()->GetCurrentState();
+		switch (eState)
 		{
 		case STATE_JUMP:
-			if( hit.dir.y <= -1.f )
-				( ( Player* )actor->userData )->getAnimator()->Play();
+			if (hit.dir.y <= -1.f)
+				((Player*)actor->userData)->getAnimator()->Play();
 			break;
 		default:
 			break;
 		}
+	}
 
-		/*if( 0.f == hit.dir.y )
+	// 왕관 체크
+	if (0 == strcmp(hitActor.getName(), "Crown"))
+	{
+		UINT roomNum = (UINT)(actor->getScene().userData);
+		Player* crownOwner = (Player*)actor->userData;
+		if (crownOwner->getHp() > 0 && RoomManager::getInstance().hasWinner(roomNum) == false)
 		{
-		NxF32 coeff = actor.getMass() * hit.length * 10.0f;
-		actor.addForceAtLocalPos( hit.dir*coeff, NxVec3( 0, 0, 0 ), NX_IMPULSE );
-		}*/
+			RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
+			crownOwner->powerUp();
+			hitActor.raiseBodyFlag(NX_BF_KINEMATIC);
+			hitActor.setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
+		}
+	}
+
+	// 동적객체 밀기
+	if (hitActor.getGroup() == COL_DYNAMIC)
+	{
+		NxF32 coeff = hitActor.getMass() * hit.length * 5.0f;
+		hitActor.addForceAtLocalPos(hit.dir*coeff, NxVec3(0, 0, 0), NX_IMPULSE);
 	}
 
 	return NX_ACTION_NONE;
@@ -105,28 +122,28 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		}
 	}
 
-	// 왕관 테스트
-	int iCrownIndex{ -1 };
-	if (0 == strcmp(pair.actors[1]->getName(), "Crown"))	iCrownIndex = 1;
-	else if (0 == strcmp(pair.actors[0]->getName(), "Crown"))	iCrownIndex = 0;
+	//// 왕관 테스트
+	//int iCrownIndex{ -1 };
+	//if (0 == strcmp(pair.actors[1]->getName(), "Crown"))	iCrownIndex = 1;
+	//else if (0 == strcmp(pair.actors[0]->getName(), "Crown"))	iCrownIndex = 0;
 
-	if( -1 != iCrownIndex )
-	{
-		int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
-		if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
-			&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
-		{
-			UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
-			Player* crownOwner = (Player*)pair.actors[iNoCrownIndex]->userData;
-			if (crownOwner->getHp() > 0 &&RoomManager::getInstance().hasWinner(roomNum) == false)
-			{
-				RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
-				crownOwner->powerUp();
-				pair.actors[iCrownIndex]->raiseBodyFlag(NX_BF_KINEMATIC);
-				pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
-			}
-		}
-	}
+	//if( -1 != iCrownIndex )
+	//{
+	//	int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
+	//	if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
+	//		&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
+	//	{
+	//		UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
+	//		Player* crownOwner = (Player*)pair.actors[iNoCrownIndex]->userData;
+	//		if (crownOwner->getHp() > 0 &&RoomManager::getInstance().hasWinner(roomNum) == false)
+	//		{
+	//			RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
+	//			crownOwner->powerUp();
+	//			pair.actors[iCrownIndex]->raiseBodyFlag(NX_BF_KINEMATIC);
+	//			pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
+	//		}
+	//	}
+	//}
 
 	//UINT roomNum = (UINT)pair.actors[0]->getScene().userData;
 	//RoomManager::getInstance().sendDynamicSync(roomNum);

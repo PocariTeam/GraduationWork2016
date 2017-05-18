@@ -225,12 +225,12 @@ void CJungle::Change_CrownUI_Position( void )
 
 int CJungle::Update( const float& fTimeDelta )
 {
-	CPhysics::GetInstance()->Update( fTimeDelta );
-	CScene::Update( fTimeDelta );
+		CScene::Update(fTimeDelta);
 
 	auto focus_iter = m_mapPlayer.find(m_iFocus);
 	if( m_bStart )
 	{
+		CPhysics::GetInstance()->Update( fTimeDelta );
 		m_mapPlayer[ m_iPlayerID ]->Check_Key( fTimeDelta );
 		if (focus_iter != m_mapPlayer.end())
 		{

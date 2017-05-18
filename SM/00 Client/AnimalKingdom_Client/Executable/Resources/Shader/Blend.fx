@@ -41,7 +41,7 @@ float4 PS( VS_OUT In ) : SV_Target
 
 	if( !dot( vAlbedo.xyz, float3( 1.f, 1.f, 1.f ) ) ) discard;
 
-	float4 vOut = float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f )/*Blur( In.vUV.xy )*/;
+	float4 vOut = /*float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f )*/Blur( In.vUV.xy );
 	return vOut;
 }
 

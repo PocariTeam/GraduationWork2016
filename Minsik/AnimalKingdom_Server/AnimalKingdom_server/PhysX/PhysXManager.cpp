@@ -124,10 +124,10 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		desc.position.y = startPos.y; //+ gSpace;
 		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
-		//		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
-		desc.slopeLimit = 0.f;
+		desc.slopeLimit		= cosf(NxMath::degToRad(60.0f));
+		//desc.slopeLimit = 0.f;
 		desc.skinWidth = fSKINWIDTH;
-		desc.stepOffset = 0.5f;
+		desc.stepOffset = 5.0f;
 		// desc.stepOffset = InitialRadius * 0.5f * scale;
 		// desc.userData = (NxActor*)actor;
 		desc.callback = &controllerReport_;
@@ -226,6 +226,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 	physicsSDK_->setParameter(NX_DYN_FRICT_SCALING, 10); // µ¿Àû°´Ã¼ ¸¶Âû
 	physicsSDK_->setParameter(NX_STA_FRICT_SCALING, 10); // Á¤Àû°´Ã¼ ¸¶Âû
 	
+
 	scenes_[roomNum]->setGravity(NxVec3(0.0f, -9.81f * 3, 0.0f));
 	scenes_[roomNum]->setUserContactReport(&collisionReport_);
 	scenes_[roomNum]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER1, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
@@ -233,6 +234,10 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER3, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
 	scenes_[ roomNum ]->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER4, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/ );
 	
+	scenes_[roomNum]->setGroupCollisionFlag(COL_PLAYER1, COL_DYNAMIC, false);
+	scenes_[roomNum]->setGroupCollisionFlag(COL_PLAYER2, COL_DYNAMIC, false);
+	scenes_[roomNum]->setGroupCollisionFlag(COL_PLAYER3, COL_DYNAMIC, false);
+	scenes_[roomNum]->setGroupCollisionFlag(COL_PLAYER4, COL_DYNAMIC, false);
 
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/);
 	scenes_[roomNum]->setActorGroupPairFlags(COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH/* | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH*/);

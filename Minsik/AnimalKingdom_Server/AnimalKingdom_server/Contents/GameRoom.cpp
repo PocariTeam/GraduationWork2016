@@ -105,7 +105,10 @@ void GameRoom::startGame()
 
 	// 스타트 이후부터 승자체크 ( 그 사이 나간 사람이 있는지 한번 체크 )
 	hasWinner_ = false;
-	checkWinner(false);
+	if (MINIMUM_START_COUNT > 1)
+	{
+		checkWinner(false);
+	}
 
 }
 

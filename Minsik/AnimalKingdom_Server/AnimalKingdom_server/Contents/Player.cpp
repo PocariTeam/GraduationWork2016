@@ -275,6 +275,7 @@ void Player::powerUp()
 	}
 	damage_ = int(defaultDamage * 1.5);
 	speed_ = defaultSpeed * 0.5f;
+	m_fJumpHeight = JUMP_HEIGHT*0.7f;
 }
 
 void Player::powerDown()

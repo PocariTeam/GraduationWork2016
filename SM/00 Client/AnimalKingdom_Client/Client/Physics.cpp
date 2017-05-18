@@ -348,6 +348,11 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH );
 
+	m_pScene->setGroupCollisionFlag(COL_PLAYER1, COL_DYNAMIC, false);
+	m_pScene->setGroupCollisionFlag(COL_PLAYER2, COL_DYNAMIC, false);
+	m_pScene->setGroupCollisionFlag(COL_PLAYER3, COL_DYNAMIC, false);
+	m_pScene->setGroupCollisionFlag(COL_PLAYER4, COL_DYNAMIC, false);
+
 	// Create the default material
 	NxMaterial* pDefaultMaterial = m_pScene->getMaterialFromIndex( 0 );
 	pDefaultMaterial->setRestitution( 0.0 );
