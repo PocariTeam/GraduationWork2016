@@ -25,12 +25,13 @@ CPlayer::CPlayer()
 	, m_vRotate(0.f, -XM_PI, 0.f)
 	, m_pInputMgr(CInputMgr::GetInstance())
 	, m_bSweap(false)
-	, m_dpSections( nullptr )
-	, m_iSectionCnt( 0 )
+	, m_dpSections(nullptr)
+	, m_iSectionCnt(0)
 	, m_iHp(100)
-	, m_bAlpha( false )
-	, m_vOverlapped( 0.f, 1.f, 0.f )
-	, m_eCharactor( CHARACTER_CHM )
+	, m_bAlpha(false)
+	, m_vOverlapped(0.f, 1.f, 0.f)
+	, m_eCharactor(CHARACTER_CHM)
+	, m_fDefenceTime(0.f)
 {
 }
 
@@ -69,7 +70,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	{
 		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
-		else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
+		else if (m_pInputMgr->Get_KeyboardState(DIK_A))
 			eState = STATE_DEFEND;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 			eState = STATE_JUMP;
@@ -79,6 +80,19 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		else
 			eState = STATE_IDLE;
 	}
+
+	// 방어 중일때 방어가 풀리는 조건 체크
+	if (eState == STATE_DEFEND)
+	{
+		m_fDefenceTime += fTimeDelta;
+		if (m_fDefenceTime > 1.f || false == m_pInputMgr->Get_KeyboardState(DIK_A))
+		{
+			m_fDefenceTime = 0.f;
+			eState = STATE_DEFEND_END;
+			m_pAnimator->Play();
+		}
+	}
+	
 	
 	if( eState != m_pStateMachine->GetCurrentState() )
 		CNetworkMgr::GetInstance()->sendCharacterState( eState );

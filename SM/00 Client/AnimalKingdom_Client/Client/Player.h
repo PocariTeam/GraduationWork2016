@@ -67,6 +67,8 @@ protected:
 	CSection**				m_dpSections;
 	UINT					m_iSectionCnt;
 	bool					m_bAlpha;
+
+	float					m_fDefenceTime;
 };
 
 #endif // Player_h__

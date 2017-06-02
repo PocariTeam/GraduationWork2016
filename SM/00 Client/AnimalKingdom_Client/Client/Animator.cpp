@@ -264,6 +264,7 @@ void CAnimator::Update( CGameObject* pOwner, const float& fTimeDelta )
 			break;
 		case 3:
 			// 막기 시작
+			m_bPause = true;
 			m_mapEvent.erase( map_iter );
 			break;
 		case 4:

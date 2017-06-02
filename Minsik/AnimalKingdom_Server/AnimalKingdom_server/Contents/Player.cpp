@@ -162,7 +162,14 @@ void Player::sweapOff( void )
 
 void Player::setState( STATE state )
 {
-	stateMachine_->Change_State(state);
+	if (state == STATE_DEFEND_END)
+	{
+		animator_->Play();
+	}
+	else
+	{
+		stateMachine_->Change_State(state);
+	}
 }
 
 bool Player::checkBlocking( NxVec3& vDir )
