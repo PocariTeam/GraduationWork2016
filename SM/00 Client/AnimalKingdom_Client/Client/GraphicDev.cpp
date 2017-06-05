@@ -133,9 +133,9 @@ HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, IDXGIFactory* pd
 	SwapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	// 4XMSAA 를 사용 사용수준 0 보다 크도록 강제
-	//UINT dw4xMsaaQuality = 0;
-	//if( FAILED( m_pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
-	//{
+	/*UINT dw4xMsaaQuality = 0;
+	if( FAILED( m_pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
+	{*/
 		// 멀티샘플링을 끔
 		SwapChainDesc.SampleDesc.Count = 1;
 		SwapChainDesc.SampleDesc.Quality = 0;
@@ -143,7 +143,7 @@ HRESULT CGraphicDev::Create_SwapChain( WINMODE Mode, HWND hWnd, IDXGIFactory* pd
 
 	//else
 	//{
-		// 멀티샘플링 적용
+	//	// 멀티샘플링 적용
 	//	SwapChainDesc.SampleDesc.Count = 4;
 	//	SwapChainDesc.SampleDesc.Quality = dw4xMsaaQuality - 1;
 	//}
@@ -225,5 +225,5 @@ DWORD CGraphicDev::Release( void )
 
 void CGraphicDev::EndScene( void )
 {
-	m_pSwapChain->Present( 0, 0 );
+	m_pSwapChain->Present( 1, 0 );
 }

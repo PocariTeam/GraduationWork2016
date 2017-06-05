@@ -7,13 +7,14 @@
 
 #include "RenderTarget.h"
 class CRenderTarget;
+class CGraphicDev;
 class CRenderTargetMgr
 	: public CSingleton<CRenderTargetMgr>
 {
 public:
 	enum eRT_Type {	RT_BACK, RT_NORMAL, RT_DEPTH, RT_ALBEDO, RT_LIGHT, RT_SPECULAR, RT_END };
 public:
-	HRESULT Initialize( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY );
+	HRESULT Initialize( CGraphicDev* pGraphicDev, const WORD& wSizeX, const WORD& wSizeY );
 	DWORD	Release( void );
 
 private:
@@ -25,7 +26,7 @@ private:
 	void	AssembleShaderResourceView( void );
 
 public:
-	void				ResizeRenderTarget( ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY );
+	void				ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY );
 	void				ClearRenderTargetView( ID3D11DeviceContext* pContext );
 	void				ClearDepthStencilView( ID3D11DeviceContext* pContext );
 	void				SetRenderTargetView( ID3D11DeviceContext* pContext, UINT iSelect, UINT iCnt );
@@ -33,6 +34,7 @@ public:
 	ID3D11Texture2D*	GetTexture( eRT_Type eType ) { return m_vecRenderTarget[ eType ]->Get_Texture(); }
 	void				Render( ID3D11DeviceContext* pContext );
 private:
+	CGraphicDev*				m_pGraphicDev;
 	vector<CRenderTarget*>		m_vecRenderTarget;
 	ID3D11RenderTargetView**	m_pArrRenderTargetView;
 	ID3D11ShaderResourceView**	m_pArrShaderResourceView;

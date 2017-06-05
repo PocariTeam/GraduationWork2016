@@ -34,7 +34,6 @@ private:
 private:
 	/* Device */
 	CGraphicDev*			m_pGraphicDev;
-	ID3D11Device*			m_pDevice;
 	ID3D11DeviceContext*	m_pContext;
 	HWND			m_hWnd;
 	/* Scene */

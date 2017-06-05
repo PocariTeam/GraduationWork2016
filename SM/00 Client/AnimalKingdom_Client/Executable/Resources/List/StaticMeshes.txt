@@ -1,4 +1,4 @@
-29
+30
 Mesh_Crown ../Executable/Resources/Mesh/Inanimate/Normal/Crown.jsm
 Mesh_Test ../Executable/Resources/Mesh/Inanimate/Normal/Test.jsm
 Mesh_Banana ../Executable/Resources/Mesh/Inanimate/Normal/Banana.jsm
@@ -28,3 +28,4 @@ Mesh_Palmtree ../Executable/Resources/Mesh/Inanimate/Normal/Palmtree.jsm
 Mesh_Rock03 ../Executable/Resources/Mesh/Inanimate/Normal/Rock03.jsm
 Mesh_Tree03 ../Executable/Resources/Mesh/Inanimate/Normal/Tree03.jsm
 Mesh_Tree04 ../Executable/Resources/Mesh/Inanimate/Normal/Tree04.jsm
+Mesh_Skydome ../Executable/Resources/Mesh/Inanimate/Normal/Skydome.jsm

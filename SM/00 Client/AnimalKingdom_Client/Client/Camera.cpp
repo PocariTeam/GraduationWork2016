@@ -64,7 +64,9 @@ void CCamera::SetConstantBuffer( ID3D11DeviceContext* pContext )
 	CB_CAMERA* pConstantBuffer_Camera = ( CB_CAMERA* )MappedSubresource.pData;
 	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxView, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxView ) ) );
 	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxProj, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxProj ) ) );
-	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxOrtho, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxProj ) ) );
+	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxOrtho, XMMatrixTranspose( XMLoadFloat4x4( &m_mtxOrtho ) ) );
+	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxViewInv, XMMatrixTranspose( XMMatrixInverse( nullptr, XMLoadFloat4x4( &m_mtxView ) ) ) );
+	XMStoreFloat4x4( &pConstantBuffer_Camera->m_mtxProjInv, XMMatrixTranspose( XMMatrixInverse( nullptr, XMLoadFloat4x4( &m_mtxProj ) ) ) );
 	pConstantBuffer_Camera->m_vCameraPos = XMFLOAT4( m_vEye.x, m_vEye.y, m_vEye.z, 0.f );
 
 	pContext->Unmap( m_pConstantBufferCamera, 0 );

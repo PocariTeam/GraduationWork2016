@@ -8,13 +8,13 @@
 typedef struct tagLight_Info 
 {
 	tagLight_Info()
-		: m_fType( 0 )
+		: m_iType( 0 )
 		, m_vPos( 0.f, 0.f, 0.f )
 		, m_vDiffuse( 1.f, 1.f, 1.f, 1.f )
 		, m_vAmbient( 0.6f, 0.6f, 0.6f, 10.f )
 		, m_vSpecular( 0.5f, 0.5f, 0.5f, 1000.f )
 		, m_vDir( 0.f, 0.f, 1.f )
-		, m_fRange( 1000.f )
+		, m_fRange( 200.f )
 		, m_vAttenuation( 0.1f, 0.001f, 0.0001f )
 		, m_fFalloff( 5.f )
 		, m_fPhi( cos( XMConvertToRadians( 7.0f ) ) )
@@ -22,18 +22,18 @@ typedef struct tagLight_Info
 		, m_vPadding( 0.f, 0.f )
 	{ }
 
-	float	   m_fType;
-	XMFLOAT3   m_vPos;
-	XMFLOAT4   m_vDiffuse;
-	XMFLOAT4   m_vAmbient;
-	XMFLOAT4   m_vSpecular;
-	XMFLOAT3   m_vDir;
-	float	   m_fRange;
-	XMFLOAT3   m_vAttenuation;
-	float	   m_fFalloff;
-	float	   m_fPhi;
-	float	   m_fTheta;
-	XMFLOAT2   m_vPadding;
+	int			m_iType;
+	XMFLOAT3	m_vPos;
+	XMFLOAT4	m_vDiffuse;
+	XMFLOAT4	m_vAmbient;
+	XMFLOAT4	m_vSpecular;
+	XMFLOAT3	m_vDir;
+	float		m_fRange;
+	XMFLOAT3	m_vAttenuation;
+	float		m_fFalloff;
+	float		m_fPhi;
+	float		m_fTheta;
+	XMFLOAT2	m_vPadding;
 }LIGHT;
 
 /*                             Vertex Type                                     */
@@ -73,6 +73,8 @@ typedef struct tagConstantBuffer_Camera
 	XMFLOAT4X4  m_mtxView;
 	XMFLOAT4X4  m_mtxProj;
 	XMFLOAT4X4	m_mtxOrtho;
+	XMFLOAT4X4  m_mtxViewInv;
+	XMFLOAT4X4  m_mtxProjInv;
 	XMFLOAT4	m_vCameraPos;
 }CB_CAMERA;
 

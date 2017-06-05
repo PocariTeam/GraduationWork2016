@@ -22,7 +22,7 @@
 #include <NxController.h>
 #include <NxScene.h>
 #include <fstream>
-#include "Skybox.h"
+#include "Skydome.h"
 #include <set>
 #include <xfunctional>
 #include "NetworkMgr.h"
@@ -379,9 +379,9 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 	CNetworkMgr::GetInstance()->getPlayerInfo( pPlayerInfo, iPlayerCnt );
 
-	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skybox, *pShader_Cave, *pShader_Mesh_Alpha;
+	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave, *pShader_Mesh_Alpha;
 
-	pShader_Skybox = CShaderMgr::GetInstance()->Clone( "Shader_Skybox" );
+	pShader_Skydome = CShaderMgr::GetInstance()->Clone( "Shader_Skydome" );
 	pShader_Mesh = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
 	pShader_Cave = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
 	pShader_Light = CShaderMgr::GetInstance()->Clone( "Shader_Light" );
@@ -390,9 +390,9 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pShader_Animate = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh" );
 	pShader_Mesh_Alpha = CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" );
 
-	CMesh* pDot_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Dot" );
-	CTexture* pTexture_Skybox = CTextureMgr::GetInstance()->Clone( "Texture_Skybox" );
-	CGameObject* pSkybox = CSkybox::Create( pDot_Mesh, pTexture_Skybox );
+	CMesh* pSkydome_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Skydome" );
+	CTexture* pTexture_Skydome = CTextureMgr::GetInstance()->Clone( "Texture_Skydome" );
+	CGameObject* pSkydome = CSkydome::Create( pSkydome_Mesh, pTexture_Skydome );
 
 	CMesh* pLight_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Background" );
 	CGameObject* pLight_Screen = CWallpaper::Create( pDevice, pLight_Mesh );
@@ -400,7 +400,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	CMesh* pBlend_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Background" );
 	CGameObject* pBlend_Screen = CWallpaper::Create( pDevice, pBlend_Mesh );
 
-	pShader_Skybox->Add_RenderObject( pSkybox );
+	pShader_Skydome->Add_RenderObject( pSkydome );
 	pShader_Light->Add_RenderObject( pLight_Screen );
 	pShader_Blend->Add_RenderObject( pBlend_Screen );
 
@@ -787,7 +787,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			}
 		}
 
-		plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skybox );
+		plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skydome );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cave );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );

@@ -11,9 +11,13 @@ HRESULT CLightMgr::Initialize( ID3D11Device* pDevice, DWORD dwLightingCnt/*= 1 *
 	m_pArrLight = nullptr;
 	m_pConstantBufferLight = nullptr;
 	m_dwLightingCnt = 0;
-	
-	// Add( pDevice, LIGHT_POINT, XMFLOAT4( 1.f, 0.f, 0.f, 1.f ), XMFLOAT3( 0.f, 100.f, 0.f ) );
-	Add( pDevice, LIGHT_DIRECTIONAL, XMFLOAT4( 1.f, 1.f, 1.f, 1.f ), XMFLOAT3( 0.2f, -0.3f, 0.5f ) );
+
+	Add( pDevice, LIGHT_DIRECTIONAL, XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.f ), XMFLOAT3( 0.1f, -0.3f, 0.6f ) );
+
+	for( int i = 0; i < 3; ++i )
+		for( int j = 0; j < 3; ++j )
+			for( int k = 0; k < 3; ++k )
+				Add( pDevice, LIGHT_POINT, XMFLOAT4( Colors::LightBlue ), XMFLOAT3( -200.f + 200.f * i, 130.f + 60.f * j, -20.f + 100.f * k ) );
 
 	CreateConstantBuffer( pDevice );
 
@@ -36,7 +40,7 @@ DWORD CLightMgr::Release( void )
 HRESULT CLightMgr::Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& vDiffuse, const XMFLOAT3& vOption )
 {
 	LIGHT* pNewLighting = new LIGHT;
-	pNewLighting->m_fType = ( float )eType;
+	pNewLighting->m_iType = eType;
 	pNewLighting->m_vDiffuse = vDiffuse;
 
 	switch( eType )
@@ -92,7 +96,7 @@ void CLightMgr::SetConstantBuffer( ID3D11DeviceContext* pContext )
 
 void CLightMgr::AssembleLightArr( LIGHT* pNewLighting )
 {
-	if( nullptr == m_pArrLight )
+	if( 1 == m_dwLightingCnt )
 	{
 		m_pArrLight = new LIGHT*;
 		m_pArrLight[ 0 ] = pNewLighting;
@@ -100,13 +104,12 @@ void CLightMgr::AssembleLightArr( LIGHT* pNewLighting )
 	}
 
 	LIGHT**	pArrLight{ new LIGHT*[ m_dwLightingCnt ] };
-	memcpy_s( pArrLight, sizeof( LIGHT ) * ( m_dwLightingCnt - 1 ), m_pArrLight, sizeof( LIGHT ) * ( m_dwLightingCnt - 1 ) );
-	pArrLight[ m_dwLightingCnt - 1 ] = pNewLighting;
 	
 	for( DWORD i = 0; i < m_dwLightingCnt - 1; ++i )
-		::Safe_Delete( m_pArrLight[ i ] );
+		pArrLight[ i ] = m_pArrLight[ i ];
 	::Safe_Delete_Array( m_pArrLight );
 
+	pArrLight[ m_dwLightingCnt - 1 ] = pNewLighting;
 	m_pArrLight = pArrLight;
 }
 

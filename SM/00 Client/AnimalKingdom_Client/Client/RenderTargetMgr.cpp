@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GraphicDev.h"
 #include "RenderTargetMgr.h"
 #include "RenderTarget.h"
 #include "Functor.h"
@@ -7,13 +8,17 @@
 
 CRenderTargetMgr* CSingleton<CRenderTargetMgr>::m_pInstance;
 
-HRESULT CRenderTargetMgr::Initialize( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY )
+HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSizeX, const WORD& wSizeY )
 {
+	m_pGraphicDev = pGraphicDev;
 	m_pArrRenderTargetView = nullptr;
 	m_pArrShaderResourceView = nullptr;
 	m_pConstantBuffer = nullptr;
 
 	m_vecRenderTarget.reserve( RT_END );
+
+	ID3D11Device* pDevice{ m_pGraphicDev->Get_Device() };
+	IDXGISwapChain* pSwapChain{ m_pGraphicDev->Get_SwapChain() };
 
 	for( int i = 0; i < RT_END; ++i )
 		Add( pDevice, pSwapChain, wSizeX, wSizeY );
@@ -34,6 +39,7 @@ DWORD CRenderTargetMgr::Release( void )
 	for_each( m_vecRenderTarget.begin(), m_vecRenderTarget.end(), ReleaseElement() );
 	m_vecRenderTarget.erase( m_vecRenderTarget.begin(), m_vecRenderTarget.end() );
 	m_vecRenderTarget.swap( vector<CRenderTarget*>{} );
+	m_pGraphicDev = nullptr;
 
 	delete this;
 
@@ -71,14 +77,14 @@ HRESULT CRenderTargetMgr::CreateDepthStencilBuffer( ID3D11Device* pDevice, const
 	DepthBufferDesc.CPUAccessFlags = 0;
 	DepthBufferDesc.MiscFlags = 0;
 
-	//UINT dw4xMsaaQuality = 0;
-	//if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
-	//{
+	/*UINT dw4xMsaaQuality = 0;
+	if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
+	{*/
 		DepthBufferDesc.SampleDesc.Count = 1;
 		DepthBufferDesc.SampleDesc.Quality = 0;
-	//}
+	/*}
 
-	/*else
+	else
 	{
 		DepthBufferDesc.SampleDesc.Count = 4;
 		DepthBufferDesc.SampleDesc.Quality = dw4xMsaaQuality - 1;
@@ -165,9 +171,14 @@ void CRenderTargetMgr::AssembleShaderResourceView( void )
 		m_pArrShaderResourceView[ i ] = m_vecRenderTarget[ i + 1 ]->Get_ShaderResourceView();
 }
 
-void CRenderTargetMgr::ResizeRenderTarget( ID3D11Device* pDevice, ID3D11DeviceContext* pContext, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY )
+void CRenderTargetMgr::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY )
 {
 	if( m_vecRenderTarget.empty() ) return;
+
+	ID3D11Device*		 pDevice{ m_pGraphicDev->Get_Device() };
+	ID3D11DeviceContext* pContext{ m_pGraphicDev->Get_Context() };
+	IDXGISwapChain*		 pSwapChain{ m_pGraphicDev->Get_SwapChain() };
+
 	ClearRenderTargetView( pContext );
 	ClearDepthStencilView( pContext );
 

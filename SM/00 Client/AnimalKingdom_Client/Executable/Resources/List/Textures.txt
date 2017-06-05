@@ -23,7 +23,7 @@ Texture_HP_Bar 1 ../Executable/Resources/Texture/UI/HP_Bar/HP_Bar.png
 Texture_Status 1 ../Executable/Resources/Texture/UI/Status/Status.png
 Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
 Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
-Texture_Skybox 1 ../Executable/Resources/Texture/Skybox/Skybox.dds
+Texture_Skydome 5 ../Executable/Resources/Texture/Skydome/Skydome%d.png
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
 Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Ground1 1 ../Executable/Resources/Texture/map/ground1.png

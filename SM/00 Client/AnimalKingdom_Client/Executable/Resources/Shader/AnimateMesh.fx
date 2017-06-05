@@ -12,6 +12,8 @@ cbuffer cbCamera : register( b1 )
 	matrix g_mtxView;
 	matrix g_mtxProj;
 	matrix g_mtxOrtho;
+	matrix g_mtxViewInv;
+	matrix g_mtxProjInv;
 	float4 g_vCameraPos;
 };
 

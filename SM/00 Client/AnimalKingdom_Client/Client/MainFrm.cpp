@@ -26,14 +26,14 @@ HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 	m_pGraphicDev = CGraphicDev::Create( CGraphicDev::MODE_WIN, hWnd, g_wWinsizeX, g_wWinsizeY );
 	if( nullptr == m_pGraphicDev ) return E_FAIL;
 
-	m_pDevice = m_pGraphicDev->Get_Device();
+	ID3D11Device* pDevice{ m_pGraphicDev->Get_Device() };
 	m_pContext = m_pGraphicDev->Get_Context();
 
 	m_pRenderTargetMgr = CRenderTargetMgr::GetInstance();
 	m_pInputMgr = CInputMgr::GetInstance();
 	m_pRenderer = CRenderer::GetInstance();
 
-	if( FAILED( m_pRenderTargetMgr->Initialize( m_pDevice, m_pGraphicDev->Get_SwapChain(), g_wWinsizeX, g_wWinsizeY ) ) )
+	if( FAILED( m_pRenderTargetMgr->Initialize( m_pGraphicDev, g_wWinsizeX, g_wWinsizeY ) ) )
 		return E_FAIL;
 	m_pRenderTargetMgr->SetRenderTargetView( m_pContext, CRenderTargetMgr::RT_BACK, 1 );
 
@@ -43,10 +43,10 @@ HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 	if( FAILED( CThreadMgr::GetInstance()->Initialize( hWnd ) ) )
 		return E_FAIL;
 
-	if( FAILED( m_pRenderer->Initialize( m_pDevice ) ) )
+	if( FAILED( m_pRenderer->Initialize( pDevice ) ) )
 		return E_FAIL;
 
-	if( FAILED( Ready_Logo( m_pDevice ) ) )
+	if( FAILED( Ready_Logo( pDevice ) ) )
 		return E_FAIL;
 	
 	if( FAILED( Change_Scene() ) )
@@ -82,7 +82,8 @@ int CMainFrm::Update( const float& fTimeDelta )
 
 	Check_Key();
 
-	if( iRetVal = m_pScene->Update( fTimeDelta ) ) {
+	if( iRetVal = m_pScene->Update( fTimeDelta ) )
+	{
 		m_bySceneNum = iRetVal;
 		Change_Scene();
 	}
@@ -139,7 +140,7 @@ DWORD CMainFrm::Release( void )
 
 void CMainFrm::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY )
 {
-	m_pRenderTargetMgr->ResizeRenderTarget( m_pDevice, m_pContext, m_pGraphicDev->Get_SwapChain(), g_wWinsizeX, g_wWinsizeY );
+	m_pRenderTargetMgr->ResizeRenderTarget( wSizeX, wSizeY );
 	m_pRenderTargetMgr->SetRenderTargetView( m_pContext, 0, 1 );
 }
 
@@ -160,7 +161,7 @@ HRESULT CMainFrm::Change_Scene( void )
 {
 	::Safe_Release( m_pScene );
 
-	m_pScene = CScene::Create( m_hWnd, m_pDevice, m_bySceneNum );
+	m_pScene = CScene::Create( m_hWnd, m_pGraphicDev->Get_Device(), m_bySceneNum );
 
 	if( nullptr == m_pScene )
 		return E_FAIL;
@@ -191,7 +192,6 @@ void CMainFrm::Check_Key( void )
 
 CMainFrm::CMainFrm()
 	: m_pGraphicDev( nullptr )
-	, m_pDevice( nullptr )
 	, m_pContext( nullptr )
 	, m_pScene( nullptr )
 	, m_bySceneNum( CScene::SCENE_LOGO )

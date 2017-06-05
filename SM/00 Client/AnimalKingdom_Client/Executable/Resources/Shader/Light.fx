@@ -1,11 +1,11 @@
-#define LIGHT_CNT		1
-#define DIRECTIONAL		0.f
-#define POINT			1.0f
-#define SPOT			2.0f
+#define LIGHT_CNT		28
+#define DIRECTIONAL		0
+#define POINT			1
+#define SPOT			2
 
 struct LIGHT
 {
-	float	fType;
+	int		iType;
 	float3	vPos;
 	float4	vDiffuse;
 	float4	vAmbient;
@@ -30,6 +30,8 @@ cbuffer cbCamera : register( b1 )
 	matrix g_mtxView;
 	matrix g_mtxProj;
 	matrix g_mtxOrtho;
+	matrix g_mtxViewInv;
+	matrix g_mtxProjInv;
 	float4 g_vCameraPos;
 };
 
@@ -38,8 +40,8 @@ cbuffer cbLight : register( b2 )
 	LIGHT	g_tLight[ LIGHT_CNT ];
 }
 
-Texture2D g_NormalTexture : register( t0 );
-Texture2D g_DepthTexture : register( t1 );
+Texture2D/*MS<float4, 4>*/ g_NormalTexture : register( t0 );
+Texture2D/*MS<float4, 4>*/ g_DepthTexture : register( t1 );
 
 static float	Filter[ 9 ] = { -1.f, -1.f, -1.f, -1.f, 8.f, -1.f, -1.f, -1.f, -1.f };		// LPF
 static float2	TextureOffsetUV[ 9 ] = { { -1.f, -1.f }, { 0.f, -1.f },{ 1.f, -1.f },{ -1.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f },{ -1.f, 1.f },{ 0.f, 1.f }, { 1.f, 1.f } };
@@ -81,21 +83,21 @@ PS_OUT	PS( VS_OUT	In )
 {
 	PS_OUT		Out = ( PS_OUT )0;
 
-	float3		vNormal = g_NormalTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).xyz;
+	float3		vNormal = g_NormalTexture.Load( float3( In.vTexUV, 0.f )/*int2( In.vTexUV.x, In.vTexUV.y ), 0*/ ).xyz;
 	float3		vWorldNormal = mad( vNormal.xyz, 2.f, -1.f );
 
-	float3		vDepth = g_DepthTexture.Load( float3( In.vTexUV.x, In.vTexUV.y, 0.f ) ).xyz;
-	float		fViewZ = vDepth.y * 1000.f;
+	float3		vDepth = g_DepthTexture.Load( float3( In.vTexUV, 0.f )/*int2( In.vTexUV.x, In.vTexUV.y ), 0*/ ).xyz;
+	float		fViewZ = vDepth.g * 1000.f;
 
 	float4		vPos = ( float4 )0;
 
 	vPos.x = mad( In.vUV.x, 2.f, -1.f ) * fViewZ;
 	vPos.y = mad( In.vUV.y, -2.f, 1.f ) * fViewZ;
-	vPos.z = vDepth.x * fViewZ;
+	vPos.z = vDepth.r * fViewZ;
 	vPos.w = fViewZ;
 
-	vPos = mul( g_mtxProj, vPos );
-	vPos = mul( g_mtxView, vPos );
+	vPos = mul( vPos, g_mtxProjInv );
+	vPos = mul( float4( vPos.xyz, 1.f ), g_mtxViewInv );
 
 	float3 vLookInv = normalize( g_vCameraPos.xyz - vPos.xyz );
 
@@ -105,7 +107,7 @@ PS_OUT	PS( VS_OUT	In )
 
 	for( i = 0; i < LIGHT_CNT; ++i )
 	{
-		switch( g_tLight[ i ].fType )
+		switch( g_tLight[ i ].iType )
 		{
 		case DIRECTIONAL :
 			vLight += saturate( mad( max( dot( -g_tLight[ i ].vDir, vWorldNormal ), 0.f ), g_tLight[ i ].vDiffuse, g_tLight[ i ].vAmbient ) );
@@ -122,28 +124,27 @@ PS_OUT	PS( VS_OUT	In )
 		}
 	}
 
-	Out.vLight = saturate( vLight );
-	Out.vSpecular = ( float4 )0;
+	vSpecular /= LIGHT_CNT;
 
+	Out.vLight = saturate( vLight );
+	Out.vSpecular = saturate( vSpecular );
+
+	// Cartoon
 	if( vDepth.z > 0.9f )
 	{
-		float3 vTest = ( float3 )0;
+		float3 vComparison = ( float3 )0;
 		for( int j = 0; j < 9; ++j )
-			vTest += Filter[ j ] * mad( g_NormalTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz, 2.f, -1.f );
-		float fTemp = vTest.x/* * 0.3f*/ + vTest.y/* * 0.59f*/ + vTest.z/* * 0.11f*/;
-		vTest = float3( fTemp, fTemp, fTemp );
-		Out.vLight.xyz = ( fTemp < vDepth.y * 5.f ) ? Out.vLight.xyz : 0.f;
-		Out.vLight.xyz = float3( int3( Out.vLight.xyz * 3.f ) * 0.3f );
-		Out.vSpecular = saturate( vSpecular );
+			vComparison += Filter[ j ] * mad( g_NormalTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( In.vTexUV.xy + TextureOffsetUV[ j ] ), 0*/ ).xyz, 2.f, -1.f );
+		float fComparison = dot( vComparison, float3( 1.f, 1.f, 1.f ) );
+		Out.vLight.xyz = ( fComparison < vDepth.y * 5.f ) ? float3( int3( Out.vLight.xyz * 3.f ) * 0.3f ) : 0.f;
 	}
 
 	else
 	{
-		float vTest[ 9 ];
+		float fComparison = 0.f;
 		for( int j = 0; j < 9; ++j )
-			vTest[ j ] = Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).z;
-		float fTemp = vTest[ 0 ] + vTest[ 1 ] + vTest[ 2 ] + vTest[ 3 ] + vTest[ 4 ] + vTest[ 5 ] + vTest[ 6 ] + vTest[ 7 ] + vTest[ 8 ];
-		Out.vLight.xyz = ( fTemp > -0.01f ) ? Out.vLight.xyz : 0.f;
+			fComparison += Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( In.vTexUV.xy + TextureOffsetUV[ j ] ), 0*/ ).z;
+		Out.vLight.xyz = ( fComparison > -0.01f ) ? Out.vLight.xyz : 0.f;
 	}
 
 	return Out;
@@ -155,7 +156,6 @@ float4 Directional_Specular( LIGHT tLight, float4 vWorldNormal, float3 vLookInv 
 
 	float4 vReflect = reflect( float4( normalize( tLight.vDir ), 0.f ), vWorldNormal );
 	vSpecular = pow( max( dot( vLookInv, normalize( vReflect ).xyz ), 0.f ), tLight.vSpecular.w );
-
 	vSpecular *= tLight.vSpecular;
 
 	return vSpecular;
@@ -165,20 +165,15 @@ float4 Point_Lighting( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal )
 {
 	float4 vLight = ( float4 )0;
 
-	float3 vToLight = tLight.vPos - vWorldPos;
-	float fDistance = length( vToLight );
-
+	float3 vToLightInv = tLight.vPos - vWorldPos;
+	float fDistance = length( vToLightInv );
 	if( fDistance > tLight.fRange ) return vLight;
 
-	vToLight /= fDistance;
-	float	fDiffuseFactor = max( dot( vToLight, vWorldNormal ), 0.f );
+	float	fDiffuseFactor = max( dot( normalize( vToLightInv ), vWorldNormal ), 0.f );
+	if( fDiffuseFactor <= 0.f )		return vLight;
 
-	if( fDiffuseFactor > 0.f )
-		vLight = tLight.vDiffuse * fDiffuseFactor;
-
-	float	fAttenuationFactor = dot( tLight.vAttenuation, float3( 1.f, fDistance, fDistance * fDistance ) );
-	vLight += tLight.vAmbient;
-	vLight *= fAttenuationFactor;
+	float	fAttenuationFactor = 1.f / dot( tLight.vAttenuation, float3( 1.f, fDistance, fDistance * fDistance ) );
+	vLight = tLight.vDiffuse * fDiffuseFactor * fAttenuationFactor;
 
 	return vLight;
 }
@@ -187,18 +182,16 @@ float4 Point_Specular( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal, floa
 {
 	float4 vSpecular = ( float4 )0;
 
-	float3 vToLight = tLight.vPos - vWorldPos;
-	float fDistance = length( vToLight );
+	float3	vToLightInv = tLight.vPos - vWorldPos;
+	float	fDistance = length( vToLightInv );
+	if( fDistance > tLight.fRange || tLight.vSpecular.w <= 0.f ) return vSpecular;
 
-	if( fDistance > tLight.fRange ) return vSpecular;
-	if( tLight.vSpecular.w <= 0.f ) return vSpecular;
-
-	float3	vToLightInv = vWorldPos - tLight.vPos;
+	vToLightInv /= fDistance;
 	float3	vReflect = reflect( vToLightInv, vWorldNormal );
-	float	fSpecularFactor = pow( max( dot( vReflect, vLookInv ), 0.f ), tLight.vSpecular.w );
-	vSpecular = tLight.vSpecular * fSpecularFactor;
+	float	fSpecularFactor = pow( max( dot( vLookInv, normalize( vReflect ).xyz ), 0.f ), tLight.vSpecular.w );
+	vSpecular = tLight.vDiffuse * fSpecularFactor;
 
-	float fAttenuationFactor = dot( tLight.vAttenuation, float3( 1.0f, fDistance, fDistance * fDistance ) );
+	float fAttenuationFactor = 1.f / dot( tLight.vAttenuation, float3( 1.0f, fDistance, fDistance * fDistance ) );
 	vSpecular *= fAttenuationFactor;
 	vSpecular.w = 0.f;
 

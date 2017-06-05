@@ -44,18 +44,18 @@ HRESULT CRenderTarget::CreateRenderTarget( ID3D11Device* pDevice, const WORD& wS
 	tTexture2D_Desc.Usage = D3D11_USAGE_DEFAULT;
 	tTexture2D_Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
-	//UINT dw4xMsaaQuality = 0;
-	//if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R32G32B32A32_FLOAT, 4, &dw4xMsaaQuality ) ) )
-	//{
+	/*UINT dw4xMsaaQuality = 0;
+	if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R32G32B32A32_FLOAT, 4, &dw4xMsaaQuality ) ) )
+	{*/
 		tTexture2D_Desc.SampleDesc.Count = 1;
 		tTexture2D_Desc.SampleDesc.Quality = 0;
-	//}
+		/*}
 
-	/*else
-	{
-		tTexture2D_Desc.SampleDesc.Count = 4;
-		tTexture2D_Desc.SampleDesc.Quality = dw4xMsaaQuality - 1;
-	}*/
+		else
+		{
+			tTexture2D_Desc.SampleDesc.Count = 4;
+			tTexture2D_Desc.SampleDesc.Quality = dw4xMsaaQuality - 1;
+		}*/
 
 	tTexture2D_Desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	tTexture2D_Desc.ArraySize = 1;
@@ -63,12 +63,12 @@ HRESULT CRenderTarget::CreateRenderTarget( ID3D11Device* pDevice, const WORD& wS
 
 	D3D11_RENDER_TARGET_VIEW_DESC	tRTV_Desc;
 	ZeroMemory( &tRTV_Desc, sizeof( D3D11_RENDER_TARGET_VIEW_DESC ) );
-	tRTV_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	tRTV_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D/*MS*/;
 	tRTV_Desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC	tSRV_Desc;
 	ZeroMemory( &tSRV_Desc, sizeof( D3D11_SHADER_RESOURCE_VIEW_DESC ) );
-	tSRV_Desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	tSRV_Desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D/*MS*/;
 	tSRV_Desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	tSRV_Desc.Texture2D.MostDetailedMip = 0;
 	tSRV_Desc.Texture2D.MipLevels = 1;
