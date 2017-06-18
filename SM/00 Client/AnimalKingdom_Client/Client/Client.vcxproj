@@ -213,8 +213,11 @@
     <ClInclude Include="Define.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="EventCamera.h" />
+    <ClInclude Include="MediaPath.h" />
+    <ClInclude Include="MyCloth.h" />
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
+    <ClInclude Include="Stream.h" />
     <ClInclude Include="ThirdCamera.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Dot.h" />
@@ -270,6 +273,7 @@
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="Wallpaper.h" />
+    <ClInclude Include="wavefront.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Executable\ThirdParty\Physics\NxuStream2\NXU_Asc2Bin.cpp">
@@ -381,8 +385,11 @@
     <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EventCamera.cpp" />
+    <ClCompile Include="MediaPath_WIN.cpp" />
+    <ClCompile Include="MyCloth.cpp" />
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
+    <ClCompile Include="Stream.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Dot.cpp" />
@@ -435,6 +442,7 @@
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
     <ClCompile Include="AnimationSet.cpp" />
+    <ClCompile Include="wavefront.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

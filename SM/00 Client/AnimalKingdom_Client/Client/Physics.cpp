@@ -79,6 +79,13 @@ int CPhysics::Update( const float& fTimeDelta )
 
 void CPhysics::Render( ID3D11DeviceContext* pContext )
 {
+	// 천 그리기
+	if (m_pCloth != nullptr)
+	{
+		m_pCloth->draw(false);
+	}
+	///////////////
+
 	NxActor** dpActor = m_pScene->getActors();
 
 	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
@@ -148,6 +155,12 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 
 void CPhysics::Release_Scene( void )
 {
+	if (m_pCloth != nullptr)
+	{
+		delete m_pCloth;
+		m_pCloth = nullptr;
+	}
+
 	while( !m_BananaQueue.empty() )
 		m_BananaQueue.pop();
 
@@ -225,6 +238,8 @@ void CPhysics::UpdateDynamicOneActor(S_SyncDynamicOne * packet)
 
 HRESULT CPhysics::Initialize( ID3D11Device* pDevice )
 {
+	m_pCloth = nullptr;
+
 	m_pAllocator = new UserAllocator;
 	bool bResult = InitCooking( m_pAllocator );
 
@@ -369,6 +384,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	else
 		printf( "Software Simulate\n" );
 #endif
+
+	CreateCloth();
 
 	NxU32		iActorCnt = m_pScene->getNbActors();
 	NxActor**	dpActorArray = m_pScene->getActors();
@@ -973,6 +990,61 @@ void CPhysics::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape
 	}
 
 	NX_ASSERT(triMesh.isValid());
+}
+
+void CPhysics::CreateCloth()
+{
+	// 테스트용 액터
+	ACTOR_INFO	testActorDesc;
+	testActorDesc.m_dwType = NX_SHAPE_BOX;
+	testActorDesc.m_fRadius = 2.5f;
+	testActorDesc.m_fWidth = 20.f;
+	testActorDesc.m_fHeight = 20.f;
+	testActorDesc.m_fLength = 20.f;
+	testActorDesc.m_vGlobalPosition.x = -100.f;
+	testActorDesc.m_vGlobalPosition.y = 200.f;
+	testActorDesc.m_vGlobalPosition.z = 100.f;
+
+	NxActor* pActor = CreateActor("testBoxForCloth", testActorDesc, COL_DYNAMIC);
+
+	// 옷감
+	NxClothDesc clothDesc;
+	clothDesc.globalPose.t = NxVec3(-100, 200, 100);
+	clothDesc.thickness = 0.2f;
+	//clothDesc.density = 1.0f;
+	clothDesc.bendingStiffness = 1.0f;
+	clothDesc.stretchingStiffness = 1.0f;
+	//clothDesc.dampingCoefficient = 0.50f;
+	clothDesc.friction = 0.5f;
+	//clothDesc.collisionResponseCoefficient = 1.0f;
+	//clothDesc.attachmentResponseCoefficient = 1.0f;
+	//clothDesc.solverIterations = 5;
+	//clothDesc.flags |= NX_CLF_STATIC;
+	//clothDesc.flags |= NX_CLF_DISABLE_COLLISION;
+	//clothDesc.flags |= NX_CLF_VISUALIZATION;
+	//clothDesc.flags |= NX_CLF_GRAVITY;
+	clothDesc.flags |= NX_CLF_BENDING;
+	//clothDesc.flags |= NX_CLF_BENDING_ORTHO;
+	//clothDesc.flags |= NX_CLF_DAMPING;
+	//clothDesc.flags |= NX_CLF_COMDAMPING;
+	clothDesc.flags |= NX_CLF_COLLISION_TWOWAY;
+
+	if (m_pScene->getSimType() == NX_SIMULATION_HW)
+		clothDesc.flags |= NX_CLF_HARDWARE;
+
+	m_pCloth = new MyCloth(m_pScene, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/);
+
+	if (!m_pCloth->getNxCloth())
+	{
+		printf("Error: Unable to create the cloth for the current scene.\n");
+		delete m_pCloth;
+	}
+	else
+	{
+		m_pCloth->getNxCloth()->attachToShape(*pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY);
+	}
+
+
 }
 
 void CPhysics::CreateBanana( void )

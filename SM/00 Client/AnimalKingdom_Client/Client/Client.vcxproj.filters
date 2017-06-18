@@ -268,6 +268,9 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\02 Skydome">
       <UniqueIdentifier>{addea75d-5082-4d8c-8ed2-5e52a29419dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\01 System\05 Physics\01 Cloth">
+      <UniqueIdentifier>{963f2990-324b-45c7-8be4-b9edbf4c53a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -588,6 +591,18 @@
     <ClInclude Include="Skydome.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\02 Skydome</Filter>
     </ClInclude>
+    <ClInclude Include="MyCloth.h">
+      <Filter>소스 파일\01 System\05 Physics\01 Cloth</Filter>
+    </ClInclude>
+    <ClInclude Include="Stream.h">
+      <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="wavefront.h">
+      <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaPath.h">
+      <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -856,6 +871,18 @@
     </ClCompile>
     <ClCompile Include="Skydome.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\02 Skydome</Filter>
+    </ClCompile>
+    <ClCompile Include="MyCloth.cpp">
+      <Filter>소스 파일\01 System\05 Physics\01 Cloth</Filter>
+    </ClCompile>
+    <ClCompile Include="Stream.cpp">
+      <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="wavefront.cpp">
+      <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaPath_WIN.cpp">
+      <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

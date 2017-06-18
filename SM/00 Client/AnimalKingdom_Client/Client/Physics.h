@@ -11,6 +11,7 @@
 #include "Struct.h"
 #include "Banana.h"
 #include "Crown.h"
+#include "MyCloth.h"
 
 #define GRAVITY -9.81f
 #define BANANA_COUNT 40
@@ -31,6 +32,7 @@ private:
 	NxPhysicsSDK*			m_pPhysicsSDK{ nullptr };
 	NxScene*				m_pScene{ nullptr };
 	CCrown*					m_pCrown;
+	MyCloth*				m_pCloth;
 
 	map<string, ACTOR_INFO>		m_mapActorInfo[CHARACTER_END];
 	list<CShader*>*				m_pShaderlist{ nullptr };
@@ -42,6 +44,7 @@ private:
 	NxController* CreateCharacterController(NxActor* pActor, NxActor** dpActors, int iArraySize);
 	void		SetCollisionGroup(NxActor* pActor, NxCollisionGroup eGroup);
 	void		CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape);
+	void		CreateCloth();
 
 public:
 	
