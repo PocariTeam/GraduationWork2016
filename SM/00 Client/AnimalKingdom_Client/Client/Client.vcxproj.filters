@@ -271,6 +271,9 @@
     <Filter Include="소스 파일\01 System\05 Physics\01 Cloth">
       <UniqueIdentifier>{963f2990-324b-45c7-8be4-b9edbf4c53a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth">
+      <UniqueIdentifier>{c0529f6c-5057-42a4-b2f3-b3d82cc83d16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -603,6 +606,9 @@
     <ClInclude Include="MediaPath.h">
       <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
     </ClInclude>
+    <ClInclude Include="Cloth.h">
+      <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -883,6 +889,9 @@
     </ClCompile>
     <ClCompile Include="MediaPath_WIN.cpp">
       <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloth.cpp">
+      <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,12 +12,9 @@ HRESULT CLightMgr::Initialize( ID3D11Device* pDevice, DWORD dwLightingCnt/*= 1 *
 	m_pConstantBufferLight = nullptr;
 	m_dwLightingCnt = 0;
 
-	Add( pDevice, LIGHT_DIRECTIONAL, XMFLOAT4( 0.1f, 0.1f, 0.1f, 1.f ), XMFLOAT3( 0.1f, -0.3f, 0.6f ) );
-
-	for( int i = 0; i < 3; ++i )
-		for( int j = 0; j < 3; ++j )
-			for( int k = 0; k < 3; ++k )
-				Add( pDevice, LIGHT_POINT, XMFLOAT4( Colors::LightBlue ), XMFLOAT3( -200.f + 200.f * i, 130.f + 60.f * j, -20.f + 100.f * k ) );
+	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.00000000f, 2.70588249f, 0.000000000f, 1.000000000f ), XMFLOAT4( -177.1f, 125.0f, 385.4f, 50.f ) );
+	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.00000000f, 2.70588249f, 0.000000000f, 1.000000000f ), XMFLOAT4( -21.6f, 125.0f, 385.4f, 50.f ) );
+	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.00000000f, 2.70588249f, 0.000000000f, 1.000000000f ), XMFLOAT4( 123.8f, 125.0f, 385.4f, 50.f ) );
 
 	CreateConstantBuffer( pDevice );
 
@@ -37,7 +34,7 @@ DWORD CLightMgr::Release( void )
 	return 0;
 }
 
-HRESULT CLightMgr::Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& vDiffuse, const XMFLOAT3& vOption )
+LIGHT* CLightMgr::Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& vDiffuse, const XMFLOAT4& vOption )
 {
 	LIGHT* pNewLighting = new LIGHT;
 	pNewLighting->m_iType = eType;
@@ -46,23 +43,23 @@ HRESULT CLightMgr::Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4&
 	switch( eType )
 	{
 	case LIGHT_DIRECTIONAL:
-		pNewLighting->m_vDir = vOption;
+		pNewLighting->m_vDir = XMFLOAT3( vOption.x, vOption.y, vOption.z );
 		break;
 	case LIGHT_POINT:
-		pNewLighting->m_vPos = vOption;
+		pNewLighting->m_vPos = XMFLOAT3( vOption.x, vOption.y, vOption.z );
+		pNewLighting->m_fRange = vOption.w;
 		break;
 	case LIGHT_SPOT:
 		// Spot 은 추후 수정 필요
-		break;
 	default:
-		return E_FAIL;
+		return nullptr;
 	}
 
 	m_dwLightingCnt++;
 	AssembleLightArr( pNewLighting );
 	CreateConstantBuffer( pDevice );
 
-	return S_OK;
+	return pNewLighting;
 }
 
 HRESULT CLightMgr::CreateConstantBuffer( ID3D11Device* pDevice )

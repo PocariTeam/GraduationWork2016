@@ -15,7 +15,7 @@ public:
 public:
 	HRESULT Initialize( ID3D11Device* pDevice, DWORD dwLightingCnt = 1 );
 	DWORD	Release( void );
-	HRESULT Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& vDiffuse, const XMFLOAT3& vOption );
+	LIGHT* Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& vDiffuse, const XMFLOAT4& vOption );
 private:
 	HRESULT	CreateConstantBuffer( ID3D11Device* pDevice );
 	void	SetConstantBuffer( ID3D11DeviceContext* pContext );

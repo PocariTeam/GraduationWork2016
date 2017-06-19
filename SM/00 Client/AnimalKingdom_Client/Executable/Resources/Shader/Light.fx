@@ -1,4 +1,4 @@
-#define LIGHT_CNT		28
+#define LIGHT_CNT		4
 #define DIRECTIONAL		0
 #define POINT			1
 #define SPOT			2
@@ -126,7 +126,7 @@ PS_OUT	PS( VS_OUT	In )
 
 	vSpecular /= LIGHT_CNT;
 
-	Out.vLight = saturate( vLight );
+	Out.vLight = vLight;
 	Out.vSpecular = saturate( vSpecular );
 
 	// Cartoon
@@ -172,7 +172,7 @@ float4 Point_Lighting( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal )
 	float	fDiffuseFactor = max( dot( normalize( vToLightInv ), vWorldNormal ), 0.f );
 	if( fDiffuseFactor <= 0.f )		return vLight;
 
-	float	fAttenuationFactor = 1.f / dot( tLight.vAttenuation, float3( 1.f, fDistance, fDistance * fDistance ) );
+	float	fAttenuationFactor = 1.0 / dot( tLight.vAttenuation, float3( 1.f, fDistance, fDistance * fDistance ) );
 	vLight = tLight.vDiffuse * fDiffuseFactor * fAttenuationFactor;
 
 	return vLight;

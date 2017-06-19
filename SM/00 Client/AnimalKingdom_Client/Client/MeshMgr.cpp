@@ -2,6 +2,7 @@
 #include "MeshMgr.h"
 #include "Functor.h"
 #include "Mesh.h"
+#include "Cloth.h"
 #include "Dot.h"
 #include "StaticMesh.h"
 
@@ -55,6 +56,23 @@ HRESULT CMeshMgr::Add( ID3D11Device* pDevice, const char* pKey, const char* pFil
 	}
 	
 	pMesh = CStaticMesh::Create( pDevice, pFilePath );
+	if( nullptr == pMesh ) return E_FAIL;
+
+	m_mapMesh.insert( make_pair( pKey, pMesh ) );
+	return S_OK;
+}
+
+HRESULT CMeshMgr::Add( ID3D11Device* pDevice, const char* pKey, LPVOID pVertexArray, DWORD dwVertexCnt, DWORD* pIndexArray, DWORD dwIdxCnt )
+{
+	CMesh*		pMesh = Find( pKey );
+
+	if( nullptr != pMesh )
+	{
+		MessageBox( nullptr, "Already Mesh Exists", nullptr, MB_OK );
+		return E_FAIL;
+	}
+
+	pMesh = CCloth::Create( pDevice, ( VERTEX_PNT* )pVertexArray, dwVertexCnt, pIndexArray, dwIdxCnt );
 	if( nullptr == pMesh ) return E_FAIL;
 
 	m_mapMesh.insert( make_pair( pKey, pMesh ) );

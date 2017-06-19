@@ -9,15 +9,16 @@
 #define MYCLOTH_H
 
 #include "NxPhysics.h"
+#include "Struct.h"
 
 #include "VertexWelder.h"
-
+class CMesh;
 class MyCloth {
 public:
 	/* create mesh from obj file */
-	MyCloth(NxScene *scene, NxClothDesc &desc, const char *objFileName, NxReal scale, NxVec3* offset = NULL, const char *texFilename = NULL);
+	MyCloth(NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, const char *objFileName, NxReal scale, NxVec3* offset = NULL, const char *texFilename = NULL);
 	/* create regular mesh */
-	MyCloth(NxScene *scene, NxClothDesc &desc, NxReal w, NxReal h, NxReal d, const char *texFilename = NULL, bool tearLines = false);
+	MyCloth(NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, NxReal w, NxReal h, NxReal d, const char *texFilename = NULL, bool tearLines = false);
 
 	~MyCloth();
 
@@ -48,17 +49,11 @@ private:
 
 	unsigned int mTexId;
 
-	// Structure for the rendering buffer
-	struct RenderBufferVertexElement
-	{
-		NxVec3 position;
-		NxVec3 normal;
-		float texCoord[2];
-	};
-
 	// The rendering buffers
-	RenderBufferVertexElement* mVertexRenderBuffer;
-	NxU32* mIndexRenderBuffer;
+	ID3D11Device*	m_pDevice;
+	VERTEX_PNT* mVertexRenderBuffer;
+	DWORD*		mIndexRenderBuffer;
+	CMesh*		m_pMesh;
 
 	NxU32 mMaxVertices;
 	NxU32 mMaxIndices;

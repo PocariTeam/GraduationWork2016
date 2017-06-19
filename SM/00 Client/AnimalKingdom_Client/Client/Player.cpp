@@ -65,6 +65,10 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		vDir += NxVec3{ 1.f, 0.f, 0.f };
 	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
+#ifdef _DEBUG
+	if( m_pInputMgr->Get_KeyboardState( DIK_RETURN ) )
+		printf( "Player Current World Pos : ( %f, %f, %f )\n", m_pCharacterController->getPosition().x, m_pCharacterController->getPosition().y, m_pCharacterController->getPosition().z );
+#endif
 
 	if( m_pAnimator->GetCurrentAnimationFinished() && STATE_JUMP != eState && STATE_DOWN != eState && STATE_DEAD != eState )
 	{

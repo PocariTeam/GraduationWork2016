@@ -29,6 +29,7 @@
 #include "NormalShader.h"
 #include "Banana.h"
 #include "Normal_UI.h"
+#include "LightMgr.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -80,9 +81,9 @@ int CPhysics::Update( const float& fTimeDelta )
 void CPhysics::Render( ID3D11DeviceContext* pContext )
 {
 	// 천 그리기
-	if (m_pCloth != nullptr)
+	if( m_pCloth != nullptr )
 	{
-		m_pCloth->draw(false);
+		m_pCloth->draw( false );
 	}
 	///////////////
 
@@ -155,7 +156,7 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 
 void CPhysics::Release_Scene( void )
 {
-	if (m_pCloth != nullptr)
+	if( m_pCloth != nullptr )
 	{
 		delete m_pCloth;
 		m_pCloth = nullptr;
@@ -178,9 +179,9 @@ void CPhysics::UpdateCharactercontrollerMgr()
 	m_pCharacterControllerMgr->updateControllers();
 }
 
-void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
+void CPhysics::UpdateDynamicActors( S_SyncDynamic *packet )
 {
-	if (NULL == m_pScene)
+	if( NULL == m_pScene )
 		return;
 
 	NxActor** ppActors = m_pScene->getActors();
@@ -188,51 +189,51 @@ void CPhysics::UpdateDynamicActors(S_SyncDynamic *packet)
 
 	// printf("총 액터수: %d \n", nbActors);
 
-	for (unsigned int i = 0; i < packet->dynamicActorCount; ++i)
+	for( unsigned int i = 0; i < packet->dynamicActorCount; ++i )
 	{
-		unsigned int j = packet->dynamicActors[i].index;
+		unsigned int j = packet->dynamicActors[ i ].index;
 
 		// 에러체크용: 후에 삭제
-		if (j >= nbActors)
+		if( j >= nbActors )
 		{
-			printf(" 받은 동적 객체의 인덱스가 총 액터수보다 많습니다!! \n");
+			printf( " 받은 동적 객체의 인덱스가 총 액터수보다 많습니다!! \n" );
 			break;
 		}
 
 		// printf("[index:%d] %s \n", j, ppActors[j]->getName());
 
-		Vector3 p = packet->dynamicActors[i].position;
-		Vector4 o = packet->dynamicActors[i].orient;
+		Vector3 p = packet->dynamicActors[ i ].position;
+		Vector4 o = packet->dynamicActors[ i ].orient;
 
-		ppActors[j]->setGlobalPosition(NxVec3(p.x,p.y,p.z));
-		ppActors[j]->setGlobalOrientationQuat(NxQuat(NxVec3(o.x,o.y,o.z),o.w));
+		ppActors[ j ]->setGlobalPosition( NxVec3( p.x, p.y, p.z ) );
+		ppActors[ j ]->setGlobalOrientationQuat( NxQuat( NxVec3( o.x, o.y, o.z ), o.w ) );
 
-		Vector3 l = packet->dynamicActors[i].linear;
-		Vector3 a = packet->dynamicActors[i].angular;
-		ppActors[j]->setLinearVelocity(NxVec3(l.x, l.y, l.z));
-		ppActors[j]->setAngularVelocity(NxVec3(a.x, a.y, a.z));
-	
+		Vector3 l = packet->dynamicActors[ i ].linear;
+		Vector3 a = packet->dynamicActors[ i ].angular;
+		ppActors[ j ]->setLinearVelocity( NxVec3( l.x, l.y, l.z ) );
+		ppActors[ j ]->setAngularVelocity( NxVec3( a.x, a.y, a.z ) );
+
 	}
 }
 
-void CPhysics::UpdateDynamicOneActor(S_SyncDynamicOne * packet)
+void CPhysics::UpdateDynamicOneActor( S_SyncDynamicOne * packet )
 {
-	if (NULL == m_pScene)
+	if( NULL == m_pScene )
 		return;
 
 	UINT	i = packet->dynamicActor.index;
 	Vector3 p = packet->dynamicActor.position;
 	Vector4 o = packet->dynamicActor.orient;
 
-	NxActor* pActors = m_pScene->getActors()[i];
+	NxActor* pActors = m_pScene->getActors()[ i ];
 
-	pActors->setGlobalPosition(NxVec3(p.x, p.y, p.z));
-	pActors->setGlobalOrientationQuat(NxQuat(NxVec3(o.x, o.y, o.z), o.w));
+	pActors->setGlobalPosition( NxVec3( p.x, p.y, p.z ) );
+	pActors->setGlobalOrientationQuat( NxQuat( NxVec3( o.x, o.y, o.z ), o.w ) );
 
 	Vector3 l = packet->dynamicActor.linear;
 	Vector3 a = packet->dynamicActor.angular;
-	pActors->setLinearVelocity(NxVec3(l.x, l.y, l.z));
-	pActors->setAngularVelocity(NxVec3(a.x, a.y, a.z));
+	pActors->setLinearVelocity( NxVec3( l.x, l.y, l.z ) );
+	pActors->setAngularVelocity( NxVec3( a.x, a.y, a.z ) );
 
 }
 
@@ -344,17 +345,17 @@ HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType 
 HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader, map<int, CPlayer*>* pmapPlayer )
 {
 	m_pShaderlist = plistShader;
-	
-	m_pPhysicsSDK->setParameter(NX_SKIN_WIDTH, 2.5f);
-	m_pPhysicsSDK->setParameter(NX_CONTINUOUS_CD, true);
-	m_pPhysicsSDK->setParameter(NX_CCD_EPSILON, 0.1f);
-	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15);
-	m_pPhysicsSDK->setParameter(NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14);
-	m_pPhysicsSDK->setParameter(NX_BOUNCE_THRESHOLD, -5);
-	m_pPhysicsSDK->setParameter(NX_DYN_FRICT_SCALING, 10);
-	m_pPhysicsSDK->setParameter(NX_STA_FRICT_SCALING, 10);
 
-	m_pScene->setGravity(NxVec3(0.0f, -9.81f * 3, 0.0f));
+	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 2.5f );
+	m_pPhysicsSDK->setParameter( NX_CONTINUOUS_CD, true );
+	m_pPhysicsSDK->setParameter( NX_CCD_EPSILON, 0.1f );
+	m_pPhysicsSDK->setParameter( NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15 );
+	m_pPhysicsSDK->setParameter( NX_DEFAULT_SLEEP_ANG_VEL_SQUARED, 14 * 14 );
+	m_pPhysicsSDK->setParameter( NX_BOUNCE_THRESHOLD, -5 );
+	m_pPhysicsSDK->setParameter( NX_DYN_FRICT_SCALING, 10 );
+	m_pPhysicsSDK->setParameter( NX_STA_FRICT_SCALING, 10 );
+
+	m_pScene->setGravity( NxVec3( 0.0f, -9.81f * 3, 0.0f ) );
 	m_pScene->setUserContactReport( &m_CollisionReport );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER1, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_PLAYER2, NX_NOTIFY_ON_START_TOUCH );
@@ -363,10 +364,10 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_DYNAMIC, NX_NOTIFY_ON_START_TOUCH );
 	m_pScene->setActorGroupPairFlags( COL_DYNAMIC, COL_STATIC, NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH | NX_NOTIFY_ON_TOUCH );
 
-	m_pScene->setGroupCollisionFlag(COL_PLAYER1, COL_DYNAMIC, false);
-	m_pScene->setGroupCollisionFlag(COL_PLAYER2, COL_DYNAMIC, false);
-	m_pScene->setGroupCollisionFlag(COL_PLAYER3, COL_DYNAMIC, false);
-	m_pScene->setGroupCollisionFlag(COL_PLAYER4, COL_DYNAMIC, false);
+	m_pScene->setGroupCollisionFlag( COL_PLAYER1, COL_DYNAMIC, false );
+	m_pScene->setGroupCollisionFlag( COL_PLAYER2, COL_DYNAMIC, false );
+	m_pScene->setGroupCollisionFlag( COL_PLAYER3, COL_DYNAMIC, false );
+	m_pScene->setGroupCollisionFlag( COL_PLAYER4, COL_DYNAMIC, false );
 
 	// Create the default material
 	NxMaterial* pDefaultMaterial = m_pScene->getMaterialFromIndex( 0 );
@@ -384,8 +385,6 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	else
 		printf( "Software Simulate\n" );
 #endif
-
-	CreateCloth();
 
 	NxU32		iActorCnt = m_pScene->getNbActors();
 	NxActor**	dpActorArray = m_pScene->getActors();
@@ -409,7 +408,9 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 	CMesh* pSkydome_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Skydome" );
 	CTexture* pTexture_Skydome = CTextureMgr::GetInstance()->Clone( "Texture_Skydome" );
-	CGameObject* pSkydome = CSkydome::Create( pSkydome_Mesh, pTexture_Skydome );
+
+	CGameObject* pSkydome = CSkydome::Create( pSkydome_Mesh, pTexture_Skydome
+		, CLightMgr::GetInstance()->Add( pDevice, CLightMgr::LIGHT_DIRECTIONAL, XMFLOAT4( 0.4f, 0.4f, 0.4f, 1.f ), XMFLOAT4( 0.f, -0.3f, 0.7f, 0.f ) ) );
 
 	CMesh* pLight_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Background" );
 	CGameObject* pLight_Screen = CWallpaper::Create( pDevice, pLight_Mesh );
@@ -437,8 +438,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			if( pActor->isDynamic() )
 			{
 				if( 0 == strcmp( pActor->getName(), "Player1" )
-					|| 0 == strcmp( pActor->getName(), "Player2" ) 
-					|| 0 == strcmp( pActor->getName(), "Player3" ) 
+					|| 0 == strcmp( pActor->getName(), "Player2" )
+					|| 0 == strcmp( pActor->getName(), "Player3" )
 					|| 0 == strcmp( pActor->getName(), "Player4" ) )
 				{
 					if( iPlayerCnt == iCreatePlayerCnt )
@@ -818,10 +819,12 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		auto set_iter_end = setReleaseActorIndex.end();
 
 		for( ; set_iter_begin != set_iter_end; ++set_iter_begin )
-			m_pScene->releaseActor( *dpActorArray[( *set_iter_begin )] );
+			m_pScene->releaseActor( *dpActorArray[ ( *set_iter_begin ) ] );
 
 		for( int i = 0; i < BANANA_COUNT; ++i )
 			CreateBanana();
+
+		CreateCloth( pDevice );
 	}
 
 	return S_OK;
@@ -968,31 +971,31 @@ NxActor* CPhysics::CreateActor( const char* pActorName, const ACTOR_INFO& tActor
 	}
 }
 
-void CPhysics::CreateMeshFromShape(NxSimpleTriangleMesh &triMesh, NxShape *shape)
+void CPhysics::CreateMeshFromShape( NxSimpleTriangleMesh &triMesh, NxShape *shape )
 {
 	NxBoxShape *boxShape = shape->isBox();
-	if (boxShape != NULL)
+	if( boxShape != NULL )
 	{
-		NxBox obb = NxBox(NxVec3(0.0f, 0.0f, 0.0f), boxShape->getDimensions(), NxMat33(NX_IDENTITY_MATRIX));
-		triMesh.points = new NxVec3[8];
+		NxBox obb = NxBox( NxVec3( 0.0f, 0.0f, 0.0f ), boxShape->getDimensions(), NxMat33( NX_IDENTITY_MATRIX ) );
+		triMesh.points = new NxVec3[ 8 ];
 		triMesh.numVertices = 8;
-		triMesh.pointStrideBytes = sizeof(NxVec3);
+		triMesh.pointStrideBytes = sizeof( NxVec3 );
 		triMesh.numTriangles = 2 * 6;
-		triMesh.triangles = new NxU32[2 * 6 * 3];
-		triMesh.triangleStrideBytes = sizeof(NxU32) * 3;
+		triMesh.triangles = new NxU32[ 2 * 6 * 3 ];
+		triMesh.triangleStrideBytes = sizeof( NxU32 ) * 3;
 		triMesh.flags = 0;
-		NxComputeBoxPoints(obb, (NxVec3 *)triMesh.points);
-		memcpy((NxU32 *)triMesh.triangles, NxGetBoxTriangles(), sizeof(NxU32) * 2 * 6 * 3);
+		NxComputeBoxPoints( obb, ( NxVec3 * )triMesh.points );
+		memcpy( ( NxU32 * )triMesh.triangles, NxGetBoxTriangles(), sizeof( NxU32 ) * 2 * 6 * 3 );
 	}
 	else
 	{
-		NX_ASSERT(!"Invalid shape type");
+		NX_ASSERT( !"Invalid shape type" );
 	}
 
-	NX_ASSERT(triMesh.isValid());
+	NX_ASSERT( triMesh.isValid() );
 }
 
-void CPhysics::CreateCloth()
+void CPhysics::CreateCloth( ID3D11Device* pDevice )
 {
 	// 테스트용 액터
 	ACTOR_INFO	testActorDesc;
@@ -1005,11 +1008,11 @@ void CPhysics::CreateCloth()
 	testActorDesc.m_vGlobalPosition.y = 200.f;
 	testActorDesc.m_vGlobalPosition.z = 100.f;
 
-	NxActor* pActor = CreateActor("testBoxForCloth", testActorDesc, COL_DYNAMIC);
+	NxActor* pActor = CreateActor( "testBoxForCloth", testActorDesc, COL_DYNAMIC );
 
 	// 옷감
 	NxClothDesc clothDesc;
-	clothDesc.globalPose.t = NxVec3(-100, 200, 100);
+	clothDesc.globalPose.t = NxVec3( -100, 200, 100 );
 	clothDesc.thickness = 0.2f;
 	//clothDesc.density = 1.0f;
 	clothDesc.bendingStiffness = 1.0f;
@@ -1029,19 +1032,19 @@ void CPhysics::CreateCloth()
 	//clothDesc.flags |= NX_CLF_COMDAMPING;
 	clothDesc.flags |= NX_CLF_COLLISION_TWOWAY;
 
-	if (m_pScene->getSimType() == NX_SIMULATION_HW)
+	if( m_pScene->getSimType() == NX_SIMULATION_HW )
 		clothDesc.flags |= NX_CLF_HARDWARE;
 
-	m_pCloth = new MyCloth(m_pScene, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/);
+	m_pCloth = new MyCloth( m_pScene, pDevice, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/ );
 
-	if (!m_pCloth->getNxCloth())
+	if( !m_pCloth->getNxCloth() )
 	{
-		printf("Error: Unable to create the cloth for the current scene.\n");
+		printf( "Error: Unable to create the cloth for the current scene.\n" );
 		delete m_pCloth;
 	}
 	else
 	{
-		m_pCloth->getNxCloth()->attachToShape(*pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY);
+		m_pCloth->getNxCloth()->attachToShape( *pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY );
 	}
 
 
@@ -1063,7 +1066,7 @@ void CPhysics::CreateBanana( void )
 
 	NxActor* pActor = CreateActor( "Banana", tActor_Info, COL_DYNAMIC );
 	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
-	
+
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;
 	m_pShaderlist[ RENDER_ALPHA ].front()->Add_RenderObject( pBanana );
@@ -1079,9 +1082,9 @@ void CPhysics::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 	m_BananaQueue.push( pBanana );
 }
 
-void CPhysics::SetCrownOwner(CPlayer * p)
+void CPhysics::SetCrownOwner( CPlayer * p )
 {
-	m_pCrown->SetOwner(p);
+	m_pCrown->SetOwner( p );
 }
 
 queue<CBanana*>* CPhysics::GetBananaQueue( void )
