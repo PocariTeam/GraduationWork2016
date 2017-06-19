@@ -1,4 +1,4 @@
-13
+14
 Shader_3D_UI 0 6 1 ../Executable/Resources/Shader/3D_UI.fx
 Shader_Skydome 0 3 1 ../Executable/Resources/Shader/Skydome.fx
 Shader_UI 0 5 1 ../Executable/Resources/Shader/UI.fx
@@ -6,6 +6,7 @@ Shader_Number_UI 0 5 1 ../Executable/Resources/Shader/Number_UI.fx
 Shader_Sign_UI 0 5 1 ../Executable/Resources/Shader/Sign_UI.fx
 Shader_Number_UI_I 1 5 1 ../Executable/Resources/Shader/Number_UI_I.fx
 Shader_Mesh 0 3 1 ../Executable/Resources/Shader/Mesh.fx
+Shader_Cloth 0 2 1 ../Executable/Resources/Shader/Cloth.fx
 Shader_Mesh_Alpha 0 3 1 ../Executable/Resources/Shader/Mesh_Alpha.fx
 Shader_AnimateMesh 0 6 1 ../Executable/Resources/Shader/AnimateMesh.fx
 Shader_Light 0 5 1 ../Executable/Resources/Shader/Light.fx

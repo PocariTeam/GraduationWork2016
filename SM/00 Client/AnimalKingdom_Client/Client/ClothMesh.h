@@ -1,13 +1,13 @@
 #pragma once
 
-#ifndef Cloth_h__
-#define Cloth_h__
+#ifndef ClothMesh_h__
+#define ClothMesh_h__
 
 #include "Mesh.h"
 #include "Struct.h"
 
 //************************************
-// ClassName:    CCloth
+// ClassName:    CClothMesh
 // TODO:  		 
 //
 // Author:    	 jsm81
@@ -16,13 +16,13 @@
 // Contact: 	 jsm8165@naver.com
 //************************************
 
-class CCloth
+class CClothMesh
 	: public CMesh
 {
 private:
-	explicit CCloth();
-	explicit CCloth( const CCloth& Instance );
-	virtual ~CCloth();
+	explicit CClothMesh();
+	explicit CClothMesh( const CClothMesh& Instance );
+	virtual ~CClothMesh();
 private:
 	HRESULT CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
 public:
@@ -30,7 +30,7 @@ public:
 	CMesh*	Clone( void );
 	DWORD   Release( void );
 public:
-	static  CCloth*	Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
+	static  CClothMesh*	Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
 };
 
-#endif // Cloth_h__
+#endif // ClothMesh_h__

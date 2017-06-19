@@ -168,8 +168,9 @@ float4 Point_Lighting( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal )
 	float3 vToLightInv = tLight.vPos - vWorldPos;
 	float fDistance = length( vToLightInv );
 	if( fDistance > tLight.fRange ) return vLight;
+	vToLightInv /= fDistance;
 
-	float	fDiffuseFactor = max( dot( normalize( vToLightInv ), vWorldNormal ), 0.f );
+	float	fDiffuseFactor = max( dot( vToLightInv, vWorldNormal ), 0.f );
 	if( fDiffuseFactor <= 0.f )		return vLight;
 
 	float	fAttenuationFactor = 1.0 / dot( tLight.vAttenuation, float3( 1.f, fDistance, fDistance * fDistance ) );

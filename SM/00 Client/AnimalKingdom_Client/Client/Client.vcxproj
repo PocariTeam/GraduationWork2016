@@ -207,7 +207,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chameleon.h" />
     <ClInclude Include="Client.h" />
-    <ClInclude Include="Cloth.h" />
+    <ClInclude Include="ClothMesh.h" />
     <ClInclude Include="CollisionReport.h" />
     <ClInclude Include="Crown.h" />
     <ClInclude Include="DebugCamera.h" />
@@ -381,7 +381,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chameleon.cpp" />
     <ClCompile Include="Client.cpp" />
-    <ClCompile Include="Cloth.cpp" />
+    <ClCompile Include="ClothMesh.cpp" />
     <ClCompile Include="CollisionReport.cpp" />
     <ClCompile Include="Crown.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
@@ -491,6 +491,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Cloth.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>

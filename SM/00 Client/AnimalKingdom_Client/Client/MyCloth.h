@@ -10,10 +10,10 @@
 
 #include "NxPhysics.h"
 #include "Struct.h"
+#include "GameObject.h"
 
 #include "VertexWelder.h"
-class CMesh;
-class MyCloth {
+class MyCloth : public CGameObject {
 public:
 	/* create mesh from obj file */
 	MyCloth(NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, const char *objFileName, NxReal scale, NxVec3* offset = NULL, const char *texFilename = NULL);
@@ -22,7 +22,9 @@ public:
 
 	~MyCloth();
 
-	void draw(bool shadows);
+	int		Update( const float& fTimeDelta );
+	void	Render( ID3D11DeviceContext* pContext );
+	DWORD	Release( void );
 	NxCloth *getNxCloth() { return mCloth; }
 
 private:
@@ -53,8 +55,6 @@ private:
 	ID3D11Device*	m_pDevice;
 	VERTEX_PNT* mVertexRenderBuffer;
 	DWORD*		mIndexRenderBuffer;
-	CMesh*		m_pMesh;
-
 	NxU32 mMaxVertices;
 	NxU32 mMaxIndices;
 	NxU32 mNumIndices;

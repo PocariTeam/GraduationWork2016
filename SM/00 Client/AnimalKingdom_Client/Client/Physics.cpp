@@ -80,13 +80,6 @@ int CPhysics::Update( const float& fTimeDelta )
 
 void CPhysics::Render( ID3D11DeviceContext* pContext )
 {
-	// 천 그리기
-	if( m_pCloth != nullptr )
-	{
-		m_pCloth->draw( false );
-	}
-	///////////////
-
 	NxActor** dpActor = m_pScene->getActors();
 
 	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
@@ -395,7 +388,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 	CNetworkMgr::GetInstance()->getPlayerInfo( pPlayerInfo, iPlayerCnt );
 
-	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave, *pShader_Mesh_Alpha;
+	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave, *pShader_Mesh_Alpha, *pShader_Cloth;
 
 	pShader_Skydome = CShaderMgr::GetInstance()->Clone( "Shader_Skydome" );
 	pShader_Mesh = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
@@ -405,6 +398,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pShader_Debug = CShaderMgr::GetInstance()->Clone( "Shader_Debug" );
 	pShader_Animate = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh" );
 	pShader_Mesh_Alpha = CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" );
+	pShader_Cloth = CShaderMgr::GetInstance()->Clone( "Shader_Cloth" );
 
 	CMesh* pSkydome_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Skydome" );
 	CTexture* pTexture_Skydome = CTextureMgr::GetInstance()->Clone( "Texture_Skydome" );
@@ -809,6 +803,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cave );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
+		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cloth );
 		plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
 		plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
 		plistShader[ RENDER_ALPHA ].push_back( CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" ) );
@@ -825,6 +820,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			CreateBanana();
 
 		CreateCloth( pDevice );
+
+		pShader_Cloth->Add_RenderObject( m_pCloth );
 	}
 
 	return S_OK;

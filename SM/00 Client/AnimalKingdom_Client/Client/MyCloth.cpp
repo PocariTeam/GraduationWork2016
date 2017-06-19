@@ -23,8 +23,7 @@
 #include "NxCooking.h"
 #include "cooking.h"
 #include "MeshMgr.h"
-#include "Mesh.h"
-#include "Cloth.h"
+#include "ClothMesh.h"
 
 #define TEAR_MEMORY_FACTOR 3
 
@@ -106,6 +105,122 @@ MyCloth::~MyCloth()
 		m_pMesh = nullptr;
 	}
 		
+}
+
+int MyCloth::Update( const float& fTimeDelta )
+{
+	return 0;
+}
+
+void MyCloth::Render( ID3D11DeviceContext* pContext )
+{
+	static NxU32 numVertices = mNumVertices;
+	NxU32 numElements = mNumIndices;
+	numVertices = mNumVertices;
+
+	// Disable pressure if tearing occurs
+	if( mTeared && ( mCloth->getFlags() & NX_CLF_PRESSURE ) )
+	{
+		// Disable Pressure
+		mCloth->setFlags( mCloth->getFlags() & ~NX_CLF_PRESSURE );
+		mCloth->setPressure( 0 );
+
+		// Reduce tearing factor
+		NxReal oldTearing = mCloth->getTearFactor();
+		oldTearing = ( oldTearing - 1 ) / 3 + 1;
+		mCloth->setTearFactor( oldTearing );
+
+		// Reduce bending stiffness
+		if( mCloth->getBendingStiffness() > 0.9f )
+			mCloth->setBendingStiffness( 0.2f );
+
+		// Apply explosion in the middle of the cloth
+		NxBounds3 bounds;
+		mCloth->getWorldBounds( bounds );
+		NxVec3 center;
+		bounds.getCenter( center );
+		NxReal radius = bounds.min.distance( bounds.max );
+		mCloth->addForceAtPos( center, 7 * NxMath::pow( radius, 3 ), radius, NX_IMPULSE );
+		printf( "Pressure disabled\n" );
+	}
+
+	if( mTexId > 0 )
+	{
+		updateTextureCoordinates();
+	}
+
+	( ( CClothMesh* )m_pMesh )->UpdateGeometryInformation( pContext, mVertexRenderBuffer, mIndexRenderBuffer );
+	m_pMesh->Render( pContext );
+
+	/*
+	"성민이를 위한 설명~"
+
+	버텍스 개수: numVertices 2640개, 인덱스 개수: numElements 15228개
+	버텍스 배열: mVertexRenderBuffer (포지션, 노말, 텍스쳐좌표)
+
+	인덱스 개수: mNumIndices
+	인덱스 배열: mIndexRenderBuffer
+
+	glDrawElements() 인덱스배열을 이용하여 임의의 원소들을 임의의 순서대로 사용하여 기본도형을 그린다.
+	glDrawRangeElements() 인덱스배열의 특정 범위만 사용하여 기본도형을 그린다.
+
+	*/
+
+
+	/*
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, sizeof(RenderBufferVertexElement), numVertices, &(mVertexRenderBuffer[0].position.x));
+	glNormalPointer(GL_FLOAT, sizeof(RenderBufferVertexElement), numVertices, &(mVertexRenderBuffer[0].normal.x));
+
+	if (mTexId) {
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glTexCoordPointer(2, GL_FLOAT, sizeof(RenderBufferVertexElement), numVertices, &(mVertexRenderBuffer[0].texCoord[0]));
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, mTexId);
+	glColor4f(1.0f, 1.0f, 1.0f,1.0f);
+	}
+
+	#ifdef __CELLOS_LV2__
+	glDrawRangeElements(GL_TRIANGLES, 0, numVertices-1, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
+	#else
+	glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
+	#endif
+
+	if (mTexId) {
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisable(GL_TEXTURE_2D);
+	}
+
+	if (shadows) {
+	const static float ShadowMat[]={ 1,0,0,0, 0,0,0,0, 0,0,1,0, 0,0,0,1 };
+	glPushMatrix();
+	glMultMatrixf(ShadowMat);
+	glDisable(GL_LIGHTING);
+	glColor4f(0.05f, 0.1f, 0.15f,1.0f);
+
+	#ifdef __CELLOS_LV2__
+	glDrawRangeElements(GL_TRIANGLES, 0, numVertices-1, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
+	#else
+	glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
+	#endif
+
+	glColor4f(1.0f, 1.0f, 1.0f,1.0f);
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
+	}
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	*/
+}
+
+DWORD MyCloth::Release( void )
+{
+	return 0;
 }
 
 // -----------------------------------------------------------------------
@@ -323,8 +438,8 @@ void MyCloth::allocateReceiveBuffers( int numVertices, int numTriangles )
 
 	mReceiveBuffers.verticesPosBegin = &( mVertexRenderBuffer[ 0 ].m_vPos.x );
 	mReceiveBuffers.verticesNormalBegin = &( mVertexRenderBuffer[ 0 ].m_vNormal.x );
-	mReceiveBuffers.verticesPosByteStride = sizeof( VERTEX_PNT );
-	mReceiveBuffers.verticesNormalByteStride = sizeof( VERTEX_PNT );
+	mReceiveBuffers.verticesPosByteStride = sizeof( XMFLOAT3 );
+	mReceiveBuffers.verticesNormalByteStride = sizeof( XMFLOAT3 );
 	mReceiveBuffers.maxVertices = mMaxVertices;
 	mReceiveBuffers.numVerticesPtr = &mNumVertices;
 
@@ -379,120 +494,6 @@ void MyCloth::releaseReceiveBuffers()
 
 	mReceiveBuffers.setToDefault();
 }
-
-// -----------------------------------------------------------------------
-void MyCloth::draw( bool shadows )
-{
-	static NxU32 numVertices = mNumVertices;
-	NxU32 numElements = mNumIndices;
-	numVertices = mNumVertices;
-
-	// Disable pressure if tearing occurs
-	if( mTeared && ( mCloth->getFlags() & NX_CLF_PRESSURE ) )
-	{
-		// Disable Pressure
-		mCloth->setFlags( mCloth->getFlags() & ~NX_CLF_PRESSURE );
-		mCloth->setPressure( 0 );
-
-		// Reduce tearing factor
-		NxReal oldTearing = mCloth->getTearFactor();
-		oldTearing = ( oldTearing - 1 ) / 3 + 1;
-		mCloth->setTearFactor( oldTearing );
-
-		// Reduce bending stiffness
-		if( mCloth->getBendingStiffness() > 0.9f )
-			mCloth->setBendingStiffness( 0.2f );
-
-		// Apply explosion in the middle of the cloth
-		NxBounds3 bounds;
-		mCloth->getWorldBounds( bounds );
-		NxVec3 center;
-		bounds.getCenter( center );
-		NxReal radius = bounds.min.distance( bounds.max );
-		mCloth->addForceAtPos( center, 7 * NxMath::pow( radius, 3 ), radius, NX_IMPULSE );
-		printf( "Pressure disabled\n" );
-	}
-
-	if( mTexId > 0 )
-	{
-		updateTextureCoordinates();
-	}
-
-	ID3D11DeviceContext* pContext{};
-	m_pDevice->GetImmediateContext( &pContext );
-
-	( ( CCloth* )m_pMesh )->UpdateGeometryInformation( pContext, mVertexRenderBuffer, mIndexRenderBuffer );
-	m_pMesh->Render( pContext );
-
-	pContext->Release();
-
-	/*
-		"성민이를 위한 설명~"
-
-		버텍스 개수: numVertices 2640개, 인덱스 개수: numElements 15228개
-		버텍스 배열: mVertexRenderBuffer (포지션, 노말, 텍스쳐좌표)
-
-		인덱스 개수: mNumIndices
-		인덱스 배열: mIndexRenderBuffer
-
-		glDrawElements() 인덱스배열을 이용하여 임의의 원소들을 임의의 순서대로 사용하여 기본도형을 그린다.
-		glDrawRangeElements() 인덱스배열의 특정 범위만 사용하여 기본도형을 그린다.
-
-	*/
-
-
-	/*
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-
-	glVertexPointer(3, GL_FLOAT, sizeof(RenderBufferVertexElement), numVertices, &(mVertexRenderBuffer[0].position.x));
-	glNormalPointer(GL_FLOAT, sizeof(RenderBufferVertexElement), numVertices, &(mVertexRenderBuffer[0].normal.x));
-
-	if (mTexId) {
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		glTexCoordPointer(2, GL_FLOAT, sizeof(RenderBufferVertexElement), numVertices, &(mVertexRenderBuffer[0].texCoord[0]));
-
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, mTexId);
-		glColor4f(1.0f, 1.0f, 1.0f,1.0f);
-	}
-
-#ifdef __CELLOS_LV2__
-	glDrawRangeElements(GL_TRIANGLES, 0, numVertices-1, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
-#else
-	glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
-#endif
-
-	if (mTexId) {
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);
-	}
-
-	if (shadows) {
-		const static float ShadowMat[]={ 1,0,0,0, 0,0,0,0, 0,0,1,0, 0,0,0,1 };
-		glPushMatrix();
-		glMultMatrixf(ShadowMat);
-		glDisable(GL_LIGHTING);
-		glColor4f(0.05f, 0.1f, 0.15f,1.0f);
-
-#ifdef __CELLOS_LV2__
-		glDrawRangeElements(GL_TRIANGLES, 0, numVertices-1, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
-#else
-		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, mIndexRenderBuffer);
-#endif
-
-		glColor4f(1.0f, 1.0f, 1.0f,1.0f);
-		glEnable(GL_LIGHTING);
-		glPopMatrix();
-	}
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	*/
-
-}
-
 
 // -----------------------------------------------------------------------
 bool MyCloth::createTexture( const char *filename )

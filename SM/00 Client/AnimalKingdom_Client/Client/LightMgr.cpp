@@ -12,9 +12,9 @@ HRESULT CLightMgr::Initialize( ID3D11Device* pDevice, DWORD dwLightingCnt/*= 1 *
 	m_pConstantBufferLight = nullptr;
 	m_dwLightingCnt = 0;
 
-	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.00000000f, 2.70588249f, 0.000000000f, 1.000000000f ), XMFLOAT4( -177.1f, 125.0f, 385.4f, 50.f ) );
-	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.00000000f, 2.70588249f, 0.000000000f, 1.000000000f ), XMFLOAT4( -21.6f, 125.0f, 385.4f, 50.f ) );
-	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.00000000f, 2.70588249f, 0.000000000f, 1.000000000f ), XMFLOAT4( 123.8f, 125.0f, 385.4f, 50.f ) );
+	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.0f, 2.70588f, 0.0f, 1.0f ), XMFLOAT4( -175.1f, 120.0f, 380.4f, 70.f ) );
+	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.0f, 2.70588f, 0.0f, 1.0f ), XMFLOAT4( -21.6f, 120.0f, 380.4f, 70.f ) );
+	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.0f, 2.70588f, 0.0f, 1.0f ), XMFLOAT4( 120.8f, 120.0f, 380.4f, 70.f ) );
 
 	CreateConstantBuffer( pDevice );
 

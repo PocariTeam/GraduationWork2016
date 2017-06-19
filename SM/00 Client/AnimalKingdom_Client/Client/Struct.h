@@ -15,7 +15,7 @@ typedef struct tagLight_Info
 		, m_vSpecular( 0.5f, 0.5f, 0.5f, 1000.f )
 		, m_vDir( 0.f, 0.f, 1.f )
 		, m_fRange( 80.f )
-		, m_vAttenuation( 0.1f, 0.005f, 0.001f )
+		, m_vAttenuation( 0.1f, 0.01f, 0.001f )
 		, m_fFalloff( 5.f )
 		, m_fPhi( cos( XMConvertToRadians( 7.0f ) ) )
 		, m_fTheta( cos( XMConvertToRadians( 5.0f ) ) )

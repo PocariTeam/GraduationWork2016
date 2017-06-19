@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "Cloth.h"
+#include "ClothMesh.h"
 
-CCloth::CCloth()
+CClothMesh::CClothMesh()
 	: CMesh()
 {
 }
 
 
-CCloth::CCloth( const CCloth& Instance )
+CClothMesh::CClothMesh( const CClothMesh& Instance )
 	: CMesh( Instance )
 {
 }
 
-CCloth::~CCloth()
+CClothMesh::~CClothMesh()
 {
 }
 
-void CCloth::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PNT* pVtx_Array, DWORD* pIndex_Array )
+void CClothMesh::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PNT* pVtx_Array, DWORD* pIndex_Array )
 {
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
 
@@ -31,14 +31,14 @@ void CCloth::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PN
 	pContext->Unmap( m_pIB, 0 );
 }
 
-CMesh* CCloth::Clone( void )
+CMesh* CClothMesh::Clone( void )
 {
-	return new CCloth( *this );
+	return new CClothMesh( *this );
 }
 
-HRESULT CCloth::CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
+HRESULT CClothMesh::CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
 {
-	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	m_dwVtxSize = sizeof( VERTEX_PNT );
 	m_dwVtxCnt = dwVtxCnt;
 
@@ -78,9 +78,9 @@ HRESULT CCloth::CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWO
 	return S_OK;
 }
 
-CCloth* CCloth::Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
+CClothMesh* CClothMesh::Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
 {
-	CCloth*	pCloth = new CCloth;
+	CClothMesh*	pCloth = new CClothMesh;
 
 	if( FAILED( pCloth->CreateBuffer( pDevice, pVtx_Array, dwVtxCnt, pIndex_Array, dwIdxCnt ) ) )
 	{
@@ -91,7 +91,7 @@ CCloth* CCloth::Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwV
 	return pCloth;
 }
 
-DWORD CCloth::Release( void )
+DWORD CClothMesh::Release( void )
 {
 	DWORD dwRefCnt = CMesh::Release();
 	delete this;

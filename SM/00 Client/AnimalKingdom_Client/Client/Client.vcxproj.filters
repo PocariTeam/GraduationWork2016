@@ -606,7 +606,7 @@
     <ClInclude Include="MediaPath.h">
       <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
     </ClInclude>
-    <ClInclude Include="Cloth.h">
+    <ClInclude Include="ClothMesh.h">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth</Filter>
     </ClInclude>
   </ItemGroup>
@@ -890,7 +890,7 @@
     <ClCompile Include="MediaPath_WIN.cpp">
       <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
     </ClCompile>
-    <ClCompile Include="Cloth.cpp">
+    <ClCompile Include="ClothMesh.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth</Filter>
     </ClCompile>
   </ItemGroup>
@@ -948,6 +948,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Skydome.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Cloth.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>
