@@ -207,6 +207,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chameleon.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Cloth.h" />
     <ClInclude Include="ClothMesh.h" />
     <ClInclude Include="CollisionReport.h" />
     <ClInclude Include="Crown.h" />
@@ -381,6 +382,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chameleon.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Cloth.cpp" />
     <ClCompile Include="ClothMesh.cpp" />
     <ClCompile Include="CollisionReport.cpp" />
     <ClCompile Include="Crown.cpp" />

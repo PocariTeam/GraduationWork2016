@@ -16,7 +16,7 @@
 class MyCloth : public CGameObject {
 public:
 	/* create mesh from obj file */
-	MyCloth(NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, const char *objFileName, NxReal scale, NxVec3* offset = NULL, const char *texFilename = NULL);
+	//MyCloth(NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, const char *objFileName, NxReal scale, NxVec3* offset = NULL, const char *texFilename = NULL);
 	/* create regular mesh */
 	MyCloth(NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, NxReal w, NxReal h, NxReal d, const char *texFilename = NULL, bool tearLines = false);
 
@@ -29,7 +29,6 @@ public:
 
 private:
 	void init(NxScene *scene, NxClothDesc &desc, NxClothMeshDesc &meshDesc);
-	bool generateObjMeshDesc(NxClothMeshDesc &desc, const char *filename, NxReal scale, NxVec3* offset, bool textured);
 	void generateRegularMeshDesc(NxClothMeshDesc &desc, NxReal w, NxReal h, NxReal d, bool texCoords, bool tearLines = false);
 	void generateTearLines(NxClothMeshDesc& desc, NxU32 w, NxU32 h);
 	void releaseMeshDescBuffers(const NxClothMeshDesc& desc);

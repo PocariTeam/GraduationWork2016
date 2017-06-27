@@ -16,18 +16,18 @@ CClothMesh::~CClothMesh()
 {
 }
 
-void CClothMesh::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PNT* pVtx_Array, DWORD* pIndex_Array )
+void CClothMesh::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
 {
-	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
+	D3D11_MAPPED_SUBRESOURCE MappedSubresource, MappedSubresource2;
 
 	pContext->Map( m_pVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
 	VERTEX_PNT* pVtxBuffer = ( VERTEX_PNT* )MappedSubresource.pData;
-	pVtxBuffer = pVtx_Array;
+	memcpy( pVtxBuffer, &pVtx_Array[ 0 ], sizeof( VERTEX_PNT ) * dwVtxCnt );
 	pContext->Unmap( m_pVB, 0 );
 
-	pContext->Map( m_pIB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
-	DWORD* pIdxBuffer = ( DWORD* )MappedSubresource.pData;
-	pIdxBuffer = pIndex_Array;
+	pContext->Map( m_pIB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource2 );
+	DWORD* pIdxBuffer = ( DWORD* )MappedSubresource2.pData;
+	memcpy( pIdxBuffer, &pIndex_Array[ 0 ], sizeof( DWORD ) * dwIdxCnt );
 	pContext->Unmap( m_pIB, 0 );
 }
 

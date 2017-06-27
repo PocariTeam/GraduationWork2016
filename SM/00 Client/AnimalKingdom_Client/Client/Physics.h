@@ -11,7 +11,6 @@
 #include "Struct.h"
 #include "Banana.h"
 #include "Crown.h"
-#include "MyCloth.h"
 
 #define GRAVITY -9.81f
 #define BANANA_COUNT 40
@@ -23,7 +22,7 @@ class UserAllocator;
 class NxControllerManager;
 class NxController;
 class CPlayer;
-
+class CCloth;
 class CPhysics
 	: public CSingleton<CPhysics>
 {
@@ -31,8 +30,8 @@ private:
 	UserAllocator*			m_pAllocator{ nullptr };
 	NxPhysicsSDK*			m_pPhysicsSDK{ nullptr };
 	NxScene*				m_pScene{ nullptr };
-	CCrown*					m_pCrown;
-	MyCloth*				m_pCloth;
+	CCrown*					m_pCrown{ nullptr };
+	CCloth*					m_pCloth{ nullptr };
 
 	map<string, ACTOR_INFO>		m_mapActorInfo[ CHARACTER_END ];
 	list<CShader*>*				m_pShaderlist{ nullptr };

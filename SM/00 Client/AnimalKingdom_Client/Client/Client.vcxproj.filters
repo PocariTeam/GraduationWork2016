@@ -274,6 +274,9 @@
     <Filter Include="소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth">
       <UniqueIdentifier>{c0529f6c-5057-42a4-b2f3-b3d82cc83d16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\01 InGame\05 Cloth">
+      <UniqueIdentifier>{139a5854-5d8c-4fa6-a481-570a8e7bdd48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -609,6 +612,9 @@
     <ClInclude Include="ClothMesh.h">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth</Filter>
     </ClInclude>
+    <ClInclude Include="Cloth.h">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\05 Cloth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -892,6 +898,9 @@
     </ClCompile>
     <ClCompile Include="ClothMesh.cpp">
       <Filter>소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloth.cpp">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\05 Cloth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

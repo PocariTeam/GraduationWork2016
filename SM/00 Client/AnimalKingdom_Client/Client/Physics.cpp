@@ -30,6 +30,7 @@
 #include "Banana.h"
 #include "Normal_UI.h"
 #include "LightMgr.h"
+#include "Cloth.h"
 
 CPhysics*	CSingleton<CPhysics>::m_pInstance;
 
@@ -149,12 +150,6 @@ void CPhysics::Render( ID3D11DeviceContext* pContext )
 
 void CPhysics::Release_Scene( void )
 {
-	if( m_pCloth != nullptr )
-	{
-		delete m_pCloth;
-		m_pCloth = nullptr;
-	}
-
 	while( !m_BananaQueue.empty() )
 		m_BananaQueue.pop();
 
@@ -323,7 +318,6 @@ HRESULT CPhysics::CreateSceneFromFile( const char* pFilePath, NXU::NXU_FileType 
 
 			NXU::instantiateCollection( pCollection, *m_pPhysicsSDK, 0, 0, 0 );
 			NXU::releaseCollection( pCollection );
-
 			m_pScene = m_pPhysicsSDK->getScene( 0 );
 			return S_OK;
 		}
@@ -339,7 +333,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 {
 	m_pShaderlist = plistShader;
 
-	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 2.5f );
+	m_pPhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.5f );
 	m_pPhysicsSDK->setParameter( NX_CONTINUOUS_CD, true );
 	m_pPhysicsSDK->setParameter( NX_CCD_EPSILON, 0.1f );
 	m_pPhysicsSDK->setParameter( NX_DEFAULT_SLEEP_LIN_VEL_SQUARED, 15 * 15 );
@@ -820,7 +814,6 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			CreateBanana();
 
 		CreateCloth( pDevice );
-
 		pShader_Cloth->Add_RenderObject( m_pCloth );
 	}
 
@@ -997,54 +990,51 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	// 테스트용 액터
 	ACTOR_INFO	testActorDesc;
 	testActorDesc.m_dwType = NX_SHAPE_BOX;
-	testActorDesc.m_fRadius = 2.5f;
 	testActorDesc.m_fWidth = 20.f;
-	testActorDesc.m_fHeight = 20.f;
+	testActorDesc.m_fHeight = 10.f;
 	testActorDesc.m_fLength = 20.f;
-	testActorDesc.m_vGlobalPosition.x = -100.f;
-	testActorDesc.m_vGlobalPosition.y = 200.f;
+	testActorDesc.m_vGlobalPosition.x = -180.f;
+	testActorDesc.m_vGlobalPosition.y = 130.f;
 	testActorDesc.m_vGlobalPosition.z = 100.f;
 
-	NxActor* pActor = CreateActor( "testBoxForCloth", testActorDesc, COL_DYNAMIC );
+	NxActor* pActor = CreateActor( "Cloth", testActorDesc, COL_DYNAMIC );
+	NxD6JointDesc d6Desc;
+	d6Desc.actor[ 0 ] = NULL;
+	d6Desc.actor[ 1 ] = pActor;
+	NxVec3 globalAnchor( 0, 7, 0 );
+	d6Desc.localAnchor[ 0 ] = globalAnchor;
+	pActor->getGlobalPose().multiplyByInverseRT( globalAnchor, d6Desc.localAnchor[ 1 ] );
+	pActor->raiseBodyFlag( NX_BF_DISABLE_GRAVITY );
+	d6Desc.localAxis[ 0 ] = NxVec3( 1, 0, 0 );
+	d6Desc.localNormal[ 0 ] = NxVec3( 0, 1, 0 );
+	d6Desc.localAxis[ 1 ] = NxVec3( 1, 0, 0 );
+	d6Desc.localNormal[ 1 ] = NxVec3( 0, 1, 0 );
 
-	// 옷감
-	NxClothDesc clothDesc;
-	clothDesc.globalPose.t = NxVec3( -100, 200, 100 );
-	clothDesc.thickness = 0.2f;
-	//clothDesc.density = 1.0f;
-	clothDesc.bendingStiffness = 1.0f;
-	clothDesc.stretchingStiffness = 1.0f;
-	//clothDesc.dampingCoefficient = 0.50f;
-	clothDesc.friction = 0.5f;
-	//clothDesc.collisionResponseCoefficient = 1.0f;
-	//clothDesc.attachmentResponseCoefficient = 1.0f;
-	//clothDesc.solverIterations = 5;
-	//clothDesc.flags |= NX_CLF_STATIC;
-	//clothDesc.flags |= NX_CLF_DISABLE_COLLISION;
-	//clothDesc.flags |= NX_CLF_VISUALIZATION;
-	//clothDesc.flags |= NX_CLF_GRAVITY;
-	clothDesc.flags |= NX_CLF_BENDING;
-	//clothDesc.flags |= NX_CLF_BENDING_ORTHO;
-	//clothDesc.flags |= NX_CLF_DAMPING;
-	//clothDesc.flags |= NX_CLF_COMDAMPING;
-	clothDesc.flags |= NX_CLF_COLLISION_TWOWAY;
+	d6Desc.twistMotion = NX_D6JOINT_MOTION_LOCKED;
+	d6Desc.swing1Motion = NX_D6JOINT_MOTION_LOCKED;
+	d6Desc.swing2Motion = NX_D6JOINT_MOTION_LOCKED;
+	d6Desc.xMotion = NX_D6JOINT_MOTION_FREE;
+	d6Desc.yMotion = NX_D6JOINT_MOTION_FREE;
+	d6Desc.zMotion = NX_D6JOINT_MOTION_FREE;
 
-	if( m_pScene->getSimType() == NX_SIMULATION_HW )
-		clothDesc.flags |= NX_CLF_HARDWARE;
+	NxJoint* d6Joint = m_pScene->createJoint( d6Desc );
 
-	m_pCloth = new MyCloth( m_pScene, pDevice, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/ );
 
-	if( !m_pCloth->getNxCloth() )
+	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 10.f, 10.f, 10.f ) );
+	//m_pCloth = new MyCloth( m_pScene, pDevice, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/ );
+
+	if( !m_pCloth->GetNxCloth() )
 	{
 		printf( "Error: Unable to create the cloth for the current scene.\n" );
-		delete m_pCloth;
+		m_pCloth->Release();
 	}
 	else
 	{
-		m_pCloth->getNxCloth()->attachToShape( *pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY );
+		//m_pCloth->GetNxCloth()->attachToCollidingShapes( NX_CLOTH_ATTACHMENT_TWOWAY );
+		m_pCloth->GetNxCloth()->attachToShape( *pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY );
+		m_pCloth->GetNxCloth()->setGroup( COL_DYNAMIC );
 	}
-
-
 }
 
 void CPhysics::CreateBanana( void )

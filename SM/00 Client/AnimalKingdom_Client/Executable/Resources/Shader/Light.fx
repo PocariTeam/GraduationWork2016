@@ -192,7 +192,7 @@ float4 Point_Specular( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal, floa
 	float	fSpecularFactor = pow( max( dot( vLookInv, normalize( vReflect ).xyz ), 0.f ), tLight.vSpecular.w );
 	vSpecular = tLight.vDiffuse * fSpecularFactor;
 
-	float fAttenuationFactor = 1.f / dot( tLight.vAttenuation, float3( 1.0f, fDistance, fDistance * fDistance ) );
+	float fAttenuationFactor = 1.f / dot( tLight.vAttenuation, float3( 1.0f, fDistance / tLight.fRange, fDistance * fDistance / tLight.fRange ) );
 	vSpecular *= fAttenuationFactor;
 	vSpecular.w = 0.f;
 

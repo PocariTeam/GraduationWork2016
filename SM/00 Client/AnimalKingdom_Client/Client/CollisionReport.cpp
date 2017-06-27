@@ -86,4 +86,15 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		}
 	}
 
+	int iClothIndex{ -1 };
+
+	if( 0 == strcmp( pair.actors[ 1 ]->getName(), "Cloth" ) )
+		iClothIndex = 1;
+	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Cloth" ) )
+		iClothIndex = 0;
+
+	if( -1 != iClothIndex )
+	{
+		// pair.actors[ iClothIndex ]->getShapes()[ 0 ]->g
+	}
 }

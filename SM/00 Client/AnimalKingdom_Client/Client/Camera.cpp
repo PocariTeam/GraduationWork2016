@@ -53,7 +53,7 @@ void CCamera::CreateConstantBuffer( ID3D11Device* pDevice )
 	Buffer_Desc.ByteWidth = sizeof( CB_CAMERA );
 	Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	pDevice->CreateBuffer( &Buffer_Desc, NULL, &m_pConstantBufferCamera );
+	pDevice->CreateBuffer( &Buffer_Desc, nullptr, &m_pConstantBufferCamera );
 }
 
 void CCamera::SetConstantBuffer( ID3D11DeviceContext* pContext )

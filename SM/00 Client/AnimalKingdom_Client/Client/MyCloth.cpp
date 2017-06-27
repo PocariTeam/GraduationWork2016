@@ -27,22 +27,7 @@
 
 #define TEAR_MEMORY_FACTOR 3
 
-// -----------------------------------------------------------------------
-MyCloth::MyCloth( NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, const char *objFileName, NxReal scale, NxVec3* offset, const char *texFilename )
-	: mVertexRenderBuffer( NULL ), mScene( NULL ), mCloth( NULL ), mClothMesh( NULL ), m_pDevice( pDevice ), 
-	mIndexRenderBuffer( NULL ), mTempTexCoords( NULL ), mNumTempTexCoords( 0 ), mTexId( 0 ), mTeared( false )
-{
-	mInitDone = false;
-	NxClothMeshDesc meshDesc;
-	generateObjMeshDesc( meshDesc, objFileName, scale, offset, texFilename != NULL );
-	// todo: handle failure
-	init( scene, desc, meshDesc );
-	if( texFilename )
-		createTexture( texFilename );
-}
-
-
-// -----------------------------------------------------------------------
+//---------------------------------------------------
 MyCloth::MyCloth( NxScene *scene, ID3D11Device* pDevice, NxClothDesc &desc, NxReal w, NxReal h, NxReal d, const char *texFilename, bool tearLines )
 	: mVertexRenderBuffer( NULL ), mScene( NULL ), mCloth( NULL ), mClothMesh( NULL ), m_pDevice( pDevice ), 
 	mIndexRenderBuffer( NULL ), mTempTexCoords( NULL ), mNumTempTexCoords( 0 ), mTexId( 0 ), mTeared( false )
@@ -149,7 +134,7 @@ void MyCloth::Render( ID3D11DeviceContext* pContext )
 		updateTextureCoordinates();
 	}
 
-	( ( CClothMesh* )m_pMesh )->UpdateGeometryInformation( pContext, mVertexRenderBuffer, mIndexRenderBuffer );
+//	( ( CClothMesh* )m_pMesh )->UpdateGeometryInformation( pContext, mVertexRenderBuffer, mIndexRenderBuffer );
 	m_pMesh->Render( pContext );
 
 	/*
@@ -221,66 +206,6 @@ void MyCloth::Render( ID3D11DeviceContext* pContext )
 DWORD MyCloth::Release( void )
 {
 	return 0;
-}
-
-// -----------------------------------------------------------------------
-bool MyCloth::generateObjMeshDesc( NxClothMeshDesc &desc, const char *filename, NxReal scale, NxVec3* offset, bool textured )
-{
-	WavefrontObj wo;
-	wo.loadObj( filename, textured );
-	if( wo.mVertexCount == 0 ) return false;
-
-	NxVec3 myOffset( 0.f );
-	if( offset != NULL )
-		myOffset = *offset;
-
-	desc.numVertices = wo.mVertexCount;
-	desc.numTriangles = wo.mTriCount;
-	desc.pointStrideBytes = sizeof( NxVec3 );
-	desc.triangleStrideBytes = 3 * sizeof( NxU32 );
-	desc.vertexMassStrideBytes = sizeof( NxReal );
-	desc.vertexFlagStrideBytes = sizeof( NxU32 );
-	desc.points = ( NxVec3* )malloc( sizeof( NxVec3 )*desc.numVertices );
-	desc.triangles = ( NxU32* )malloc( sizeof( NxU32 )*desc.numTriangles * 3 );
-	desc.vertexMasses = 0;
-	desc.vertexFlags = 0;
-	desc.flags = NX_CLOTH_MESH_WELD_VERTICES;
-	desc.weldingDistance = 0.0001f;
-
-	mMaxVertices = TEAR_MEMORY_FACTOR * wo.mVertexCount;
-	mMaxIndices = 3 * wo.mTriCount;
-
-	// copy positions and indices
-	NxVec3 *vSrc = ( NxVec3* )wo.mVertices;
-	NxVec3 *vDest = ( NxVec3* )desc.points;
-	for( int i = 0; i < wo.mVertexCount; i++, vDest++, vSrc++ )
-		*vDest = ( *vSrc )*scale + myOffset;
-	memcpy( ( NxU32* )desc.triangles, wo.mIndices, sizeof( NxU32 )*desc.numTriangles * 3 );
-
-	if( textured )
-	{
-		mNumTempTexCoords = desc.numVertices;
-		mTempTexCoords = ( float * )malloc( sizeof( float ) * mNumTempTexCoords * 2 );
-		memcpy( ( NxU32* )mTempTexCoords, wo.mTexCoords, sizeof( float )*mNumTempTexCoords * 2 );
-
-		mIndexRenderBuffer = ( DWORD* )malloc( sizeof( DWORD ) * mMaxIndices );
-		memset( mIndexRenderBuffer, 0, sizeof( DWORD ) * mMaxIndices );
-		for( NxU32 i = 0; i < desc.numTriangles; i++ )
-		{
-			assert( ( desc.flags & NX_CF_16_BIT_INDICES ) == 0 );
-			NxU32* tri = ( NxU32* )( ( ( char* )desc.triangles ) + ( desc.triangleStrideBytes * i ) );
-			mIndexRenderBuffer[ 3 * i + 0 ] = tri[ 0 ];
-			mIndexRenderBuffer[ 3 * i + 1 ] = tri[ 1 ];
-			mIndexRenderBuffer[ 3 * i + 2 ] = tri[ 2 ];
-		}
-	}
-	else
-	{
-		mNumTempTexCoords = 0;
-		mTempTexCoords = NULL;
-	}
-
-	return true;
 }
 
 // -----------------------------------------------------------------------
