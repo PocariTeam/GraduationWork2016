@@ -42,6 +42,7 @@ HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pAc
 	//////////////////////////////////////////////////////////////////////////
 
 	CreateCloth( pDevice );
+	m_pCloth->addForceAtPos( NxVec3( 0.f, 0.f, 0.f ), 1.f, 1.f );
 
 	return S_OK;
 }
@@ -50,7 +51,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 {
 	// ¿Ê°¨
 	NxClothDesc tClothDesc;
-	tClothDesc.globalPose.t = NxVec3( 0.f, 0.f, 0.f );
+	tClothDesc.globalPose.t = NxVec3( -5.f, -5.f, 0.f );
 	tClothDesc.pressure = 0.1f;
 	tClothDesc.thickness = 0.2f;
 	//tClothDesc.density = 1.0f;
@@ -309,6 +310,7 @@ XMFLOAT4X4* CCloth::GetWorld()
 	XMMATRIX mtxScale = XMMatrixScaling( m_vScale.x, m_vScale.y, m_vScale.z );
 	mtxScale = XMMatrixMultiply( XMLoadFloat4x4( &Out ), mtxScale );
 	XMStoreFloat4x4( &m_mtxWorld, mtxScale );
+
 
 	return &m_mtxWorld;
 }

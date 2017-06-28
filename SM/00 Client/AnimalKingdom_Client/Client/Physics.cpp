@@ -1001,7 +1001,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	NxD6JointDesc d6Desc;
 	d6Desc.actor[ 0 ] = NULL;
 	d6Desc.actor[ 1 ] = pActor;
-	NxVec3 globalAnchor( 0, 7, 0 );
+	NxVec3 globalAnchor( 0.f, 0.f, 0.f );
 	d6Desc.localAnchor[ 0 ] = globalAnchor;
 	pActor->getGlobalPose().multiplyByInverseRT( globalAnchor, d6Desc.localAnchor[ 1 ] );
 	pActor->raiseBodyFlag( NX_BF_DISABLE_GRAVITY );
@@ -1021,7 +1021,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 
 
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
-	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 10.f, 10.f, 10.f ) );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 5.f, 5.f, 5.f ) );
 	//m_pCloth = new MyCloth( m_pScene, pDevice, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/ );
 
 	if( !m_pCloth->GetNxCloth() )
@@ -1033,7 +1033,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	{
 		//m_pCloth->GetNxCloth()->attachToCollidingShapes( NX_CLOTH_ATTACHMENT_TWOWAY );
 		m_pCloth->GetNxCloth()->attachToShape( *pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY );
-		m_pCloth->GetNxCloth()->setGroup( COL_DYNAMIC );
+		// m_pCloth->GetNxCloth()->setGroup( COL_DYNAMIC );
 	}
 }
 
