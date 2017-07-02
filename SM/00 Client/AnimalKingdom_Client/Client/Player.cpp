@@ -76,6 +76,8 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
 		else if (m_pInputMgr->Get_KeyboardState(DIK_A))
 			eState = STATE_DEFEND;
+		else if (m_pInputMgr->Get_KeyboardState(DIK_D))
+			eState = STATE_SKILL;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 			eState = STATE_JUMP;
 		else if( !vDir.isZero()
@@ -96,7 +98,6 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 			m_pAnimator->Play();
 		}
 	}
-	
 	
 	if( eState != m_pStateMachine->GetCurrentState() )
 		CNetworkMgr::GetInstance()->sendCharacterState( eState );
@@ -220,6 +221,11 @@ void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
 
 void CPlayer::Attack( STATE eState )
 {
+}
+
+void CPlayer::UseSkill()
+{
+	printf(" 자식 클래스(카멜레온, 원숭이)에 대해 UseSkill 가상함수를 정의해주세요. \n");
 }
 
 void CPlayer::ThrowBanana( void )

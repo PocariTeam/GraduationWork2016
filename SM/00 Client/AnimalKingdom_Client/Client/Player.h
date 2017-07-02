@@ -26,6 +26,7 @@ public:
 	void			Move( const float& fTimeDelta );
 	void			Sync( NxVec3& vPos, int hp, float fRotateY, STATE state);
 	virtual void	Attack( STATE eState );
+	virtual void	UseSkill();
 	virtual void	ThrowBanana( void );
 	virtual void	SweapOn( void );
 	virtual void	SweapOff( void );

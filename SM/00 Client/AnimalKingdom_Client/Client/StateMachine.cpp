@@ -60,7 +60,7 @@ void CStateMachine::Change_State( CState* pState )
 	if( STATE_DEAD == m_pCurrentState->GetState() ) return;
 
 	m_pPreviousState = m_pCurrentState;
-	m_pCurrentState->Exit( m_pOwner, 0.f );
+	m_pPreviousState->Exit( m_pOwner, 0.f );
 	m_pCurrentState = pState;
 	m_pCurrentState->Enter( m_pOwner, 0.f );
 }
@@ -77,6 +77,9 @@ void CStateMachine::Change_State( STATE eState )
 		break;
 	case STATE_ATT2:
 		Change_State( CAttackState2::GetInstance() );
+		break;
+	case STATE_SKILL:
+		Change_State(CSKillState::GetInstance());
 		break;
 	case STATE_RUN:
 		Change_State( CRunState::GetInstance() );

@@ -5,7 +5,7 @@
 
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_(L"Player"), session_(s), character_(CHARACTER::CHRACTER_NONE), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_(nullptr), animator_(nullptr), stateMachine_(nullptr)
-	, m_vRotate(0.f, 0.f, 0.f), actorsOriginPose_(nullptr), m_bSweap(false), defend(false), m_fJumpHeight(0.0f), damage_(0), speed_(0.0f)
+	, m_vRotate(0.f, 0.f, 0.f), actorsOriginPose_(nullptr), m_bSweap(false), defend(false), m_fJumpHeight(0.0f), damage_(0), speed_(0.0f), coolTime(0.0f)
 {
 	stateMachine_ = CStateMachine::Create( this );
 
@@ -47,10 +47,16 @@ void Player::initialize()
 	beaten_ = true;
 	hp_ = 100;
 	setStatByCharacter();
+	coolTime = 0.0f;
 }
 
 void Player::update( float fTimeDelta )
 {
+	if (coolTime > 0.f)
+	{
+		coolTime -= fTimeDelta;
+	}
+
 	if( stateMachine_ ) stateMachine_->Update( fTimeDelta );
 	checkFalling();
 
@@ -162,6 +168,11 @@ void Player::sweapOff( void )
 
 void Player::setState( STATE state )
 {
+	if (state == STATE_SKILL && coolTime > 0.0f) {
+		SLog(L"left coolTime: %lf",coolTime);
+		return;
+	}
+
 	if (state == STATE_DEFEND_END)
 	{
 		animator_->Play();
@@ -347,4 +358,10 @@ void Player::Attack( STATE eState )
 		pActor->linearSweep( pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
 			( NxUserEntityReport<NxSweepQueryHit>* )&PhysXManager::getInstance().entityReport_ );
 	}
+}
+
+void Player::UseSkill()
+{
+	coolTime = 10.f; // 임시로 쿨타임 10초
+	printf("스킬 사용에 대한 내용 추가 필요 \n");
 }

@@ -113,4 +113,13 @@ class CDeadState
 	STATE GetState( void );
 };
 
+class CSKillState
+	: public CState, public Singleton<CSKillState>
+{
+	void Enter(Player* pOwner, const float& fTImeDelta);
+	void Execute(Player* pOwner, const float& fTImeDelta);
+	void Exit(Player* pOwner, const float& fTimeDelta);
+	STATE GetState(void);
+};
+
 #endif // State_h__

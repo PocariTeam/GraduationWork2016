@@ -76,6 +76,9 @@ void CStateMachine::Change_State( STATE eState )
 	case STATE_ATT2:
 		Change_State(&CAttackState2::getInstance());
 		break;
+	case STATE_SKILL:
+		Change_State(&CSKillState::getInstance());
+		break;
 	case STATE_RUN:
 		Change_State(&CRunState::getInstance());
 		break;

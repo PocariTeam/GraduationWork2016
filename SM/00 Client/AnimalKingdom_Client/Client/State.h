@@ -79,6 +79,15 @@ class CAttackState2
 	STATE GetState( void );
 };
 
+class CSKillState
+	: public CState, public CSingleton<CSKillState>
+{
+	void Enter(CPlayer* pOwner, const float& fTImeDelta);
+	void Execute(CPlayer* pOwner, const float& fTImeDelta);
+	void Exit(CPlayer* pOwner, const float& fTimeDelta);
+	STATE GetState(void);
+};
+
 class CBeatenState
 	: public CState, public CSingleton<CBeatenState>
 {

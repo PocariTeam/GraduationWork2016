@@ -9,6 +9,7 @@ CGlobalState*	CSingleton<CGlobalState>::m_pInstance;
 CIdleState*		CSingleton<CIdleState>::m_pInstance;
 CAttackState*	CSingleton<CAttackState>::m_pInstance;
 CAttackState2*	CSingleton<CAttackState2>::m_pInstance;
+CSKillState*	CSingleton<CSKillState>::m_pInstance;
 CRunState*		CSingleton<CRunState>::m_pInstance;
 CJumpState*		CSingleton<CJumpState>::m_pInstance;
 CDefendState*	CSingleton<CDefendState>::m_pInstance;
@@ -44,6 +45,7 @@ void CGlobalState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 STATE CGlobalState::GetState( void )
 {
 	/* 잘못된 요청 */
+	printf("request wrong state! \n");
 	return ( STATE )-1;
 }
 
@@ -192,6 +194,31 @@ void CAttackState2::Exit( CPlayer* pOwner, const float& fTimeDelta )
 STATE CAttackState2::GetState( void )
 {
 	return STATE_ATT2;
+}
+
+///////////////////// Skill State /////////////////////
+
+void CSKillState::Enter(CPlayer * pOwner, const float & fTImeDelta)
+{
+	pOwner->ResetOverlapped();
+	pOwner->GetAnimator()->Change_Animation(STATE_BEATEN2); // 임시로 맞는 애니메이션 출력
+	printf(" 스킬 사용에 대한 애니메이션을 추가해주세요... \n");
+}
+
+void CSKillState::Execute(CPlayer * pOwner, const float & fTImeDelta)
+{
+	pOwner->UseSkill();
+	if (pOwner->GetAnimator()->GetCurrentAnimationFinished())
+		pOwner->GetFSM()->Change_State(STATE_IDLE);
+}
+
+void CSKillState::Exit(CPlayer * pOwner, const float & fTimeDelta)
+{
+}
+
+STATE CSKillState::GetState(void)
+{
+	return STATE_SKILL;
 }
 
 ///////////////////// Beaten State /////////////////////

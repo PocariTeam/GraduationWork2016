@@ -78,6 +78,9 @@ void CChameleon::Attack( STATE eState )
 	case STATE_ATT2:
 		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
 		break;
+	case STATE_SKILL:
+		printf("카멜레온 스킬 사용 \n");
+		break;
 	default:
 		return ;
 	}
