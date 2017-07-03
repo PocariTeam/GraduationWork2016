@@ -79,6 +79,16 @@ HRESULT CMeshMgr::Add( ID3D11Device* pDevice, const char* pKey, LPVOID pVertexAr
 	return S_OK;
 }
 
+HRESULT CMeshMgr::Pop( const char* pKey )
+{
+	MESHCONTAINER::iterator		iter_Find = m_mapMesh.find( pKey );
+	if( iter_Find == m_mapMesh.end() )  return E_FAIL;
+	
+	iter_Find->second->Release();
+	m_mapMesh.erase( pKey );
+	return S_OK;
+}
+
 HRESULT CMeshMgr::Load( ID3D11Device* pDevice, const char* pFilePath )
 {
 	HRESULT		hr{};

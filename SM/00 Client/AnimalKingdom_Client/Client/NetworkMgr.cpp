@@ -276,6 +276,7 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_ANS_SyncPlayer:
 	{
 		S_SyncPlayer* packet = (S_SyncPlayer* )m_saveBuf;
+		if( nullptr == m_pScene ) break;
 		for( unsigned int i = 0; i < m_dwPlayerCnt; ++i )
 		{
 			XMFLOAT3 position;

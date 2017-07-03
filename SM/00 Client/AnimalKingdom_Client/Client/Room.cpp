@@ -44,8 +44,7 @@ CRoom::~CRoom()
 
 HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
-	CScene::Initialize( hWnd, pDevice );
-
+	printf( "Room\n" );
 	m_pCamera = COrthoCamera::Create( hWnd, pDevice );
 
 	// Background
@@ -110,6 +109,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
 
+	CScene::Initialize( hWnd, pDevice );
 	PlayerInfo*	pTempArray = new PlayerInfo[ PLAYER_CAPACITY ];
 	CNetworkMgr::GetInstance()->getPlayerInfo( pTempArray, m_dwPlayerCnt );
 	if( m_dwPlayerCnt != 0 )

@@ -70,6 +70,7 @@ int CScene::Update( const float& fTimeDelta )
 
 DWORD CScene::Release( void )
 {
+	CNetworkMgr::GetInstance()->setScene( nullptr );
 	::Safe_Release( m_pCamera );
 
 	for( DWORD i = 0; i < ( DWORD )RENDER_END; ++i )

@@ -32,9 +32,6 @@ CLobby::~CLobby()
 
 HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
-	CScene::Initialize( hWnd, pDevice );
-	CNetworkMgr::GetInstance()->sendRequestRoomList();
-
 	CTextureMgr*	pTextureMgr = CTextureMgr::GetInstance();
 	m_pRenderer = CRenderer::GetInstance();
 	m_pInputMgr = CInputMgr::GetInstance();
@@ -65,6 +62,9 @@ HRESULT CLobby::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	m_pRenderer->Copy_RenderGroup( m_listShader );
+
+	CScene::Initialize( hWnd, pDevice );
+	CNetworkMgr::GetInstance()->sendRequestRoomList();
 
 	return S_OK;
 }

@@ -47,9 +47,9 @@ CJungle::~CJungle()
 
 HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
+	printf( "Jungle\n" );
 	m_pDevice = pDevice;
 	m_hWnd = hWnd;
-	CScene::Initialize( hWnd, pDevice );
 
 	m_pCamera = CEventCamera::Create( pDevice, XMFLOAT3( 20.f, 130.f, 0.f ), XMFLOAT3( -50.f, 180.f, -200.f ), XMFLOAT3( 200.f, 260.f, -230.f ) );
 	CNetworkMgr::GetInstance()->unreadyAllPlayer();
@@ -57,7 +57,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 	m_iFocus = m_iPlayerID;
-	
+
 	m_dwPlayerCnt = ( UINT )m_mapPlayer.size();
 
 	// Section 1 ~ 3
@@ -99,11 +99,11 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// Crown Time UI
 	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
 	m_dpCrownTime_UI = new CNumber_UI*[ NUM_END ];
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_TEN ]		= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.775f, -0.62f, 0.035f, 0.07f ), 0 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_ONE ]		= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.74f, -0.62f, 0.035f, 0.07f ), 0 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_COLON ]	= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.705f, -0.62f, 0.035f, 0.07f ), 10 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_PROCENT ]	= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.67f, -0.62f, 0.035f, 0.07f ), 0 ) );
-	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_CENTI ]	= CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.635f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_TEN ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.775f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_ONE ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.74f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_COLON ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.705f, -0.62f, 0.035f, 0.07f ), 10 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_PROCENT ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.67f, -0.62f, 0.035f, 0.07f ), 0 ) );
+	pShader->Add_RenderObject( m_dpCrownTime_UI[ NUM_CENTI ] = CNumber_UI::Create( CNumber_UI::NUMBER_CROWN, XMFLOAT4( -0.635f, -0.62f, 0.035f, 0.07f ), 0 ) );
 	m_listShader[ RENDER_UI ].push_back( pShader );
 	m_dpCrownTime_UI[ NUM_TEN ]->Hide();
 	m_dpCrownTime_UI[ NUM_ONE ]->Hide();
@@ -158,6 +158,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
+	CScene::Initialize( hWnd, pDevice );
 
 	return S_OK;
 }
@@ -220,28 +221,28 @@ void CJungle::Change_CrownUI_Position( void )
 		m_dpCrownTime_UI[ NUM_CENTI ]->Show();
 		m_pCrownmark_UI->Show();
 	}
-	
+
 }
 
 int CJungle::Update( const float& fTimeDelta )
 {
-		CScene::Update(fTimeDelta);
+	CScene::Update( fTimeDelta );
 
-	auto focus_iter = m_mapPlayer.find(m_iFocus);
+	auto focus_iter = m_mapPlayer.find( m_iFocus );
 	if( m_bStart )
 	{
 		CPhysics::GetInstance()->Update( fTimeDelta );
 		m_mapPlayer[ m_iPlayerID ]->Check_Key( fTimeDelta );
-		if (focus_iter != m_mapPlayer.end())
+		if( focus_iter != m_mapPlayer.end() )
 		{
-			if (focus_iter->second->GetAlpha())
+			if( focus_iter->second->GetAlpha() )
 				CRenderer::GetInstance()->InCave();
 			else
 				CRenderer::GetInstance()->OutCave();
 		}
 	}
 
-	if(focus_iter != m_mapPlayer.end() && STATE_DEAD == focus_iter->second->GetFSM()->GetCurrentState() && !m_bDebug )
+	if( focus_iter != m_mapPlayer.end() && STATE_DEAD == focus_iter->second->GetFSM()->GetCurrentState() && !m_bDebug )
 		Change_CameraDest();
 
 	Check_Key( fTimeDelta );

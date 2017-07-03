@@ -408,6 +408,8 @@ DWORD CCloth::Release( void )
 		// delete the rendering buffers
 		::Safe_Delete_Array( m_pVertexArray );
 		::Safe_Delete_Array( m_pIndexArray );
+
+		CMeshMgr::GetInstance()->Pop( "Mesh_Cloth" );
 		delete this;
 	}
 
