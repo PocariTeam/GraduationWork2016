@@ -8,7 +8,6 @@ CNumber_UI::CNumber_UI()
 	, m_bHide( false )
 	, m_fSpeed( 0.f )
 	, m_iValue( 1000 )
-	, m_iInstanceCnt( 0 )
 {
 }
 
@@ -69,6 +68,7 @@ void CNumber_UI::Render( ID3D11DeviceContext* pContext )
 		break;
 	case NUMBER_TIME:
 	case NUMBER_CROWN:
+		m_pTexture->Render( pContext );
 		pContext->DrawInstanced( 6, m_iInstanceCnt, 0, 0 );
 		break;
 	}
@@ -129,9 +129,4 @@ void CNumber_UI::SetNumber( UINT iNum )
 		m_vOption.w = 1.f;
 		break;
 	}
-}
-
-void CNumber_UI::SetInstanceCnt( UINT iCnt )
-{
-	m_iInstanceCnt = iCnt;
 }

@@ -114,7 +114,7 @@ typedef struct tagLoadThread
 	: public tagThreadInfo
 {
 	tagLoadThread() : m_pDevice( nullptr ), m_strPath( "" ) {}
-	~tagLoadThread() {}
+	~tagLoadThread() { }
 	ID3D11Device*	m_pDevice;
 	char			m_strPath[ MAX_PATH ];
 }THREAD_LOADING;

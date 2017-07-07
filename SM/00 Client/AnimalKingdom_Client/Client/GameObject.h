@@ -25,7 +25,7 @@ public:
 	void				SetActor( NxActor* pActor ) { m_pActor = pActor; }
 	void				SetDir( NxVec3 vDir );
 	void				SetOption( int iKey, float fValue );
-	virtual void		SetInstanceCnt( UINT iCnt ) {}
+	virtual void		SetInstanceCnt( UINT iCnt ) { m_iInstanceCnt = iCnt; }
 public:
 	virtual XMFLOAT4X4* GetWorld();
 	NxActor*			GetActor();
@@ -38,6 +38,7 @@ protected:
 	NxVec3			m_vDir;
 	XMFLOAT4		m_vOption;
 	XMFLOAT4X4		m_mtxWorld;
+	UINT			m_iInstanceCnt;
 };
 
 #endif

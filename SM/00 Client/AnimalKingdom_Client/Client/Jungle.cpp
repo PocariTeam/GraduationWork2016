@@ -47,7 +47,6 @@ CJungle::~CJungle()
 
 HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
-	printf( "Jungle\n" );
 	m_pDevice = pDevice;
 	m_hWnd = hWnd;
 

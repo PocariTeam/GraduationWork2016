@@ -55,7 +55,7 @@ XMFLOAT4X4* CEnvironment::GetWorld()
 void CEnvironment::Render( ID3D11DeviceContext* pContext )
 {
 	m_pTexture->Render( pContext );
-	m_pMesh->Render( pContext );
+	m_pMesh->Render( pContext, m_iInstanceCnt );
 }
 
 DWORD CEnvironment::Release( void )

@@ -14,6 +14,7 @@ CGameObject::CGameObject()
 	, m_pActor( nullptr )
 	, m_vDir( 0.f, 0.f, 0.f )
 	, m_vOption( 0.f, 0.f, 0.f, 1.f )
+	, m_iInstanceCnt( 1 )
 {
 	XMStoreFloat4x4( &m_mtxWorld, XMMatrixIdentity() );
 	// memset( &m_mtxWorld, 0, sizeof( XMFLOAT4X4 ) );

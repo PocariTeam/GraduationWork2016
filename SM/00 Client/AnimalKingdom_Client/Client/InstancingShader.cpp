@@ -49,12 +49,8 @@ void CInstancingShader::Render( ID3D11DeviceContext* pContext )
 	if( m_vecRenderObject.empty() )
 		return;
 
-	m_vecRenderObject.front()->GetTexture()->Render( pContext );
-	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
-	{
-		SetConstantBuffer( pContext, *m_vecRenderObject[ i ]->GetWorld(), m_vecRenderObject[ i ]->GetOption() );
-		m_vecRenderObject[i]->Render( pContext );
-	}
+	SetConstantBuffer( pContext, *m_vecRenderObject.front()->GetWorld(), m_vecRenderObject.front()->GetOption() );
+	m_vecRenderObject.back()->Render( pContext );
 }
 
 DWORD CInstancingShader::Release( void )
@@ -106,6 +102,23 @@ HRESULT CInstancingShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYP
 		iArrCnt = ARRAYSIZE( VTX_Element );
 	}
 	break;
+	case CShader::INPUT_PNTT:
+	{
+		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "WORLD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLD", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLD", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "WORLD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+			{ "OPTION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		};
+		pInputDesc = VTX_Element;
+		iArrCnt = ARRAYSIZE( VTX_Element );
+	}
+	break;
 	}
 
 	if( FAILED( CreateVS( pDevice, pFilePath, pInputDesc, iArrCnt ) ) )
@@ -136,6 +149,7 @@ HRESULT CInstancingShader::CreateConstantBuffer( ID3D11Device* pDevice, UINT iBu
 	switch( m_eInputElement )
 	{
 	case INPUT_NO:
+	case INPUT_PNTT:
 		Buffer_Desc.ByteWidth = UINT( sizeof( CB_WORLD ) * dwInstancedCnt );
 		break;
 	}
@@ -166,6 +180,7 @@ void CInstancingShader::SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOA
 	switch( m_eInputElement )
 	{
 	case CShader::INPUT_NO:
+	case CShader::INPUT_PNTT:
 	{
 		CB_WORLD* pStruct = ( CB_WORLD* )MappedSubresource.pData;
 		for( size_t i = 0; i < m_vecRenderObject.size(); ++i )

@@ -268,9 +268,6 @@
     <Filter Include="소스 파일\00 Client\03 Object\00 Public\02 Skydome">
       <UniqueIdentifier>{addea75d-5082-4d8c-8ed2-5e52a29419dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\01 System\05 Physics\01 Cloth">
-      <UniqueIdentifier>{963f2990-324b-45c7-8be4-b9edbf4c53a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03 Resources\01 Mesh\00 Inanimate\02 Cloth">
       <UniqueIdentifier>{c0529f6c-5057-42a4-b2f3-b3d82cc83d16}</UniqueIdentifier>
     </Filter>
@@ -597,9 +594,6 @@
     <ClInclude Include="Skydome.h">
       <Filter>소스 파일\00 Client\03 Object\00 Public\02 Skydome</Filter>
     </ClInclude>
-    <ClInclude Include="MyCloth.h">
-      <Filter>소스 파일\01 System\05 Physics\01 Cloth</Filter>
-    </ClInclude>
     <ClInclude Include="Stream.h">
       <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
     </ClInclude>
@@ -884,9 +878,6 @@
     <ClCompile Include="Skydome.cpp">
       <Filter>소스 파일\00 Client\03 Object\00 Public\02 Skydome</Filter>
     </ClCompile>
-    <ClCompile Include="MyCloth.cpp">
-      <Filter>소스 파일\01 System\05 Physics\01 Cloth</Filter>
-    </ClCompile>
     <ClCompile Include="Stream.cpp">
       <Filter>소스 파일\05 Common\01 SampleCommonCode</Filter>
     </ClCompile>
@@ -960,6 +951,9 @@
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Cloth.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh_I.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
     </FxCompile>
   </ItemGroup>

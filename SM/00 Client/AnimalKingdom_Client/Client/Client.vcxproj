@@ -216,7 +216,6 @@
     <ClInclude Include="Environment.h" />
     <ClInclude Include="EventCamera.h" />
     <ClInclude Include="MediaPath.h" />
-    <ClInclude Include="MyCloth.h" />
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
     <ClInclude Include="Stream.h" />
@@ -390,7 +389,6 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EventCamera.cpp" />
     <ClCompile Include="MediaPath_WIN.cpp" />
-    <ClCompile Include="MyCloth.cpp" />
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
     <ClCompile Include="Stream.cpp" />
@@ -529,6 +527,14 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Mesh_Alpha.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh_I.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

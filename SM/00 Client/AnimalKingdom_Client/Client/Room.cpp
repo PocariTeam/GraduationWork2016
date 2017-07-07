@@ -44,7 +44,6 @@ CRoom::~CRoom()
 
 HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 {
-	printf( "Room\n" );
 	m_pCamera = COrthoCamera::Create( hWnd, pDevice );
 
 	// Background

@@ -382,10 +382,12 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 	CNetworkMgr::GetInstance()->getPlayerInfo( pPlayerInfo, iPlayerCnt );
 
-	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave, *pShader_Mesh_Alpha, *pShader_Cloth;
+	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave, *pShader_Mesh_Alpha, *pShader_Cloth, *pShader_Environment[ 15 ];
 
 	pShader_Skydome = CShaderMgr::GetInstance()->Clone( "Shader_Skydome" );
 	pShader_Mesh = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
+	for( int i = 0; i < 15; i++ )
+		pShader_Environment[ i ] = CShaderMgr::GetInstance()->Clone( "Shader_Mesh_I" );
 	pShader_Cave = CShaderMgr::GetInstance()->Clone( "Shader_Mesh" );
 	pShader_Light = CShaderMgr::GetInstance()->Clone( "Shader_Light" );
 	pShader_Blend = CShaderMgr::GetInstance()->Clone( "Shader_Blend" );
@@ -475,7 +477,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					SetCollisionGroup( pActor, COL_DYNAMIC );
 				}
 
-				else if( 0 == strcmp( pActor->getName(), "Branch00" ) )
+				/*else if( 0 == strcmp( pActor->getName(), "Branch00" ) )
 				{
 					CGameObject* pBranch = CEnvironment::Create( pDevice, pActor, CMeshMgr::GetInstance()->Clone( "Mesh_Branch00" ), CTextureMgr::GetInstance()->Clone( "Texture_Branch00" ), XMFLOAT3( 0.79901f, 0.79901f, 0.79901f ) );
 					pActor->setGroup( COL_DYNAMIC );
@@ -484,7 +486,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					pShader_Mesh->Add_RenderObject( pBranch );
 					pShader_Mesh_Alpha->Add_RenderObject( pBranch );
 					SetCollisionGroup( pActor, COL_DYNAMIC );
-				}
+				}*/
 
 				else
 				{
@@ -582,7 +584,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pBridge = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pBridge->Add_Ref();
 					pBridge->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pBridge );
+					pShader_Environment[ 0 ]->Add_RenderObject( pBridge );
 					pShader_Mesh_Alpha->Add_RenderObject( pBridge );
 				}
 
@@ -596,7 +598,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Environment[ 1 ]->Add_RenderObject( pTree );
 					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
@@ -610,7 +612,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Environment[ 2 ]->Add_RenderObject( pTree );
 					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
@@ -624,7 +626,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Environment[ 3 ]->Add_RenderObject( pTree );
 					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
@@ -638,7 +640,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Environment[ 4 ]->Add_RenderObject( pTree );
 					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
@@ -652,7 +654,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pTree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pTree->Add_Ref();
 					pTree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pTree );
+					pShader_Environment[ 5 ]->Add_RenderObject( pTree );
 					pShader_Mesh_Alpha->Add_RenderObject( pTree );
 				}
 
@@ -666,7 +668,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pMushroom = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.95783f, 1.95783f, 1.95783f ) );
 					pMushroom->Add_Ref();
 					pMushroom->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pMushroom );
+					pShader_Environment[ 6 ]->Add_RenderObject( pMushroom );
 					pShader_Mesh_Alpha->Add_RenderObject( pMushroom );
 				}
 
@@ -680,7 +682,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pPalmtree = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pPalmtree->Add_Ref();
 					pPalmtree->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pPalmtree );
+					pShader_Environment[ 7 ]->Add_RenderObject( pPalmtree );
 					pShader_Mesh_Alpha->Add_RenderObject( pPalmtree );
 				}
 
@@ -695,7 +697,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pFlower = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pFlower->Add_Ref();
 					pFlower->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pFlower );
+					pShader_Environment[ 8 ]->Add_RenderObject( pFlower );
 					pShader_Mesh_Alpha->Add_RenderObject( pFlower );
 				}
 
@@ -709,7 +711,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pRock->Add_Ref();
 					pRock->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Environment[ 9 ]->Add_RenderObject( pRock );
 					pShader_Mesh_Alpha->Add_RenderObject( pRock );
 				}
 
@@ -723,7 +725,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pRock->Add_Ref();
 					pRock->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Environment[ 10 ]->Add_RenderObject( pRock );
 					pShader_Mesh_Alpha->Add_RenderObject( pRock );
 				}
 
@@ -737,7 +739,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 					pRock->Add_Ref();
 					pRock->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Environment[ 11 ]->Add_RenderObject( pRock );
 					pShader_Mesh_Alpha->Add_RenderObject( pRock );
 				}
 
@@ -751,7 +753,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pRock = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.54092f, 1.54092f, 1.54092f ) );
 					pRock->Add_Ref();
 					pRock->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pRock );
+					pShader_Environment[ 12 ]->Add_RenderObject( pRock );
 					pShader_Mesh_Alpha->Add_RenderObject( pRock );
 				}
 
@@ -766,7 +768,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pBush = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 0.0372f, 1.f ) );
 					pBush->Add_Ref();
 					pBush->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pBush );
+					pShader_Environment[ 13 ]->Add_RenderObject( pBush );
 					pShader_Mesh_Alpha->Add_RenderObject( pBush );
 				}
 
@@ -781,7 +783,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					CGameObject* pBush = CEnvironment::Create( pDevice, pActor, pMesh, pTexture, XMFLOAT3( 1.f, 0.0372f, 1.f ) );
 					pBush->Add_Ref();
 					pBush->Add_Ref();
-					pShader_Mesh->Add_RenderObject( pBush );
+					pShader_Environment[ 14 ]->Add_RenderObject( pBush );
 					pShader_Mesh_Alpha->Add_RenderObject( pBush );
 				}
 
@@ -795,6 +797,8 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 		plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skydome );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
+		for( int i = 0; i < 15; ++i )
+			plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Environment[ i ] );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cave );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cloth );
