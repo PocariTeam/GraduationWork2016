@@ -994,14 +994,15 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	// 테스트용 액터
 	ACTOR_INFO	testActorDesc;
 	testActorDesc.m_dwType = NX_SHAPE_BOX;
-	testActorDesc.m_fWidth = 20.f;
+	testActorDesc.m_fWidth = 5.f;
 	testActorDesc.m_fHeight = 10.f;
-	testActorDesc.m_fLength = 20.f;
+	testActorDesc.m_fLength = 5.f;
 	testActorDesc.m_vGlobalPosition.x = -180.f;
 	testActorDesc.m_vGlobalPosition.y = 130.f;
 	testActorDesc.m_vGlobalPosition.z = 100.f;
 
 	NxActor* pActor = CreateActor( "Cloth", testActorDesc, COL_DYNAMIC );
+	pActor->raiseBodyFlag( NX_BF_KINEMATIC );
 	NxD6JointDesc d6Desc;
 	d6Desc.actor[ 0 ] = NULL;
 	d6Desc.actor[ 1 ] = pActor;
@@ -1025,8 +1026,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 
 
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
-	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
-	//m_pCloth = new MyCloth( m_pScene, pDevice, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/ );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 1.f, 3.f, 1.f ) );
 
 	if( !m_pCloth->GetNxCloth() )
 	{
@@ -1076,6 +1076,7 @@ void CPhysics::ThrowBanana( NxVec3& vPos, NxVec3& vDir, COL_GROUP eColGroup )
 void CPhysics::SetCrownOwner( CPlayer * p )
 {
 	m_pCrown->SetOwner( p );
+	m_pCloth->SetOwner( p );
 }
 
 queue<CBanana*>* CPhysics::GetBananaQueue( void )

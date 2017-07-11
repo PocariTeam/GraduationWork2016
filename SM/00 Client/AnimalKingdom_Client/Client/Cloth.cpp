@@ -10,11 +10,14 @@
 #include "MeshMgr.h"
 #include "Mesh.h"
 #include "ClothMesh.h"
+#include "Player.h"
+#include "Animator.h"
 
 #define TEAR_MEMORY_FACTOR 2
 
 CCloth::CCloth()
 	: CGameObject()
+	, m_pOwner( nullptr )
 	, m_pPhysXScene( nullptr )
 	, m_bInitialize( false )
 	, m_pClothMesh( nullptr )
@@ -58,7 +61,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	tClothDesc.bendingStiffness = 1.0f;
 	tClothDesc.stretchingStiffness = 1.0f;
 	//tClothDesc.dampingCoefficient = 0.50f;
-	tClothDesc.windAcceleration = NxVec3( 5.f, 10.f, 5.f );
+	tClothDesc.windAcceleration = NxVec3( 5.f, -10.f, 5.f );
 	tClothDesc.friction = 0.5f;
 	//tClothDesc.collisionResponseCoefficient = 1.0f;
 	//tClothDesc.attachmentResponseCoefficient = 1.0f;
@@ -112,7 +115,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	XMFLOAT3* pPositionArr = ( XMFLOAT3* )tMeshDesc.points;
 	for( i = 0; i <= dwNumY; i++ ) {
 		for( j = 0; j <= dwNumX; j++ ) {
-			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, fDepth * i, 0.f };
+			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, 0.f, fDepth * i };
 			pPositionArr++;
 		}
 	}
@@ -300,6 +303,11 @@ CCloth* CCloth::Create( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor,
 	return pCloth;
 }
 
+void CCloth::SetOwner( CPlayer* pPlayer )
+{
+	m_pOwner = pPlayer;
+}
+
 XMFLOAT4X4* CCloth::GetWorld()
 {
 	NxF32 mtxWorld[ 16 ]{};
@@ -317,13 +325,38 @@ XMFLOAT4X4* CCloth::GetWorld()
 
 int CCloth::Update( const float& fTimeDelta )
 {
-	m_pCloth->attachVertexToGlobalPosition( 100, NxVec3( 0.f, -fTimeDelta, fTimeDelta )/*m_pActor->getGlobalPosition()*/ );
+	if( nullptr != m_pOwner )
+	{
+		NxMat34 mtxAnimation = m_pOwner->GetAnimator()->GetCurrentAnimationMatrix( m_pOwner, "root" );
+		NxMat33 mtxRotation{};
+		NxVec3	vOffset{};
 
+		switch( m_pOwner->GetCharacterType() )
+		{
+		case CHARACTER_CHM:
+			mtxRotation.rotX( 0 );
+			vOffset = NxVec3( 0.f, 5.f, 2.f );
+			break;
+		case CHARACTER_MON:
+			mtxRotation.rotX( XM_PI );
+			vOffset = NxVec3( 0.f, -0.3f, 0.2f );
+			break;
+		default:
+			break;
+		}
+		NxMat34 mtxLocal{ mtxRotation, vOffset };
+		m_pActor->setGlobalPose( mtxAnimation * mtxLocal );
+		float fRadian = m_pOwner->GetRotateY();
+		vOffset = NxVec3( 1/*cos( fRadian ) * 3.f*/, -3.f, 1/*sin( fRadian ) * 3.f*/ );
+		m_pCloth->attachVertexToGlobalPosition( 0, vOffset * fTimeDelta );
+		m_pCloth->attachVertexToGlobalPosition( 54, vOffset * fTimeDelta );
+	}
 	return 0;
 }
 
 void CCloth::Render( ID3D11DeviceContext* pContext )
 {
+	if( nullptr == m_pOwner ) return;
 	/*static NxU32 numVertices = mNumVertices;
 	NxU32 numElements = mNumIndices;
 	numVertices = mNumVertices;*/

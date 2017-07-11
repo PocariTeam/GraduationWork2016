@@ -42,7 +42,7 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	BlendStateDesc.RenderTarget[ 0 ].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 	pDevice->CreateBlendState( &BlendStateDesc, &m_pBlendState[ BL_ALPHA ] );
-	printf( "RefCnt : %d\n", pDevice->Release() );
+	pDevice->Release();
 
 	/* DS_NO_WRITE */
 	D3D11_DEPTH_STENCIL_DESC DepthDesc;
@@ -63,12 +63,12 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	DepthDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
 	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_NO_WRITE ] );
-	printf( "RefCnt : %d\n", pDevice->Release() );
+	pDevice->Release();
 
 	/* DS_NO_TEST */
 	DepthDesc.DepthEnable = false;
 	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_NO_TEST ] );
-	printf( "RefCnt : %d\n", pDevice->Release() );
+	pDevice->Release();
 
 	/* RS_NULL */
 	//D3D11_RASTERIZER_DESC RSNullDesc;
@@ -87,7 +87,8 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	RSWireDesc.DepthClipEnable = true;
 	//RSWireDesc.AntialiasedLineEnable = TRUE;
 	pDevice->CreateRasterizerState( &RSWireDesc, &m_pRasterizerState[ RS_WIREFRAME ] );
-	printf( "RefCnt : %d\n", pDevice->Release() );
+	pDevice->Release();
+
 	/* RS_NO_CULL */
 	D3D11_RASTERIZER_DESC RSNoCull;
 	ZeroMemory( &RSNoCull, sizeof( D3D11_RASTERIZER_DESC ) );
@@ -98,7 +99,7 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	RSNoCull.FrontCounterClockwise = false;
 	RSNoCull.DepthClipEnable = true;
 	pDevice->CreateRasterizerState( &RSNoCull, &m_pRasterizerState[ RS_NO_CULL ] );
-	printf( "RefCnt : %d\n", pDevice->Release() );
+	pDevice->Release();
 
 	return S_OK;
 }

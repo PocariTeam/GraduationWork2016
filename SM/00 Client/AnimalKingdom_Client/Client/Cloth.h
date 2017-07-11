@@ -11,6 +11,7 @@ class NxScene;
 class NxClothMeshDesc;
 class NxClothMesh;
 class NxCloth;
+class CPlayer;
 class CCloth
 	: public CGameObject
 {
@@ -25,6 +26,7 @@ private:
 public:
 	static CCloth* Create( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, CTexture* pTexture, XMFLOAT3& vScale );
 public:
+	void		SetOwner( CPlayer* pPlayer );
 	XMFLOAT4X4* GetWorld();
 	NxCloth*	GetNxCloth() { return m_pCloth; }
 public:
@@ -33,6 +35,7 @@ public:
 	DWORD	Release( void );
 private:
 	NxScene*		m_pPhysXScene;
+	CPlayer*		m_pOwner;
 	bool			m_bInitialize;
 	XMFLOAT3		m_vScale;
 	NxClothMesh*	m_pClothMesh;
