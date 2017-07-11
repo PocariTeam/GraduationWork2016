@@ -66,6 +66,7 @@ HRESULT CTextureMgr::Load( ID3D11Device* pDevice, const char* pFilePath )
 	char		szKey[ MAX_PATH ]{ "" }, szPath[ MAX_PATH ]{ "" };
 
 	pIn >> iAllCnt;
+
 	for( int i = 0; i < iAllCnt; ++i )
 	{
 		pIn >> szKey;

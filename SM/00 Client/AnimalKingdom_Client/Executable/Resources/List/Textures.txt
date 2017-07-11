@@ -1,11 +1,13 @@
 60
+Texture_Back 4 ../Executable/Resources/Texture/UI/Back/Back%d.png
+Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
 Texture_Billboard_Ready 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Ready.png
+Texture_Bridge 1 ../Executable/Resources/Texture/Bridge/Bridge.png
+Texture_Branch00 1 ../Executable/Resources/Texture/Branch/Branch00.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
 Texture_Select_Monkey 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Monkey/Select_Monkey%d.png
 Texture_Select_Chameleon 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Chameleon/Select_Chameleon%d.png
-Texture_Bridge 1 ../Executable/Resources/Texture/Bridge/Bridge.png
-Texture_Back 4 ../Executable/Resources/Texture/UI/Back/Back%d.png
 Texture_Slot 2 ../Executable/Resources/Texture/UI/Slot/Slot%d.png
 Texture_Exit 3 ../Executable/Resources/Texture/UI/Exit/Exit%d.png
 Texture_Previous 4 ../Executable/Resources/Texture/UI/Previous/Previous%d.png
@@ -25,7 +27,6 @@ Texture_Lobby 1 ../Executable/Resources/Texture/Background/Lobby.jpg
 Texture_Room 1 ../Executable/Resources/Texture/Background/Room.jpg
 Texture_Skydome 5 ../Executable/Resources/Texture/Skydome/Skydome%d.png
 Texture_Test 1 ../Executable/Resources/Texture/Test/Test.png
-Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Ground1 1 ../Executable/Resources/Texture/map/ground1.png
 Texture_Ground2 1 ../Executable/Resources/Texture/map/ground2.png
 Texture_Ground3 1 ../Executable/Resources/Texture/map/ground3.png
@@ -40,7 +41,6 @@ Texture_Tree01 1 ../Executable/Resources/Texture/Tree/Tree01.png
 Texture_Tree02 1 ../Executable/Resources/Texture/Tree/Tree02.png
 Texture_Tree03 1 ../Executable/Resources/Texture/Tree/Tree03.png
 Texture_Tree04 1 ../Executable/Resources/Texture/Tree/Tree04.png
-Texture_Branch00 1 ../Executable/Resources/Texture/Branch/Branch00.png
 Texture_Flower00 1 ../Executable/Resources/Texture/Flower/Flower00.png
 Texture_Mushroom 1 ../Executable/Resources/Texture/Mushroom/Mushroom.png
 Texture_Palmtree 1 ../Executable/Resources/Texture/Palmtree/Palmtree.png

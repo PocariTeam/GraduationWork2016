@@ -24,7 +24,10 @@ HRESULT CRenderTarget::CreateRenderTarget( ID3D11Device* pDevice, IDXGISwapChain
 	ID3D11Texture2D*	pBackBuffer = NULL;
 
 	if( FAILED( pSwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID* )&pBackBuffer ) ) )
+	{
+		pBackBuffer->Release();
 		return E_FAIL;
+	}
 
 	if( FAILED( pDevice->CreateRenderTargetView( pBackBuffer, NULL, &m_pRenderTargetView ) ) )
 		return E_FAIL;

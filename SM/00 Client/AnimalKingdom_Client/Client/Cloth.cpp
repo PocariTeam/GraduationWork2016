@@ -42,7 +42,7 @@ HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pAc
 	//////////////////////////////////////////////////////////////////////////
 
 	CreateCloth( pDevice );
-	m_pCloth->addForceAtPos( NxVec3( 0.f, 0.f, 0.f ), 1.f, 1.f );
+	// m_pCloth->addForceAtPos( NxVec3( 0.f, 0.f, 0.f ), 1.f, 1.f );
 
 	return S_OK;
 }
@@ -73,7 +73,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	//tClothDesc.flags |= NX_CLF_COMDAMPING;
 	tClothDesc.flags |= NX_CLF_COLLISION_TWOWAY;
 	//tClothDesc.flags |= NX_CLF_TEARABLE;
-	tClothDesc.flags |= NX_CLF_PRESSURE;
+	//tClothDesc.flags |= NX_CLF_PRESSURE;
 
 	if( NX_SIMULATION_HW == m_pPhysXScene->getSimType() )
 		tClothDesc.flags |= NX_CLF_HARDWARE;
@@ -315,6 +315,13 @@ XMFLOAT4X4* CCloth::GetWorld()
 	return &m_mtxWorld;
 }
 
+int CCloth::Update( const float& fTimeDelta )
+{
+	m_pCloth->attachVertexToGlobalPosition( 100, NxVec3( 0.f, -fTimeDelta, fTimeDelta )/*m_pActor->getGlobalPosition()*/ );
+
+	return 0;
+}
+
 void CCloth::Render( ID3D11DeviceContext* pContext )
 {
 	/*static NxU32 numVertices = mNumVertices;
@@ -325,7 +332,7 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 	if( m_pCloth->getFlags() & NX_CLF_PRESSURE )
 	{
 		// Disable Pressure
-		// m_pCloth->setFlags( m_pCloth->getFlags() & ~NX_CLF_PRESSURE );
+		m_pCloth->setFlags( m_pCloth->getFlags() & ~NX_CLF_PRESSURE );
 		m_pCloth->setPressure( m_pCloth->getPressure() * 0.01f );
 
 		// Reduce tearing factor
@@ -344,11 +351,6 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 		bounds.getCenter( center );
 		NxReal radius = bounds.min.distance( bounds.max );
 		m_pCloth->addForceAtPos( center, NxMath::pow( radius, 2 )/*2 * NxMath::pow( radius, 3 )*/, radius, NX_FORCE );
-		if( radius < 8.f )
-		{
-			m_pCloth->setFlags( m_pCloth->getFlags() & ~NX_CLF_PRESSURE );
-			m_pCloth->setPressure( 0.f );
-		}
 	}
 
 	DWORD dwVTXCnt = *m_tReceiveBuffers.numVerticesPtr;

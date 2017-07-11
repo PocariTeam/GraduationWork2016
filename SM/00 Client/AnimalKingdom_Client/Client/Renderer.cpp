@@ -141,7 +141,29 @@ void CRenderer::Render_DepthTest( ID3D11DeviceContext* pContext )
 	else
 		CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_NORMAL, 3 );
 
-	if( m_bInCave ) iter++;
+	for( ; iter != iter_end; ++iter )
+	{
+		( *iter )->Render( pContext );
+	}
+
+	if( !m_bInCave ) Render_OutCave( pContext );
+}
+
+void CRenderer::Render_OutCave( ID3D11DeviceContext* pContext )
+{
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_OUTCAVE ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_OUTCAVE ].end();
+
+	for( ; iter != iter_end; ++iter )
+	{
+		( *iter )->Render( pContext );
+	}
+}
+
+void CRenderer::Render_InCave( ID3D11DeviceContext* pContext )
+{
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_INCAVE ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_INCAVE ].end();
 
 	for( ; iter != iter_end; ++iter )
 	{
@@ -194,7 +216,7 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
 
-	if( !m_bInCave ) iter_end--;
+	if( m_bInCave ) Render_InCave( pContext );
 
 	for( ; iter != iter_end; ++iter )
 	{

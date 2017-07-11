@@ -82,7 +82,7 @@ HRESULT CGraphicDev::Initialize( WINMODE Mode, HWND hWnd, const WORD& wSizeX, co
 	}
 
 	// 생성과 동시에 RefCnt 를 낮추어준다.
-	m_pDevice->Release();
+	// printf( "RefCnt : %d\n", m_pDevice->Release() );
 
 	if( FAILED( Create_SwapChain( Mode, hWnd, pdxgiFactory, wSizeX, wSizeY ) ) ) {
 		MessageBoxA( 0, "SwapChain 생성 실패", 0, 0 );
@@ -205,12 +205,12 @@ DWORD CGraphicDev::Release( void )
 	}
 
 	if( nullptr != m_pDevice ) {
-		do 
-		{
+		//do 
+		//{
 			dwRef = m_pDevice->Release();
-		} while ( 1 < dwRef );
+		//} while ( 1 < dwRef );
 
-		if( 1 < dwRef )
+		if( 0 != dwRef )
 		{
 			sprintf_s( szErrorMessage, 64, "Device RefCnt = %d", dwRef );
 			MessageBoxA( 0, szErrorMessage, 0, 0 );

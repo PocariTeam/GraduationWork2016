@@ -6,7 +6,6 @@
 
 CShader::CShader()
 	: CResources()
-	, m_pDevice( nullptr )
 	, m_pInputLayout( nullptr )
 	, m_pVS( nullptr )
 	, m_pPS( nullptr )
@@ -20,7 +19,6 @@ CShader::CShader()
 
 CShader::CShader( const CShader& Instance )
 	: CResources( Instance )
-	, m_pDevice( Instance.m_pDevice )
 	, m_pInputLayout( Instance.m_pInputLayout )
 	, m_pVS( Instance.m_pVS )
 	, m_pPS( Instance.m_pPS )
@@ -59,7 +57,7 @@ HRESULT CShader::CreateVS( ID3D11Device* pDevice, const char* pFilePath, D3D11_I
 		if( nullptr != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-			pErrorBlob->Release();
+//			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -90,7 +88,7 @@ HRESULT CShader::CreatePS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-			pErrorBlob->Release();
+//			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -116,7 +114,7 @@ HRESULT CShader::CreateGS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 			// MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-			pErrorBlob->Release();
+			// pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -142,7 +140,7 @@ HRESULT CShader::CreateHS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-			pErrorBlob->Release();
+//			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -170,7 +168,7 @@ HRESULT CShader::CreateDS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-			pErrorBlob->Release();
+//			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -214,7 +212,6 @@ DWORD CShader::Release()
 
 	if( 0 == dwRefCnt )
 	{
-		::Safe_Release( m_pDevice );
 		::Safe_Release( m_pConstantBuffer );
 		::Safe_Release( m_pInputLayout );
 		::Safe_Release( m_pVS );

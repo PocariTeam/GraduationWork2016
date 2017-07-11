@@ -7,6 +7,7 @@
 
 CInstancingShader::CInstancingShader()
 	: CShader()
+	, m_pDevice( nullptr )
 	, m_pInstancingBuffer( nullptr )
 	, m_eInputElement( INPUT_NO )
 {
@@ -14,6 +15,7 @@ CInstancingShader::CInstancingShader()
 
 CInstancingShader::CInstancingShader( const CInstancingShader& Instance )
 	: CShader( Instance )
+	, m_pDevice( Instance.m_pDevice )
 	, m_pInstancingBuffer( Instance.m_pInstancingBuffer )
 	, m_eInputElement( Instance.m_eInputElement )
 {
@@ -61,6 +63,7 @@ DWORD CInstancingShader::Release( void )
 	m_vecRenderObject.erase( m_vecRenderObject.begin(), m_vecRenderObject.end() );
 	m_vecRenderObject.swap( vector<CGameObject*>{} );
 
+	::Safe_Release( m_pDevice );
 	if( 0 == dwRefCnt )	::Safe_Release( m_pInstancingBuffer );
 
 	delete this;

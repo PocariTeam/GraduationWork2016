@@ -28,6 +28,7 @@ public:
 	void		Add_RenderObject( CGameObject* pGameObject );
 	void		SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOAT4X4 mtxWorld, XMFLOAT4 vOption = XMFLOAT4( 0.f, 0.f, 0.f, 0.f ) );
 private:
+	ID3D11Device*			m_pDevice;
 	vector<CGameObject*>	m_vecRenderObject;
 	ID3D11Buffer*			m_pInstancingBuffer;
 	INPUT_TYPE				m_eInputElement;

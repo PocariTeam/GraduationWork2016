@@ -796,16 +796,16 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		}
 
 		plistShader[ RENDER_BACKGROUND ].push_back( pShader_Skydome );
-		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Mesh );
+		plistShader[ RENDER_OUTCAVE ].push_back( pShader_Mesh );
 		for( int i = 0; i < 15; ++i )
-			plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Environment[ i ] );
+			plistShader[ RENDER_OUTCAVE ].push_back( pShader_Environment[ i ] );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cave );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cloth );
 		plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
 		plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
 		plistShader[ RENDER_ALPHA ].push_back( CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" ) );
-		plistShader[ RENDER_ALPHA ].push_back( pShader_Mesh_Alpha );
+		plistShader[ RENDER_INCAVE ].push_back( pShader_Mesh_Alpha );
 		plistShader[ RENDER_DEBUG ].push_back( pShader_Debug );
 
 		auto set_iter_begin = setReleaseActorIndex.begin();
@@ -1025,7 +1025,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 
 
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
-	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 5.f, 5.f, 5.f ) );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 1.f, 1.f, 1.f ) );
 	//m_pCloth = new MyCloth( m_pScene, pDevice, clothDesc, 8.0f, 7.0f, 0.15f, NULL/*텍스쳐파일*/ );
 
 	if( !m_pCloth->GetNxCloth() )

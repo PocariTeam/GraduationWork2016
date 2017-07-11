@@ -12,13 +12,13 @@ class CRenderTargetMgr
 	: public CSingleton<CRenderTargetMgr>
 {
 public:
-	enum eRT_Type {	RT_BACK, RT_NORMAL, RT_DEPTH, RT_ALBEDO, RT_LIGHT, RT_SPECULAR, RT_END };
+	enum eRT_Type {	RT_BACK, RT_NORMAL, RT_DEPTH, RT_ALBEDO, RT_LIGHT, RT_SPECULAR, RT_SHADOWS, RT_END };
 public:
 	HRESULT Initialize( CGraphicDev* pGraphicDev, const WORD& wSizeX, const WORD& wSizeY );
 	DWORD	Release( void );
 
 private:
-	void	Add( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY );
+	void	Add( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY, int iType );
 	HRESULT	CreateDepthStencilBuffer( ID3D11Device* pDevice, const WORD& wSizeX, const WORD& wSizeY );
 	HRESULT	CreateConstantBuffer( ID3D11Device* pDevice );
 	void	SetConstantBuffer( ID3D11DeviceContext* pContext, eRT_Type eType );

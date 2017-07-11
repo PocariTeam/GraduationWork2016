@@ -32,7 +32,6 @@ public:
 public:
 	virtual DWORD Release();
 protected:
-	ID3D11Device*			m_pDevice;
 	ID3D11InputLayout*		m_pInputLayout;
 	ID3D11VertexShader*		m_pVS;
 	ID3D11PixelShader*		m_pPS;

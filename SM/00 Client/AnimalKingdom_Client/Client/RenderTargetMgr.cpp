@@ -21,7 +21,7 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 	IDXGISwapChain* pSwapChain{ m_pGraphicDev->Get_SwapChain() };
 
 	for( int i = 0; i < RT_END; ++i )
-		Add( pDevice, pSwapChain, wSizeX, wSizeY );
+		Add( pDevice, pSwapChain, wSizeX, wSizeY, i );
 
 	AssembleRenderTargetView();
 	AssembleShaderResourceView();
@@ -46,14 +46,19 @@ DWORD CRenderTargetMgr::Release( void )
 	return 0;
 }
 
-void CRenderTargetMgr::Add( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY )
+void CRenderTargetMgr::Add( ID3D11Device* pDevice, IDXGISwapChain* pSwapChain, const WORD& wSizeX, const WORD& wSizeY, int iType )
 {
 	CRenderTarget* pRenderTarget{ nullptr };
 
-	if( m_vecRenderTarget.empty() )
+	switch( iType )
+	{
+	case RT_BACK:
 		pRenderTarget = CRenderTarget::Create( pDevice, pSwapChain );
-	else
+		break;
+	default:
 		pRenderTarget = CRenderTarget::Create( pDevice, wSizeX, wSizeY );
+		break;
+	}
 
 	if( nullptr != pRenderTarget )
 		m_vecRenderTarget.push_back( pRenderTarget );
@@ -136,6 +141,9 @@ void CRenderTargetMgr::SetConstantBuffer( ID3D11DeviceContext* pContext, eRT_Typ
 	case RT_SPECULAR:
 		*pWinSize = XMFLOAT4( -1.f, -0.6f, 0.4f, 0.4f );
 		break;
+	case RT_SHADOWS:
+		*pWinSize = XMFLOAT4( -0.6f, 1.f, 0.4f, 0.4f );
+		break;
 	}
 
 	pContext->Unmap( m_pConstantBuffer, 0 );
@@ -193,9 +201,10 @@ void CRenderTargetMgr::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSize
 	Safe_Release( m_pDepthStencilBuffer );
 
 	pSwapChain->ResizeBuffers( 2, wSizeX, wSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, 0 );
+	m_vecRenderTarget.reserve( RT_END );
 
 	for( int i = 0; i < RT_END; ++i )
-		Add( pDevice, pSwapChain, wSizeX, wSizeY );
+		Add( pDevice, pSwapChain, wSizeX, wSizeY, i );
 
 	D3D11_VIEWPORT	tViewport;
 	ZeroMemory( &tViewport, sizeof( D3D11_VIEWPORT ) );

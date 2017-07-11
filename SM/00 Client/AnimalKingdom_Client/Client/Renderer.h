@@ -30,6 +30,8 @@ public:
 public:
 	void Render_Background( ID3D11DeviceContext* pContext );
 	void Render_DepthTest( ID3D11DeviceContext* pContext );
+	void Render_OutCave( ID3D11DeviceContext* pContext );
+	void Render_InCave( ID3D11DeviceContext* pContext );
 	void Render_Light( ID3D11DeviceContext* pContext );
 	void Render_Blend( ID3D11DeviceContext* pContext );
 	void Render_Alpha( ID3D11DeviceContext* pContext );

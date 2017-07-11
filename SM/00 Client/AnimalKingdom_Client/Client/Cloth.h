@@ -28,6 +28,7 @@ public:
 	XMFLOAT4X4* GetWorld();
 	NxCloth*	GetNxCloth() { return m_pCloth; }
 public:
+	int		Update( const float& fTimeDelta );
 	void	Render( ID3D11DeviceContext* pContext );
 	DWORD	Release( void );
 private:

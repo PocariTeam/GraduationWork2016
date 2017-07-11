@@ -220,7 +220,6 @@ void CJungle::Change_CrownUI_Position( void )
 		m_dpCrownTime_UI[ NUM_CENTI ]->Show();
 		m_pCrownmark_UI->Show();
 	}
-
 }
 
 int CJungle::Update( const float& fTimeDelta )
