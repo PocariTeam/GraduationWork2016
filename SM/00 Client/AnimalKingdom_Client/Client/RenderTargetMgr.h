@@ -12,7 +12,7 @@ class CRenderTargetMgr
 	: public CSingleton<CRenderTargetMgr>
 {
 public:
-	enum eRT_Type {	RT_BACK, RT_NORMAL, RT_DEPTH, RT_ALBEDO, RT_LIGHT, RT_SPECULAR, RT_SHADOWS, RT_END };
+	enum eRT_Type {	RT_BACK, RT_NORMAL, RT_DEPTH, RT_ALBEDO, RT_LIGHT, RT_SPECULAR, RT_END };
 public:
 	HRESULT Initialize( CGraphicDev* pGraphicDev, const WORD& wSizeX, const WORD& wSizeY );
 	DWORD	Release( void );

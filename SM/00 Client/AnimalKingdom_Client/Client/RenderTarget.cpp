@@ -50,15 +50,15 @@ HRESULT CRenderTarget::CreateRenderTarget( ID3D11Device* pDevice, const WORD& wS
 	/*UINT dw4xMsaaQuality = 0;
 	if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R32G32B32A32_FLOAT, 4, &dw4xMsaaQuality ) ) )
 	{*/
-		tTexture2D_Desc.SampleDesc.Count = 1;
-		tTexture2D_Desc.SampleDesc.Quality = 0;
-		/*}
+	tTexture2D_Desc.SampleDesc.Count = 1;
+	tTexture2D_Desc.SampleDesc.Quality = 0;
+	/*}
 
-		else
-		{
-			tTexture2D_Desc.SampleDesc.Count = 4;
-			tTexture2D_Desc.SampleDesc.Quality = dw4xMsaaQuality - 1;
-		}*/
+	else
+	{
+		tTexture2D_Desc.SampleDesc.Count = 4;
+		tTexture2D_Desc.SampleDesc.Quality = dw4xMsaaQuality - 1;
+	}*/
 
 	tTexture2D_Desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
 	tTexture2D_Desc.ArraySize = 1;

@@ -141,9 +141,6 @@ void CRenderTargetMgr::SetConstantBuffer( ID3D11DeviceContext* pContext, eRT_Typ
 	case RT_SPECULAR:
 		*pWinSize = XMFLOAT4( -1.f, -0.6f, 0.4f, 0.4f );
 		break;
-	case RT_SHADOWS:
-		*pWinSize = XMFLOAT4( -0.6f, 1.f, 0.4f, 0.4f );
-		break;
 	}
 
 	pContext->Unmap( m_pConstantBuffer, 0 );

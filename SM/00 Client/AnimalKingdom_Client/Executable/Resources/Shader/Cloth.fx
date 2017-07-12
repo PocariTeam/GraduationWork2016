@@ -60,7 +60,7 @@ PS_OUT PS( VS_OUT In )
 {
 	PS_OUT	Out = ( PS_OUT )0;
 
-	Out.vAlbedo = gTexture.Sample( gSamplerState, In.vUV );
+	Out.vAlbedo = gTexture.Sample( gSamplerState, In.vUV ) * 5.f;
 	Out.vNormal = float4( mad( In.vNormal.xyz, 0.5f, 0.5f ), 0.f );
 	Out.vDepth = float4( In.vPos.z / In.vPos.w, In.vPos.w * 0.001f, g_vOption.x, 0.f );
 

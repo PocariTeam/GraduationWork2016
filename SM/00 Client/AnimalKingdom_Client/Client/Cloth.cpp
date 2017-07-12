@@ -12,6 +12,8 @@
 #include "ClothMesh.h"
 #include "Player.h"
 #include "Animator.h"
+#include "RenderState.h"
+#include "Renderer.h"
 
 #define TEAR_MEMORY_FACTOR 2
 
@@ -115,7 +117,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	XMFLOAT3* pPositionArr = ( XMFLOAT3* )tMeshDesc.points;
 	for( i = 0; i <= dwNumY; i++ ) {
 		for( j = 0; j <= dwNumX; j++ ) {
-			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, 0.f, fDepth * i };
+			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, 0.f, -fDepth * i };
 			pPositionArr++;
 		}
 	}
@@ -327,7 +329,7 @@ int CCloth::Update( const float& fTimeDelta )
 {
 	if( nullptr != m_pOwner )
 	{
-		NxMat34 mtxAnimation = m_pOwner->GetAnimator()->GetCurrentAnimationMatrix( m_pOwner, "root" );
+		NxMat34 mtxAnimation = m_pOwner->GetAnimator()->GetCurrentAnimationMatrix( m_pOwner, "Head" );
 		NxMat33 mtxRotation{};
 		NxVec3	vOffset{};
 
@@ -335,11 +337,11 @@ int CCloth::Update( const float& fTimeDelta )
 		{
 		case CHARACTER_CHM:
 			mtxRotation.rotX( 0 );
-			vOffset = NxVec3( 0.f, 5.f, 2.f );
+			vOffset = NxVec3( 0.f, 3.75f, 3.f );
 			break;
 		case CHARACTER_MON:
 			mtxRotation.rotX( XM_PI );
-			vOffset = NxVec3( 0.f, -0.3f, 0.2f );
+			vOffset = NxVec3( 0.f, -0.3f, 0.13f );
 			break;
 		default:
 			break;
@@ -347,10 +349,12 @@ int CCloth::Update( const float& fTimeDelta )
 		NxMat34 mtxLocal{ mtxRotation, vOffset };
 		m_pActor->setGlobalPose( mtxAnimation * mtxLocal );
 		float fRadian = m_pOwner->GetRotateY();
-		vOffset = NxVec3( 1/*cos( fRadian ) * 3.f*/, -3.f, 1/*sin( fRadian ) * 3.f*/ );
+		vOffset = NxVec3( cos( fRadian ) * -2.f, -9.f, sin( fRadian ) * -2.f );
 		m_pCloth->attachVertexToGlobalPosition( 0, vOffset * fTimeDelta );
 		m_pCloth->attachVertexToGlobalPosition( 54, vOffset * fTimeDelta );
+		m_pCloth->setWindAcceleration( vOffset );
 	}
+
 	return 0;
 }
 
@@ -409,9 +413,16 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 	for( DWORD i = 0; i < m_dwIDXCnt; ++i )
 		m_pIndexArray[ i ] = *pIndex++;
 
+	bool bWireFrame = CRenderer::GetInstance()->m_bWireFrame;
+
+	if( !bWireFrame )
+		CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
+
 	m_pTexture->Render( pContext );
 	( ( CClothMesh* )m_pMesh )->UpdateGeometryInformation( pContext, m_pVertexArray, dwVTXCnt, m_pIndexArray, *m_tReceiveBuffers.numIndicesPtr );
 	m_pMesh->Render( pContext );
+
+	if( !bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 }
 
 DWORD CCloth::Release( void )

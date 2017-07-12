@@ -1024,9 +1024,8 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 
 	NxJoint* d6Joint = m_pScene->createJoint( d6Desc );
 
-
 	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
-	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 1.f, 3.f, 1.f ) );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 1.5f, 2.f, 1.f ) );
 
 	if( !m_pCloth->GetNxCloth() )
 	{
@@ -1035,9 +1034,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	}
 	else
 	{
-		//m_pCloth->GetNxCloth()->attachToCollidingShapes( NX_CLOTH_ATTACHMENT_TWOWAY );
 		m_pCloth->GetNxCloth()->attachToShape( *pActor->getShapes(), NX_CLOTH_ATTACHMENT_TWOWAY );
-		// m_pCloth->GetNxCloth()->setGroup( COL_DYNAMIC );
 	}
 }
 
