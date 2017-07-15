@@ -103,9 +103,6 @@
     <Filter Include="소스 파일\03 Resources\05 List">
       <UniqueIdentifier>{87fb9509-d772-4ac1-bd1f-c3717c9b438e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utility\04 Thread">
-      <UniqueIdentifier>{bd6f641a-0bca-496c-8ea0-20d7721e23a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03 Resources\04 Shader\00 Normal">
       <UniqueIdentifier>{18d2e799-b9d8-4dd6-a83a-dd928a6c39b8}</UniqueIdentifier>
     </Filter>
@@ -190,23 +187,14 @@
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\01 Terrain">
       <UniqueIdentifier>{cb3a8d4c-5a93-4fb1-a34a-f50668fb72cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utility\05 State">
-      <UniqueIdentifier>{b22bc248-1913-4427-ba34-967a3794adc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\02 Environment">
       <UniqueIdentifier>{dda1b564-f6e8-41ec-a0c5-5e59d16596fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utility\05 State\00 StateMachine">
-      <UniqueIdentifier>{1085d888-b2a7-4f66-bdc4-a51a68c20a0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\03 Resources\03 Animation\00 Animator">
       <UniqueIdentifier>{19aee632-c751-413e-9021-9f6ee7e8ba87}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\03 Resources\03 Animation\01 Manager">
       <UniqueIdentifier>{366838a8-cb1a-46b5-93de-c27b8dd7e368}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Mathematics / TypeConversion">
-      <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\00 Client\02 Scene\01 Lobby">
       <UniqueIdentifier>{689610ac-afc5-412d-abe4-395f6237f889}</UniqueIdentifier>
@@ -273,6 +261,18 @@
     </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\05 Cloth">
       <UniqueIdentifier>{139a5854-5d8c-4fa6-a481-570a8e7bdd48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\04 Thread">
+      <UniqueIdentifier>{bd6f641a-0bca-496c-8ea0-20d7721e23a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\05 State">
+      <UniqueIdentifier>{b22bc248-1913-4427-ba34-967a3794adc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\05 State\00 StateMachine">
+      <UniqueIdentifier>{1085d888-b2a7-4f66-bdc4-a51a68c20a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Mathematics / TypeConversion">
+      <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

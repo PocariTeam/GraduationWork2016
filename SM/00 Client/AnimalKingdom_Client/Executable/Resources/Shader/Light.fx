@@ -42,6 +42,7 @@ cbuffer cbLight : register( b2 )
 
 Texture2D/*MS<float4, 4>*/ g_NormalTexture : register( t0 );
 Texture2D/*MS<float4, 4>*/ g_DepthTexture : register( t1 );
+Texture2D/*MS<float4, 4>*/ g_ShadowTexture : register( t2 );
 
 static float	Filter[ 9 ] = { -1.f, -1.f, -1.f, -1.f, 8.f, -1.f, -1.f, -1.f, -1.f };		// LPF
 static float2	TextureOffsetUV[ 9 ] = { { -1.f, -1.f }, { 0.f, -1.f },{ 1.f, -1.f },{ -1.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f },{ -1.f, 1.f },{ 0.f, 1.f }, { 1.f, 1.f } };

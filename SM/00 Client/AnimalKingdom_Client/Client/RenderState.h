@@ -8,7 +8,7 @@ class CRenderState
 public:
 	enum BL_STATE { BL_NULL, BL_ALPHA, BL_END };
 	enum DS_STATE { DS_NULL, DS_NO_WRITE, DS_NO_TEST, DS_END };
-	enum RS_STATE { RS_NULL, RS_WIREFRAME, RS_NO_CULL, RS_END };
+	enum RS_STATE { RS_NULL, RS_CCW, RS_WIREFRAME, RS_NO_CULL, RS_END };
 
 private:
 	CRenderState() = default;

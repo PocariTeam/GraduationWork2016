@@ -14,6 +14,10 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 	m_pArrRenderTargetView = nullptr;
 	m_pArrShaderResourceView = nullptr;
 	m_pConstantBuffer = nullptr;
+	m_pShadowDepthStencilView = nullptr;
+	m_pShadowShaderResourceView = nullptr;
+	m_pActiveDepthStencilView = nullptr;
+	m_pDepthStencilView = nullptr;
 
 	m_vecRenderTarget.reserve( RT_END );
 
@@ -26,6 +30,9 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 	AssembleRenderTargetView();
 	AssembleShaderResourceView();
 	CreateDepthStencilBuffer( pDevice, wSizeX, wSizeY );
+	CreateShadowMap( pDevice, wSizeX, wSizeY );
+
+	m_pActiveDepthStencilView = m_pDepthStencilView;
 
 	return CreateConstantBuffer( pDevice );
 }
@@ -33,6 +40,12 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 DWORD CRenderTargetMgr::Release( void )
 {
 	Safe_Release( m_pConstantBuffer );
+	Safe_Release( m_pShadowShaderResourceView );
+	// Safe_Release( m_pShadowDepthStencilView );
+	// Safe_Release( m_pDepthStencilView );
+
+	m_pActiveDepthStencilView = nullptr;
+
 	Safe_Delete_Array( m_pArrRenderTargetView );
 	Safe_Delete_Array( m_pArrShaderResourceView );
 
@@ -95,11 +108,74 @@ HRESULT CRenderTargetMgr::CreateDepthStencilBuffer( ID3D11Device* pDevice, const
 		DepthBufferDesc.SampleDesc.Quality = dw4xMsaaQuality - 1;
 	}*/
 
-	if( FAILED( pDevice->CreateTexture2D( &DepthBufferDesc, NULL, &m_pDepthStencilBuffer ) ) )
+		ID3D11Texture2D* pDepthTexture{ nullptr };
+
+	if( FAILED( pDevice->CreateTexture2D( &DepthBufferDesc, NULL, &pDepthTexture ) ) )
 		return E_FAIL;
 
-	if( FAILED( pDevice->CreateDepthStencilView( m_pDepthStencilBuffer, NULL, &m_pDepthStencilView ) ) )
+	if( FAILED( pDevice->CreateDepthStencilView( pDepthTexture, NULL, &m_pDepthStencilView ) ) )
 		return E_FAIL;
+
+	pDepthTexture->Release();
+	pDepthTexture = nullptr;
+
+	return S_OK;
+}
+
+HRESULT CRenderTargetMgr::CreateShadowMap( ID3D11Device* pDevice, const WORD& wSizeX, const WORD& wSizeY )
+{
+	D3D11_TEXTURE2D_DESC ShadowMapDesc;
+	ZeroMemory( &ShadowMapDesc, sizeof( ShadowMapDesc ) );
+
+	ShadowMapDesc.Width = wSizeX;
+	ShadowMapDesc.Height = wSizeY;
+	ShadowMapDesc.MipLevels = 1;
+	ShadowMapDesc.ArraySize = 1;
+
+	ShadowMapDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+
+	ShadowMapDesc.Usage = D3D11_USAGE_DEFAULT;
+	ShadowMapDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+
+	/*UINT dw4xMsaaQuality = 0;
+	if( FAILED( pDevice->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &dw4xMsaaQuality ) ) )
+	{*/
+	ShadowMapDesc.SampleDesc.Count = 1;
+	ShadowMapDesc.SampleDesc.Quality = 0;
+	/*}
+
+	else
+	{
+	ShadowMapDesc.SampleDesc.Count = 4;
+	ShadowMapDesc.SampleDesc.Quality = dw4xMsaaQuality - 1;
+	}*/
+
+	ID3D11Texture2D*	pDepthMap{ nullptr };
+
+	if( FAILED( pDevice->CreateTexture2D( &ShadowMapDesc, NULL, &pDepthMap ) ) )
+		return E_FAIL;
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC	tDepthStencilViewDesc;
+	ZeroMemory( &tDepthStencilViewDesc, sizeof( D3D11_DEPTH_STENCIL_VIEW_DESC ) );
+
+	tDepthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	tDepthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	tDepthStencilViewDesc.Texture2D.MipSlice = 0;
+	if( FAILED( pDevice->CreateDepthStencilView( pDepthMap, &tDepthStencilViewDesc, &m_pShadowDepthStencilView ) ) )
+		return E_FAIL;
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC	tShaderResourceViewDesc;
+	ZeroMemory( &tShaderResourceViewDesc, sizeof( D3D11_SHADER_RESOURCE_VIEW_DESC ) );
+
+	tShaderResourceViewDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+	tShaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	tShaderResourceViewDesc.Texture2D.MipLevels = ShadowMapDesc.MipLevels;
+	tShaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	if( FAILED( pDevice->CreateShaderResourceView( pDepthMap, &tShaderResourceViewDesc, &m_pShadowShaderResourceView ) ) )
+		return E_FAIL;
+
+	pDepthMap->Release();
+	pDepthMap = nullptr;
 
 	return S_OK;
 }
@@ -140,6 +216,9 @@ void CRenderTargetMgr::SetConstantBuffer( ID3D11DeviceContext* pContext, eRT_Typ
 		break;
 	case RT_SPECULAR:
 		*pWinSize = XMFLOAT4( -1.f, -0.6f, 0.4f, 0.4f );
+		break;
+	default:
+		*pWinSize = XMFLOAT4( -0.6f, 1.f, 0.4f, 0.4f );
 		break;
 	}
 
@@ -186,6 +265,7 @@ void CRenderTargetMgr::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSize
 
 	ClearRenderTargetView( pContext );
 	ClearDepthStencilView( pContext );
+	ClearShadowDepthStencilView( pContext );
 
 	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->OMSetRenderTargets( 6, pNullRTV, nullptr );
@@ -195,7 +275,8 @@ void CRenderTargetMgr::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSize
 	m_vecRenderTarget.swap( vector<CRenderTarget*>{} );
 
 	Safe_Release( m_pDepthStencilView );
-	Safe_Release( m_pDepthStencilBuffer );
+	Safe_Release( m_pShadowDepthStencilView );
+	Safe_Release( m_pShadowShaderResourceView );
 
 	pSwapChain->ResizeBuffers( 2, wSizeX, wSizeY, DXGI_FORMAT_R8G8B8A8_UNORM, 0 );
 	m_vecRenderTarget.reserve( RT_END );
@@ -211,8 +292,11 @@ void CRenderTargetMgr::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSize
 
 	pContext->RSSetViewports( 1, &tViewport );
 	CreateDepthStencilBuffer( pDevice, wSizeX, wSizeY );
+	CreateShadowMap( pDevice, wSizeX, wSizeY );
 	AssembleRenderTargetView();
 	AssembleShaderResourceView();
+
+	m_pActiveDepthStencilView = m_pDepthStencilView;
 }
 
 void CRenderTargetMgr::ClearRenderTargetView( ID3D11DeviceContext* pContext )
@@ -225,13 +309,19 @@ void CRenderTargetMgr::ClearRenderTargetView( ID3D11DeviceContext* pContext )
 
 void CRenderTargetMgr::SetRenderTargetView( ID3D11DeviceContext* pContext, UINT iSelect, UINT iCnt )
 {
-	pContext->OMSetRenderTargets( iCnt, &m_pArrRenderTargetView[ iSelect ], m_pDepthStencilView );
+	pContext->OMSetRenderTargets( iCnt, &m_pArrRenderTargetView[ iSelect ], m_pActiveDepthStencilView );
 }
 
 void CRenderTargetMgr::SetShaderResourceView( ID3D11DeviceContext* pContext, UINT iStartSlot, UINT iSelect, UINT iCnt )
 {
 	for( UINT i = iSelect; i < iSelect + iCnt; ++i )
 	{
+		if( i >= RT_END )
+		{
+			pContext->PSSetShaderResources( iStartSlot++, 1, &m_pShadowShaderResourceView );
+			return;
+		}
+
 		pContext->PSSetShaderResources( iStartSlot++, 1, &m_pArrShaderResourceView[ i - 1 ] );
 	}
 }
@@ -244,9 +334,18 @@ void CRenderTargetMgr::Render( ID3D11DeviceContext* pContext )
 		SetConstantBuffer( pContext, ( eRT_Type )i );
 		pContext->Draw( 6, 0 );
 	}
+
+	SetShaderResourceView( pContext, 0, ( UINT )RT_END, 1 );
+	SetConstantBuffer( pContext, RT_END );
+	pContext->Draw( 6, 0 );
 }
 
 void CRenderTargetMgr::ClearDepthStencilView( ID3D11DeviceContext* pContext )
 {
 	pContext->ClearDepthStencilView( m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0 );
+}
+
+void CRenderTargetMgr::ClearShadowDepthStencilView( ID3D11DeviceContext* pContext )
+{
+	pContext->ClearDepthStencilView( m_pShadowDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0 );
 }

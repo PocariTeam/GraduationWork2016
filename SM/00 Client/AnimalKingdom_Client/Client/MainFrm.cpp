@@ -103,6 +103,7 @@ void CMainFrm::Render( void )
 
 	m_pRenderTargetMgr->ClearRenderTargetView( m_pContext );
 	m_pRenderTargetMgr->ClearDepthStencilView( m_pContext );
+	m_pRenderTargetMgr->ClearShadowDepthStencilView( m_pContext );
 
 	m_pScene->Render( m_pContext );
 

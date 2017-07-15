@@ -52,6 +52,7 @@ void CRenderer::Clear_RenderGroup( void )
 DWORD CRenderer::Release( void )
 {
 	Clear_RenderGroup();
+	CRenderState::Release();
 
 	delete this;
 
@@ -92,6 +93,8 @@ void CRenderer::Render( ID3D11DeviceContext* pContext )
 {
 	if( nullptr == m_pRenderGroup ) return;
 
+	Render_ShadowMap( pContext );
+
 	Render_Background( pContext );
 	Render_DepthTest( pContext );
 	if( !m_bWireFrame )
@@ -104,6 +107,31 @@ void CRenderer::Render( ID3D11DeviceContext* pContext )
 
 	if( m_bRenderTargetDebug && !m_bWireFrame )
 		Render_RenderTargetDebug( pContext );
+}
+
+void CRenderer::Render_ShadowMap( ID3D11DeviceContext* pContext )
+{
+	if( m_bWireFrame || m_bInCave )	return;
+
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
+	CRenderState::Set_Rasterize( pContext, CRenderState::RS_CCW );
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
+	
+	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
+	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	pContext->PSSetShaderResources( 0, 3, pNullSRV );
+
+	CRenderTargetMgr::GetInstance()->Shadow_Begin();
+	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
+
+	/*SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_DEPTHTEST ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_DEPTHTEST ].end();
+
+	for( ; iter != iter_end; ++iter )
+		( *iter )->Render( pContext );*/
+
+	CRenderTargetMgr::GetInstance()->Shadow_End();
 }
 
 void CRenderer::Render_Background( ID3D11DeviceContext* pContext )
@@ -184,6 +212,7 @@ void CRenderer::Render_Light( ID3D11DeviceContext* pContext )
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
 	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_LIGHT, 2 );
 	CRenderTargetMgr::GetInstance()->SetShaderResourceView( pContext, 0, CRenderTargetMgr::RT_NORMAL, 2 );
+	CRenderTargetMgr::GetInstance()->SetShaderResourceView( pContext, 2, CRenderTargetMgr::RT_END, 1 );
 
 	CLightMgr::GetInstance()->Render( pContext );
 
