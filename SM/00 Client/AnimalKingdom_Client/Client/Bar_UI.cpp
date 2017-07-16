@@ -80,9 +80,8 @@ int CBar_UI::Update( const float& fTimeDelta )
 
 DWORD CBar_UI::Release( void )
 {
-	CUserInterface::Release();
-
-	delete this;
+	if( 0 == CUserInterface::Release() )
+		delete this;
 
 	return 0;
 }

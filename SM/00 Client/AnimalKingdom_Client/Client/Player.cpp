@@ -148,15 +148,17 @@ void CPlayer::Render( ID3D11DeviceContext* pContext )
 
 DWORD CPlayer::Release( void )
 {
-	CGameObject::Release();
+	DWORD dwRefCnt = CGameObject::Release();
+	if( 0 == dwRefCnt )
+	{
+		::Safe_Release( m_pAnimator );
+		::Safe_Release( m_pStateMachine );
 
-	::Safe_Release( m_pAnimator );
-	::Safe_Release( m_pStateMachine );
+		delete[] m_pActorsOriginPose;
+		delete[]( ( NxActor** )m_pCharacterController->getUserData() );
+	}
 
-	delete[] m_pActorsOriginPose;
-	delete[]( ( NxActor** )m_pCharacterController->getUserData() );
-
-	return 0;
+	return dwRefCnt;
 }
 
 void CPlayer::MinimizeController( void )

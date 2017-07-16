@@ -27,9 +27,7 @@ int CUserInterface::Update( const float& fTimedelta )
 
 DWORD CUserInterface::Release( void )
 {
-	CGameObject::Release();
-
-	return 0;
+	return CGameObject::Release();
 }
 
 void CUserInterface::SetTexture( CTexture* pTexture )

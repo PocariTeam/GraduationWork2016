@@ -53,7 +53,7 @@ void CThreeD_UI::Render( ID3D11DeviceContext* pContext )
 		m_pAnimator->Render( pContext );
 		m_pMesh->Render( pContext );
 	}
-	
+
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
 }
@@ -84,11 +84,11 @@ int CThreeD_UI::Update( const float& fTimeDelta )
 
 DWORD CThreeD_UI::Release( void )
 {
-	CUserInterface::Release();
-
-	::Safe_Release( m_pAnimator );
-
-	delete this;
+	if( 0 == CUserInterface::Release() )
+	{
+		::Safe_Release( m_pAnimator );
+		delete this;
+	}
 
 	return 0;
 }

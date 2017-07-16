@@ -18,14 +18,18 @@ public:
 	LIGHT* Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& vDiffuse, const XMFLOAT4& vOption );
 private:
 	HRESULT	CreateConstantBuffer( ID3D11Device* pDevice );
+	HRESULT CreateConstantBuffer_Shadow( ID3D11Device* pDevice, XMFLOAT3& vLightDir );
 	void	SetConstantBuffer( ID3D11DeviceContext* pContext );
+	void	SetConstantBuffer_Shadow( ID3D11DeviceContext* pContext );
 	void	AssembleLightArr( LIGHT* pNewLighting );
 public:
 	void	Render( ID3D11DeviceContext* pContext );
 private:
 	LIGHT**					m_pArrLight;
+	XMFLOAT3				m_vLightDir;
 	DWORD					m_dwLightingCnt;
 	ID3D11Buffer*			m_pConstantBufferLight;
+	ID3D11Buffer*			m_pConstantBufferShadow;
 };
 
 

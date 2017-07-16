@@ -40,7 +40,7 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 DWORD CRenderTargetMgr::Release( void )
 {
 	Safe_Release( m_pConstantBuffer );
-	Safe_Release( m_pShadowShaderResourceView );
+	// Safe_Release( m_pShadowShaderResourceView );
 	// Safe_Release( m_pShadowDepthStencilView );
 	// Safe_Release( m_pDepthStencilView );
 
@@ -348,4 +348,10 @@ void CRenderTargetMgr::ClearDepthStencilView( ID3D11DeviceContext* pContext )
 void CRenderTargetMgr::ClearShadowDepthStencilView( ID3D11DeviceContext* pContext )
 {
 	pContext->ClearDepthStencilView( m_pShadowDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0 );
+}
+
+void CRenderTargetMgr::ResetRenderTargetView( ID3D11DeviceContext* pContext )
+{
+	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	pContext->OMSetRenderTargets( 6, pNullRTV, m_pActiveDepthStencilView );
 }

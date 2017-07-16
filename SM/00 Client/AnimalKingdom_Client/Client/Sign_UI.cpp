@@ -58,9 +58,8 @@ int CSign_UI::Update( const float& fTimeDelta )
 
 DWORD CSign_UI::Release( void )
 {
-	CUserInterface::Release();
-
-	delete this;
+	if( 0 == CUserInterface::Release() )
+		delete this;
 
 	return 0;
 }

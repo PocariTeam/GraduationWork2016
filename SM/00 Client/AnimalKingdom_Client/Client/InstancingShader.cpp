@@ -169,6 +169,7 @@ HRESULT CInstancingShader::CreateConstantBuffer( ID3D11Device* pDevice, UINT iBu
 
 void CInstancingShader::Add_RenderObject( CGameObject* pGameObject )
 {
+	pGameObject->Add_Ref();
 	m_vecRenderObject.push_back( pGameObject );
 	CreateConstantBuffer( m_pDevice, sizeof( CB_WORLD ) );
 	pGameObject->SetInstanceCnt( ( UINT )m_vecRenderObject.size() );

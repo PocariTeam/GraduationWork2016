@@ -58,10 +58,8 @@ void CMonkey::Render( ID3D11DeviceContext* pContext )
 
 DWORD CMonkey::Release( void )
 {
-	CPlayer::Release();
-
-	delete this;
-
+	if( 0 == CPlayer::Release() )
+		delete this;
 	return 0;
 }
 

@@ -66,9 +66,8 @@ void CSection::Render( ID3D11DeviceContext* pContext )
 
 DWORD CSection::Release( void )
 {
-	CGameObject::Release();
-
-	delete this;
+	if( 0 == CGameObject::Release() )
+		delete this;
 
 	return 0;
 }

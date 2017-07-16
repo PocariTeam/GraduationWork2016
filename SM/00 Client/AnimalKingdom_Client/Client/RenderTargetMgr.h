@@ -31,6 +31,7 @@ public:
 	void				ClearRenderTargetView( ID3D11DeviceContext* pContext );
 	void				ClearDepthStencilView( ID3D11DeviceContext* pContext );
 	void				ClearShadowDepthStencilView( ID3D11DeviceContext* pContext );
+	void				ResetRenderTargetView( ID3D11DeviceContext* pContext );
 	void				SetRenderTargetView( ID3D11DeviceContext* pContext, UINT iSelect, UINT iCnt );
 	void				SetShaderResourceView( ID3D11DeviceContext* pContext, UINT iStartSlot, UINT iSelect, UINT iCnt );
 	ID3D11Texture2D*	GetTexture( eRT_Type eType ) { return m_vecRenderTarget[ eType ]->Get_Texture(); }

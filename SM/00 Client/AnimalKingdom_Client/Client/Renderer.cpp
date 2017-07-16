@@ -114,22 +114,21 @@ void CRenderer::Render_ShadowMap( ID3D11DeviceContext* pContext )
 	if( m_bWireFrame || m_bInCave )	return;
 
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
-	CRenderState::Set_Rasterize( pContext, CRenderState::RS_CCW );
+	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 	
-	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
-	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
 
 	CRenderTargetMgr::GetInstance()->Shadow_Begin();
+	CRenderTargetMgr::GetInstance()->ResetRenderTargetView( pContext );
 	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
 
-	/*SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_DEPTHTEST ].begin();
-	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_DEPTHTEST ].end();
+	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_SHADOW ].begin();
+	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_SHADOW ].end();
 
 	for( ; iter != iter_end; ++iter )
-		( *iter )->Render( pContext );*/
+		( *iter )->Render( pContext );
 
 	CRenderTargetMgr::GetInstance()->Shadow_End();
 }
@@ -160,8 +159,7 @@ void CRenderer::Render_DepthTest( ID3D11DeviceContext* pContext )
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_DEPTHTEST ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_DEPTHTEST ].end();
 	
-	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
-	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
+	CRenderTargetMgr::GetInstance()->ResetRenderTargetView( pContext );
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
 	if( m_bWireFrame )
@@ -206,8 +204,7 @@ void CRenderer::Render_Light( ID3D11DeviceContext* pContext )
 	//D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_DEPTH ), D3DX11_IFF_JPG, "Depth.jpg" );
 	//D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_ALBEDO ), D3DX11_IFF_JPG, "Albedo.jpg" );
 	//D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_NORMAL ), D3DX11_IFF_JPG, "Normal.jpg" );
-	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
-	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
+	CRenderTargetMgr::GetInstance()->ResetRenderTargetView( pContext );
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
 	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_LIGHT, 2 );
@@ -225,8 +222,7 @@ void CRenderer::Render_Blend( ID3D11DeviceContext* pContext )
 
 	// D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_LIGHT ), D3DX11_IFF_JPG, "Light.jpg" );
 	// D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_SPECULAR ), D3DX11_IFF_JPG, "Specular.jpg" );
-	ID3D11RenderTargetView* pNullRTV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
-	pContext->OMSetRenderTargets( 3, pNullRTV, nullptr );
+	CRenderTargetMgr::GetInstance()->ResetRenderTargetView( pContext );
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
  	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );

@@ -68,9 +68,8 @@ int CNormal_UI::Update( const float& fTimeDelta )
 
 DWORD CNormal_UI::Release( void )
 {
-	CUserInterface::Release();
-
-	delete this;
+	if( 0 == CUserInterface::Release() )
+		delete this;
 
 	return 0;
 }

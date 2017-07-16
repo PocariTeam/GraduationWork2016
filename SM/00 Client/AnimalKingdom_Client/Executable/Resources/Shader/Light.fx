@@ -40,6 +40,13 @@ cbuffer cbLight : register( b2 )
 	LIGHT	g_tLight[ LIGHT_CNT ];
 }
 
+cbuffer cbShadow : register( b3 )
+{
+	matrix g_mtxLightView;
+	matrix g_mtxLightProj;
+	float4 g_vLightPos;
+}
+
 Texture2D/*MS<float4, 4>*/ g_NormalTexture : register( t0 );
 Texture2D/*MS<float4, 4>*/ g_DepthTexture : register( t1 );
 Texture2D/*MS<float4, 4>*/ g_ShadowTexture : register( t2 );
@@ -91,6 +98,7 @@ PS_OUT	PS( VS_OUT	In )
 	float		fViewZ = vDepth.g * 1000.f;
 
 	float4		vPos = ( float4 )0;
+	float3		vShadowTex = ( float3 )0;
 
 	vPos.x = mad( In.vUV.x, 2.f, -1.f ) * fViewZ;
 	vPos.y = mad( In.vUV.y, -2.f, 1.f ) * fViewZ;
@@ -99,6 +107,8 @@ PS_OUT	PS( VS_OUT	In )
 
 	vPos = mul( vPos, g_mtxProjInv );
 	vPos = mul( float4( vPos.xyz, 1.f ), g_mtxViewInv );
+
+	vShadowTex = mul( float4( vPos.xyz, 1.f ), mul( g_mtxLightView, g_mtxLightProj ) );
 
 	float3 vLookInv = normalize( g_vCameraPos.xyz - vPos.xyz );
 
@@ -147,6 +157,12 @@ PS_OUT	PS( VS_OUT	In )
 			fComparison += Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( In.vTexUV.xy + TextureOffsetUV[ j ] ), 0*/ ).z;
 		Out.vLight.xyz = ( fComparison > -0.01f ) ? Out.vLight.xyz : 0.f;
 	}
+
+	// Shadow
+	float fShadowMapDepth = g_ShadowTexture.Load( float3( ( 0.5f * vShadowTex.x + 0.5f ) * 1024, ( 0.5f * vShadowTex.y + 0.5f ) * 768, 0.f ) ).r;
+	if( vPos.z >= fShadowMapDepth )
+		Out.vLight *= 0.3f;
+
 
 	return Out;
 }

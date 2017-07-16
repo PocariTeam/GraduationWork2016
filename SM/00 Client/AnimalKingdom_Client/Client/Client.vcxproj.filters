@@ -274,6 +274,24 @@
     <Filter Include="소스 파일\02 Utility\06 Mathematics / TypeConversion">
       <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\00 UI">
+      <UniqueIdentifier>{ce4671e6-2de5-4335-bdf1-b609ff782656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\01 AnimateMesh">
+      <UniqueIdentifier>{96a117d3-bf2a-4bc8-8cb7-71a8b5e1bdc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\99 Debug">
+      <UniqueIdentifier>{bf712151-c042-4f22-b1f2-fd580eacfca9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\02 Mesh">
+      <UniqueIdentifier>{6f7d5f8a-31f5-486b-9fb3-de7b7171cad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\03 Deferred">
+      <UniqueIdentifier>{8dfb19c2-7938-4801-93eb-597382ad1e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow">
+      <UniqueIdentifier>{91e2815f-1c61-478c-a9ce-e8d6d6f83b57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -908,53 +926,62 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Executable\Resources\Shader\Background.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Mesh.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Light.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Blend.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Debug.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\ActorShape.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\UI.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\3D_UI.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Number_UI.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Mesh_Alpha.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Number_UI_I.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Sign_UI.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
     </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Skydome.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    <FxCompile Include="..\Executable\Resources\Shader\Number_UI_I.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
     </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Cloth.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+    <FxCompile Include="..\Executable\Resources\Shader\Number_UI.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\01 AnimateMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Background.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\ActorShape.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\99 Debug</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Debug.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\99 Debug</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\02 Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh_Alpha.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\02 Mesh</Filter>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Mesh_I.fx">
-      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL</Filter>
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\02 Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\UI.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Cloth.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\02 Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Skydome.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\02 Mesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Blend.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\03 Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Light.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\03 Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh_I_Shadow.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Mesh_Shadow.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Shadow.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

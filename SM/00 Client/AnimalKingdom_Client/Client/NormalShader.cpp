@@ -172,5 +172,6 @@ HRESULT CNormalShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eI
 
 void CNormalShader::Add_RenderObject( CGameObject* pGameObject )
 {
+	pGameObject->Add_Ref();
 	m_vecRenderObject.push_back( pGameObject );
 }

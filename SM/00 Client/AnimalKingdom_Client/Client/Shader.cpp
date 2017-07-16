@@ -57,7 +57,7 @@ HRESULT CShader::CreateVS( ID3D11Device* pDevice, const char* pFilePath, D3D11_I
 		if( nullptr != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-//			pErrorBlob->Release();
+			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -88,7 +88,7 @@ HRESULT CShader::CreatePS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-//			pErrorBlob->Release();
+			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -114,7 +114,7 @@ HRESULT CShader::CreateGS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 			// MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-			// pErrorBlob->Release();
+			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -140,7 +140,7 @@ HRESULT CShader::CreateHS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-//			pErrorBlob->Release();
+			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 
@@ -168,7 +168,7 @@ HRESULT CShader::CreateDS( ID3D11Device* pDevice, const char* pFilePath )
 		if( NULL != pErrorBlob )
 		{
 //			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
-//			pErrorBlob->Release();
+			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}
 

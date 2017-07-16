@@ -298,10 +298,9 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	CScene::Render( pContext );
 
 	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
-	if( CRenderer::GetInstance()->m_bWireFrame )
-		CPhysics::GetInstance()->Render( pContext );
 
 	CRenderer::GetInstance()->Render( pContext );
+	if( CRenderer::GetInstance()->m_bWireFrame ) CPhysics::GetInstance()->Render( pContext );
 }
 
 void CJungle::Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state )

@@ -114,8 +114,8 @@ void CBanana::Render( ID3D11DeviceContext* pContext )
 DWORD CBanana::Release( void )
 {
 	// CPhysics::GetInstance()->GetSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
-	CGameObject::Release();
-	delete this;
+	if( 0 == CGameObject::Release() )
+		delete this;
 
 	return 0;
 }

@@ -50,9 +50,8 @@ void CWallpaper::Render( ID3D11DeviceContext* pContext )
 
 DWORD CWallpaper::Release( void )
 {
-	CGameObject::Release();
-
-	delete this;
+	if( 0 == CGameObject::Release() )
+		delete this;
 
 	return 0;
 }

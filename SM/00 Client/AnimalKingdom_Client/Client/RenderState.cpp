@@ -73,7 +73,6 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	//RSNullDesc.MultisampleEnable = TRUE;
 	//RSNullDesc.AntialiasedLineEnable = TRUE;
 	//pDevice->CreateRasterizerState( &RSNullDesc, &m_pRasterizerState[ RS_NULL ] );
-	// pDevice->Release();
 
 	/* RS_CCW */
 	D3D11_RASTERIZER_DESC RS_CCWDesc;
@@ -113,12 +112,12 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 
 void CRenderState::Release()
 {
-	for( int i = 0; i < ( int )BL_END; ++i )
+	for( int i = 1; i < ( int )BL_END; ++i )
 		::Safe_Release( m_pBlendState[ i ] );
 
-	for( int i = 0; i < ( int )DS_END; ++i )
+	for( int i = 1; i < ( int )DS_END; ++i )
 		::Safe_Release( m_pDepthStencilState[ i ] );
 
-	for( int i = 0; i < ( int )RS_END; ++i )
+	for( int i = 1; i < ( int )RS_END; ++i )
 		::Safe_Release( m_pRasterizerState[ i ] );
 }

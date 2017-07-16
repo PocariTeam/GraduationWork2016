@@ -59,10 +59,11 @@ void CSkydome::Render( ID3D11DeviceContext* pContext )
 
 DWORD CSkydome::Release( void )
 {
-	CGameObject::Release();
-	m_pDirectionLight = nullptr;
-
-	delete this;
+	if( 0 == CGameObject::Release() )
+	{
+		m_pDirectionLight = nullptr;
+		delete this;
+	}
 	
 	return 0;
 }
