@@ -406,7 +406,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	CTexture* pTexture_Skydome = CTextureMgr::GetInstance()->Clone( "Texture_Skydome" );
 
 	CGameObject* pSkydome = CSkydome::Create( pSkydome_Mesh, pTexture_Skydome
-		, CLightMgr::GetInstance()->Add( pDevice, CLightMgr::LIGHT_DIRECTIONAL, XMFLOAT4( 0.4f, 0.4f, 0.4f, 1.f ), XMFLOAT4( 0.f, -0.3f, 0.7f, 0.f ) ) );
+		, CLightMgr::GetInstance()->Add( pDevice, CLightMgr::LIGHT_DIRECTIONAL, XMFLOAT4( 0.4f, 0.4f, 0.4f, 1.f ), XMFLOAT4( 0.f, -0.5f, 0.5f, 0.f ) ) );
 
 	CMesh* pLight_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Background" );
 	CGameObject* pLight_Screen = CWallpaper::Create( pDevice, pLight_Mesh );

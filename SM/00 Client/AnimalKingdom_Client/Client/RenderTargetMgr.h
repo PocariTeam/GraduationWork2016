@@ -48,6 +48,7 @@ private:
 
 	ID3D11DepthStencilView*		m_pShadowDepthStencilView;
 	ID3D11ShaderResourceView*	m_pShadowShaderResourceView;
+	ID3D11SamplerState*			m_pShadowSamplerState;
 
 	ID3D11DepthStencilView*		m_pActiveDepthStencilView;
 

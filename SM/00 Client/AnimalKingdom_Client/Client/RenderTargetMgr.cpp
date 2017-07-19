@@ -18,6 +18,7 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 	m_pShadowShaderResourceView = nullptr;
 	m_pActiveDepthStencilView = nullptr;
 	m_pDepthStencilView = nullptr;
+	m_pShadowSamplerState = nullptr;
 
 	m_vecRenderTarget.reserve( RT_END );
 
@@ -40,7 +41,7 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 DWORD CRenderTargetMgr::Release( void )
 {
 	Safe_Release( m_pConstantBuffer );
-	// Safe_Release( m_pShadowShaderResourceView );
+	Safe_Release( m_pShadowSamplerState );
 	// Safe_Release( m_pShadowDepthStencilView );
 	// Safe_Release( m_pDepthStencilView );
 
@@ -176,6 +177,20 @@ HRESULT CRenderTargetMgr::CreateShadowMap( ID3D11Device* pDevice, const WORD& wS
 
 	pDepthMap->Release();
 	pDepthMap = nullptr;
+
+	if( nullptr == m_pShadowSamplerState )
+	{
+		D3D11_SAMPLER_DESC	tSamplerStateDesc;
+		ZeroMemory( &tSamplerStateDesc, sizeof( D3D11_SAMPLER_DESC ) );
+		tSamplerStateDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+		tSamplerStateDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+		tSamplerStateDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+		tSamplerStateDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+		tSamplerStateDesc.MaxAnisotropy = 1;
+		tSamplerStateDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		pDevice->CreateSamplerState( &tSamplerStateDesc, &m_pShadowSamplerState );
+
+	}
 
 	return S_OK;
 }
@@ -319,6 +334,7 @@ void CRenderTargetMgr::SetShaderResourceView( ID3D11DeviceContext* pContext, UIN
 		if( i >= RT_END )
 		{
 			pContext->PSSetShaderResources( iStartSlot++, 1, &m_pShadowShaderResourceView );
+			pContext->PSSetSamplers( 0, 1, &m_pShadowSamplerState );
 			return;
 		}
 

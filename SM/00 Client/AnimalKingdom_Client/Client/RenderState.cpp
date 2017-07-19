@@ -68,11 +68,18 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_NO_TEST ] );
 
 	/* RS_NULL */
-	//D3D11_RASTERIZER_DESC RSNullDesc;
-	//ZeroMemory( &RSNullDesc, sizeof( D3D11_RASTERIZER_DESC ) );
-	//RSNullDesc.MultisampleEnable = TRUE;
-	//RSNullDesc.AntialiasedLineEnable = TRUE;
-	//pDevice->CreateRasterizerState( &RSNullDesc, &m_pRasterizerState[ RS_NULL ] );
+	D3D11_RASTERIZER_DESC RSDefaultDesc;
+	ZeroMemory( &RSDefaultDesc, sizeof( D3D11_RASTERIZER_DESC ) );
+	RSDefaultDesc.FillMode = D3D11_FILL_SOLID;
+	RSDefaultDesc.CullMode = D3D11_CULL_BACK;
+	RSDefaultDesc.FrontCounterClockwise = false;
+	RSDefaultDesc.DepthClipEnable = true;
+	RSDefaultDesc.DepthBias = 10000;
+	RSDefaultDesc.DepthBiasClamp = 0.f;
+	RSDefaultDesc.SlopeScaledDepthBias = 1.f;
+	// RSNullDesc.MultisampleEnable = TRUE;
+	// RSNullDesc.AntialiasedLineEnable = TRUE;
+	pDevice->CreateRasterizerState( &RSDefaultDesc, &m_pRasterizerState[ RS_NULL ] );
 
 	/* RS_CCW */
 	D3D11_RASTERIZER_DESC RS_CCWDesc;
@@ -118,6 +125,6 @@ void CRenderState::Release()
 	for( int i = 1; i < ( int )DS_END; ++i )
 		::Safe_Release( m_pDepthStencilState[ i ] );
 
-	for( int i = 1; i < ( int )RS_END; ++i )
+	for( int i = 0; i < ( int )RS_END; ++i )
 		::Safe_Release( m_pRasterizerState[ i ] );
 }

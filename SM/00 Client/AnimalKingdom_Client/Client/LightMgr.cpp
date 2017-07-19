@@ -121,14 +121,14 @@ void CLightMgr::SetConstantBuffer_Shadow( ID3D11DeviceContext* pContext )
 	XMVECTOR vLightPos{ XMLoadFloat3( &m_vLightDir ) };
 	vLightPos = XMVectorScale( vLightPos, -1000.f );
 	XMFLOAT3 vTargetLightPos{};
-	XMMATRIX mtxView = XMMatrixLookAtLH( vLightPos, XMLoadFloat3( &XMFLOAT3( -6.f, 130.f, 100.f ) ), XMLoadFloat3( &XMFLOAT3( 0.f, 1.f, 0.f ) ) );
+	XMMATRIX mtxView = XMMatrixLookAtLH( vLightPos, XMLoadFloat3( &XMFLOAT3( -6.f, 150.f, 130.f ) ), XMLoadFloat3( &XMFLOAT3( 0.f, 1.f, 0.f ) ) );
 	XMStoreFloat4( &pConstantBuffer_Shadow->m_vLightPos, vLightPos );
 	XMStoreFloat4x4( &pConstantBuffer_Shadow->m_mtxLightView, XMMatrixTranspose( mtxView ) );
 	vLightPos = XMVector3TransformCoord( vLightPos, mtxView );
 	XMStoreFloat3( &vTargetLightPos, vLightPos );
 
 	float fHalfWidth{ float( g_wWinsizeX ) * 0.5f }, fHalfHeight{ float( g_wWinsizeY ) * 0.5f };
-	XMMATRIX mtxOrtho = XMMatrixOrthographicOffCenterLH( vTargetLightPos.x - fHalfWidth, vTargetLightPos.x + fHalfWidth, vTargetLightPos.y - fHalfHeight, vTargetLightPos.y + fHalfHeight, vTargetLightPos.z, vTargetLightPos.z + 3000.f );
+	XMMATRIX mtxOrtho = XMMatrixOrthographicOffCenterLH( vTargetLightPos.x - fHalfWidth, vTargetLightPos.x + fHalfWidth, vTargetLightPos.y - fHalfHeight, vTargetLightPos.y + fHalfHeight, vTargetLightPos.z, vTargetLightPos.z + 2000.f );
 	XMStoreFloat4x4( &pConstantBuffer_Shadow->m_mtxLightProj, XMMatrixTranspose( mtxOrtho ) );
 
 	pContext->Unmap( m_pConstantBufferShadow, 0 );

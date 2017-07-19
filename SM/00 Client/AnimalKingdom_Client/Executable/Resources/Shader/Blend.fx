@@ -55,8 +55,9 @@ float4 Blur( float2 vUV )
 	{
 		vAlbedo += Filter[ j ] * g_AlbedoTexture.Load( float3( vUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( vUV.xy + TextureOffsetUV[ j ] ), 0*/ ).xyz;
 		vLight += Filter[ j ] * g_LightTexture.Load( float3( vUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( vUV.xy + TextureOffsetUV[ j ] ), 0*/ ).xyz;
-		vSpecular += Filter[ j ] * g_SpecularTexture.Load( float3( vUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( vUV.xy + TextureOffsetUV[ j ] ), 0*/ ).xyz;
 	}
+
+	vSpecular = g_SpecularTexture.Load( float3( vUV.xy, 0.f ) ).xyz;
 
 	return float4( mad( vAlbedo, vLight, vSpecular ).xyz, 1.f );
 }

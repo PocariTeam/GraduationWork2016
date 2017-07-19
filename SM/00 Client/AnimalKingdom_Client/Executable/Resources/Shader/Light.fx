@@ -50,9 +50,11 @@ cbuffer cbShadow : register( b3 )
 Texture2D/*MS<float4, 4>*/ g_NormalTexture : register( t0 );
 Texture2D/*MS<float4, 4>*/ g_DepthTexture : register( t1 );
 Texture2D/*MS<float4, 4>*/ g_ShadowTexture : register( t2 );
+SamplerState g_ShadowSampler : register( s0 );
 
 static float	Filter[ 9 ] = { -1.f, -1.f, -1.f, -1.f, 8.f, -1.f, -1.f, -1.f, -1.f };		// LPF
 static float2	TextureOffsetUV[ 9 ] = { { -1.f, -1.f }, { 0.f, -1.f },{ 1.f, -1.f },{ -1.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f },{ -1.f, 1.f },{ 0.f, 1.f }, { 1.f, 1.f } };
+static float2	ShadowTextureOffsetUV[ 9 ] = { { -1.f / 1024.f, -1.f / 768.f },{ 0.f, -1.f / 768.f },{ 1.f / 1024.f, -1.f / 768.f },{ -1.f / 1024.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f / 768.f },{ -1.f / 1024.f, 1.f / 768.f },{ 0.f, 1.f / 768.f },{ 1.f / 1024.f, 1.f / 768.f } };
 
 float4 Directional_Specular( LIGHT tLight, float4 vWorldNormal, float3 vLookInv );
 float4 Point_Lighting( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal );
@@ -159,8 +161,10 @@ PS_OUT	PS( VS_OUT	In )
 	}
 
 	// Shadow
-	float fShadowMapDepth = g_ShadowTexture.Load( float3( ( 0.5f * vShadowTex.x + 0.5f ) * 1024, ( 0.5f * vShadowTex.y + 0.5f ) * 768, 0.f ) ).r;
-	if( vPos.z >= fShadowMapDepth )
+	float fShadowMapDepth = 0.f;
+	for( int k = 0; k < 9; k++ )
+		fShadowMapDepth += g_ShadowTexture.Sample( g_ShadowSampler, float2( 0.5f * vShadowTex.x + 0.5f, -0.5f * vShadowTex.y + 0.5f ) + ShadowTextureOffsetUV[ k ] ).r;
+	if( vShadowTex.z > fShadowMapDepth / 9.f + 0.006f )
 		Out.vLight *= 0.3f;
 
 
