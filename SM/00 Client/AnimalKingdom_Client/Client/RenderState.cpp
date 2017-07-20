@@ -67,28 +67,28 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	DepthDesc.DepthEnable = false;
 	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_NO_TEST ] );
 
-	/* RS_NULL */
-	D3D11_RASTERIZER_DESC RSDefaultDesc;
-	ZeroMemory( &RSDefaultDesc, sizeof( D3D11_RASTERIZER_DESC ) );
-	RSDefaultDesc.FillMode = D3D11_FILL_SOLID;
-	RSDefaultDesc.CullMode = D3D11_CULL_BACK;
-	RSDefaultDesc.FrontCounterClockwise = false;
-	RSDefaultDesc.DepthClipEnable = true;
-	RSDefaultDesc.DepthBias = 10000;
-	RSDefaultDesc.DepthBiasClamp = 0.f;
-	RSDefaultDesc.SlopeScaledDepthBias = 1.f;
-	// RSNullDesc.MultisampleEnable = TRUE;
-	// RSNullDesc.AntialiasedLineEnable = TRUE;
-	pDevice->CreateRasterizerState( &RSDefaultDesc, &m_pRasterizerState[ RS_NULL ] );
+	/* RS_SHADOW */
+	D3D11_RASTERIZER_DESC RSShadowDesc;
+	ZeroMemory( &RSShadowDesc, sizeof( D3D11_RASTERIZER_DESC ) );
+	RSShadowDesc.FillMode = D3D11_FILL_SOLID;
+	RSShadowDesc.CullMode = D3D11_CULL_BACK;
+	RSShadowDesc.FrontCounterClockwise = false;
+	RSShadowDesc.DepthClipEnable = true;
+	RSShadowDesc.DepthBias = 16777;
+	RSShadowDesc.DepthBiasClamp = 0.f;
+	RSShadowDesc.SlopeScaledDepthBias = 1.f;
+	// RSShadowDesc.MultisampleEnable = TRUE;
+	// RSShadowDesc.AntialiasedLineEnable = TRUE;
+	pDevice->CreateRasterizerState( &RSShadowDesc, &m_pRasterizerState[ RS_SHADOW ] );
 
 	/* RS_CCW */
 	D3D11_RASTERIZER_DESC RS_CCWDesc;
 	ZeroMemory( &RS_CCWDesc, sizeof( D3D11_RASTERIZER_DESC ) );
 	RS_CCWDesc.FillMode = D3D11_FILL_SOLID;
-	//RS_CCWDesc.MultisampleEnable = TRUE;
 	RS_CCWDesc.CullMode = D3D11_CULL_FRONT;
 	RS_CCWDesc.FrontCounterClockwise = false;
 	RS_CCWDesc.DepthClipEnable = true;
+	//RS_CCWDesc.MultisampleEnable = TRUE;
 	//RSWireDesc.AntialiasedLineEnable = TRUE;
 	pDevice->CreateRasterizerState( &RS_CCWDesc, &m_pRasterizerState[ RS_CCW ] );
 
@@ -125,6 +125,6 @@ void CRenderState::Release()
 	for( int i = 1; i < ( int )DS_END; ++i )
 		::Safe_Release( m_pDepthStencilState[ i ] );
 
-	for( int i = 0; i < ( int )RS_END; ++i )
+	for( int i = 1; i < ( int )RS_END; ++i )
 		::Safe_Release( m_pRasterizerState[ i ] );
 }

@@ -75,13 +75,6 @@ typedef struct tagConstantBuffer_World
 	XMFLOAT4	m_vOption;
 }CB_WORLD;
 
-typedef struct tagConstantBuffer_Shadow
-{
-	XMFLOAT4X4  m_mtxLightView;
-	XMFLOAT4X4  m_mtxLightProj;
-	XMFLOAT4	m_vLightPos;
-}CB_SHADOW;
-
 typedef struct tagConstantBuffer_Camera
 {
 	XMFLOAT4X4  m_mtxView;

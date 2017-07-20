@@ -36,21 +36,24 @@ public:
 	void				SetShaderResourceView( ID3D11DeviceContext* pContext, UINT iStartSlot, UINT iSelect, UINT iCnt );
 	ID3D11Texture2D*	GetTexture( eRT_Type eType ) { return m_vecRenderTarget[ eType ]->Get_Texture(); }
 	void				Render( ID3D11DeviceContext* pContext );
-	void				Shadow_Begin( void ) { m_pActiveDepthStencilView = m_pShadowDepthStencilView; }
-	void				Shadow_End( void ) { m_pActiveDepthStencilView = m_pDepthStencilView; }
+	void				Shadow_Begin( ID3D11DeviceContext* pContext );
+	void				Shadow_End( ID3D11DeviceContext* pContext );
 private:
 	CGraphicDev*				m_pGraphicDev;
 	vector<CRenderTarget*>		m_vecRenderTarget;
 	ID3D11RenderTargetView**	m_pArrRenderTargetView;
 	ID3D11ShaderResourceView**	m_pArrShaderResourceView;
+	D3D11_VIEWPORT				m_tDefaultViewport;
 
 	ID3D11DepthStencilView*		m_pDepthStencilView;
 
 	ID3D11DepthStencilView*		m_pShadowDepthStencilView;
 	ID3D11ShaderResourceView*	m_pShadowShaderResourceView;
 	ID3D11SamplerState*			m_pShadowSamplerState;
+	D3D11_VIEWPORT				m_tShadowmapViewport;
 
 	ID3D11DepthStencilView*		m_pActiveDepthStencilView;
+
 
 	ID3D11Buffer*				m_pConstantBuffer;
 };

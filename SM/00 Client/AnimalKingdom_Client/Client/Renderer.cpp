@@ -120,9 +120,8 @@ void CRenderer::Render_ShadowMap( ID3D11DeviceContext* pContext )
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	pContext->PSSetShaderResources( 0, 3, pNullSRV );
 
-	CRenderTargetMgr::GetInstance()->Shadow_Begin();
+	CRenderTargetMgr::GetInstance()->Shadow_Begin( pContext );
 	CRenderTargetMgr::GetInstance()->ResetRenderTargetView( pContext );
-	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
 
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_SHADOW ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_SHADOW ].end();
@@ -130,7 +129,7 @@ void CRenderer::Render_ShadowMap( ID3D11DeviceContext* pContext )
 	for( ; iter != iter_end; ++iter )
 		( *iter )->Render( pContext );
 
-	CRenderTargetMgr::GetInstance()->Shadow_End();
+	CRenderTargetMgr::GetInstance()->Shadow_End( pContext );
 }
 
 void CRenderer::Render_Background( ID3D11DeviceContext* pContext )
@@ -200,6 +199,7 @@ void CRenderer::Render_InCave( ID3D11DeviceContext* pContext )
 void CRenderer::Render_Light( ID3D11DeviceContext* pContext )
 {
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NO_TEST );
+	CRenderState::Set_Rasterize( pContext, CRenderState::RS_SHADOW );
 	
 	//D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_DEPTH ), D3DX11_IFF_JPG, "Depth.jpg" );
 	//D3DX11SaveTextureToFile( pContext, CRenderTargetMgr::GetInstance()->GetTexture( CRenderTargetMgr::RT_ALBEDO ), D3DX11_IFF_JPG, "Albedo.jpg" );
@@ -214,6 +214,8 @@ void CRenderer::Render_Light( ID3D11DeviceContext* pContext )
 	CLightMgr::GetInstance()->Render( pContext );
 
 	m_pRenderGroup[ RENDER_LIGHT ].front()->Render( pContext );
+
+	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 }
 
 void CRenderer::Render_Blend( ID3D11DeviceContext* pContext )
@@ -241,12 +243,12 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
 
-	if( m_bInCave ) Render_InCave( pContext );
-
 	for( ; iter != iter_end; ++iter )
 	{
 		( *iter )->Render( pContext );
 	}
+
+	if( m_bInCave ) Render_InCave( pContext );
 
 	// 블렌딩 설정해제
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );

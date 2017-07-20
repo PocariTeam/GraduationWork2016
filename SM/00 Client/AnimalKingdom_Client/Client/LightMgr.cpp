@@ -13,7 +13,8 @@ HRESULT CLightMgr::Initialize( ID3D11Device* pDevice, DWORD dwLightingCnt/*= 1 *
 	m_pConstantBufferLight = nullptr;
 	m_pConstantBufferShadow = nullptr;
 	m_dwLightingCnt = 0;
-	m_vLightDir = XMFLOAT3( 0.f, 0.f, 0.f );
+	ZeroMemory( &m_mtxShadowTransform, sizeof( XMFLOAT4X4 ) );
+
 	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.0f * 0.5f, 2.70588f * 0.5f, 0.0f, 1.0f ), XMFLOAT4( -175.1f, 120.0f, 380.4f, 70.f ) );
 	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.0f * 0.5f, 2.70588f * 0.5f, 0.0f, 1.0f ), XMFLOAT4( -21.6f, 120.0f, 380.4f, 70.f ) );
 	Add( pDevice, LIGHT_POINT, XMFLOAT4( 10.0f * 0.5f, 2.70588f * 0.5f, 0.0f, 1.0f ), XMFLOAT4( 120.8f, 120.0f, 380.4f, 70.f ) );
@@ -46,7 +47,7 @@ LIGHT* CLightMgr::Add( ID3D11Device* pDevice, LIGHT_TYPE eType, const XMFLOAT4& 
 	switch( eType )
 	{
 	case LIGHT_DIRECTIONAL:
-		pNewLighting->m_vDir = XMFLOAT3( vOption.x, vOption.y, vOption.z );
+		XMStoreFloat3( &pNewLighting->m_vDir, XMVector3Normalize( XMLoadFloat4( &vOption ) ) );
 		CreateConstantBuffer_Shadow( pDevice, pNewLighting->m_vDir );
 		break;
 	case LIGHT_POINT:
@@ -88,12 +89,21 @@ HRESULT CLightMgr::CreateConstantBuffer_Shadow( ID3D11Device* pDevice, XMFLOAT3&
 	D3D11_BUFFER_DESC Buffer_Desc;
 	ZeroMemory( &Buffer_Desc, sizeof( Buffer_Desc ) );
 	Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
-	Buffer_Desc.ByteWidth = sizeof( CB_SHADOW );
+	Buffer_Desc.ByteWidth = sizeof( XMFLOAT4X4 );
 	Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	pDevice->CreateBuffer( &Buffer_Desc, NULL, &m_pConstantBufferShadow );
 
-	m_vLightDir = vLightDir;
+	XMVECTOR vLightPos{ XMLoadFloat3( &vLightDir ) };
+	vLightPos = XMVectorScale( vLightPos, -1500.f );
+	XMFLOAT3 vTargetLightPos{};
+	XMMATRIX mtxView = XMMatrixLookAtLH( vLightPos, XMLoadFloat3( &XMFLOAT3( -6.f, 160.f, 130.f ) ), XMLoadFloat3( &XMFLOAT3( 0.f, 1.f, 0.f ) ) );
+	vLightPos = XMVector3TransformCoord( vLightPos, mtxView );
+	XMStoreFloat3( &vTargetLightPos, vLightPos );
+
+	float fHalfWidth{ float( g_wWinsizeX )/* * 0.5f*/ }, fHalfHeight{ float( g_wWinsizeY )/* * 0.5f*/ };
+	XMMATRIX mtxOrtho = XMMatrixOrthographicOffCenterLH( vTargetLightPos.x - fHalfWidth, vTargetLightPos.x + fHalfWidth, vTargetLightPos.y - fHalfHeight, vTargetLightPos.y + fHalfHeight, vTargetLightPos.z, vTargetLightPos.z + 3000.f );
+	XMStoreFloat4x4( &m_mtxShadowTransform, XMMatrixMultiplyTranspose( mtxView, mtxOrtho ) );
 
 	return S_OK;
 }
@@ -116,20 +126,9 @@ void CLightMgr::SetConstantBuffer_Shadow( ID3D11DeviceContext* pContext )
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
 
 	pContext->Map( m_pConstantBufferShadow, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
-	CB_SHADOW* pConstantBuffer_Shadow = ( CB_SHADOW* )MappedSubresource.pData;
+	XMFLOAT4X4* pConstantBuffer_Shadow = ( XMFLOAT4X4* )MappedSubresource.pData;
 
-	XMVECTOR vLightPos{ XMLoadFloat3( &m_vLightDir ) };
-	vLightPos = XMVectorScale( vLightPos, -1000.f );
-	XMFLOAT3 vTargetLightPos{};
-	XMMATRIX mtxView = XMMatrixLookAtLH( vLightPos, XMLoadFloat3( &XMFLOAT3( -6.f, 150.f, 130.f ) ), XMLoadFloat3( &XMFLOAT3( 0.f, 1.f, 0.f ) ) );
-	XMStoreFloat4( &pConstantBuffer_Shadow->m_vLightPos, vLightPos );
-	XMStoreFloat4x4( &pConstantBuffer_Shadow->m_mtxLightView, XMMatrixTranspose( mtxView ) );
-	vLightPos = XMVector3TransformCoord( vLightPos, mtxView );
-	XMStoreFloat3( &vTargetLightPos, vLightPos );
-
-	float fHalfWidth{ float( g_wWinsizeX ) * 0.5f }, fHalfHeight{ float( g_wWinsizeY ) * 0.5f };
-	XMMATRIX mtxOrtho = XMMatrixOrthographicOffCenterLH( vTargetLightPos.x - fHalfWidth, vTargetLightPos.x + fHalfWidth, vTargetLightPos.y - fHalfHeight, vTargetLightPos.y + fHalfHeight, vTargetLightPos.z, vTargetLightPos.z + 2000.f );
-	XMStoreFloat4x4( &pConstantBuffer_Shadow->m_mtxLightProj, XMMatrixTranspose( mtxOrtho ) );
+	*pConstantBuffer_Shadow = m_mtxShadowTransform;
 
 	pContext->Unmap( m_pConstantBufferShadow, 0 );
 	pContext->VSSetConstantBuffers( SLOT_SHADOW, 1, &m_pConstantBufferShadow );

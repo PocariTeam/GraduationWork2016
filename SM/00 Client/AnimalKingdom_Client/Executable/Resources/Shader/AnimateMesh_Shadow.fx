@@ -11,9 +11,7 @@ cbuffer cbBone : register( b2 )
 
 cbuffer cbShadow : register( b3 )
 {
-	matrix g_mtxLightView;
-	matrix g_mtxLightProj;
-	float4 g_vLightPos;
+	matrix g_mtxLightViewProj;
 }
 
 struct VS_IN
@@ -30,12 +28,10 @@ float4 VS( VS_IN In ) : SV_POSITION
 {
 	float4 Out = ( float4 )0;
 
-	matrix	mtxWV, mtxWVP;
-	mtxWV = mul( g_mtxWorld, g_mtxLightView );
-	mtxWVP = mul( mtxWV, g_mtxLightProj );
-
 	int iIndex[ 4 ] = { 0, 0, 0, 0 };
 	float fWeight[ 4 ] = { 0.f, 0.f, 0.f, 0.f };
+
+	matrix mtxWVP = mul( g_mtxWorld, g_mtxLightViewProj );
 
 	iIndex[ 0 ] = In.vIndex.x; iIndex[ 1 ] = In.vIndex.y; iIndex[ 2 ] = In.vIndex.z; iIndex[ 3 ] = In.vIndex.w;
 	fWeight[ 0 ] = In.vWeight.x; fWeight[ 1 ] = In.vWeight.y; fWeight[ 2 ] = In.vWeight.z; fWeight[ 3 ] = In.vWeight.w;

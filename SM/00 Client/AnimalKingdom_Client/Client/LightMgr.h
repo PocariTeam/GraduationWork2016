@@ -26,7 +26,7 @@ public:
 	void	Render( ID3D11DeviceContext* pContext );
 private:
 	LIGHT**					m_pArrLight;
-	XMFLOAT3				m_vLightDir;
+	XMFLOAT4X4				m_mtxShadowTransform;
 	DWORD					m_dwLightingCnt;
 	ID3D11Buffer*			m_pConstantBufferLight;
 	ID3D11Buffer*			m_pConstantBufferShadow;

@@ -19,6 +19,8 @@ HRESULT CRenderTargetMgr::Initialize( CGraphicDev* pGraphicDev, const WORD& wSiz
 	m_pActiveDepthStencilView = nullptr;
 	m_pDepthStencilView = nullptr;
 	m_pShadowSamplerState = nullptr;
+	ZeroMemory( &m_tDefaultViewport, sizeof( D3D11_VIEWPORT ) );
+	ZeroMemory( &m_tShadowmapViewport, sizeof( D3D11_VIEWPORT ) );
 
 	m_vecRenderTarget.reserve( RT_END );
 
@@ -128,8 +130,8 @@ HRESULT CRenderTargetMgr::CreateShadowMap( ID3D11Device* pDevice, const WORD& wS
 	D3D11_TEXTURE2D_DESC ShadowMapDesc;
 	ZeroMemory( &ShadowMapDesc, sizeof( ShadowMapDesc ) );
 
-	ShadowMapDesc.Width = wSizeX;
-	ShadowMapDesc.Height = wSizeY;
+	ShadowMapDesc.Width = wSizeX * 2;
+	ShadowMapDesc.Height = wSizeY * 2;
 	ShadowMapDesc.MipLevels = 1;
 	ShadowMapDesc.ArraySize = 1;
 
@@ -182,12 +184,12 @@ HRESULT CRenderTargetMgr::CreateShadowMap( ID3D11Device* pDevice, const WORD& wS
 	{
 		D3D11_SAMPLER_DESC	tSamplerStateDesc;
 		ZeroMemory( &tSamplerStateDesc, sizeof( D3D11_SAMPLER_DESC ) );
-		tSamplerStateDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+		tSamplerStateDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
 		tSamplerStateDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
 		tSamplerStateDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
 		tSamplerStateDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
 		tSamplerStateDesc.MaxAnisotropy = 1;
-		tSamplerStateDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		tSamplerStateDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
 		pDevice->CreateSamplerState( &tSamplerStateDesc, &m_pShadowSamplerState );
 
 	}
@@ -299,13 +301,15 @@ void CRenderTargetMgr::ResizeRenderTarget( const WORD& wSizeX, const WORD& wSize
 	for( int i = 0; i < RT_END; ++i )
 		Add( pDevice, pSwapChain, wSizeX, wSizeY, i );
 
-	D3D11_VIEWPORT	tViewport;
-	ZeroMemory( &tViewport, sizeof( D3D11_VIEWPORT ) );
-	tViewport.Width = ( FLOAT )wSizeX;
-	tViewport.Height = ( FLOAT )wSizeY;
-	tViewport.MaxDepth = 1.f;
+	m_tDefaultViewport.Width = ( FLOAT )wSizeX;
+	m_tDefaultViewport.Height = ( FLOAT )wSizeY;
+	m_tDefaultViewport.MaxDepth = 1.f;
 
-	pContext->RSSetViewports( 1, &tViewport );
+	m_tShadowmapViewport.Width = ( FLOAT )wSizeX * 2.f;
+	m_tShadowmapViewport.Height = ( FLOAT )wSizeY * 2.f;
+	m_tShadowmapViewport.MaxDepth = 1.f;
+
+	pContext->RSSetViewports( 1, &m_tDefaultViewport );
 	CreateDepthStencilBuffer( pDevice, wSizeX, wSizeY );
 	CreateShadowMap( pDevice, wSizeX, wSizeY );
 	AssembleRenderTargetView();
@@ -351,9 +355,22 @@ void CRenderTargetMgr::Render( ID3D11DeviceContext* pContext )
 		pContext->Draw( 6, 0 );
 	}
 
-	SetShaderResourceView( pContext, 0, ( UINT )RT_END, 1 );
+
+	pContext->PSSetShaderResources( 0, 1, &m_pShadowShaderResourceView );
 	SetConstantBuffer( pContext, RT_END );
 	pContext->Draw( 6, 0 );
+}
+
+void CRenderTargetMgr::Shadow_Begin( ID3D11DeviceContext* pContext )
+{
+	m_pActiveDepthStencilView = m_pShadowDepthStencilView;
+	pContext->RSSetViewports( 1, &m_tShadowmapViewport );
+}
+
+void CRenderTargetMgr::Shadow_End( ID3D11DeviceContext* pContext )
+{
+	m_pActiveDepthStencilView = m_pDepthStencilView;
+	pContext->RSSetViewports( 1, &m_tDefaultViewport );
 }
 
 void CRenderTargetMgr::ClearDepthStencilView( ID3D11DeviceContext* pContext )

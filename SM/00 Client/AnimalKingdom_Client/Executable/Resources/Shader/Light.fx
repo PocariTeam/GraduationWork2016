@@ -42,19 +42,16 @@ cbuffer cbLight : register( b2 )
 
 cbuffer cbShadow : register( b3 )
 {
-	matrix g_mtxLightView;
-	matrix g_mtxLightProj;
-	float4 g_vLightPos;
+	matrix g_mtxLightViewProj;
 }
 
 Texture2D/*MS<float4, 4>*/ g_NormalTexture : register( t0 );
 Texture2D/*MS<float4, 4>*/ g_DepthTexture : register( t1 );
 Texture2D/*MS<float4, 4>*/ g_ShadowTexture : register( t2 );
-SamplerState g_ShadowSampler : register( s0 );
+SamplerComparisonState g_ShadowSampler : register( s0 );
 
 static float	Filter[ 9 ] = { -1.f, -1.f, -1.f, -1.f, 8.f, -1.f, -1.f, -1.f, -1.f };		// LPF
 static float2	TextureOffsetUV[ 9 ] = { { -1.f, -1.f }, { 0.f, -1.f },{ 1.f, -1.f },{ -1.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f },{ -1.f, 1.f },{ 0.f, 1.f }, { 1.f, 1.f } };
-static float2	ShadowTextureOffsetUV[ 9 ] = { { -1.f / 1024.f, -1.f / 768.f },{ 0.f, -1.f / 768.f },{ 1.f / 1024.f, -1.f / 768.f },{ -1.f / 1024.f, 0.f },{ 0.f, 0.f },{ 0.f, 1.f / 768.f },{ -1.f / 1024.f, 1.f / 768.f },{ 0.f, 1.f / 768.f },{ 1.f / 1024.f, 1.f / 768.f } };
 
 float4 Directional_Specular( LIGHT tLight, float4 vWorldNormal, float3 vLookInv );
 float4 Point_Lighting( LIGHT tLight, float3 vWorldPos, float3 vWorldNormal );
@@ -100,7 +97,7 @@ PS_OUT	PS( VS_OUT	In )
 	float		fViewZ = vDepth.g * 1000.f;
 
 	float4		vPos = ( float4 )0;
-	float3		vShadowTex = ( float3 )0;
+	float4		vShadowTex = ( float4 )0;
 
 	vPos.x = mad( In.vUV.x, 2.f, -1.f ) * fViewZ;
 	vPos.y = mad( In.vUV.y, -2.f, 1.f ) * fViewZ;
@@ -110,7 +107,7 @@ PS_OUT	PS( VS_OUT	In )
 	vPos = mul( vPos, g_mtxProjInv );
 	vPos = mul( float4( vPos.xyz, 1.f ), g_mtxViewInv );
 
-	vShadowTex = mul( float4( vPos.xyz, 1.f ), mul( g_mtxLightView, g_mtxLightProj ) );
+	vShadowTex = mul( float4( vPos.xyz, 1.f ), g_mtxLightViewProj );
 
 	float3 vLookInv = normalize( g_vCameraPos.xyz - vPos.xyz );
 
@@ -147,25 +144,27 @@ PS_OUT	PS( VS_OUT	In )
 	{
 		float3 vComparison = ( float3 )0;
 		for( int j = 0; j < 9; ++j )
-			vComparison += Filter[ j ] * mad( g_NormalTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( In.vTexUV.xy + TextureOffsetUV[ j ] ), 0*/ ).xyz, 2.f, -1.f );
+			vComparison += Filter[ j ] * mad( g_NormalTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).xyz, 2.f, -1.f );
 		float fComparison = dot( vComparison, float3( 1.f, 1.f, 1.f ) );
-		Out.vLight.xyz = ( fComparison < vDepth.y * 5.f ) ? float3( int3( Out.vLight.xyz * 3.f ) * 0.3f ) : 0.f;
+		Out.vLight.xyz = ( fComparison < vDepth.y * 5.f ) ? float3( ceil( Out.vLight.xyz * 3.f ) * 0.3f ) : 0.f;
 	}
 
 	else
 	{
 		float fComparison = 0.f;
 		for( int j = 0; j < 9; ++j )
-			fComparison += Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f )/*int2( In.vTexUV.xy + TextureOffsetUV[ j ] ), 0*/ ).z;
+			fComparison += Filter[ j ] * g_DepthTexture.Load( float3( In.vTexUV.xy + TextureOffsetUV[ j ], 0.f ) ).z;
 		Out.vLight.xyz = ( fComparison > -0.01f ) ? Out.vLight.xyz : 0.f;
 	}
 
 	// Shadow
+	float fDepth = vShadowTex.z - 0.001f;
 	float fShadowMapDepth = 0.f;
-	for( int k = 0; k < 9; k++ )
-		fShadowMapDepth += g_ShadowTexture.Sample( g_ShadowSampler, float2( 0.5f * vShadowTex.x + 0.5f, -0.5f * vShadowTex.y + 0.5f ) + ShadowTextureOffsetUV[ k ] ).r;
-	if( vShadowTex.z > fShadowMapDepth / 9.f + 0.006f )
-		Out.vLight *= 0.3f;
+	for( int k = 0; k < 9; ++k )
+		fShadowMapDepth += g_ShadowTexture.SampleCmpLevelZero( g_ShadowSampler, float2( 0.5f * vShadowTex.x + 0.5f, -0.5f * vShadowTex.y + 0.5f ), fDepth, TextureOffsetUV[ k ] ).r;
+	fShadowMapDepth /= 9.f;
+	fShadowMapDepth += 0.3f;
+	Out.vLight.xyz *= min( fShadowMapDepth, 1.f );
 
 
 	return Out;

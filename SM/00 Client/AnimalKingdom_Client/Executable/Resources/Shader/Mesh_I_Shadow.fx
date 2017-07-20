@@ -1,8 +1,6 @@
 cbuffer cbShadow : register( b3 )
 {
-	matrix g_mtxLightView;
-	matrix g_mtxLightProj;
-	float4 g_vLightPos;
+	matrix g_mtxLightViewProj;
 }
 
 struct VS_IN
@@ -19,9 +17,7 @@ float4 VS( VS_IN In ) : SV_POSITION
 {
 	float4 Out = ( float4 )0;
 
-	matrix	mtxWV, mtxWVP;
-	mtxWV = mul( In.mtxWorld, g_mtxLightView );
-	mtxWVP = mul( mtxWV, g_mtxLightProj );
+	matrix mtxWVP = mul( In.mtxWorld, g_mtxLightViewProj );
 
 	Out = mul( float4( In.vPos, 1.f ), mtxWVP );
 
