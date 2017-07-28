@@ -1,10 +1,11 @@
-60
+61
 Texture_Back 4 ../Executable/Resources/Texture/UI/Back/Back%d.png
 Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
 Texture_Billboard_Ready 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Ready.png
 Texture_Bridge 1 ../Executable/Resources/Texture/Bridge/Bridge.png
 Texture_Branch00 1 ../Executable/Resources/Texture/Branch/Branch00.png
+Texture_Fire 1 ../Executable/Resources/Texture/Particle/Fire.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
 Texture_Select_Monkey 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Monkey/Select_Monkey%d.png
 Texture_Select_Chameleon 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Chameleon/Select_Chameleon%d.png

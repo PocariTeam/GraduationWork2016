@@ -24,13 +24,13 @@ private:
 	explicit CClothMesh( const CClothMesh& Instance );
 	virtual ~CClothMesh();
 private:
-	HRESULT CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
+	HRESULT CreateBuffer( ID3D11Device* pDevice, VERTEX_PN/*T*/* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
 public:
-	void	UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
+	void	UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PN/*T*/* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
 	CMesh*	Clone( void );
 	DWORD   Release( void );
 public:
-	static  CClothMesh*	Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
+	static  CClothMesh*	Create( ID3D11Device* pDevice, VERTEX_PN/*T*/* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt );
 };
 
 #endif // ClothMesh_h__

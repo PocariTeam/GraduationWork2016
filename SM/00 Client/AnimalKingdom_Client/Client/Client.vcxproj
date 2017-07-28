@@ -216,6 +216,7 @@
     <ClInclude Include="Environment.h" />
     <ClInclude Include="EventCamera.h" />
     <ClInclude Include="MediaPath.h" />
+    <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
     <ClInclude Include="Stream.h" />
@@ -389,6 +390,7 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EventCamera.cpp" />
     <ClCompile Include="MediaPath_WIN.cpp" />
+    <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
     <ClCompile Include="Stream.cpp" />
@@ -579,6 +581,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Particle_Fire.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>

@@ -1,5 +1,5 @@
-Texture2D gTexture : register( t0 );
-SamplerState gSamplerState : register( s0 );
+//Texture2D gTexture : register( t0 );
+//SamplerState gSamplerState : register( s0 );
 
 cbuffer cbWorld : register( b0 )
 {
@@ -21,7 +21,7 @@ struct VS_IN
 {
 	float3 vPos : POSITION;
 	float3 vNormal : NORMAL;
-	float2 vUV : TEXCOORD;
+	// float2 vUV : TEXCOORD;
 };
 
 struct VS_OUT
@@ -29,7 +29,7 @@ struct VS_OUT
 	float4 vPos : SV_POSITION;
 	float3 vNormal : NORMAL;
 	float3 vWorldPos : POSITION;
-	float2 vUV : TEXCOORD0;
+	// float2 vUV : TEXCOORD0;
 };
 
 struct PS_OUT
@@ -49,7 +49,7 @@ VS_OUT VS( VS_IN In )
 
 	Out.vPos = mul( float4( In.vPos, 1.f ), mtxWVP );
 	Out.vWorldPos = mul( float4( In.vPos, 1.f ), g_mtxWorld ).xyz;
-	Out.vUV = In.vUV;
+	// Out.vUV = In.vUV;
 
 	Out.vNormal = normalize( mul( float4( In.vNormal, 0.f ), g_mtxWorld ) ).xyz;
 
@@ -60,7 +60,7 @@ PS_OUT PS( VS_OUT In )
 {
 	PS_OUT	Out = ( PS_OUT )0;
 
-	Out.vAlbedo = gTexture.Sample( gSamplerState, In.vUV ) * 5.f;
+	Out.vAlbedo = float4( 0.9f, 0.1f, 0.1f, 1.f )/*gTexture.Sample( gSamplerState, In.vUV ) * 5.f*/;
 	Out.vNormal = float4( mad( In.vNormal.xyz, 0.5f, 0.5f ), 0.f );
 	Out.vDepth = float4( In.vPos.z / In.vPos.w, In.vPos.w * 0.001f, g_vOption.x, 0.f );
 

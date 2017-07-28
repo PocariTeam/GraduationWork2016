@@ -62,8 +62,8 @@ int CScene::Update( const float& fTimeDelta )
 	if( nullptr != m_pCamera )
 		m_pCamera->Update( fTimeDelta );
 
-	for( DWORD i = 0; i < ( DWORD )RENDER_END; ++i )
-		if( RENDER_OUTCAVE != i || RENDER_SHADOW != i )
+	for( DWORD i = 1; i < ( DWORD )RENDER_END; ++i )
+		if( RENDER_OUTCAVE != i )
 			for_each( m_listShader[ i ].begin(), m_listShader[ i ].end(), [&fTimeDelta]( CShader* pShader ) { pShader->Update( fTimeDelta ); } );
 
 	return 0;

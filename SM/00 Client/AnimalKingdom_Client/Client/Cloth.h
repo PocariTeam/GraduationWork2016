@@ -19,12 +19,12 @@ private:
 	explicit CCloth();
 	virtual ~CCloth();
 private:
-	HRESULT		Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, CTexture* pTexture, XMFLOAT3& vScale );
+	HRESULT		Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, /*CTexture* pTexture, */XMFLOAT3& vScale );
 	HRESULT		CreateCloth( ID3D11Device* pDevice );
 	void		ReleaseMeshDescBuffers( const NxClothMeshDesc& rDesc );
 	void		AllocateReceiveBuffers( ID3D11Device* pDevice, DWORD dwVTXCnt, DWORD dwIDXCnt );
 public:
-	static CCloth* Create( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, CTexture* pTexture, XMFLOAT3& vScale );
+	static CCloth* Create( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, /*CTexture* pTexture, */XMFLOAT3& vScale );
 public:
 	void		SetOwner( CPlayer* pPlayer );
 	XMFLOAT4X4* GetWorld();
@@ -41,7 +41,8 @@ private:
 	NxClothMesh*	m_pClothMesh;
 	NxCloth*		m_pCloth;
 	NxMeshData		m_tReceiveBuffers;
-	VERTEX_PNT*		m_pVertexArray;
+	/*VERTEX_PNT*	m_pVertexArray;*/
+	VERTEX_PN*		m_pVertexArray;
 	DWORD			m_dwVTXCnt;
 	DWORD*			m_pIndexArray;
 	DWORD			m_dwIDXCnt;

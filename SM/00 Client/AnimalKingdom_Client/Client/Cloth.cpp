@@ -35,11 +35,11 @@ CCloth::~CCloth()
 {
 }
 
-HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, CTexture* pTexture, XMFLOAT3& vScale )
+HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, /*CTexture* pTexture, */XMFLOAT3& vScale )
 {
 	m_pActor = pActor;
 	m_pPhysXScene = pScene;
-	m_pTexture = pTexture;
+	/*m_pTexture = pTexture;*/
 	m_vScale = vScale;
 	m_vOption.x = 1.f;		// 카툰 한다
 	m_vOption.w = 0.1f;
@@ -47,7 +47,13 @@ HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pAc
 	//////////////////////////////////////////////////////////////////////////
 
 	CreateCloth( pDevice );
-	// m_pCloth->addForceAtPos( NxVec3( 0.f, 0.f, 0.f ), 1.f, 1.f );
+
+	NxVec3 vOffset = NxVec3( -0.5f, 0.f, 0.f );
+	for( int i = 0; i < 26; ++i )
+	{
+		vOffset.x += 1.f / 26.f;
+		m_pCloth->attachVertexToGlobalPosition( i, vOffset );
+	}
 
 	return S_OK;
 }
@@ -63,7 +69,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	tClothDesc.bendingStiffness = 1.0f;
 	tClothDesc.stretchingStiffness = 1.0f;
 	//tClothDesc.dampingCoefficient = 0.50f;
-	tClothDesc.windAcceleration = NxVec3( 5.f, -10.f, 5.f );
+	tClothDesc.windAcceleration = NxVec3( 1.f, 0.f, -1.f );
 	tClothDesc.friction = 0.5f;
 	//tClothDesc.collisionResponseCoefficient = 1.0f;
 	//tClothDesc.attachmentResponseCoefficient = 1.0f;
@@ -73,7 +79,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	//tClothDesc.flags |= NX_CLF_VISUALIZATION;
 	tClothDesc.flags ^= NX_CLF_GRAVITY;
 	tClothDesc.flags |= NX_CLF_BENDING;
-	//tClothDesc.flags |= NX_CLF_BENDING_ORTHO;
+	// tClothDesc.flags |= NX_CLF_BENDING_ORTHO;
 	//tClothDesc.flags |= NX_CLF_DAMPING;
 	//tClothDesc.flags |= NX_CLF_COMDAMPING;
 	tClothDesc.flags |= NX_CLF_COLLISION_TWOWAY;
@@ -86,8 +92,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	//////////////////////////////////////////////////////////////////////////
 
 	NxClothMeshDesc tMeshDesc;
-	float fWidth{ 8.0f }, fHeight{ 7.0f }, fDepth{ 0.15f };
-	//float fWidth{ 2.0f }, fHeight{ 3.0f }, fDepth{ 0.15f };
+	float fWidth{ 4.0f }, fHeight{ 6.0f }, fDepth{ 0.15f };
 
 	DWORD dwNumX{ DWORD( fWidth / fDepth ) + 1 };
 	DWORD dwNumY{ DWORD( fHeight / fDepth ) + 1 };
@@ -110,14 +115,14 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	//////////////////////////////////////////////////////////////////////////
 	// 버텍스 포지션 설정
 
-	m_pVertexArray = new VERTEX_PNT[ dwMaxVTXCnt ]{};
+	m_pVertexArray = new VERTEX_PN/*T*/[ dwMaxVTXCnt ]{};
 	m_pIndexArray = new DWORD[ dwMaxIDXCnt ]{};
 
 	DWORD i, j;
 	XMFLOAT3* pPositionArr = ( XMFLOAT3* )tMeshDesc.points;
 	for( i = 0; i <= dwNumY; i++ ) {
 		for( j = 0; j <= dwNumX; j++ ) {
-			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, 0.f, -fDepth * i };
+			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, fDepth * i, 0.f };
 			pPositionArr++;
 		}
 	}
@@ -125,7 +130,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	//////////////////////////////////////////////////////////////////////////
 	// 텍스쳐 좌표 설정
 
-	float fDeltaU = 0.f; 
+	/*float fDeltaU = 0.f;
 	if( dwNumX > 0 ) fDeltaU = 1.f / dwNumX;
 	float fDeltaV = 0.f;
 	if( dwNumY > 0 ) fDeltaV = 1.f / dwNumY;
@@ -134,7 +139,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 			m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vUV.x = j * fDeltaU;
 			m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vUV.y = i * fDeltaV;
 		}
-	}
+	}*/
 
 	//////////////////////////////////////////////////////////////////////////
 	// 인덱스 설정
@@ -197,7 +202,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	}
 
 	// Enable Debug rendering for this cloth
-	tClothDesc.flags |= NX_CLF_VISUALIZATION;
+	// tClothDesc.flags |= NX_CLF_VISUALIZATION;
 
 	//////////////////////////////////////////////////////////////////////////
 	// 쿸킹
@@ -251,7 +256,7 @@ void CCloth::AllocateReceiveBuffers( ID3D11Device* pDevice, DWORD dwVTXCnt, DWOR
 
 	if( nullptr == m_pVertexArray )
 		// Allocate Render Buffer for Vertices if it hasn't been done before
-		m_pVertexArray = new VERTEX_PNT[ dwMaxVTXCnt ]{};
+		m_pVertexArray = new VERTEX_PN/*T*/[ dwMaxVTXCnt ]{};
 
 	if( nullptr == m_pIndexArray )
 		// Allocate Render Buffer for Indices if it hasn't been done before
@@ -293,11 +298,11 @@ void CCloth::AllocateReceiveBuffers( ID3D11Device* pDevice, DWORD dwVTXCnt, DWOR
 	// dwParentIndexCnt = 0;
 }
 
-CCloth* CCloth::Create( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, CTexture* pTexture, XMFLOAT3& vScale )
+CCloth* CCloth::Create( ID3D11Device* pDevice, NxScene* pScene, NxActor* pActor, /*CTexture* pTexture, */XMFLOAT3& vScale )
 {
 	CCloth* pCloth = new CCloth;
 
-	if( FAILED( pCloth->Initialize( pDevice, pScene, pActor, pTexture, vScale ) ) )
+	if( FAILED( pCloth->Initialize( pDevice, pScene, pActor, /*pTexture, */vScale ) ) )
 	{
 		pCloth->Release();
 		pCloth = nullptr;
@@ -349,10 +354,6 @@ int CCloth::Update( const float& fTimeDelta )
 		NxMat34 mtxLocal{ mtxRotation, vOffset };
 		m_pActor->setGlobalPose( mtxAnimation * mtxLocal );
 		float fRadian = m_pOwner->GetRotateY();
-		vOffset = NxVec3( cos( fRadian ) * -2.f, -9.f, sin( fRadian ) * -2.f );
-		m_pCloth->attachVertexToGlobalPosition( 0, vOffset * fTimeDelta );
-		m_pCloth->attachVertexToGlobalPosition( 54, vOffset * fTimeDelta );
-		m_pCloth->setWindAcceleration( vOffset );
 	}
 
 	return 0;
@@ -360,26 +361,26 @@ int CCloth::Update( const float& fTimeDelta )
 
 void CCloth::Render( ID3D11DeviceContext* pContext )
 {
-	if( nullptr == m_pOwner ) return;
+	// if( nullptr == m_pOwner ) return;
 	/*static NxU32 numVertices = mNumVertices;
 	NxU32 numElements = mNumIndices;
 	numVertices = mNumVertices;*/
 
 	// Disable pressure if tearing occurs
-	if( m_pCloth->getFlags() & NX_CLF_PRESSURE )
+	// if( m_pCloth->getFlags() & NX_CLF_PRESSURE )
 	{
 		// Disable Pressure
-		m_pCloth->setFlags( m_pCloth->getFlags() & ~NX_CLF_PRESSURE );
-		m_pCloth->setPressure( m_pCloth->getPressure() * 0.01f );
+		/*m_pCloth->setFlags( m_pCloth->getFlags() & ~NX_CLF_PRESSURE );
+		m_pCloth->setPressure( m_pCloth->getPressure() * 0.01f );*/
 
 		// Reduce tearing factor
-		NxReal oldTearing = m_pCloth->getTearFactor();
-		oldTearing = ( oldTearing - 1 ) / 3 + 1;
-		m_pCloth->setTearFactor( oldTearing );
+// 		NxReal oldTearing = m_pCloth->getTearFactor();
+// 		oldTearing = ( oldTearing - 1 ) / 3 + 1;
+// 		m_pCloth->setTearFactor( oldTearing );
 
 		// Reduce bending stiffness
-		if( m_pCloth->getBendingStiffness() > 0.9f )
-			m_pCloth->setBendingStiffness( 0.1f );
+// 		if( m_pCloth->getBendingStiffness() > 0.9f )
+// 			m_pCloth->setBendingStiffness( 0.1f );
 
 		// Apply explosion in the middle of the cloth
 		NxBounds3 bounds;
@@ -387,18 +388,18 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 		NxVec3 center;
 		bounds.getCenter( center );
 		NxReal radius = bounds.min.distance( bounds.max );
-		m_pCloth->addForceAtPos( center, NxMath::pow( radius, 2 )/*2 * NxMath::pow( radius, 3 )*/, radius, NX_FORCE );
+		m_pCloth->addForceAtPos( center, NxMath::pow( radius, 3 ) * 0.5f, radius * 0.5f, NX_FORCE );
 	}
 
 	DWORD dwVTXCnt = *m_tReceiveBuffers.numVerticesPtr;
 	DWORD dwIDXCnt = *m_tReceiveBuffers.numIndicesPtr / 3;
 
-	NxU32 numVertices = *m_tReceiveBuffers.numVerticesPtr;
+	/*NxU32 numVertices = *m_tReceiveBuffers.numVerticesPtr;
 	NxU32 *parent = ( NxU32 * )m_tReceiveBuffers.parentIndicesBegin + dwVTXCnt;
 	for( NxU32 i = dwVTXCnt; i < numVertices; i++ )
 	{
 		m_pVertexArray[ i ].m_vUV = m_pVertexArray[ ( *parent ) ].m_vUV;
-	}
+	}*/
 
 	XMFLOAT3* pPos = ( XMFLOAT3* )m_tReceiveBuffers.verticesPosBegin;
 	XMFLOAT3* pNormal = ( XMFLOAT3* )m_tReceiveBuffers.verticesNormalBegin;
@@ -418,7 +419,7 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 	if( !bWireFrame )
 		CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
 
-	m_pTexture->Render( pContext );
+	/*m_pTexture->Render( pContext );*/
 	( ( CClothMesh* )m_pMesh )->UpdateGeometryInformation( pContext, m_pVertexArray, dwVTXCnt, m_pIndexArray, *m_tReceiveBuffers.numIndicesPtr );
 	m_pMesh->Render( pContext );
 

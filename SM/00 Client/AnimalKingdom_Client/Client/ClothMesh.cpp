@@ -16,13 +16,13 @@ CClothMesh::~CClothMesh()
 {
 }
 
-void CClothMesh::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
+void CClothMesh::UpdateGeometryInformation( ID3D11DeviceContext* pContext, VERTEX_PN/*T*/* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
 {
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource, MappedSubresource2;
 
 	pContext->Map( m_pVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
-	VERTEX_PNT* pVtxBuffer = ( VERTEX_PNT* )MappedSubresource.pData;
-	memcpy( pVtxBuffer, &pVtx_Array[ 0 ], sizeof( VERTEX_PNT ) * dwVtxCnt );
+	VERTEX_PN/*T*/* pVtxBuffer = ( VERTEX_PN/*T*/* )MappedSubresource.pData;
+	memcpy( pVtxBuffer, &pVtx_Array[ 0 ], sizeof( VERTEX_PN/*T*/ ) * dwVtxCnt );
 	pContext->Unmap( m_pVB, 0 );
 
 	pContext->Map( m_pIB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource2 );
@@ -36,10 +36,10 @@ CMesh* CClothMesh::Clone( void )
 	return new CClothMesh( *this );
 }
 
-HRESULT CClothMesh::CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
+HRESULT CClothMesh::CreateBuffer( ID3D11Device* pDevice, VERTEX_PN/*T*/* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
 {
 	m_ePrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	m_dwVtxSize = sizeof( VERTEX_PNT );
+	m_dwVtxSize = sizeof( VERTEX_PN/*T*/ );
 	m_dwVtxCnt = dwVtxCnt;
 
 	D3D11_BUFFER_DESC			VTXBuffer_Desc;
@@ -78,7 +78,7 @@ HRESULT CClothMesh::CreateBuffer( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array,
 	return S_OK;
 }
 
-CClothMesh* CClothMesh::Create( ID3D11Device* pDevice, VERTEX_PNT* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
+CClothMesh* CClothMesh::Create( ID3D11Device* pDevice, VERTEX_PN/*T*/* pVtx_Array, DWORD dwVtxCnt, DWORD* pIndex_Array, DWORD dwIdxCnt )
 {
 	CClothMesh*	pCloth = new CClothMesh;
 

@@ -11,7 +11,7 @@ class CShader
 	: public CResources
 {
 public:
-	enum INPUT_TYPE { INPUT_POS_ONLY, INPUT_PT, INPUT_PNT, INPUT_PNTT, INPUT_PARTICLE, INPUT_NO, INPUT_ANIMATE, INPUT_END };
+	enum INPUT_TYPE { INPUT_POS_ONLY, INPUT_PT, INPUT_PNT, INPUT_PNTT, INPUT_PARTICLE, INPUT_NO, INPUT_ANIMATE, INPUT_PN, INPUT_END };
 protected:
 	explicit CShader();
 	explicit CShader( const CShader& Instance );

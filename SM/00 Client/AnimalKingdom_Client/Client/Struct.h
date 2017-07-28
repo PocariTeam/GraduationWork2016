@@ -38,6 +38,12 @@ typedef struct tagLight_Info
 
 /*                             Vertex Type                                     */
 
+typedef struct tagVertex_PN
+{
+	XMFLOAT3	m_vPos;
+	XMFLOAT3	m_vNormal;
+}VERTEX_PN;
+
 typedef struct tagVertex_PNT
 {
 	XMFLOAT3	m_vPos;

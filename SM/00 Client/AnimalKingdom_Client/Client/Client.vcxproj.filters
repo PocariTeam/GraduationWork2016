@@ -292,6 +292,12 @@
     <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow">
       <UniqueIdentifier>{91e2815f-1c61-478c-a9ce-e8d6d6f83b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\05 Particle">
+      <UniqueIdentifier>{aab4613d-ed00-4534-8998-66dc57603e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\02 Particle">
+      <UniqueIdentifier>{34e3b88b-91c5-45b3-b4b5-0970941a9868}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -627,6 +633,9 @@
     <ClInclude Include="Cloth.h">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\05 Cloth</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleShader.h">
+      <Filter>소스 파일\03 Resources\04 Shader\02 Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -911,6 +920,9 @@
     <ClCompile Include="Cloth.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\05 Cloth</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleShader.cpp">
+      <Filter>소스 파일\03 Resources\04 Shader\02 Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -982,6 +994,9 @@
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Shadow.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Particle_Fire.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\05 Particle</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

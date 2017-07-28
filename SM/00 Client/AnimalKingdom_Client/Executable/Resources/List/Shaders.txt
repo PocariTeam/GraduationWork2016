@@ -4,7 +4,7 @@ Shader_ActorShape 0 0 1 ../Executable/Resources/Shader/ActorShape.fx
 Shader_AnimateMesh 0 6 1 ../Executable/Resources/Shader/AnimateMesh.fx
 Shader_AnimateMesh_Shadow 0 6 1 ../Executable/Resources/Shader/AnimateMesh_Shadow.fx
 Shader_Blend 0 5 1 ../Executable/Resources/Shader/Blend.fx
-Shader_Cloth 0 2 1 ../Executable/Resources/Shader/Cloth.fx
+Shader_Cloth 0 7 1 ../Executable/Resources/Shader/Cloth.fx
 Shader_Debug 0 5 1 ../Executable/Resources/Shader/Debug.fx
 Shader_Light 0 5 1 ../Executable/Resources/Shader/Light.fx
 Shader_Mesh 0 3 1 ../Executable/Resources/Shader/Mesh.fx

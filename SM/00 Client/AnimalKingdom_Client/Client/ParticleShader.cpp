@@ -1,29 +1,39 @@
 #include "stdafx.h"
-#include "NormalShader.h"
+#include "ParticleShader.h"
 #include "Function.h"
 #include "GameObject.h"
 #include "Functor.h"
 
-CNormalShader::CNormalShader()
+CParticleShader::CParticleShader()
 	: CShader()
+	, m_pSOVertexShader( nullptr )
+	, m_pSOGeometryShader( nullptr )
+	, m_pDSState( nullptr )
+	, m_pOriginDSState( nullptr )
+	, m_pBlendState( nullptr )
 {
 }
 
-CNormalShader::CNormalShader( const CNormalShader& Instance )
+CParticleShader::CParticleShader( const CParticleShader& Instance )
 	: CShader( Instance )
+	, m_pSOVertexShader( Instance.m_pSOVertexShader )
+	, m_pSOGeometryShader( Instance.m_pSOGeometryShader )
+	, m_pDSState( Instance.m_pDSState )
+	, m_pOriginDSState( Instance.m_pOriginDSState )
+	, m_pBlendState( Instance.m_pBlendState )
 {
 }
 
-CNormalShader::~CNormalShader()
+CParticleShader::~CParticleShader()
 {
 }
 
-CShader* CNormalShader::Clone( void )
+CShader* CParticleShader::Clone( void )
 {
-	return new CNormalShader( *this );
+	return new CParticleShader( *this );
 }
 
-void CNormalShader::Update( const float& fTimeDelta )
+void CParticleShader::Update( const float& fTimeDelta )
 {
 	if( m_vecRenderObject.empty() )
 		return;
@@ -32,7 +42,7 @@ void CNormalShader::Update( const float& fTimeDelta )
 		m_vecRenderObject[ i ]->Update( fTimeDelta );
 }
 
-void CNormalShader::Render( ID3D11DeviceContext* pContext )
+void CParticleShader::Render( ID3D11DeviceContext* pContext )
 {
 	pContext->IASetInputLayout( m_pInputLayout );
 	pContext->VSSetShader( m_pVS, NULL, 0 );
@@ -51,7 +61,7 @@ void CNormalShader::Render( ID3D11DeviceContext* pContext )
 	}
 }
 
-DWORD CNormalShader::Release( void )
+DWORD CParticleShader::Release( void )
 {
 	DWORD dwRefCnt = CShader::Release();
 
@@ -64,9 +74,9 @@ DWORD CNormalShader::Release( void )
 	return dwRefCnt;
 }
 
-CNormalShader* CNormalShader::Create( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
+CParticleShader* CParticleShader::Create( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
 {
-	CNormalShader* pNormalShader = new CNormalShader;
+	CParticleShader* pNormalShader = new CParticleShader;
 
 	if( FAILED( pNormalShader->Initialize( pDevice, eInputType, pFilePath ) ) )
 	{
@@ -77,7 +87,7 @@ CNormalShader* CNormalShader::Create( ID3D11Device* pDevice, CShader::INPUT_TYPE
 	return pNormalShader;
 }
 
-HRESULT CNormalShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
+HRESULT CParticleShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
 {
 	D3D11_INPUT_ELEMENT_DESC* pInputDesc{ nullptr };
 	UINT iArrCnt{};
@@ -153,18 +163,6 @@ HRESULT CNormalShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eI
 		iArrCnt = ARRAYSIZE( VTX_Element );
 	}
 	break;
-	case CShader::INPUT_PN:
-	{
-		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		pInputDesc = VTX_Element;
-		iArrCnt = ARRAYSIZE( VTX_Element );
-	}
-	break;
 	}
 
 	if( FAILED( CreateVS( pDevice, pFilePath, pInputDesc, iArrCnt ) ) )
@@ -178,11 +176,11 @@ HRESULT CNormalShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eI
 	CreateDS( pDevice, pFilePath );
 
 	CreateConstantBuffer( pDevice );
-	
+
 	return S_OK;
 }
 
-void CNormalShader::Add_RenderObject( CGameObject* pGameObject )
+void CParticleShader::Add_RenderObject( CGameObject* pGameObject )
 {
 	pGameObject->Add_Ref();
 	m_vecRenderObject.push_back( pGameObject );

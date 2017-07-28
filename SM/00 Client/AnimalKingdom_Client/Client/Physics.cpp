@@ -1004,7 +1004,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	d6Desc.localAnchor[ 0 ] = globalAnchor;
 	pActor->getGlobalPose().multiplyByInverseRT( globalAnchor, d6Desc.localAnchor[ 1 ] );
 	pActor->raiseBodyFlag( NX_BF_DISABLE_GRAVITY );
-	d6Desc.localAxis[ 0 ] = NxVec3( 1, 0, 0 );
+	/*d6Desc.localAxis[ 0 ] = NxVec3( 1, 0, 0 );
 	d6Desc.localNormal[ 0 ] = NxVec3( 0, 1, 0 );
 	d6Desc.localAxis[ 1 ] = NxVec3( 1, 0, 0 );
 	d6Desc.localNormal[ 1 ] = NxVec3( 0, 1, 0 );
@@ -1016,10 +1016,10 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	d6Desc.yMotion = NX_D6JOINT_MOTION_FREE;
 	d6Desc.zMotion = NX_D6JOINT_MOTION_FREE;
 
-	NxJoint* d6Joint = m_pScene->createJoint( d6Desc );
+	NxJoint* d6Joint = m_pScene->createJoint( d6Desc );*/
 
-	CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
-	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, pTexture, XMFLOAT3( 1.5f, 2.f, 1.f ) );
+	// CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, /*pTexture, */XMFLOAT3( 1.5f, 1.5f, 1.f ) );
 
 	if( !m_pCloth->GetNxCloth() )
 	{

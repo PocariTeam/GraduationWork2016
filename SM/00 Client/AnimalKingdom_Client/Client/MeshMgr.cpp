@@ -72,7 +72,7 @@ HRESULT CMeshMgr::Add( ID3D11Device* pDevice, const char* pKey, LPVOID pVertexAr
 		return E_FAIL;
 	}
 
-	pMesh = CClothMesh::Create( pDevice, ( VERTEX_PNT* )pVertexArray, dwVertexCnt, pIndexArray, dwIdxCnt );
+	pMesh = CClothMesh::Create( pDevice, ( VERTEX_PN/*T*/* )pVertexArray, dwVertexCnt, pIndexArray, dwIdxCnt );
 	if( nullptr == pMesh ) return E_FAIL;
 
 	m_mapMesh.insert( make_pair( pKey, pMesh ) );
