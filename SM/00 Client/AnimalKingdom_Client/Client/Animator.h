@@ -5,6 +5,7 @@
 
 #include "Enum.h"
 #include "Base.h"
+#include <NxActor.h>
 #include <NxMat34.h>
 
 class CGameObject;
@@ -27,6 +28,7 @@ private:
 	void	ConnectActorShape( CGameObject* pOwner );
 public:
 	NxMat34 GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey );
+	NxActor* GetActor( CGameObject* pOwner, const char* pKey );
 	HRESULT Add( STATE eState, const char* pFilePath );
 	void	Change_Animation( STATE eState );
 	bool	GetCurrentAnimationFinished();

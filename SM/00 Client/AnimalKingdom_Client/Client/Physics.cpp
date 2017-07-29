@@ -1019,7 +1019,7 @@ void CPhysics::CreateCloth( ID3D11Device* pDevice )
 	NxJoint* d6Joint = m_pScene->createJoint( d6Desc );*/
 
 	// CTexture* pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Crown" );
-	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, /*pTexture, */XMFLOAT3( 1.5f, 1.5f, 1.f ) );
+	m_pCloth = CCloth::Create( pDevice, m_pScene, pActor, /*pTexture, */XMFLOAT3( 3.f, 2.5f, 1.f ) );
 
 	if( !m_pCloth->GetNxCloth() )
 	{

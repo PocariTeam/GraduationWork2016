@@ -52,7 +52,6 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	m_pCamera = CEventCamera::Create( pDevice, XMFLOAT3( 20.f, 130.f, 0.f ), XMFLOAT3( -50.f, 180.f, -200.f ), XMFLOAT3( 200.f, 260.f, -230.f ) );
 	CNetworkMgr::GetInstance()->unreadyAllPlayer();
-	CLightMgr::GetInstance()->Initialize( pDevice );
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 	m_iFocus = m_iPlayerID;
@@ -273,19 +272,6 @@ DWORD CJungle::Release( void )
 
 	CScene::Release();
 
-	CGlobalState::DestroyInstance();
-	CIdleState::DestroyInstance();
-	CJumpState::DestroyInstance();
-	CRunState::DestroyInstance();
-	CAttackState::DestroyInstance();
-	CAttackState2::DestroyInstance();
-	CBeatenState::DestroyInstance();
-	CBeatenState2::DestroyInstance();
-	CDefendState::DestroyInstance();
-	CDownState::DestroyInstance();
-	CDeadState::DestroyInstance();
-
-	CLightMgr::DestroyInstance();
 	CPhysics::GetInstance()->Release_Scene();
 
 	delete this;

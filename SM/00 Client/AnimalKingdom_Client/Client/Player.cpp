@@ -17,21 +17,21 @@
 
 CPlayer::CPlayer()
 	: CGameObject()
-	, m_pStateMachine(nullptr)
-	, m_pAnimator(nullptr)
-	, m_pCharacterController(nullptr)
-	, m_pActorsOriginPose(nullptr)
-	, m_dwActorCnt(0)
-	, m_vRotate(0.f, -XM_PI, 0.f)
-	, m_pInputMgr(CInputMgr::GetInstance())
-	, m_bSweap(false)
-	, m_dpSections(nullptr)
-	, m_iSectionCnt(0)
-	, m_iHp(100)
-	, m_bAlpha(false)
-	, m_vOverlapped(0.f, 1.f, 0.f)
-	, m_eCharactor(CHARACTER_CHM)
-	, m_fDefenceTime(0.f)
+	, m_pStateMachine( nullptr )
+	, m_pAnimator( nullptr )
+	, m_pCharacterController( nullptr )
+	, m_pActorsOriginPose( nullptr )
+	, m_dwActorCnt( 0 )
+	, m_vRotate( 0.f, -XM_PI, 0.f )
+	, m_pInputMgr( CInputMgr::GetInstance() )
+	, m_bSweap( false )
+	, m_dpSections( nullptr )
+	, m_iSectionCnt( 0 )
+	, m_iHp( 100 )
+	, m_bAlpha( false )
+	, m_vOverlapped( 0.f, 1.f, 0.f )
+	, m_eCharactor( CHARACTER_CHM )
+	, m_fDefenceTime( 0.f )
 {
 }
 
@@ -65,18 +65,14 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 		vDir += NxVec3{ 1.f, 0.f, 0.f };
 	if( m_pInputMgr->Get_KeyboardState( DIK_LEFT ) )
 		vDir += NxVec3{ -1.f, 0.f, 0.f };
-#ifdef _DEBUG
-	if( m_pInputMgr->Get_KeyboardState( DIK_RETURN ) )
-		printf( "Player Current World Pos : ( %f, %f, %f )\n", m_pCharacterController->getPosition().x, m_pCharacterController->getPosition().y, m_pCharacterController->getPosition().z );
-#endif
 
 	if( m_pAnimator->GetCurrentAnimationFinished() && STATE_JUMP != eState && STATE_DOWN != eState && STATE_DEAD != eState )
 	{
 		if( m_pInputMgr->Get_KeyboardState( DIK_S ) )
-			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() )? STATE_ATT2 : STATE_ATT1;
-		else if (m_pInputMgr->Get_KeyboardState(DIK_A))
+			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() ) ? STATE_ATT2 : STATE_ATT1;
+		else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
 			eState = STATE_DEFEND;
-		else if (m_pInputMgr->Get_KeyboardState(DIK_D))
+		else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
 			eState = STATE_SKILL;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 			eState = STATE_JUMP;
@@ -88,17 +84,17 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	}
 
 	// 방어 중일때 방어가 풀리는 조건 체크
-	if (eState == STATE_DEFEND)
+	if( eState == STATE_DEFEND )
 	{
 		m_fDefenceTime += fTimeDelta;
-		if (m_fDefenceTime > 1.f || false == m_pInputMgr->Get_KeyboardState(DIK_A))
+		if( m_fDefenceTime > 1.f || false == m_pInputMgr->Get_KeyboardState( DIK_A ) )
 		{
 			m_fDefenceTime = 0.f;
 			eState = STATE_DEFEND_END;
 			m_pAnimator->Play();
 		}
 	}
-	
+
 	if( eState != m_pStateMachine->GetCurrentState() )
 		CNetworkMgr::GetInstance()->sendCharacterState( eState );
 	if( ( STATE_RUN == eState || STATE_JUMP == eState || STATE_IDLE == eState ) && false == m_vOverlapped.equals( vDir, 1.f ) )
@@ -209,7 +205,7 @@ void CPlayer::Move( const float& fTimeDelta )
 	m_vDir = m_vDir * m_fSpeed * fTimeDelta;*/
 }
 
-void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
+void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state )
 {
 	//NxU32	dwCollisionFlag;
 	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
@@ -218,7 +214,7 @@ void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state)
 	m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
 	m_iHp = hp;
-	m_pStateMachine->Change_State(state);
+	m_pStateMachine->Change_State( state );
 }
 
 void CPlayer::Attack( STATE eState )
@@ -227,7 +223,7 @@ void CPlayer::Attack( STATE eState )
 
 void CPlayer::UseSkill()
 {
-	printf(" 자식 클래스(카멜레온, 원숭이)에 대해 UseSkill 가상함수를 정의해주세요. \n");
+	printf( " 자식 클래스(카멜레온, 원숭이)에 대해 UseSkill 가상함수를 정의해주세요. \n" );
 }
 
 void CPlayer::ThrowBanana( void )

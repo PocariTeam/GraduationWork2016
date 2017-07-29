@@ -19,6 +19,7 @@
 #include "AnimationMgr.h"
 #include "Physics.h"
 #include "NetworkMgr.h"
+#include "State.h"
 
 HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 {
@@ -29,6 +30,7 @@ HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 	ID3D11Device* pDevice{ m_pGraphicDev->Get_Device() };
 	m_pContext = m_pGraphicDev->Get_Context();
 
+	CLightMgr::GetInstance()->Initialize( pDevice );
 	m_pRenderTargetMgr = CRenderTargetMgr::GetInstance();
 	m_pInputMgr = CInputMgr::GetInstance();
 	m_pRenderer = CRenderer::GetInstance();
@@ -117,6 +119,18 @@ DWORD CMainFrm::Release( void )
 	m_pRenderer = nullptr;
 	
 	::Safe_Release( m_pScene );
+
+	CGlobalState::DestroyInstance();
+	CIdleState::DestroyInstance();
+	CJumpState::DestroyInstance();
+	CRunState::DestroyInstance();
+	CAttackState::DestroyInstance();
+	CAttackState2::DestroyInstance();
+	CBeatenState::DestroyInstance();
+	CBeatenState2::DestroyInstance();
+	CDefendState::DestroyInstance();
+	CDownState::DestroyInstance();
+	CDeadState::DestroyInstance();
 
 	CPhysics::DestroyInstance();
 	CAnimationMgr::DestroyInstance();

@@ -6,7 +6,6 @@
 #include <fstream>
 #include "Define.h"
 #include "GameObject.h"
-#include <NxActor.h>
 #include <NxShape.h>
 #include <NxMat34.h>
 #include "Player.h"
@@ -117,6 +116,23 @@ void CAnimator::ConnectActorShape( CGameObject* pOwner )
 
 	delete[] pWorld;
 	pWorld = nullptr;
+}
+
+NxActor* CAnimator::GetActor( CGameObject* pOwner, const char* pKey )
+{
+	DWORD i = 0;
+	DWORD dwActorCnt = ( ( CPlayer* )pOwner )->GetActorCnt();
+	NxController* pCharacterController = ( ( CPlayer* )pOwner )->GetCharacterController();
+	NxActor** dpActorArray = ( NxActor** )pCharacterController->getUserData();
+
+	for( NxU32 j = 0; j < dwActorCnt; ++j )
+	{
+		for( ; i < m_dwJointCnt; ++i )
+			if( 0 == strcmp( m_pArrJointName[ i ].c_str(), dpActorArray[ j ]->getName() ) )
+				return dpActorArray[ j ];
+	}
+
+	return nullptr;
 }
 
 NxMat34 CAnimator::GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey )

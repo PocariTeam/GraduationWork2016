@@ -15,7 +15,7 @@
 #include "RenderState.h"
 #include "Renderer.h"
 
-#define TEAR_MEMORY_FACTOR 2
+#define TEAR_MEMORY_FACTOR 1
 
 CCloth::CCloth()
 	: CGameObject()
@@ -48,12 +48,9 @@ HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pAc
 
 	CreateCloth( pDevice );
 
-	NxVec3 vOffset = NxVec3( -0.5f, 0.f, 0.f );
-	for( int i = 0; i < 26; ++i )
-	{
-		vOffset.x += 1.f / 26.f;
-		m_pCloth->attachVertexToGlobalPosition( i, vOffset );
-	}
+	// 고정된 점에 천을 부착하기 ( 전역 ), attachVertexToShape 를 사용하면 셰이프에 부착 가능함, 셰이프에서 떼어낼 때는 디테치 함수를 호출해야함
+	for( int i = 0; i < 28; ++i )
+		m_pCloth->attachVertexToGlobalPosition( i, NxVec3( -0.7f + float( i ) / 28.f * 1.4f, 0.f, 0.f ) );
 
 	return S_OK;
 }
@@ -64,27 +61,31 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	NxClothDesc tClothDesc;
 	tClothDesc.globalPose.t = NxVec3( -5.f, -5.f, 0.f );
 	tClothDesc.pressure = 0.1f;
-	tClothDesc.thickness = 0.2f;
-	//tClothDesc.density = 1.0f;
-	tClothDesc.bendingStiffness = 1.0f;
-	tClothDesc.stretchingStiffness = 1.0f;
-	//tClothDesc.dampingCoefficient = 0.50f;
-	tClothDesc.windAcceleration = NxVec3( 1.f, 0.f, -1.f );
-	tClothDesc.friction = 0.5f;
-	//tClothDesc.collisionResponseCoefficient = 1.0f;
-	//tClothDesc.attachmentResponseCoefficient = 1.0f;
-	//tClothDesc.solverIterations = 5;
-	//tClothDesc.flags |= NX_CLF_STATIC;
-	//tClothDesc.flags |= NX_CLF_DISABLE_COLLISION;
-	//tClothDesc.flags |= NX_CLF_VISUALIZATION;
-	tClothDesc.flags ^= NX_CLF_GRAVITY;
-	tClothDesc.flags |= NX_CLF_BENDING;
-	// tClothDesc.flags |= NX_CLF_BENDING_ORTHO;
-	//tClothDesc.flags |= NX_CLF_DAMPING;
-	//tClothDesc.flags |= NX_CLF_COMDAMPING;
-	tClothDesc.flags |= NX_CLF_COLLISION_TWOWAY;
-	//tClothDesc.flags |= NX_CLF_TEARABLE;
-	//tClothDesc.flags |= NX_CLF_PRESSURE;
+	tClothDesc.thickness = 0.5f;					// 두께를 통해 견고성을 제어할 수 있음 ( 너무 낮으면 충돌 처리가 잘 되지 않음 )
+	tClothDesc.density = 3.0f;						// 밀도를 통해 각 입자의 질량을 나타냄
+	tClothDesc.bendingStiffness = 0.7f;				// 굽힘 : 1 에 가까우면 딱딱, 0 에 가까우면 종이처럼 쉽게 구부러짐
+	tClothDesc.stretchingStiffness = 1.f;			// 늘어남 : 1 에 가까우면 데님, 0 에 가까우면 나일론과 같이 늘어남
+	tClothDesc.dampingCoefficient = 0.3f;			// 감쇠에 대한 값을 제어, 각 입자의 속도에 영향
+	tClothDesc.windAcceleration = NxVec3( 0.5f, 0.5f, 0.5f ); // 바람 가속 : 외부 가속은 각 입자들에 적용되지만 이는 꼭지점의 법선 방향에서만 적용
+	tClothDesc.externalAcceleration = NxVec3( 0.5f, 0.5f, 0.5f );	// 외부 가속 : 물체에 부착되지 않은 다른 입자들을 움직임
+	tClothDesc.friction = 0.2f;						// 마찰 계수 : 낮으면 표면을 따라 미끄러지는 느낌을 연출 가능, 실크와 같은 느낌
+	//tClothDesc.collisionResponseCoefficient = 1.0f;// 충돌 시에 응답 계수, NX_CLF_DISABLE_COLLISION 일 때 적용 X, NX_CLF_COLLISION_TWOWAY 일 때 적용
+	tClothDesc.attachmentResponseCoefficient = 0.f;// 천이 부착된 강체를 움직일 때 전달하는 운동량의 강도, 낮을수록 강체는 적은 영향을 받음
+	tClothDesc.solverIterations = 5;				// 천의 시뮬레이션 정도를 제어, 높아질수록 많은 비용
+	
+	// tClothDesc.flags |= NX_CLF_STATIC;			// 시뮬레이션 비활성화
+	tClothDesc.flags |= NX_CLF_DISABLE_COLLISION;	// 충돌 체크 사용 금지
+	//tClothDesc.flags |= NX_CLF_VISUALIZATION;		// 디버그 렌더링 ( 의미 없음 )
+	tClothDesc.flags ^= NX_CLF_GRAVITY;				// 중력 적용
+	//tClothDesc.flags |= NX_CLF_BENDING;				// 구부러짐
+	tClothDesc.flags |= NX_CLF_BENDING_ORTHO;		// 정도가 적은 구부러짐
+	tClothDesc.flags |= NX_CLF_DAMPING;				// 천 입자에 대한 감쇠 적용
+	//tClothDesc.flags |= NX_CLF_COMDAMPING;		// 질량 중심의 감쇠가 아닌( ?? )
+	//tClothDesc.flags |= NX_CLF_COLLISION_TWOWAY;	// 천의 힘을 강체에 적용 ( ex : 천을 잡아당기면 연결된 강체가 따라옴 )
+	//tClothDesc.flags |= NX_CLF_TEARABLE;			// 찢어짐
+	//tClothDesc.flags |= NX_CLF_PRESSURE;			// 천 메쉬에 내부 압력 적용
+	// tClothDesc.flags |= NX_CLF_SELFCOLLISION;	// 옷감 내에서 자기 충돌 처리
+	// tClothDesc.flags |= NX_CLF_VALIDBOUNDS;		// 천에 유효 범위 사용
 
 	if( NX_SIMULATION_HW == m_pPhysXScene->getSimType() )
 		tClothDesc.flags |= NX_CLF_HARDWARE;
@@ -117,12 +118,14 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 
 	m_pVertexArray = new VERTEX_PN/*T*/[ dwMaxVTXCnt ]{};
 	m_pIndexArray = new DWORD[ dwMaxIDXCnt ]{};
-
+	//NxClothConstrainCoefficients* pTest = new NxClothConstrainCoefficients[ dwMaxVTXCnt ];
 	DWORD i, j;
 	XMFLOAT3* pPositionArr = ( XMFLOAT3* )tMeshDesc.points;
 	for( i = 0; i <= dwNumY; i++ ) {
 		for( j = 0; j <= dwNumX; j++ ) {
 			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, fDepth * i, 0.f };
+			// pTest[ i * ( dwNumX + 1 ) + j ].setToDefault();
+			// if( i * ( dwNumX + 1 ) + j >= 28 ) pTest[ i * ( dwNumX + 1 ) + j ].maxDistance = 1000.f;
 			pPositionArr++;
 		}
 	}
@@ -167,10 +170,10 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	//////////////////////////////////////////////////////////////////////////
 	// allocate flag buffer
 	if( tMeshDesc.vertexFlags == 0 )
-		tMeshDesc.vertexFlags = new NxU32[ tMeshDesc.numVertices ];
+		tMeshDesc.vertexFlags = new NxU32[ tMeshDesc.numVertices ]{};
 
 	// create tear lines
-	NxU32* flags = ( NxU32* )tMeshDesc.vertexFlags;
+	/*NxU32* flags = ( NxU32* )tMeshDesc.vertexFlags;
 	NxU32 y;
 	for( y = 0; y < dwNumY + 1; y++ )
 	{
@@ -182,7 +185,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 			else
 				flags[ y * ( dwNumX + 1 ) + x ] = 0;
 		}
-	}
+	}*/
 
 	//////////////////////////////////////////////////////////////////////////
 	// 피직스로부터 
@@ -227,6 +230,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	tClothDesc.clothMesh = m_pClothMesh;
 	tClothDesc.meshData = m_tReceiveBuffers;
 	m_pCloth = m_pPhysXScene->createCloth( tClothDesc );
+	// m_pCloth->setConstrainCoefficients( pTest );
 	m_bInitialize = true;
 
 	return S_OK;
@@ -318,14 +322,16 @@ void CCloth::SetOwner( CPlayer* pPlayer )
 XMFLOAT4X4* CCloth::GetWorld()
 {
 	NxF32 mtxWorld[ 16 ]{};
-	XMFLOAT4X4 Out;
-	
-	m_pActor->getGlobalPose().getRowMajor44( mtxWorld );
-	memcpy( &Out, mtxWorld, sizeof( XMFLOAT4X4 ) );
-	XMMATRIX mtxScale = XMMatrixScaling( m_vScale.x, m_vScale.y, m_vScale.z );
-	mtxScale = XMMatrixMultiply( XMLoadFloat4x4( &Out ), mtxScale );
-	XMStoreFloat4x4( &m_mtxWorld, mtxScale );
+	XMFLOAT4X4 Out{};
 
+	if( nullptr != m_pOwner )
+	{
+		m_pActor->getGlobalPose().getRowMajor44( mtxWorld );
+		memcpy( &Out, mtxWorld, sizeof( XMFLOAT4X4 ) );
+		XMMATRIX mtxScale = XMMatrixScaling( m_vScale.x, m_vScale.y, m_vScale.z );
+		mtxScale = XMMatrixMultiply( XMLoadFloat4x4( &Out ), mtxScale );
+		XMStoreFloat4x4( &m_mtxWorld, mtxScale );
+	}
 
 	return &m_mtxWorld;
 }
@@ -337,23 +343,36 @@ int CCloth::Update( const float& fTimeDelta )
 		NxMat34 mtxAnimation = m_pOwner->GetAnimator()->GetCurrentAnimationMatrix( m_pOwner, "Head" );
 		NxMat33 mtxRotation{};
 		NxVec3	vOffset{};
+		float fRadian = m_pOwner->GetRotateY();
+		NxVec3 vAcc{};
 
 		switch( m_pOwner->GetCharacterType() )
 		{
 		case CHARACTER_CHM:
 			mtxRotation.rotX( 0 );
-			vOffset = NxVec3( 0.f, 3.75f, 3.f );
+			vOffset = NxVec3( 0.f, 2.75f, 2.f );
+			vAcc = NxVec3( -cos( fRadian ) * 5.f, 9.8f * 0.5f, sin( fRadian ) * 5.f );
 			break;
 		case CHARACTER_MON:
 			mtxRotation.rotX( XM_PI );
-			vOffset = NxVec3( 0.f, -0.3f, 0.13f );
+			vOffset = NxVec3( 0.f, -0.2f, 0.08f );
+			vAcc = NxVec3( sin( fRadian ) * 5.f, 9.8f * 0.5f, -cos( fRadian ) * 5.f );
 			break;
 		default:
 			break;
 		}
+
 		NxMat34 mtxLocal{ mtxRotation, vOffset };
 		m_pActor->setGlobalPose( mtxAnimation * mtxLocal );
-		float fRadian = m_pOwner->GetRotateY();
+
+		NxBounds3 bounds;
+		m_pCloth->getWorldBounds( bounds );
+		NxVec3 center;
+		bounds.getCenter( center );
+		NxReal radius = bounds.min.distance( bounds.max );
+		if( center.z > -0.5f ) vAcc.z *= -1.f; if( center.y > -0.5f ) vAcc.y *= -1.f; if( center.x > -0.5f ) vAcc.x *= -1.f;
+		m_pCloth->setExternalAcceleration( vAcc );
+		m_pCloth->addForceAtPos( center, pow( radius, 3.f ) * 3.f, radius );
 	}
 
 	return 0;
@@ -377,18 +396,6 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 // 		NxReal oldTearing = m_pCloth->getTearFactor();
 // 		oldTearing = ( oldTearing - 1 ) / 3 + 1;
 // 		m_pCloth->setTearFactor( oldTearing );
-
-		// Reduce bending stiffness
-// 		if( m_pCloth->getBendingStiffness() > 0.9f )
-// 			m_pCloth->setBendingStiffness( 0.1f );
-
-		// Apply explosion in the middle of the cloth
-		NxBounds3 bounds;
-		m_pCloth->getWorldBounds( bounds );
-		NxVec3 center;
-		bounds.getCenter( center );
-		NxReal radius = bounds.min.distance( bounds.max );
-		m_pCloth->addForceAtPos( center, NxMath::pow( radius, 3 ) * 0.5f, radius * 0.5f, NX_FORCE );
 	}
 
 	DWORD dwVTXCnt = *m_tReceiveBuffers.numVerticesPtr;

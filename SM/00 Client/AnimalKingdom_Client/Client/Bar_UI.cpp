@@ -56,8 +56,10 @@ int CBar_UI::Update( const float& fTimeDelta )
 
 	if( m_fLerpTime == 1.f )
 	{
-		if( m_iPrevious != *m_pData )
+		if( m_iPrevious > *m_pData )
 			m_iPrevious = int( *m_pData * fTimeDelta * m_fSpeed + m_iPrevious * ( 1.f - fTimeDelta * m_fSpeed ) );
+		else if( m_iPrevious < *m_pData )
+			m_iPrevious = int( m_iPrevious * fTimeDelta * m_fSpeed + *m_pData * ( 1.f - fTimeDelta * m_fSpeed ) );
 
 		m_mtxWorld._31 = m_vPosSize_Dest.z * float( m_iPrevious ) / float( m_iMax );
 		return 0;
