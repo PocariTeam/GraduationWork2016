@@ -279,8 +279,7 @@ STATE CDeadState::GetState( void )
 void CSKillState::Enter(Player * pOwner, const float & fTImeDelta)
 {
 	pOwner->ResetDir();
-	pOwner->getAnimator()->Change_Animation(STATE_BEATEN2); // 임시로 맞는 애니메이션 출력
-	printf(" 스킬 사용에 대한 애니메이션을 추가해주세요... \n");
+	pOwner->getAnimator()->Change_Animation(STATE_SKILL);
 }
 
 void CSKillState::Execute(Player * pOwner, const float & fTImeDelta)

@@ -39,7 +39,6 @@ HRESULT CCloth::Initialize( ID3D11Device* pDevice, NxScene* pScene, NxActor* pAc
 {
 	m_pActor = pActor;
 	m_pPhysXScene = pScene;
-	/*m_pTexture = pTexture;*/
 	m_vScale = vScale;
 	m_vOption.x = 1.f;		// 카툰 한다
 	m_vOption.w = 0.1f;
@@ -77,7 +76,7 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	tClothDesc.flags |= NX_CLF_DISABLE_COLLISION;	// 충돌 체크 사용 금지
 	//tClothDesc.flags |= NX_CLF_VISUALIZATION;		// 디버그 렌더링 ( 의미 없음 )
 	tClothDesc.flags ^= NX_CLF_GRAVITY;				// 중력 적용
-	//tClothDesc.flags |= NX_CLF_BENDING;				// 구부러짐
+	//tClothDesc.flags |= NX_CLF_BENDING;			// 구부러짐
 	tClothDesc.flags |= NX_CLF_BENDING_ORTHO;		// 정도가 적은 구부러짐
 	tClothDesc.flags |= NX_CLF_DAMPING;				// 천 입자에 대한 감쇠 적용
 	//tClothDesc.flags |= NX_CLF_COMDAMPING;		// 질량 중심의 감쇠가 아닌( ?? )
@@ -118,14 +117,11 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 
 	m_pVertexArray = new VERTEX_PN/*T*/[ dwMaxVTXCnt ]{};
 	m_pIndexArray = new DWORD[ dwMaxIDXCnt ]{};
-	//NxClothConstrainCoefficients* pTest = new NxClothConstrainCoefficients[ dwMaxVTXCnt ];
 	DWORD i, j;
 	XMFLOAT3* pPositionArr = ( XMFLOAT3* )tMeshDesc.points;
 	for( i = 0; i <= dwNumY; i++ ) {
 		for( j = 0; j <= dwNumX; j++ ) {
 			*pPositionArr = m_pVertexArray[ i * ( dwNumX + 1 ) + j ].m_vPos = XMFLOAT3{ fDepth * j, fDepth * i, 0.f };
-			// pTest[ i * ( dwNumX + 1 ) + j ].setToDefault();
-			// if( i * ( dwNumX + 1 ) + j >= 28 ) pTest[ i * ( dwNumX + 1 ) + j ].maxDistance = 1000.f;
 			pPositionArr++;
 		}
 	}
@@ -204,9 +200,6 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 		tClothDesc.flags &= ~NX_CLF_HARDWARE;
 	}
 
-	// Enable Debug rendering for this cloth
-	// tClothDesc.flags |= NX_CLF_VISUALIZATION;
-
 	//////////////////////////////////////////////////////////////////////////
 	// 쿸킹
 	// Store correct number to detect tearing mesh in time
@@ -230,7 +223,6 @@ HRESULT CCloth::CreateCloth( ID3D11Device* pDevice )
 	tClothDesc.clothMesh = m_pClothMesh;
 	tClothDesc.meshData = m_tReceiveBuffers;
 	m_pCloth = m_pPhysXScene->createCloth( tClothDesc );
-	// m_pCloth->setConstrainCoefficients( pTest );
 	m_bInitialize = true;
 
 	return S_OK;
@@ -369,8 +361,9 @@ int CCloth::Update( const float& fTimeDelta )
 		m_pCloth->getWorldBounds( bounds );
 		NxVec3 center;
 		bounds.getCenter( center );
+		printf( "%f %f %f\n", center.x, center.y, center.z );
 		NxReal radius = bounds.min.distance( bounds.max );
-		if( center.z > -0.5f ) vAcc.z *= -1.f; if( center.y > -0.5f ) vAcc.y *= -1.f; if( center.x > -0.5f ) vAcc.x *= -1.f;
+		if( center.z > 0.f ) vAcc.z *= -1.f; if( center.y > 0.f ) vAcc.y *= -1.f; if( center.x > 0.f ) vAcc.x *= -1.f;
 		m_pCloth->setExternalAcceleration( vAcc );
 		m_pCloth->addForceAtPos( center, pow( radius, 3.f ) * 3.f, radius );
 	}
@@ -380,23 +373,7 @@ int CCloth::Update( const float& fTimeDelta )
 
 void CCloth::Render( ID3D11DeviceContext* pContext )
 {
-	// if( nullptr == m_pOwner ) return;
-	/*static NxU32 numVertices = mNumVertices;
-	NxU32 numElements = mNumIndices;
-	numVertices = mNumVertices;*/
-
-	// Disable pressure if tearing occurs
-	// if( m_pCloth->getFlags() & NX_CLF_PRESSURE )
-	{
-		// Disable Pressure
-		/*m_pCloth->setFlags( m_pCloth->getFlags() & ~NX_CLF_PRESSURE );
-		m_pCloth->setPressure( m_pCloth->getPressure() * 0.01f );*/
-
-		// Reduce tearing factor
-// 		NxReal oldTearing = m_pCloth->getTearFactor();
-// 		oldTearing = ( oldTearing - 1 ) / 3 + 1;
-// 		m_pCloth->setTearFactor( oldTearing );
-	}
+	if( nullptr == m_pOwner ) return;
 
 	DWORD dwVTXCnt = *m_tReceiveBuffers.numVerticesPtr;
 	DWORD dwIDXCnt = *m_tReceiveBuffers.numIndicesPtr / 3;
@@ -423,10 +400,8 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 
 	bool bWireFrame = CRenderer::GetInstance()->m_bWireFrame;
 
-	if( !bWireFrame )
-		CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
+	if( !bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
 
-	/*m_pTexture->Render( pContext );*/
 	( ( CClothMesh* )m_pMesh )->UpdateGeometryInformation( pContext, m_pVertexArray, dwVTXCnt, m_pIndexArray, *m_tReceiveBuffers.numIndicesPtr );
 	m_pMesh->Render( pContext );
 
@@ -437,26 +412,26 @@ DWORD CCloth::Release( void )
 {
 	if( 0 == CGameObject::Release() )
 	{
-		if( m_pCloth ) {
+		if( m_pCloth )
+		{
 			m_pPhysXScene->releaseCloth( *m_pCloth );
 			m_pCloth = nullptr;
 		}
 
-		if( m_pClothMesh ) {
+		if( m_pClothMesh )
+		{
 			m_pPhysXScene->getPhysicsSDK().releaseClothMesh( *m_pClothMesh );
 			m_pClothMesh = nullptr;
 		}
-		
-		{
-			::Safe_Delete_Array( m_tReceiveBuffers.verticesPosBegin );
-			::Safe_Delete_Array( m_tReceiveBuffers.verticesNormalBegin );
-			::Safe_Delete_Array( m_tReceiveBuffers.numVerticesPtr );
-			::Safe_Delete_Array( m_tReceiveBuffers.indicesBegin );
-			::Safe_Delete_Array( m_tReceiveBuffers.numIndicesPtr );
-			::Safe_Delete_Array( m_tReceiveBuffers.parentIndicesBegin );
-			::Safe_Delete_Array( m_tReceiveBuffers.numParentIndicesPtr );
-		}
-		 
+
+		::Safe_Delete_Array( m_tReceiveBuffers.verticesPosBegin );
+		::Safe_Delete_Array( m_tReceiveBuffers.verticesNormalBegin );
+		::Safe_Delete_Array( m_tReceiveBuffers.numVerticesPtr );
+		::Safe_Delete_Array( m_tReceiveBuffers.indicesBegin );
+		::Safe_Delete_Array( m_tReceiveBuffers.numIndicesPtr );
+		::Safe_Delete_Array( m_tReceiveBuffers.parentIndicesBegin );
+		::Safe_Delete_Array( m_tReceiveBuffers.numParentIndicesPtr );
+
 		 m_tReceiveBuffers.setToDefault();
 
 		// delete the rendering buffers

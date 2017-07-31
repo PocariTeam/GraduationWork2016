@@ -26,7 +26,6 @@ DWORD CState::Release( void )
 }
 
 ///////////////////// Global State /////////////////////
-
 void CGlobalState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 
@@ -45,12 +44,11 @@ void CGlobalState::Exit( CPlayer* pOwner, const float& fTimeDelta )
 STATE CGlobalState::GetState( void )
 {
 	/* 잘못된 요청 */
-	printf("request wrong state! \n");
+	printf( "request wrong state! \n" );
 	return ( STATE )-1;
 }
 
 ///////////////////// Idle State /////////////////////
-
 void CIdleState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Change_Animation( STATE_IDLE );
@@ -71,7 +69,6 @@ STATE CIdleState::GetState( void )
 }
 
 ///////////////////// Defend State /////////////////////
-
 void CDefendState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();
@@ -95,7 +92,6 @@ STATE CDefendState::GetState( void )
 }
 
 ///////////////////// Run State /////////////////////
-
 void CRunState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Change_Animation( STATE_RUN );
@@ -117,7 +113,6 @@ STATE CRunState::GetState( void )
 }
 
 ///////////////////// Jump State /////////////////////
-
 void CJumpState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->GetAnimator()->Change_Animation( STATE_JUMP );
@@ -147,7 +142,6 @@ STATE CJumpState::GetState( void )
 }
 
 ///////////////////// Attack State /////////////////////
-
 void CAttackState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();
@@ -172,7 +166,6 @@ STATE CAttackState::GetState( void )
 }
 
 ///////////////////// Attack State2 /////////////////////
-
 void CAttackState2::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();
@@ -197,32 +190,29 @@ STATE CAttackState2::GetState( void )
 }
 
 ///////////////////// Skill State /////////////////////
-
-void CSKillState::Enter(CPlayer * pOwner, const float & fTImeDelta)
+void CSKillState::Enter( CPlayer * pOwner, const float & fTImeDelta )
 {
 	pOwner->ResetOverlapped();
-	pOwner->GetAnimator()->Change_Animation(STATE_BEATEN2); // 임시로 맞는 애니메이션 출력
-	printf(" 스킬 사용에 대한 애니메이션을 추가해주세요... \n");
+	pOwner->GetAnimator()->Change_Animation( STATE_SKILL );
 }
 
-void CSKillState::Execute(CPlayer * pOwner, const float & fTImeDelta)
+void CSKillState::Execute( CPlayer * pOwner, const float & fTImeDelta )
 {
 	pOwner->UseSkill();
-	if (pOwner->GetAnimator()->GetCurrentAnimationFinished())
-		pOwner->GetFSM()->Change_State(STATE_IDLE);
+	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
+		pOwner->GetFSM()->Change_State( STATE_IDLE );
 }
 
-void CSKillState::Exit(CPlayer * pOwner, const float & fTimeDelta)
+void CSKillState::Exit( CPlayer * pOwner, const float & fTimeDelta )
 {
 }
 
-STATE CSKillState::GetState(void)
+STATE CSKillState::GetState( void )
 {
 	return STATE_SKILL;
 }
 
 ///////////////////// Beaten State /////////////////////
-
 void CBeatenState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();
@@ -246,7 +236,6 @@ STATE CBeatenState::GetState( void )
 }
 
 ///////////////////// Beaten State2 /////////////////////
-
 void CBeatenState2::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();
@@ -270,7 +259,6 @@ STATE CBeatenState2::GetState( void )
 }
 
 ///////////////////// Down State /////////////////////
-
 void CDownState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();
@@ -294,7 +282,6 @@ STATE CDownState::GetState( void )
 }
 
 ///////////////////// Down State /////////////////////
-
 void CDeadState::Enter( CPlayer* pOwner, const float& fTImeDelta )
 {
 	pOwner->ResetOverlapped();

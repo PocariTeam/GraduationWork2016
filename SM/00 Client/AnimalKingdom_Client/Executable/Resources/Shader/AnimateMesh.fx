@@ -21,7 +21,6 @@ cbuffer cbBone : register( b2 )
 {
 	matrix g_mtxBone[ 29 ];
 }
-// float4   g_vTextureInfo : register( b3 );
 
 struct VS_IN
 {

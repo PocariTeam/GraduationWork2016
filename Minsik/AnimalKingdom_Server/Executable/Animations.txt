@@ -1,6 +1,6 @@
 2
 0
-11
+12
 -1 ../Executable/Resources/Animation/Chameleon/Joint.jsma
 0 ../Executable/Resources/Animation/Chameleon/Idle.jsma
 1 ../Executable/Resources/Animation/Chameleon/Attack1.jsma
@@ -10,10 +10,11 @@
 5 ../Executable/Resources/Animation/Chameleon/Defend.jsma
 6 ../Executable/Resources/Animation/Chameleon/Beaten1.jsma
 7 ../Executable/Resources/Animation/Chameleon/Beaten2.jsma
-8 ../Executable/Resources/Animation/Chameleon/Down.jsma
-9 ../Executable/Resources/Animation/Chameleon/Dead.jsma
+8 ../Executable/Resources/Animation/Chameleon/Skill.jsma
+9 ../Executable/Resources/Animation/Chameleon/Down.jsma
+10 ../Executable/Resources/Animation/Chameleon/Dead.jsma
 1
-11
+12
 -1 ../Executable/Resources/Animation/Monkey/Joint.jsma
 0 ../Executable/Resources/Animation/Monkey/Idle.jsma
 1 ../Executable/Resources/Animation/Monkey/Attack1.jsma
@@ -23,5 +24,6 @@
 5 ../Executable/Resources/Animation/Monkey/Defend.jsma
 6 ../Executable/Resources/Animation/Monkey/Beaten1.jsma
 7 ../Executable/Resources/Animation/Monkey/Beaten2.jsma
-8 ../Executable/Resources/Animation/Monkey/Down.jsma
-9 ../Executable/Resources/Animation/Monkey/Dead.jsma
+8 ../Executable/Resources/Animation/Monkey/Skill.jsma
+9 ../Executable/Resources/Animation/Monkey/Down.jsma
+10 ../Executable/Resources/Animation/Monkey/Dead.jsma

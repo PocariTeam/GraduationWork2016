@@ -271,9 +271,6 @@
     <Filter Include="소스 파일\02 Utility\05 State\00 StateMachine">
       <UniqueIdentifier>{1085d888-b2a7-4f66-bdc4-a51a68c20a0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Mathematics / TypeConversion">
-      <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\00 UI">
       <UniqueIdentifier>{ce4671e6-2de5-4335-bdf1-b609ff782656}</UniqueIdentifier>
     </Filter>
@@ -297,6 +294,24 @@
     </Filter>
     <Filter Include="소스 파일\03 Resources\04 Shader\02 Particle">
       <UniqueIdentifier>{34e3b88b-91c5-45b3-b4b5-0970941a9868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\07 Mathematics / TypeConversion">
+      <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Particle">
+      <UniqueIdentifier>{8dfa6167-3e4f-44d4-aac1-20cb7738bbe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Particle\00 Manager">
+      <UniqueIdentifier>{c18df937-0e60-4932-b3be-a1d3712b3443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Particle\01 Object">
+      <UniqueIdentifier>{4e43bb6c-9789-47e2-8a35-7884f30a2af3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Particle\01 Object\00 Trail">
+      <UniqueIdentifier>{aeadb38c-c61e-4cc7-9ef8-972414816b79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Particle\01 Object\01 Fire">
+      <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -559,7 +574,7 @@
       <Filter>소스 파일\03 Resources\03 Animation</Filter>
     </ClInclude>
     <ClInclude Include="Mathematics.h">
-      <Filter>소스 파일\02 Utility\06 Mathematics / TypeConversion</Filter>
+      <Filter>소스 파일\02 Utility\07 Mathematics / TypeConversion</Filter>
     </ClInclude>
     <ClInclude Include="NetworkMgr.h">
       <Filter>소스 파일\01 System\02 Network</Filter>
@@ -635,6 +650,15 @@
     </ClInclude>
     <ClInclude Include="ParticleShader.h">
       <Filter>소스 파일\03 Resources\04 Shader\02 Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleMgr.h">
+      <Filter>소스 파일\02 Utility\06 Particle\00 Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleObject.h">
+      <Filter>소스 파일\02 Utility\06 Particle\01 Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Trail.h">
+      <Filter>소스 파일\02 Utility\06 Particle\01 Object\00 Trail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -849,7 +873,7 @@
       <Filter>소스 파일\03 Resources\03 Animation</Filter>
     </ClCompile>
     <ClCompile Include="Mathematics.cpp">
-      <Filter>소스 파일\02 Utility\06 Mathematics / TypeConversion</Filter>
+      <Filter>소스 파일\02 Utility\07 Mathematics / TypeConversion</Filter>
     </ClCompile>
     <ClCompile Include="NetworkMgr.cpp">
       <Filter>소스 파일\01 System\02 Network</Filter>
@@ -922,6 +946,15 @@
     </ClCompile>
     <ClCompile Include="ParticleShader.cpp">
       <Filter>소스 파일\03 Resources\04 Shader\02 Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleMgr.cpp">
+      <Filter>소스 파일\02 Utility\06 Particle\00 Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleObject.cpp">
+      <Filter>소스 파일\02 Utility\06 Particle\01 Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Trail.cpp">
+      <Filter>소스 파일\02 Utility\06 Particle\01 Object\00 Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
