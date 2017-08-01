@@ -63,3 +63,11 @@ NxMat34 CMathematics::ConvertToNxMat34( XMMATRIX& In )
 
 	return Out;
 }
+
+DirectX::XMFLOAT3 CMathematics::ConvertToXMFloat3( NxVec3& v3 )
+{
+	XMFLOAT3 vTemp;
+	memcpy_s( &vTemp, sizeof( XMFLOAT3 ), &v3, sizeof( NxVec3 ) );
+
+	return vTemp;
+}

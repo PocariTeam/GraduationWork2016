@@ -14,6 +14,7 @@ CGameObject::CGameObject()
 	, m_pActor( nullptr )
 	, m_vDir( 0.f, 0.f, 0.f )
 	, m_vOption( 0.f, 0.f, 0.f, 1.f )
+	, m_vVelocity( 0.f, 0.f, 0.f, 0.f )
 	, m_iInstanceCnt( 1 )
 {
 	XMStoreFloat4x4( &m_mtxWorld, XMMatrixIdentity() );
@@ -81,6 +82,11 @@ NxActor* CGameObject::GetActor()
 DirectX::XMFLOAT4 CGameObject::GetOption()
 {
 	return m_vOption;
+}
+
+DirectX::XMFLOAT4 CGameObject::GetVelocity()
+{
+	return m_vVelocity;
 }
 
 CTexture* CGameObject::GetTexture()

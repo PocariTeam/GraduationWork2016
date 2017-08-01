@@ -4,6 +4,7 @@
 #include "Functor.h"
 #include "NormalShader.h"
 #include "InstancingShader.h"
+#include "ParticleShader.h"
 
 CShaderMgr*		CSingleton<CShaderMgr>::m_pInstance;
 
@@ -55,6 +56,7 @@ HRESULT CShaderMgr::Add( ID3D11Device* pDevice, eShaderType eType, CShader::INPU
 		pShader = CInstancingShader::Create( pDevice, eInputType, pFilePath );
 		break;
 	case CShaderMgr::SHADER_PARTICLE:
+		pShader = CParticleShader::Create( pDevice, eInputType, pFilePath );
 		break;
 	}
 

@@ -85,7 +85,7 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	D3D11_RASTERIZER_DESC RS_CCWDesc;
 	ZeroMemory( &RS_CCWDesc, sizeof( D3D11_RASTERIZER_DESC ) );
 	RS_CCWDesc.FillMode = D3D11_FILL_SOLID;
-	RS_CCWDesc.CullMode = D3D11_CULL_FRONT;
+	RS_CCWDesc.CullMode = D3D11_CULL_NONE;
 	RS_CCWDesc.FrontCounterClockwise = false;
 	RS_CCWDesc.DepthClipEnable = true;
 	//RS_CCWDesc.MultisampleEnable = TRUE;

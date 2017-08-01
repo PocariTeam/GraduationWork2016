@@ -44,8 +44,9 @@ DWORD CRenderTargetMgr::Release( void )
 {
 	Safe_Release( m_pConstantBuffer );
 	Safe_Release( m_pShadowSamplerState );
-	// Safe_Release( m_pShadowDepthStencilView );
-	// Safe_Release( m_pDepthStencilView );
+	Safe_Release( m_pShadowDepthStencilView );
+	// Safe_Release( m_pShadowShaderResourceView );
+	Safe_Release( m_pDepthStencilView );
 
 	m_pActiveDepthStencilView = nullptr;
 

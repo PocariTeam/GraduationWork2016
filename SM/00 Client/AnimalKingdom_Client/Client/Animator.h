@@ -27,7 +27,7 @@ private:
 	HRESULT Load( const char* pFilePath );
 	void	ConnectActorShape( CGameObject* pOwner );
 public:
-	NxMat34 GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey );
+	NxMat34 GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey, bool bTrail = false );
 	NxActor* GetActor( CGameObject* pOwner, const char* pKey );
 	HRESULT Add( STATE eState, const char* pFilePath );
 	void	Change_Animation( STATE eState );

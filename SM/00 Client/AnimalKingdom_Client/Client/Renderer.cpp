@@ -5,6 +5,7 @@
 #include "RenderState.h"
 #include "RenderTargetMgr.h"
 #include "LightMgr.h"
+#include "ParticleMgr.h"
 
 CRenderer*	CSingleton<CRenderer>::m_pInstance;
 bool		CRenderer::m_bWireFrame = false;
@@ -114,7 +115,7 @@ void CRenderer::Render_ShadowMap( ID3D11DeviceContext* pContext )
 	if( m_bWireFrame || m_bInCave )	return;
 
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
-	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
+	CRenderState::Set_Rasterize( pContext, CRenderState::RS_CCW );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 	
 	ID3D11ShaderResourceView* pNullSRV[ 6 ] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
@@ -239,6 +240,12 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	// Z값에 따른 소팅을 수행한다.
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
+
+	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
+	CParticleMgr::GetInstance()->Render( pContext );
+	if( m_bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
+	else CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
+
 
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();

@@ -20,6 +20,7 @@
 #include "Sign_UI.h"
 #include "StateMachine.h"
 #include "EventCamera.h"
+#include "ParticleMgr.h"
 
 bool CJungle::m_bStart = false;
 
@@ -53,6 +54,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	m_pCamera = CEventCamera::Create( pDevice, XMFLOAT3( 20.f, 130.f, 0.f ), XMFLOAT3( -50.f, 180.f, -200.f ), XMFLOAT3( 200.f, 260.f, -230.f ) );
 	CNetworkMgr::GetInstance()->unreadyAllPlayer();
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
+	CParticleMgr::GetInstance()->Initialize( pDevice );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 	m_iFocus = m_iPlayerID;
 
@@ -224,6 +226,7 @@ void CJungle::Change_CrownUI_Position( void )
 int CJungle::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
+	CParticleMgr::GetInstance()->Update( fTimeDelta );
 
 	auto focus_iter = m_mapPlayer.find( m_iFocus );
 	if( m_bStart )
@@ -272,6 +275,7 @@ DWORD CJungle::Release( void )
 
 	CScene::Release();
 
+	CParticleMgr::DestroyInstance();
 	CPhysics::GetInstance()->Release_Scene();
 
 	delete this;

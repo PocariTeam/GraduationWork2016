@@ -63,8 +63,8 @@ DWORD CInstancingShader::Release( void )
 	m_vecRenderObject.erase( m_vecRenderObject.begin(), m_vecRenderObject.end() );
 	m_vecRenderObject.swap( vector<CGameObject*>{} );
 
-	::Safe_Release( m_pDevice );
 	if( 0 == dwRefCnt )	::Safe_Release( m_pInstancingBuffer );
+	else ::Safe_Release( m_pDevice );
 
 	delete this;
 

@@ -30,6 +30,7 @@ public:
 	virtual XMFLOAT4X4* GetWorld();
 	NxActor*			GetActor();
 	XMFLOAT4			GetOption();
+	virtual XMFLOAT4	GetVelocity();
 	CTexture*			GetTexture();
 protected:
 	NxActor*		m_pActor;
@@ -37,6 +38,7 @@ protected:
 	CTexture*		m_pTexture;
 	NxVec3			m_vDir;
 	XMFLOAT4		m_vOption;
+	XMFLOAT4		m_vVelocity;
 	XMFLOAT4X4		m_mtxWorld;
 	UINT			m_iInstanceCnt;
 };

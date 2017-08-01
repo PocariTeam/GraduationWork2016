@@ -1028,7 +1028,7 @@
     <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Shadow.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\04 Shadow</Filter>
     </FxCompile>
-    <FxCompile Include="..\Executable\Resources\Shader\Particle_Fire.fx">
+    <FxCompile Include="..\Executable\Resources\Shader\Particle_Trail.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\05 Particle</Filter>
     </FxCompile>
   </ItemGroup>

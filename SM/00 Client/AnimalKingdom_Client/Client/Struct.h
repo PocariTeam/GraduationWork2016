@@ -78,7 +78,7 @@ typedef struct tagVertex_PNTTB {
 typedef struct tagConstantBuffer_World
 {
 	XMFLOAT4X4  m_mtxWorld;
-	XMFLOAT4	m_vOption;
+	XMFLOAT4	m_vOption;			// x : Cartoon, w : 동굴 안에서 알파
 }CB_WORLD;
 
 typedef struct tagConstantBuffer_Camera
@@ -90,6 +90,14 @@ typedef struct tagConstantBuffer_Camera
 	XMFLOAT4X4  m_mtxProjInv;
 	XMFLOAT4	m_vCameraPos;
 }CB_CAMERA;
+
+typedef struct tagConstantBuffer_Particle
+{
+	XMFLOAT4X4  m_mtxWorld;
+	XMFLOAT4	m_vOption;		// x : Cartoon, y : Age z, w : Size
+	XMFLOAT4	m_vVelocity;	// w : Type
+
+}CB_PARTICLE;
 
 /*                             Thread                                         */
 

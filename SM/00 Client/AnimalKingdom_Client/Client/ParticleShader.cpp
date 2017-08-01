@@ -3,24 +3,21 @@
 #include "Function.h"
 #include "GameObject.h"
 #include "Functor.h"
+#include "GameObject.h"
 
 CParticleShader::CParticleShader()
 	: CShader()
-	, m_pSOVertexShader( nullptr )
-	, m_pSOGeometryShader( nullptr )
-	, m_pDSState( nullptr )
-	, m_pOriginDSState( nullptr )
-	, m_pBlendState( nullptr )
+	, m_pDevice( nullptr )
+	, m_pInstancingBuffer( nullptr )
+	, m_eInputElement( INPUT_NO )
 {
 }
 
 CParticleShader::CParticleShader( const CParticleShader& Instance )
 	: CShader( Instance )
-	, m_pSOVertexShader( Instance.m_pSOVertexShader )
-	, m_pSOGeometryShader( Instance.m_pSOGeometryShader )
-	, m_pDSState( Instance.m_pDSState )
-	, m_pOriginDSState( Instance.m_pOriginDSState )
-	, m_pBlendState( Instance.m_pBlendState )
+	, m_pDevice( Instance.m_pDevice )
+	, m_pInstancingBuffer( Instance.m_pInstancingBuffer )
+	, m_eInputElement( Instance.m_eInputElement )
 {
 }
 
@@ -35,11 +32,24 @@ CShader* CParticleShader::Clone( void )
 
 void CParticleShader::Update( const float& fTimeDelta )
 {
-	if( m_vecRenderObject.empty() )
+	if( m_listRenderObject.empty() )
 		return;
 
-	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
-		m_vecRenderObject[ i ]->Update( fTimeDelta );
+	auto Advance_iter = m_listRenderObject.begin();
+
+	for( Advance_iter; Advance_iter != m_listRenderObject.end(); )
+	{
+		if( 1 == ( *Advance_iter )->Update( fTimeDelta ) )
+		{
+			// 셰이더 삭제 시점 ( 인스턴스 수, 버퍼 수정 )
+			::Safe_Release( *Advance_iter );
+			Advance_iter = m_listRenderObject.erase( Advance_iter );
+			CreateConstantBuffer( m_pDevice );
+		}
+
+		else
+			Advance_iter++;
+	}
 }
 
 void CParticleShader::Render( ID3D11DeviceContext* pContext )
@@ -51,24 +61,22 @@ void CParticleShader::Render( ID3D11DeviceContext* pContext )
 	pContext->GSSetShader( m_pGS, NULL, 0 );
 	pContext->PSSetShader( m_pPS, NULL, 0 );
 
-	if( m_vecRenderObject.empty() )
+	if( m_listRenderObject.empty() )
 		return;
 
-	for( size_t i = 0; i < m_vecRenderObject.size(); ++i )
-	{
-		SetConstantBuffer( pContext, *m_vecRenderObject[ i ]->GetWorld(), m_vecRenderObject[ i ]->GetOption() );
-		m_vecRenderObject[ i ]->Render( pContext );
-	}
+	SetConstantBuffer( pContext, *m_listRenderObject.front()->GetWorld(), m_listRenderObject.front()->GetOption() );
+	m_listRenderObject.back()->Render( pContext );
 }
 
 DWORD CParticleShader::Release( void )
 {
 	DWORD dwRefCnt = CShader::Release();
 
-	for_each( m_vecRenderObject.begin(), m_vecRenderObject.end(), ReleaseElement() );
-	m_vecRenderObject.erase( m_vecRenderObject.begin(), m_vecRenderObject.end() );
-	m_vecRenderObject.swap( vector<CGameObject*>{} );
-
+	for_each( m_listRenderObject.begin(), m_listRenderObject.end(), ReleaseElement() );
+	m_listRenderObject.erase( m_listRenderObject.begin(), m_listRenderObject.end() );
+	
+	if( 0 == dwRefCnt )	::Safe_Release( m_pInstancingBuffer );
+	else ::Safe_Release( m_pDevice );
 	delete this;
 
 	return dwRefCnt;
@@ -76,24 +84,39 @@ DWORD CParticleShader::Release( void )
 
 CParticleShader* CParticleShader::Create( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
 {
-	CParticleShader* pNormalShader = new CParticleShader;
+	CParticleShader* pParticleShader = new CParticleShader;
 
-	if( FAILED( pNormalShader->Initialize( pDevice, eInputType, pFilePath ) ) )
+	if( FAILED( pParticleShader->Initialize( pDevice, eInputType, pFilePath ) ) )
 	{
-		pNormalShader->Release();
-		pNormalShader = nullptr;
+		pParticleShader->Release();
+		pParticleShader = nullptr;
 	}
 
-	return pNormalShader;
+	return pParticleShader;
 }
 
 HRESULT CParticleShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
 {
+	m_pDevice = pDevice;
 	D3D11_INPUT_ELEMENT_DESC* pInputDesc{ nullptr };
 	UINT iArrCnt{};
+	m_eInputElement = eInputType;
 
 	switch( eInputType )
 	{
+	case CShader::INPUT_NO:
+	{
+		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = { { "WORLD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "WORLD", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "WORLD", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "WORLD", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "OPTION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		{ "VELOCITY", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+		};
+		pInputDesc = VTX_Element;
+		iArrCnt = ARRAYSIZE( VTX_Element );
+	}
+	break;
 	case CShader::INPUT_POS_ONLY:
 	{
 		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = { { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 } };
@@ -107,56 +130,6 @@ HRESULT CParticleShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE 
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
 			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		pInputDesc = VTX_Element;
-		iArrCnt = ARRAYSIZE( VTX_Element );
-	}
-	break;
-	case CShader::INPUT_PNT:
-	{
-		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		pInputDesc = VTX_Element;
-		iArrCnt = ARRAYSIZE( VTX_Element );
-	}
-	break;
-	case CShader::INPUT_PNTT:
-	{
-		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		pInputDesc = VTX_Element;
-		iArrCnt = ARRAYSIZE( VTX_Element );
-	}
-	break;
-	case CShader::INPUT_ANIMATE:
-	{
-		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "BONEINDICES", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D10_APPEND_ALIGNED_ELEMENT
-			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
 			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		pInputDesc = VTX_Element;
@@ -180,8 +153,73 @@ HRESULT CParticleShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE 
 	return S_OK;
 }
 
+HRESULT CParticleShader::CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize /*= sizeof( CB_WORLD ) */ )
+{
+	size_t  dwInstancedCnt = m_listRenderObject.size();
+	::Safe_Release( m_pInstancingBuffer );
+
+	if( 0 == dwInstancedCnt ) return S_OK;
+
+	ID3D11Buffer*	pInstanceBuffer;
+	/* VS 용 World */
+	D3D11_BUFFER_DESC Buffer_Desc;
+	ZeroMemory( &Buffer_Desc, sizeof( Buffer_Desc ) );
+	Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+	switch( m_eInputElement )
+	{
+	case INPUT_NO:
+	case INPUT_PNTT:
+		Buffer_Desc.ByteWidth = UINT( sizeof( CB_PARTICLE ) * dwInstancedCnt );
+		break;
+	}
+
+	Buffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	pDevice->CreateBuffer( &Buffer_Desc, NULL, &pInstanceBuffer );
+
+	m_pInstancingBuffer = pInstanceBuffer;
+
+	return S_OK;
+}
+
 void CParticleShader::Add_RenderObject( CGameObject* pGameObject )
 {
 	pGameObject->Add_Ref();
-	m_vecRenderObject.push_back( pGameObject );
+	m_listRenderObject.push_back( pGameObject );
+	CreateConstantBuffer( m_pDevice, sizeof( CB_PARTICLE ) );
+	pGameObject->SetInstanceCnt( ( UINT )m_listRenderObject.size() );
+}
+
+void CParticleShader::SetConstantBuffer( ID3D11DeviceContext* pContext, XMFLOAT4X4 mtxWorld, XMFLOAT4 vOption /*= XMFLOAT4( 0.f, 0.f, 0.f, 0.f ) */ )
+{
+	UINT	iStride{ 0 }, iOffset{ 0 };
+	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
+	pContext->Map( m_pInstancingBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
+
+	switch( m_eInputElement )
+	{
+	case CShader::INPUT_NO:
+	case CShader::INPUT_PNTT:
+	{
+		CB_PARTICLE* pStruct = ( CB_PARTICLE* )MappedSubresource.pData;
+
+		if( m_listRenderObject.empty() )
+			return;
+
+		auto Advance_iter = m_listRenderObject.begin();
+		int i = 0;
+		for( Advance_iter ; Advance_iter != m_listRenderObject.end(); Advance_iter++, i++ )
+		{
+			pStruct[ i ].m_mtxWorld = *( *Advance_iter )->GetWorld();
+			pStruct[ i ].m_vOption = ( *Advance_iter )->GetOption();
+			pStruct[ i ].m_vVelocity = ( *Advance_iter )->GetVelocity();
+		}
+		iStride = sizeof( CB_PARTICLE );
+	}
+	break;
+	};
+
+	pContext->Unmap( m_pInstancingBuffer, 0 );
+	pContext->IASetVertexBuffers( 1, 1, &m_pInstancingBuffer, &iStride, &iOffset );
 }

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Mathematics.h"
 #include "StateMachine.h"
+#include "ParticleMgr.h"
 
 CChameleon::CChameleon()
 	: CPlayer()
@@ -73,9 +74,11 @@ void CChameleon::Attack( STATE eState )
 	{
 	case STATE_ATT1:
 		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 2 ];
+		CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ), XMFLOAT2( 3, 3 ), 1.f/*, CMathematics::ConvertToXMFloat3( m_pActorsOriginPose[ 2 ].t )*/ );
 		break;
 	case STATE_ATT2:
 		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
+		CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ), XMFLOAT2( 3, 3 ), 1.f/*, CMathematics::ConvertToXMFloat3( m_pActorsOriginPose[ 1 ].t )*/ );
 		break;
 	case STATE_SKILL:
 		printf("카멜레온 스킬 사용 \n");
@@ -84,9 +87,9 @@ void CChameleon::Attack( STATE eState )
 		return ;
 	}
 
-	NxSweepQueryHit result[ 100 ];
+	/*NxSweepQueryHit result[ 100 ];
 	UINT MyGroup = UINT( pActor->getGroup() );
-	LPVOID pUserdata = LPVOID( LONGLONG( MyGroup ) );
+	LPVOID pUserdata = LPVOID( LONGLONG( MyGroup ) );*/
 
 	/*pActor->linearSweep( pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
 		( NxUserEntityReport<NxSweepQueryHit>* )&CPhysics::m_EntityReport );*/

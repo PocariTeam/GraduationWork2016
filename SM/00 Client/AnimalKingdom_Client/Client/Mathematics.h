@@ -4,6 +4,7 @@
 #define Mathematics_h__
 
 class NxMat34;
+class NxVec3;
 class CMathematics
 {
 public:
@@ -15,6 +16,8 @@ public:
 
 	static NxMat34	  ConvertToNxMat34( XMFLOAT4X4& tMtx );
 	static NxMat34	  ConvertToNxMat34( XMMATRIX& In );
+
+	static XMFLOAT3	  ConvertToXMFloat3( NxVec3& v3 );
 };
 
 #endif // Mathematics_h__

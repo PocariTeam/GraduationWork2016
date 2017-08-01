@@ -135,8 +135,42 @@ NxActor* CAnimator::GetActor( CGameObject* pOwner, const char* pKey )
 	return nullptr;
 }
 
-NxMat34 CAnimator::GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey )
+NxMat34 CAnimator::GetCurrentAnimationMatrix( CGameObject* pOwner, const char* pKey, bool bTrail/* = false*/ )
 {
+	if( bTrail )
+	{
+		DWORD i = 0, j = 0;
+		XMFLOAT4X4*	pWorld{ new XMFLOAT4X4[ m_dwJointCnt ] };
+		m_pCurrentAnimationSet->GetAnimationMatrix( pWorld );
+		NxController* pCharacterController = ( ( CPlayer* )pOwner )->GetCharacterController();
+		NxMat34*	pActorsOriginPose = ( ( CPlayer* )pOwner )->GetActorsOriginPose();
+		NxActor** dpActorArray = ( NxActor** )pCharacterController->getUserData();
+
+		for( ; i < m_dwJointCnt; ++i )
+			if( 0 == strcmp( m_pArrJointName[ i ].c_str(), pKey ) )
+				break;
+
+		DWORD dwActorCnt = ( ( CPlayer* )pOwner )->GetActorCnt();
+
+		for( ; j < dwActorCnt; ++j )
+			if( 0 == strcmp( dpActorArray[ j ]->getName(), pKey ) )
+				break;
+
+		NxMat34 mtxLocal;
+		XMFLOAT4X4 mtxTemp;
+		XMMATRIX mtxLoadOrigin, mtxLoadAnimation{};
+
+		mtxLoadOrigin = CMathematics::ConvertToXMMatrix( &pActorsOriginPose[ j ] );
+		mtxLoadAnimation = XMLoadFloat4x4( &pWorld[ i ] );
+
+		XMMATRIX mtxResult = XMMatrixMultiply( XMLoadFloat4x4( pOwner->GetWorld() ), XMMatrixMultiply( mtxLoadAnimation, mtxLoadOrigin ) );
+
+		delete[] pWorld;
+		pWorld = nullptr;
+
+		return CMathematics::ConvertToNxMat34( mtxResult );
+	}
+
 	DWORD i = 0;
 	XMFLOAT4X4*	pWorld{ new XMFLOAT4X4[ m_dwJointCnt ] };
 	m_pCurrentAnimationSet->GetAnimationMatrix( pWorld );
