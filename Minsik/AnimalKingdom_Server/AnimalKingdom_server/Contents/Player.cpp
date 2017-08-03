@@ -138,6 +138,10 @@ XMFLOAT4X4 Player::GetWorld()
 		mtxWorld._24 -= 2.5f;
 		fScale = 21.209435f;
 		break;
+	case CHARACTER_BAT:
+		mtxWorld._24 += 3.f;
+		fScale = 0.1f; 
+		break;
 	default:
 		break;
 	}
@@ -270,6 +274,11 @@ void Player::setStatByCharacter()
 		damage_ = MONKEY_DAMAGE;
 		speed_ = MONKEY_SPEED;
 		break;
+	case CHARACTER::CHARACTER_BAT:
+		m_fJumpHeight = JUMP_HEIGHT;
+		damage_ = MONKEY_DAMAGE;
+		speed_ = MONKEY_SPEED;
+		break;
 	default:
 		SLog(L"! unknown character type set! ");
 	}
@@ -287,6 +296,10 @@ void Player::powerUp()
 		defaultSpeed = CHAMEL_SPEED;
 		break;
 	case CHARACTER_MON:
+		defaultDamage = MONKEY_DAMAGE;
+		defaultSpeed = MONKEY_SPEED;
+		break;
+	case CHARACTER_BAT:
 		defaultDamage = MONKEY_DAMAGE;
 		defaultSpeed = MONKEY_SPEED;
 		break;

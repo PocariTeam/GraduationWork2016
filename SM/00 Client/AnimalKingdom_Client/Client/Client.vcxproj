@@ -203,6 +203,7 @@
     <ClInclude Include="Banana.h" />
     <ClInclude Include="Bar_UI.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Button_UI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chameleon.h" />
@@ -382,6 +383,7 @@
     <ClCompile Include="Banana.cpp" />
     <ClCompile Include="Bar_UI.cpp" />
     <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Button_UI.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chameleon.cpp" />

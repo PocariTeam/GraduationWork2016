@@ -67,6 +67,7 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	// pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_PREVIOUS ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( 0.8f, 0.2f, 0.2f, 0.55f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_CHAMELEON ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Chameleon" ), XMFLOAT4( -0.4f, -0.35f, 0.28f, 0.65f ) ) );
 	pShader->Add_RenderObject( m_dpBtns[ BTN_MONKEY ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Monkey" ), XMFLOAT4( -0.12f, -0.35f, 0.28f, 0.65f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_BAT ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Bat" ), XMFLOAT4( 0.16f, -0.35f, 0.28f, 0.65f ) ) );
 	
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( -0.35f, 1.f, 0.45f, 0.8f ) ) );
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( 0.1f, 1.f, 0.45f, 0.8f ) ) );
@@ -194,6 +195,7 @@ int CRoom::Check_Key( void )
 				{
 					m_pNetworkMgr->sendSelectCharacter( CHARACTER_CHM );
 					m_dpBtns[ BTN_MONKEY ]->Normal();
+					m_dpBtns[ BTN_BAT ]->Normal();
 					m_dpBtns[ BTN_CHAMELEON ]->Fix();
 				}
 				break;
@@ -202,7 +204,17 @@ int CRoom::Check_Key( void )
 				{
 					m_pNetworkMgr->sendSelectCharacter( CHARACTER_MON );
 					m_dpBtns[ BTN_CHAMELEON ]->Normal();
+					m_dpBtns[ BTN_BAT ]->Normal();
 					m_dpBtns[ BTN_MONKEY ]->Fix();
+				}
+				break;
+			case BTN_BAT:
+				if( !m_pNetworkMgr->isReady() )
+				{
+					m_pNetworkMgr->sendSelectCharacter( CHARACTER_BAT );
+					m_dpBtns[ BTN_CHAMELEON ]->Normal();
+					m_dpBtns[ BTN_MONKEY ]->Normal();
+					m_dpBtns[ BTN_BAT ]->Fix();
 				}
 				break;
 				/*case BTN_MAP_NEXT:
@@ -266,6 +278,7 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 			if( i == 0 )
 			{
 				m_dpBtns[ BTN_MONKEY ]->Normal();
+				m_dpBtns[ BTN_BAT ]->Normal();
 				m_dpBtns[ BTN_CHAMELEON ]->Fix();
 			}
 			break;
@@ -278,7 +291,21 @@ void CRoom::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
 			if( i == 0 )
 			{
 				m_dpBtns[ BTN_CHAMELEON ]->Normal();
+				m_dpBtns[ BTN_BAT ]->Normal();
 				m_dpBtns[ BTN_MONKEY ]->Fix();
+			}
+			break;
+		case CHARACTER_BAT:
+			m_dpThreeD[ i ]->SetTexture( m_pTextureMgr->Clone( "Texture_Bat" ) );
+			m_dpThreeD[ i ]->SetMesh( m_pAnimateMeshMgr->Clone( "Mesh_Bat" ) );
+			m_dpThreeD[ i ]->SetAnimator( m_pAnimationMgr->Clone( CHARACTER_BAT ) );
+			m_dpThreeD[ i ]->SetSize( ( i == 0 ) ? XMFLOAT2( 0.0415f * 0.05f, 0.072f * 0.05f ) : XMFLOAT2( 0.0103f * 0.05f, 0.018f * 0.05f ) );
+			m_dpThreeD[ i ]->Show();
+			if( i == 0 )
+			{
+				m_dpBtns[ BTN_MONKEY ]->Normal();
+				m_dpBtns[ BTN_CHAMELEON ]->Normal();
+				m_dpBtns[ BTN_BAT ]->Fix();
 			}
 			break;
 		default:

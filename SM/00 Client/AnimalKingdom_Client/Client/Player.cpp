@@ -14,6 +14,7 @@
 #include "NetworkMgr.h"
 #include "Monkey.h"
 #include "Section.h"
+#include "Bat.h"
 
 CPlayer::CPlayer()
 	: CGameObject()
@@ -251,6 +252,9 @@ CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterControl
 		break;
 	case CHARACTER_MON:
 		pPlayer = CMonkey::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
+		break;
+	case CHARACTER_BAT:
+		pPlayer = CBat::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
 		break;
 	}
 

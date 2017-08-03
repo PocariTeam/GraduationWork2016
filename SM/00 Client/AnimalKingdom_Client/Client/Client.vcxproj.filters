@@ -316,6 +316,9 @@
     <Filter Include="소스 파일\03 Resources\04 Shader\03 Trail">
       <UniqueIdentifier>{cd5d195a-e89d-434a-b229-6913cd9ac9de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00 Client\03 Object\01 InGame\00 Player\02 Bat">
+      <UniqueIdentifier>{6b20794f-d699-4e1a-a853-3649e9ec26b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -666,6 +669,9 @@
     <ClInclude Include="TrailShader.h">
       <Filter>소스 파일\03 Resources\04 Shader\03 Trail</Filter>
     </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\02 Bat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -964,6 +970,9 @@
     </ClCompile>
     <ClCompile Include="TrailShader.cpp">
       <Filter>소스 파일\03 Resources\04 Shader\03 Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\02 Bat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

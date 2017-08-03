@@ -1,3 +1,4 @@
-2
+3
 Mesh_Chameleon ../Executable/Resources/Mesh/Animate/Chameleon.jsm
 Mesh_Monkey ../Executable/Resources/Mesh/Animate/Monkey.jsm
+Mesh_Bat ../Executable/Resources/Mesh/Animate/Bat.jsm

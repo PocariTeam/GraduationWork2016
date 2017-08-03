@@ -621,6 +621,10 @@ void GameRoom::loseCrown(Player *player)
 		mtxRotation.rotX(XM_PI);
 		vOffset = NxVec3(0.f, -0.7f - 0.2f, -0.05f);
 		break;
+	case CHARACTER_BAT:
+		mtxRotation.rotX( 0 );
+		vOffset = NxVec3( 0.f, 9.75f + 2.5f, 0.f );
+		break;
 	default:
 		break;
 	}

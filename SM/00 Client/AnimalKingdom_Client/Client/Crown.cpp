@@ -60,6 +60,10 @@ int CCrown::Update( const float& fTimeDelta )
 			mtxRotation.rotX( XM_PI );
 			vOffset = NxVec3( 0.f, -0.6f, -0.05f );
 			break;
+		case CHARACTER_BAT:
+			mtxRotation.rotX( 0 );
+			vOffset = NxVec3( 0.f, 8.75f, 0.3f );
+			break;
 		default:
 			break;
 		}

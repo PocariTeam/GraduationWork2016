@@ -350,6 +350,11 @@ int CCloth::Update( const float& fTimeDelta )
 			vOffset = NxVec3( 0.f, -0.2f, 0.08f );
 			vAcc = NxVec3( sin( fRadian ) * 5.f, 9.8f * 0.5f, -cos( fRadian ) * 5.f );
 			break;
+		case CHARACTER_BAT:
+			mtxRotation.rotX( 0 );
+			vOffset = NxVec3( 0.f, 2.75f, 2.f );
+			vAcc = NxVec3( -cos( fRadian ) * 5.f, 9.8f * 0.5f, sin( fRadian ) * 5.f );
+			break;
 		default:
 			break;
 		}
@@ -361,7 +366,7 @@ int CCloth::Update( const float& fTimeDelta )
 		m_pCloth->getWorldBounds( bounds );
 		NxVec3 center;
 		bounds.getCenter( center );
-		printf( "%f %f %f\n", center.x, center.y, center.z );
+		// printf( "%f %f %f\n", center.x, center.y, center.z );
 		NxReal radius = bounds.min.distance( bounds.max );
 		if( center.z > 0.f ) vAcc.z *= -1.f; if( center.y > 0.f ) vAcc.y *= -1.f; if( center.x > 0.f ) vAcc.x *= -1.f;
 		m_pCloth->setExternalAcceleration( vAcc );

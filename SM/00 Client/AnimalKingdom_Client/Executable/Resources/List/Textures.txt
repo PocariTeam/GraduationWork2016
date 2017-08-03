@@ -1,4 +1,4 @@
-61
+63
 Texture_Back 4 ../Executable/Resources/Texture/UI/Back/Back%d.png
 Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
@@ -9,6 +9,7 @@ Texture_Fire 1 ../Executable/Resources/Texture/Particle/Fire.png
 Texture_Preview_Jungle 1 ../Executable/Resources/Texture/UI/Preview/Preview_Jungle.png
 Texture_Select_Monkey 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Monkey/Select_Monkey%d.png
 Texture_Select_Chameleon 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Chameleon/Select_Chameleon%d.png
+Texture_Select_Bat 3 ../Executable/Resources/Texture/UI/Select_Character/Select_Bat/Select_Bat%d.png
 Texture_Slot 2 ../Executable/Resources/Texture/UI/Slot/Slot%d.png
 Texture_Exit 3 ../Executable/Resources/Texture/UI/Exit/Exit%d.png
 Texture_Previous 4 ../Executable/Resources/Texture/UI/Previous/Previous%d.png
@@ -51,6 +52,7 @@ Texture_Rock01 1 ../Executable/Resources/Texture/Rock/Rock01.png
 Texture_Rock02 1 ../Executable/Resources/Texture/Rock/Rock02.png
 Texture_Chameleon 1 ../Executable/Resources/Texture/Chameleon/Chameleon.png
 Texture_Monkey 1 ../Executable/Resources/Texture/Monkey/Monkey.png
+Texture_Bat 1 ../Executable/Resources/Texture/Bat/Bat.png
 Texture_L_Room 4 ../Executable/Resources/Texture/UI/L_Room/L_Room%d.png
 Texture_Ascii 1 ../Executable/Resources/Texture/UI/Ascii/Ascii.png
 Texture_Number0 1 ../Executable/Resources/Texture/UI/Number/Number0.png

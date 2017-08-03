@@ -21,7 +21,7 @@ class CRoom
 	: public CScene
 {
 private:
-	enum eBtn_Index { BTN_READY, BTN_BACK, /*BTN_MAP_PREVIOUS, BTN_MAP_NEXT,*/ BTN_CHAMELEON, BTN_MONKEY, BTN_END };
+	enum eBtn_Index { BTN_READY, BTN_BACK, /*BTN_MAP_PREVIOUS, BTN_MAP_NEXT,*/ BTN_CHAMELEON, BTN_MONKEY, BTN_BAT, BTN_END };
 	using BTN_INDEX = eBtn_Index;
 private:
 	explicit CRoom();
