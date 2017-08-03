@@ -6,6 +6,7 @@
 #include "Player.h"
 
 class NxActor;
+class CParticleObject;
 class CChameleon
 	: public CPlayer
 {
@@ -22,6 +23,8 @@ public:
 	XMFLOAT4X4*	GetWorld();
 public:
 	static CChameleon* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType );
+private:
+	CParticleObject*	m_pTrail[ 2 ];
 };
 
 #endif // Chameleon_h__

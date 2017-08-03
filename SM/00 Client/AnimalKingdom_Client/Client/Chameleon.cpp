@@ -8,6 +8,7 @@
 #include "Mathematics.h"
 #include "StateMachine.h"
 #include "ParticleMgr.h"
+#include "ParticleObject.h"
 
 CChameleon::CChameleon()
 	: CPlayer()
@@ -29,6 +30,8 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 	m_dwActorCnt = 7;
 	m_eCharactor = eType;
 	m_vOption.x = 1.f;		// 카툰 한다
+	m_pTrail[ 0 ] = CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
+	m_pTrail[ 1 ] = CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
 
 	return S_OK;
 }
@@ -48,6 +51,9 @@ int CChameleon::Update( const float& fTimeDelta )
 
 		XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
 	}
+
+	m_pTrail[ 0 ]->UpdateParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ) );
+	m_pTrail[ 1 ]->UpdateParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ) );
 
 	return 0;
 }
@@ -69,23 +75,23 @@ void CChameleon::Attack( STATE eState )
 {
 	if( !m_bSweap ) return;
 
-	NxActor*	pActor{};
-	switch( eState )
-	{
-	case STATE_ATT1:
-		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 2 ];
-		CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ), XMFLOAT2( 3, 3 ), 1.f/*, CMathematics::ConvertToXMFloat3( m_pActorsOriginPose[ 2 ].t )*/ );
-		break;
-	case STATE_ATT2:
-		pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
-		CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ), XMFLOAT2( 3, 3 ), 1.f/*, CMathematics::ConvertToXMFloat3( m_pActorsOriginPose[ 1 ].t )*/ );
-		break;
-	case STATE_SKILL:
-		printf("카멜레온 스킬 사용 \n");
-		break;
-	default:
-		return ;
-	}
+	//NxActor*	pActor{};
+	//switch( eState )
+	//{
+	//case STATE_ATT1: // RHand
+	//	// pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 2 ];
+	//	m_pTrail[ 1 ]->UpdateParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ) );
+	//	break;
+	//case STATE_ATT2: // LHand
+	//	// pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
+	//	m_pTrail[ 0 ]->UpdateParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ) );
+	//	break;
+	//case STATE_SKILL:
+	//	printf("카멜레온 스킬 사용 \n");
+	//	break;
+	//default:
+	//	return ;
+	//}
 
 	/*NxSweepQueryHit result[ 100 ];
 	UINT MyGroup = UINT( pActor->getGroup() );

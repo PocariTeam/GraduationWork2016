@@ -16,5 +16,5 @@ Shader_Number_UI 0 5 1 ../Executable/Resources/Shader/Number_UI.fx
 Shader_Number_UI_I 1 5 1 ../Executable/Resources/Shader/Number_UI_I.fx
 Shader_Skydome 0 3 1 ../Executable/Resources/Shader/Skydome.fx
 Shader_Sign_UI 0 5 1 ../Executable/Resources/Shader/Sign_UI.fx
-Shader_Trail 2 5 1 ../Executable/Resources/Shader/Particle_Trail.fx
+Shader_Trail 3 5 1 ../Executable/Resources/Shader/Particle_Trail.fx
 Shader_UI 0 5 1 ../Executable/Resources/Shader/UI.fx

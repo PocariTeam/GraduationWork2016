@@ -313,6 +313,9 @@
     <Filter Include="소스 파일\02 Utility\06 Particle\01 Object\01 Fire">
       <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\03 Trail">
+      <UniqueIdentifier>{cd5d195a-e89d-434a-b229-6913cd9ac9de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -660,6 +663,9 @@
     <ClInclude Include="Trail.h">
       <Filter>소스 파일\02 Utility\06 Particle\01 Object\00 Trail</Filter>
     </ClInclude>
+    <ClInclude Include="TrailShader.h">
+      <Filter>소스 파일\03 Resources\04 Shader\03 Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -955,6 +961,9 @@
     </ClCompile>
     <ClCompile Include="Trail.cpp">
       <Filter>소스 파일\02 Utility\06 Particle\01 Object\00 Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="TrailShader.cpp">
+      <Filter>소스 파일\03 Resources\04 Shader\03 Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

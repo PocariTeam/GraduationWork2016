@@ -18,6 +18,7 @@ public:
 	static NxMat34	  ConvertToNxMat34( XMMATRIX& In );
 
 	static XMFLOAT3	  ConvertToXMFloat3( NxVec3& v3 );
+	static XMFLOAT4X4 LerpXMFloat4x4( XMFLOAT4X4* pMtx1, XMFLOAT4X4* pMtx2, float f );
 };
 
 #endif // Mathematics_h__

@@ -5,6 +5,7 @@
 #include "NormalShader.h"
 #include "InstancingShader.h"
 #include "ParticleShader.h"
+#include "TrailShader.h"
 
 CShaderMgr*		CSingleton<CShaderMgr>::m_pInstance;
 
@@ -58,6 +59,15 @@ HRESULT CShaderMgr::Add( ID3D11Device* pDevice, eShaderType eType, CShader::INPU
 	case CShaderMgr::SHADER_PARTICLE:
 		pShader = CParticleShader::Create( pDevice, eInputType, pFilePath );
 		break;
+	case CShaderMgr::SHADER_TRAIL:
+		pShader = CTrailShader::Create( pDevice, eInputType, pFilePath );
+		break;
+	}
+
+	if( nullptr == pShader )
+	{
+		MessageBox( nullptr, "Shader Compile Failed", nullptr, MB_OK );
+		return E_FAIL;
 	}
 
 	m_mapShader.insert( make_pair( pKey, pShader ) );

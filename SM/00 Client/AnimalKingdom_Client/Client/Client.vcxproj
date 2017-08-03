@@ -275,6 +275,7 @@
     <ClInclude Include="ThreeD_UI.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Trail.h" />
+    <ClInclude Include="TrailShader.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="Wallpaper.h" />
@@ -449,6 +450,7 @@
     <ClCompile Include="ThreeD_UI.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Trail.cpp" />
+    <ClCompile Include="TrailShader.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
     <ClCompile Include="AnimationSet.cpp" />

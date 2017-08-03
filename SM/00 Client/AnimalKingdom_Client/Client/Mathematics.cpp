@@ -71,3 +71,24 @@ DirectX::XMFLOAT3 CMathematics::ConvertToXMFloat3( NxVec3& v3 )
 
 	return vTemp;
 }
+
+DirectX::XMFLOAT4X4 CMathematics::LerpXMFloat4x4( XMFLOAT4X4* pMtx1, XMFLOAT4X4* pMtx2, float f )
+{
+	XMFLOAT4X4	mtxOut{};
+	XMFLOAT4	vTemp1{}, vTemp2{};
+	XMVECTOR	vResult{}, v1{}, v2{};
+
+	for( int i = 0; i < 4; ++i )
+	{
+		memcpy_s( &vTemp1, sizeof( XMFLOAT4 ), pMtx1->m[ i ], sizeof( XMFLOAT4 ) );
+		memcpy_s( &vTemp2, sizeof( XMFLOAT4 ), pMtx2->m[ i ], sizeof( XMFLOAT4 ) );
+
+		v1 = XMLoadFloat4( &vTemp1 );
+		v2 = XMLoadFloat4( &vTemp2 );
+		vResult = XMQuaternionSlerp( v1, v2, f );
+		XMStoreFloat4( &vTemp1, vResult );
+		memcpy_s( mtxOut.m[ i ], sizeof( XMFLOAT4 ), &vTemp1, sizeof( XMFLOAT4 ) );
+	}
+
+	return mtxOut;
+}

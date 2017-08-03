@@ -93,6 +93,12 @@ typedef struct tagConstantBuffer_Camera
 
 typedef struct tagConstantBuffer_Particle
 {
+	tagConstantBuffer_Particle() {}
+	tagConstantBuffer_Particle( tagConstantBuffer_Particle& Instance )
+		: m_mtxWorld( Instance.m_mtxWorld )
+		, m_vOption( Instance.m_vOption )
+		, m_vVelocity( Instance.m_vVelocity )
+	{}
 	XMFLOAT4X4  m_mtxWorld;
 	XMFLOAT4	m_vOption;		// x : Cartoon, y : Age z, w : Size
 	XMFLOAT4	m_vVelocity;	// w : Type

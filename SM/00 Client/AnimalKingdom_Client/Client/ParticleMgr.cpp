@@ -24,31 +24,19 @@ DWORD CParticleMgr::Release( void )
 	return 0;
 }
 
-void CParticleMgr::Add( PARTICLE_TYPE eType, const XMFLOAT4X4& mtxWorld, const XMFLOAT2& vSize, const float fAge, XMFLOAT3& vVelocity/* = XMFLOAT3{ 0.f, 0.f, 0.f }*/ )
+CParticleObject* CParticleMgr::Add( PARTICLE_TYPE eType, const XMFLOAT4X4& mtxWorld, const XMFLOAT2& vSize, const float fAge, XMFLOAT3& vVelocity/* = XMFLOAT3{ 0.f, 0.f, 0.f }*/ )
 {
+	CParticleObject* pParticle{ nullptr };
 	// 파티클 오브젝트 생성
 	switch( eType )
 	{
 	case PARTICLE_TRAIL:
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
-		vVelocity.x += 0.1f;
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
-		vVelocity.x -= 0.2f;
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
-		vVelocity.x += 0.1f;
-		vVelocity.y += 0.1f;
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
-		vVelocity.y -= 0.2f;
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
-		vVelocity.y += 0.1f;
-		vVelocity.z += 0.1f;
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
-		vVelocity.z -= 0.2f;
-		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity ) );
+		pParticle = CTrail::Create( m_pDevice, mtxWorld, vSize, fAge, vVelocity );
+		m_pParticleShaderArr[ PARTICLE_TRAIL ]->Add_RenderObject( pParticle );
 		break;
-	default:
-		return ;
 	}
+
+	return pParticle;
 }
 
 void CParticleMgr::Update( const float& fTimeDelta )
