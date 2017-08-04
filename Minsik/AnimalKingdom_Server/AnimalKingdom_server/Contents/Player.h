@@ -6,6 +6,7 @@ class NxActor;
 class CAnimator;
 class CStateMachine;
 
+#define		MAX_CHAR_HP			100
 #define		JUMP_HEIGHT			130.f
 
 #define		MONKEY_DAMAGE		12
@@ -44,7 +45,8 @@ class Player {
 	float					m_fJumpHeight;
 	bool					m_bSweap;
 	bool					defend;
-	float					coolTime;
+	float					coolTime_;
+	float					skillTime_;
 public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 	void			Move( const float& fTimeDelta );
@@ -82,7 +84,7 @@ public:
 	void			setMoveDir(Vector3 vDir);
 	void			setState(STATE state);
 	int				getHp() { return hp_; }
-	void			setHp( int hp ) { hp_ = hp; }
+	void			setHp(int hp);
 	bool			checkBlocking( NxVec3& vDir );
 	bool			checkBlocking( float fRotateY );
 	bool			checkFalling( void );

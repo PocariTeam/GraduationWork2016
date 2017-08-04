@@ -278,13 +278,13 @@ STATE CDeadState::GetState( void )
 
 void CSKillState::Enter(Player * pOwner, const float & fTImeDelta)
 {
+	pOwner->UseSkill();
 	pOwner->ResetDir();
 	pOwner->getAnimator()->Change_Animation(STATE_SKILL);
 }
 
 void CSKillState::Execute(Player * pOwner, const float & fTImeDelta)
 {
-	pOwner->UseSkill();
 	if (pOwner->getAnimator()->GetCurrentAnimationFinished())
 		pOwner->getFSM()->Change_State(STATE_IDLE);
 }

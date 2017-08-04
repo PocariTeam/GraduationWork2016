@@ -267,6 +267,12 @@ void CNetworkMgr::processPacket()
 		m_pScene->NotifyGameFinished();
 		break;
 	}
+	case PAK_ID::PAK_ANS_UseSkill:
+	{
+		S_UseSkill* packet = (S_UseSkill*)m_saveBuf;
+		m_pScene->NotifyUseSkill(packet->id, (bool)(packet->use));
+		break;
+	}
 	case PAK_ID::PAK_RJT_Request:
 	{
 		printf( "\n !! 요청 실패 !! \n" );

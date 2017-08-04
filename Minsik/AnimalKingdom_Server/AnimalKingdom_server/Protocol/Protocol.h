@@ -33,6 +33,7 @@ typedef enum {
 	PAK_ANS_SyncDynamic,
 	PAK_ANS_SyncDynamicOne,
 	PAK_RJT_Request,
+	PAK_ANS_UseSkill
 
 } PAK_ID;
 
@@ -177,6 +178,14 @@ struct S_Winner
 	HEADER		header;
 	UINT		id;
 };
+
+struct S_UseSkill
+{
+	HEADER		header;
+	UINT		id;
+	BOOL		use;
+};
+
 
 /////////////////////////////////////////////////////////////
 

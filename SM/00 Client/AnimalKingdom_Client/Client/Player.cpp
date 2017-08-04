@@ -33,6 +33,7 @@ CPlayer::CPlayer()
 	, m_vOverlapped( 0.f, 1.f, 0.f )
 	, m_eCharactor( CHARACTER_CHM )
 	, m_fDefenceTime( 0.f )
+	, m_bSkillOn ( false )
 {
 }
 
@@ -224,7 +225,7 @@ void CPlayer::Attack( STATE eState )
 
 void CPlayer::UseSkill()
 {
-	printf( " 자식 클래스(카멜레온, 원숭이)에 대해 UseSkill 가상함수를 정의해주세요. \n" );
+	// 필요하면 자식 클래스(카멜레온, 원숭이, 박쥐)에 대한 가상함수를 정의하면 됨.
 }
 
 void CPlayer::ThrowBanana( void )

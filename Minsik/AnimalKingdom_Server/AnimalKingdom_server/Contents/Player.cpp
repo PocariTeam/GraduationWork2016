@@ -5,7 +5,7 @@
 
 Player::Player(Session * s, UINT room, BOOL master)
 	: lock_(L"Player"), session_(s), character_(CHARACTER::CHRACTER_NONE), roomNum_(room), isReady_(false), isMaster_(master), cct_(nullptr), actorArray_(nullptr), animator_(nullptr), stateMachine_(nullptr)
-	, m_vRotate(0.f, 0.f, 0.f), actorsOriginPose_(nullptr), m_bSweap(false), defend(false), m_fJumpHeight(0.0f), damage_(0), speed_(0.0f), coolTime(0.0f)
+	, m_vRotate(0.f, 0.f, 0.f), actorsOriginPose_(nullptr), m_bSweap(false), defend(false), m_fJumpHeight(0.0f), damage_(0), speed_(0.0f), coolTime_(0.0f), skillTime_(0.0f)
 {
 	stateMachine_ = CStateMachine::Create( this );
 
@@ -45,16 +45,30 @@ void Player::initialize()
 	setRotateY(-XM_PI);
 	stateMachine_->Set_State(STATE_IDLE);
 	beaten_ = true;
-	hp_ = 100;
+	hp_ = MAX_CHAR_HP;
 	setStatByCharacter();
-	coolTime = 0.0f;
+	coolTime_ = 0.0f;
+	skillTime_ = 0.0f;
 }
 
 void Player::update( float fTimeDelta )
 {
-	if (coolTime > 0.f)
+	// 스킬 쿨타임 체크
+	if (coolTime_ > 0.0f)
 	{
-		coolTime -= fTimeDelta;
+		coolTime_ -= fTimeDelta;
+	}
+
+	// 스킬지속시간체크
+	if (skillTime_ > 0.0f)
+	{
+		skillTime_ -= fTimeDelta;
+
+		if (skillTime_ < 0.0f)
+		{
+			RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), false);
+			skillTime_ = 0.0f;
+		}
 	}
 
 	if( stateMachine_ ) stateMachine_->Update( fTimeDelta );
@@ -172,8 +186,8 @@ void Player::sweapOff( void )
 
 void Player::setState( STATE state )
 {
-	if (state == STATE_SKILL && coolTime > 0.0f) {
-		SLog(L"left coolTime: %lf",coolTime);
+	if (state == STATE_SKILL && coolTime_ > 0.0f) {
+		SLog(L"left coolTime: %lf",coolTime_);
 		return;
 	}
 
@@ -373,8 +387,31 @@ void Player::Attack( STATE eState )
 	}
 }
 
+void Player::setHp(int hp)
+{
+	if (hp > MAX_CHAR_HP) hp = MAX_CHAR_HP;
+	hp_ = hp;
+}
+
 void Player::UseSkill()
 {
-	coolTime = 10.f; // 임시로 쿨타임 10초
-	printf("스킬 사용에 대한 내용 추가 필요 \n");
+	coolTime_ = 10.f; // 임시로 쿨타임 10초, 각 스킬별 쿨타임 지정 필요
+
+	switch (character_)
+	{
+	case CHARACTER::CHARACTER_CHM:
+		skillTime_ = 5.0f; //  임시로 지속시간은 5초
+		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
+		break;
+	case CHARACTER::CHARACTER_MON:
+		setHp((int)(hp_*1.2));
+		break;
+	case CHARACTER::CHARACTER_BAT:
+		skillTime_ = 5.0f; //  임시로 지속시간은 5초
+		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
+		break;
+	default:
+		SLog(L" undefined character type!");
+		break;
+	}
 }

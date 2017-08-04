@@ -51,7 +51,7 @@ BOOL RoomManager::exitRoom(Session* session)
 		return false;
 	}
 
-	if (roomNum < GAMEROOM_CAPACITY)
+	if (roomNum < GAMEROOM_CAPACITY && roomNum > NOT_IN_ROOM)
 	{
 		return roomArray_[roomNum]->exit(session);
 	}
@@ -117,6 +117,20 @@ void RoomManager::sendGetCrown(UINT roomNum, Player* player)
 	if (roomNum < GAMEROOM_CAPACITY)
 	{
 		roomArray_[roomNum]->sendGetCrown(player);
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+	}
+}
+
+void RoomManager::sendUseSkill(UINT roomNum, int id, bool use)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		roomArray_[roomNum]->sendUseSkill(id, use);
 	}
 	else
 	{

@@ -385,6 +385,24 @@ void GameRoom::sendGetCrown(Player* player)
 
 }
 
+void GameRoom::sendUseSkill(int id, bool use)
+{
+	SAFE_LOCK(lock_);
+
+	if (players_.find(id) == players_.end())  return;
+
+	S_UseSkill packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_UseSkill;
+	packet.header.size = sizeof(packet);
+	packet.id = id;
+	packet.use = (BOOL)use;
+
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+}
+
 
 BOOL GameRoom::setupGame()
 {

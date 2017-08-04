@@ -456,6 +456,15 @@ void CJungle::NotifyCrownOwner( UINT ID )
 	CPhysics::GetInstance()->SetCrownOwner( owner );
 }
 
+void CJungle::NotifyUseSkill(UINT ID, bool use)
+{
+	auto find_iter = m_mapPlayer.find(ID);
+
+	find_iter->second->SetSkillOn(use);
+
+	printf("%d 플레이어 스킬사용 : %d \n", ID, use);
+}
+
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )
 {
 	CJungle* pJungle = new CJungle;

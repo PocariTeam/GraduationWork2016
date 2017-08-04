@@ -33,6 +33,7 @@ public:
 	void			sendPlayerList(UINT32 roomNum);
 	void			sendReadyGame(UINT32 roomNum);
 	void			sendGetCrown(UINT roomNum, Player* player);
+	void			sendUseSkill(UINT roomNum, int id, bool use);
 
 	BOOL			getPlaying(UINT roomNum);
 	BOOL			hasWinner(UINT roomNum);

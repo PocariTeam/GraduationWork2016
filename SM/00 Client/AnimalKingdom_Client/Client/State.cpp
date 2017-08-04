@@ -192,13 +192,13 @@ STATE CAttackState2::GetState( void )
 ///////////////////// Skill State /////////////////////
 void CSKillState::Enter( CPlayer * pOwner, const float & fTImeDelta )
 {
+	pOwner->UseSkill();
 	pOwner->ResetOverlapped();
 	pOwner->GetAnimator()->Change_Animation( STATE_SKILL );
 }
 
 void CSKillState::Execute( CPlayer * pOwner, const float & fTImeDelta )
 {
-	pOwner->UseSkill();
 	if( pOwner->GetAnimator()->GetCurrentAnimationFinished() )
 		pOwner->GetFSM()->Change_State( STATE_IDLE );
 }

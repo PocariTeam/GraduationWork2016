@@ -49,6 +49,7 @@ public:
 	int*			GetHP() { return &m_iHp; }
 	STATE			GetCurrentState();
 	float			GetRotateY() { return m_vRotate.y; }
+	void			SetSkillOn(bool s) { m_bSkillOn = s; }
 public:
 	void			Change_State( STATE eState );
 public:
@@ -69,6 +70,7 @@ protected:
 	UINT					m_iSectionCnt;
 	bool					m_bAlpha;
 
+	bool					m_bSkillOn;
 	float					m_fDefenceTime;
 };
 

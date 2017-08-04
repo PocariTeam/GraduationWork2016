@@ -43,6 +43,7 @@ public:
 	void			sendWinner(int winner_id);
 	void			sendFinishGame();
 	void			sendGetCrown(Player* player);
+	void			sendUseSkill(int id, bool use);
 
 	UINT			getPlayerCount() { return playerCount_; }
 
