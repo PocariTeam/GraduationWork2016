@@ -45,7 +45,6 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 		switch( eState )
 		{
 		case STATE_JUMP:
-			printf("%f \n", hit.dir.y);
 			if( hit.dir.y <= -1.f )
 				( ( CPlayer* )actor->userData )->GetAnimator()->Play();
 			break;
@@ -87,7 +86,7 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 		iBananaIndex = 1;
 	else if( 0 == strcmp( pair.actors[ 0 ]->getName(), "Banana" ) )
 		iBananaIndex = 0;
-
+	
 	if( -1 != iBananaIndex )
 	{
 		int iNoBananaIndex = ( iBananaIndex == 0 ) ? 1 : 0;
