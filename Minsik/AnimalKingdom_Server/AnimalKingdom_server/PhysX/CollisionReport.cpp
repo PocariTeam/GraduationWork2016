@@ -81,6 +81,24 @@ NxControllerAction  CControllerReport::onShapeHit(const NxControllerShapeHit& hi
 
 NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& hit )
 {
+	NxActor* actor = hit.controller->getActor();
+	NxActor* hitActor = hit.other->getActor();
+	NxCollisionGroup group = actor->getGroup();
+
+	// 점프체크
+	if ((COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4) & group)
+	{
+		STATE eState = ((Player*)actor->userData)->getFSM()->GetCurrentState();
+		switch (eState)
+		{
+		case STATE_JUMP:
+			((Player*)actor->userData)->getAnimator()->Play();
+			break;
+		default:
+			break;
+		}
+	}
+
 	return NX_ACTION_NONE;
 }
 

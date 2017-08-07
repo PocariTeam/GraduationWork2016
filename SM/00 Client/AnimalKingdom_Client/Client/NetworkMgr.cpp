@@ -270,7 +270,7 @@ void CNetworkMgr::processPacket()
 	case PAK_ID::PAK_ANS_UseSkill:
 	{
 		S_UseSkill* packet = (S_UseSkill*)m_saveBuf;
-		m_pScene->NotifyUseSkill(packet->id, (bool)(packet->use));
+		m_pScene->NotifyUseSkill(packet->id, packet->use);
 		break;
 	}
 	case PAK_ID::PAK_RJT_Request:

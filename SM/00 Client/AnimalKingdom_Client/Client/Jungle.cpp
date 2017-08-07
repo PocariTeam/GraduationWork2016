@@ -456,7 +456,7 @@ void CJungle::NotifyCrownOwner( UINT ID )
 	CPhysics::GetInstance()->SetCrownOwner( owner );
 }
 
-void CJungle::NotifyUseSkill(UINT ID, bool use)
+void CJungle::NotifyUseSkill(UINT ID, BOOL use)
 {
 	auto find_iter = m_mapPlayer.find(ID);
 

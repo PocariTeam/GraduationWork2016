@@ -818,60 +818,38 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	return S_OK;
 }
 
-NxController* CPhysics::CreateCharacterController( NxActor* pActor, NxActor** dpActors, int iArraySize )
+NxController* CPhysics::CreateCharacterController(NxActor* pActor, NxActor** dpActors, int iArraySize)
 {
 	//actor->raiseActorFlag(NX_AF_DISABLE_RESPONSE);
 
 	float	fSkinWidth = 0.1f;
 	NxController*	pOut{};
 
-	if( !true )
-	{
-		// Box Controller
-		NxVec3	vScale( 0.5f, 1.0f, 0.5f );
-		NxBoxControllerDesc tBoxDesc;
-		tBoxDesc.extents = vScale;
-		tBoxDesc.position.x = pActor->getGlobalPosition().x;
-		// gSpace = tBoxDesc.extents.y;
-		tBoxDesc.position.y = pActor->getGlobalPosition().y;
-		tBoxDesc.position.z = pActor->getGlobalPosition().z;
-		tBoxDesc.upDirection = NX_Y;
-		tBoxDesc.slopeLimit = 0;
-		tBoxDesc.slopeLimit = cosf( NxMath::degToRad( 45.0f ) );
-		tBoxDesc.skinWidth = fSkinWidth;
-		tBoxDesc.stepOffset = 0.1f;
-		tBoxDesc.userData = dpActors;
-		tBoxDesc.callback = &m_ControllerReport;
-		pOut = m_pCharacterControllerMgr->createController( m_pScene, tBoxDesc );
-	}
 
-	else
-	{
-		// Capsule Controller
-		NxShape* pShape = pActor->getShapes()[ 0 ];
-		NxF32	fRadius = ( ( NxCapsuleShape* )( pShape ) )->getRadius();
-		NxF32	fHeight = ( ( NxCapsuleShape* )( pShape ) )->getHeight();
-		NxCapsuleControllerDesc		tCapsuleDesc;
-		tCapsuleDesc.radius = fRadius;
-		tCapsuleDesc.height = fHeight * 1.f;
-		tCapsuleDesc.position.x = pActor->getGlobalPosition().x;
-		// gSpace = ( tCapsuleDesc.height * 0.5f + tCapsuleDesc.radius );
-		tCapsuleDesc.position.y = pActor->getGlobalPosition().y;
-		tCapsuleDesc.position.z = pActor->getGlobalPosition().z;
-		tCapsuleDesc.upDirection = NX_Y;
-		// tCapsuleDesc.slopeLimit = cosf(NxMath::degToRad(45.0f));
-		tCapsuleDesc.slopeLimit = 0.f/*cosf( NxMath::degToRad( 45.0f ) )*/;
-		tCapsuleDesc.skinWidth = fSkinWidth;
-		tCapsuleDesc.stepOffset = 0.5f;
-		//tCapsuleDesc.stepOffset = fRadius * 0.5f * fScale;
-		tCapsuleDesc.userData = dpActors;
-		tCapsuleDesc.callback = &m_ControllerReport;
-		pOut = m_pCharacterControllerMgr->createController( m_pScene, tCapsuleDesc );
-	}
+	// Capsule Controller
+	NxShape* pShape = pActor->getShapes()[0];
+	NxF32	fRadius = ((NxCapsuleShape*)(pShape))->getRadius();
+	NxF32	fHeight = ((NxCapsuleShape*)(pShape))->getHeight();
+	NxCapsuleControllerDesc		tCapsuleDesc;
+	tCapsuleDesc.radius = fRadius;
+	tCapsuleDesc.height = fHeight * 1.f;
+	tCapsuleDesc.position.x = pActor->getGlobalPosition().x;
+	// gSpace = ( tCapsuleDesc.height * 0.5f + tCapsuleDesc.radius );
+	tCapsuleDesc.position.y = pActor->getGlobalPosition().y;
+	tCapsuleDesc.position.z = pActor->getGlobalPosition().z;
+	tCapsuleDesc.upDirection = NX_Y;
+	tCapsuleDesc.slopeLimit = cosf(NxMath::degToRad(45.0f));
+	tCapsuleDesc.skinWidth = fSkinWidth;
+	tCapsuleDesc.stepOffset = 5.0f;
+	//tCapsuleDesc.stepOffset = fRadius * 0.5f * fScale;
+	tCapsuleDesc.userData = dpActors;
+	tCapsuleDesc.callback = &m_ControllerReport;
+	pOut = m_pCharacterControllerMgr->createController(m_pScene, tCapsuleDesc);
 
-	char szName[ MAX_PATH ] = "Character Controller Actor of ";
-	strcat_s( szName, MAX_PATH, dpActors[ 0 ]->getName() );
-	pOut->getActor()->setName( szName );
+
+	char szName[MAX_PATH] = "Character Controller Actor of ";
+	strcat_s(szName, MAX_PATH, dpActors[0]->getName());
+	pOut->getActor()->setName(szName);
 
 	return pOut;
 }

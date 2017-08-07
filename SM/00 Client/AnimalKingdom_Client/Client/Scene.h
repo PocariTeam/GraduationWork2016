@@ -27,7 +27,7 @@ public:
 	virtual void Sync( UINT id, int hp, XMFLOAT3 vDir, float fRotateY, STATE state ) {}
 	virtual void NotifyCrownOwner(UINT ID) {}
 	virtual void NotifyEnterRoom() {};
-	virtual void NotifyUseSkill(UINT ID, bool use) {}
+	virtual void NotifyUseSkill(UINT ID, BOOL use) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 	virtual void	SetPlayingTime(const float& fTime) {};

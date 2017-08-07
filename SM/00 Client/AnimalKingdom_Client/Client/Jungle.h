@@ -35,7 +35,7 @@ public:
 	virtual void  NotifyGameFinished();
 	virtual void  NotifyWinner( UINT ID );
 	virtual void NotifyCrownOwner(UINT ID);
-	virtual void NotifyUseSkill(UINT ID, bool use);
+	virtual void NotifyUseSkill(UINT ID, BOOL use);
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:

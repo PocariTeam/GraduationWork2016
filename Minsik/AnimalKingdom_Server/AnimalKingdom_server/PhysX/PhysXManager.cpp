@@ -124,7 +124,7 @@ NxController* PhysXManager::CreateCharacterController(NxActor* actor, const NxVe
 		desc.position.y = startPos.y; //+ gSpace;
 		desc.position.z = startPos.z;
 		desc.upDirection = NX_Y;
-		desc.slopeLimit		= cosf(NxMath::degToRad(60.0f));
+		desc.slopeLimit		= cosf(NxMath::degToRad(45.0f));
 		//desc.slopeLimit = 0.f;
 		desc.skinWidth = fSKINWIDTH;
 		desc.stepOffset = 5.0f;

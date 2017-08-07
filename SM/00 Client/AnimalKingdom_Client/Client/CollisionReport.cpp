@@ -45,6 +45,7 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 		switch( eState )
 		{
 		case STATE_JUMP:
+			printf("%f \n", hit.dir.y);
 			if( hit.dir.y <= -1.f )
 				( ( CPlayer* )actor->userData )->GetAnimator()->Play();
 			break;
@@ -58,6 +59,23 @@ NxControllerAction  CControllerReport::onShapeHit( const NxControllerShapeHit& h
 
 NxControllerAction  CControllerReport::onControllerHit( const NxControllersHit& hit )
 {
+	NxActor* actor = hit.controller->getActor();
+	NxActor* hitActor = hit.other->getActor();
+	NxCollisionGroup group = actor->getGroup();
+
+	// 점프체크
+	if ((COL_PLAYER1 | COL_PLAYER2 | COL_PLAYER3 | COL_PLAYER4) & group)
+	{
+		STATE eState = ((CPlayer*)actor->userData)->GetFSM()->GetCurrentState();
+		switch (eState)
+		{
+		case STATE_JUMP:
+			((CPlayer*)actor->userData)->GetAnimator()->Play();
+			break;
+		default:
+			break;
+		}
+	}
 	return NX_ACTION_NONE;
 }
 
