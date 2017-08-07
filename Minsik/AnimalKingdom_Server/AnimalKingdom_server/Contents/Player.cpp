@@ -404,7 +404,7 @@ void Player::UseSkill()
 		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
 		break;
 	case CHARACTER::CHARACTER_MON:
-		setHp((int)(hp_*1.2));
+		setHp((int)(MAX_CHAR_HP*1.2));
 		break;
 	case CHARACTER::CHARACTER_BAT:
 		skillTime_ = 5.0f; //  임시로 지속시간은 5초
