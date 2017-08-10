@@ -21,6 +21,7 @@ public:
 	virtual DWORD Release( void );
 	virtual void Attack( STATE eState );
 	XMFLOAT4X4*	GetWorld();
+	virtual void	SweapOff( void );
 public:
 	static CChameleon* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType );
 private:

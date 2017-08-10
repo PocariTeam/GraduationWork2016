@@ -20,6 +20,7 @@ public:
 	static CTrail* Create( ID3D11Device* pDevice, const XMFLOAT4X4& mtxWorld, const XMFLOAT2& vSize, const float fAge, const XMFLOAT3& vPos );
 public:
 	void			UpdateParticleValue( const XMFLOAT4X4& mtxWorld );
+	void			SetParticleValue( const XMFLOAT4X4& mtxWorld );
 	XMFLOAT4X4*		GetWorld();
 	LPVOID			GetParticleData();
 	UINT			GetParticleDataCnt() { return m_iTrailCnt; }

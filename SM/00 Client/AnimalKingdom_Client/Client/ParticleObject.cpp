@@ -8,6 +8,7 @@
 
 CParticleObject::CParticleObject()
 	: CGameObject()
+	, m_bActive( false )
 {
 }
 

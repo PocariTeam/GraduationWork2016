@@ -793,6 +793,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 			plistShader[ RENDER_SHADOW ].push_back( pShader_Environment_Shadow[ i ] );
 			plistShader[ RENDER_OUTCAVE ].push_back( pShader_Environment[ i ] );
 		}
+
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cave );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Animate );
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cloth );

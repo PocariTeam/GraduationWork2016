@@ -73,6 +73,12 @@ void CTrail::UpdateParticleValue( const XMFLOAT4X4& mtxWorld )
 	}
 }
 
+void CTrail::SetParticleValue( const XMFLOAT4X4& mtxWorld )
+{
+	for( int i = 0; i < TRAIL_LENGTH; ++i )
+		m_tParticleInfo[ i ].m_mtxWorld = mtxWorld;
+}
+
 XMFLOAT4X4* CTrail::GetWorld()
 {
 	return &m_mtxWorld;
@@ -93,7 +99,7 @@ int CTrail::Update( const float& fTimeDelta )
 
 void CTrail::Render( ID3D11DeviceContext* pContext )
 {
-	pContext->Draw( TRAIL_LENGTH, 0 );
+	if( m_bActive ) pContext->Draw( TRAIL_LENGTH, 0 );
 }
 
 DWORD CTrail::Release( void )

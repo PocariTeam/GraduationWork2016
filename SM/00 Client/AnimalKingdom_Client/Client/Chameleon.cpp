@@ -71,34 +71,20 @@ DWORD CChameleon::Release( void )
 	return 0;
 }
 
+void CChameleon::SweapOff( void )
+{
+	CPlayer::SweapOff();
+	m_pTrail[ 0 ]->Hide();
+	m_pTrail[ 1 ]->Hide();
+}
+
 void CChameleon::Attack( STATE eState )
 {
-	if( !m_bSweap ) return;
+	m_pTrail[ 0 ]->Active();
+	m_pTrail[ 1 ]->Active();
+	m_pTrail[ 0 ]->SetParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ) );
+	m_pTrail[ 1 ]->SetParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ) );
 
-	//NxActor*	pActor{};
-	//switch( eState )
-	//{
-	//case STATE_ATT1: // RHand
-	//	// pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 2 ];
-	//	m_pTrail[ 1 ]->UpdateParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ) );
-	//	break;
-	//case STATE_ATT2: // LHand
-	//	// pActor = ( ( NxActor** )m_pCharacterController->getUserData() )[ 1 ];
-	//	m_pTrail[ 0 ]->UpdateParticleValue( CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ) );
-	//	break;
-	//case STATE_SKILL:
-	//	printf("카멜레온 스킬 사용 \n");
-	//	break;
-	//default:
-	//	return ;
-	//}
-
-	/*NxSweepQueryHit result[ 100 ];
-	UINT MyGroup = UINT( pActor->getGroup() );
-	LPVOID pUserdata = LPVOID( LONGLONG( MyGroup ) );*/
-
-	/*pActor->linearSweep( pActor->getShapes()[ 0 ]->getGlobalPosition(), NX_SF_DYNAMICS, pUserdata, 50, result,
-		( NxUserEntityReport<NxSweepQueryHit>* )&CPhysics::m_EntityReport );*/
 }
 
 XMFLOAT4X4* CChameleon::GetWorld()

@@ -19,7 +19,13 @@ public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext ) {}
 	virtual	void	UpdateParticleValue( const XMFLOAT4X4& mtxWorld ) {}
+	virtual	void	SetParticleValue( const XMFLOAT4X4& mtxWorld ) {}
 	DWORD	Release( void );
+public:
+	void	Active( void ) { m_bActive = true; }
+	void	Hide( void ) { m_bActive = false; }
+protected:
+	bool	m_bActive;
 };
 
 
