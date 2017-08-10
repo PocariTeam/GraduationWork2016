@@ -89,6 +89,7 @@ struct PlayerSyncInfo
 	Vector3		position;
 	FLOAT		rotY;
 	STATE		state;
+	FLOAT		canUseSkill;
 };
 
 struct DynamicActor

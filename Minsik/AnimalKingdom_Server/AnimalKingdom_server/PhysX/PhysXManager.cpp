@@ -267,7 +267,7 @@ BOOL PhysXManager::SetupScene( UINT roomNum, map<UINT, Player*>* pmapPlayers )
 
 		NxVec3 pos = a->getGlobalPosition();
 
-		SLog(L"* actor '%S' global: (%f, %f, %f)", a->getName(), pos.x, pos.y, pos.z);
+		//SLog(L"* actor '%S' global: (%f, %f, %f)", a->getName(), pos.x, pos.y, pos.z);
 
 		// 충돌그루핑
 		if (a->isDynamic())

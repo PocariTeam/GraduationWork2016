@@ -27,7 +27,7 @@ public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
 	void  Render( ID3D11DeviceContext* pContext );
-	void  Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state );
+	void  Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill);
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
 	void  Change_CameraDest( void );

@@ -57,6 +57,7 @@ void Player::update( float fTimeDelta )
 	if (coolTime_ > 0.0f)
 	{
 		coolTime_ -= fTimeDelta;
+		if (coolTime_ < 0.0f) coolTime_ = 0.0f;
 	}
 
 	// 스킬지속시간체크
@@ -187,7 +188,7 @@ void Player::sweapOff( void )
 void Player::setState( STATE state )
 {
 	if (state == STATE_SKILL && coolTime_ > 0.0f) {
-		SLog(L"left coolTime: %lf",coolTime_);
+		SLog(L"id[%d]'s left coolTime: %lf",session_->getID(),coolTime_);
 		return;
 	}
 
@@ -290,8 +291,8 @@ void Player::setStatByCharacter()
 		break;
 	case CHARACTER::CHARACTER_BAT:
 		m_fJumpHeight = JUMP_HEIGHT;
-		damage_ = MONKEY_DAMAGE;
-		speed_ = MONKEY_SPEED;
+		damage_ = BAT_DAMAGE;
+		speed_ = BAT_SPEED;
 		break;
 	default:
 		SLog(L"! unknown character type set! ");
@@ -314,8 +315,8 @@ void Player::powerUp()
 		defaultSpeed = MONKEY_SPEED;
 		break;
 	case CHARACTER_BAT:
-		defaultDamage = MONKEY_DAMAGE;
-		defaultSpeed = MONKEY_SPEED;
+		defaultDamage = BAT_DAMAGE;
+		defaultSpeed = BAT_SPEED;
 		break;
 	}
 	damage_ = int(defaultDamage * 1.5);
@@ -326,6 +327,29 @@ void Player::powerUp()
 void Player::powerDown()
 {
 	setStatByCharacter();
+}
+
+FLOAT Player::getCanUseSkill()
+{
+	FLOAT ret = 0.0f;
+
+	switch (character_)
+	{
+	case CHARACTER::CHARACTER_CHM:
+		ret = 1.0f - (coolTime_ / CHAMEL_COOLTIME);
+		break;
+	case CHARACTER::CHARACTER_MON:
+		ret = 1.0f - (coolTime_ / MONKEY_COOLTIME);
+		break;
+	case CHARACTER::CHARACTER_BAT:
+		ret = 1.0f - (coolTime_ / BAT_COOLTIME);
+		break;
+	default:
+		SLog(L" undefined character type!");
+		break;
+	}
+
+	return ret;
 }
 
 void Player::setMoveDir( Vector3 vDir )
@@ -410,18 +434,20 @@ void Player::setHp(int hp)
 
 void Player::UseSkill()
 {
-	coolTime_ = 10.f; // 임시로 쿨타임 10초, 각 스킬별 쿨타임 지정 필요
 
 	switch (character_)
 	{
 	case CHARACTER::CHARACTER_CHM:
+		coolTime_ = CHAMEL_COOLTIME;
 		skillTime_ = 5.0f; //  임시로 지속시간은 5초
 		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
 		break;
 	case CHARACTER::CHARACTER_MON:
+		coolTime_ = MONKEY_COOLTIME;
 		setHp((int)(MAX_CHAR_HP*1.2));
 		break;
 	case CHARACTER::CHARACTER_BAT:
+		coolTime_ = BAT_COOLTIME;
 		skillTime_ = 5.0f; //  임시로 지속시간은 5초
 		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
 		break;

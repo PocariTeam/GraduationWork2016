@@ -34,6 +34,7 @@ CPlayer::CPlayer()
 	, m_eCharactor( CHARACTER_CHM )
 	, m_fDefenceTime( 0.f )
 	, m_bSkillOn ( false )
+	, m_fCanUseSkill ( 1.0f )
 {
 }
 
@@ -74,7 +75,7 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 			eState = ( STATE_ATT1 == m_pStateMachine->GetPreviousState() ) ? STATE_ATT2 : STATE_ATT1;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_A ) )
 			eState = STATE_DEFEND;
-		else if( m_pInputMgr->Get_KeyboardState( DIK_D ) )
+		else if( m_pInputMgr->Get_KeyboardState( DIK_D ) && m_fCanUseSkill >= 1.0f)
 			eState = STATE_SKILL;
 		else if( m_pInputMgr->Get_KeyboardState( DIK_F ) )
 			eState = STATE_JUMP;
@@ -207,7 +208,7 @@ void CPlayer::Move( const float& fTimeDelta )
 	m_vDir = m_vDir * m_fSpeed * fTimeDelta;*/
 }
 
-void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state )
+void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state, FLOAT canUseSkill)
 {
 	//NxU32	dwCollisionFlag;
 	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
@@ -217,6 +218,7 @@ void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state )
 	m_vRotate.y = fRotateY;
 	m_iHp = hp;
 	m_pStateMachine->Change_State( state );
+	m_fCanUseSkill = canUseSkill;
 }
 
 void CPlayer::Attack( STATE eState )

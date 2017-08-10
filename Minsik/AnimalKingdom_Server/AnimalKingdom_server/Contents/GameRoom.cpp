@@ -507,6 +507,7 @@ void GameRoom::sendPlayerSync()
 		playerPacket.playerPositions[i].rotY = (iter->second)->getRotateY();
 		playerPacket.playerPositions[i].state = (iter->second)->getFSM()->GetCurrentState();
 		playerPacket.playerPositions[i].hp = (iter->second)->getHp();
+		playerPacket.playerPositions[i].canUseSkill = (iter->second)->getCanUseSkill();
 	}
 	
 	

@@ -289,7 +289,7 @@ void CNetworkMgr::processPacket()
 			position.x = packet->playerPositions[i].position.x;
 			position.y = packet->playerPositions[i].position.y;
 			position.z = packet->playerPositions[i].position.z;
-			m_pScene->Sync( packet->playerPositions[ i ].id, packet->playerPositions[i].hp, position, packet->playerPositions[ i ].rotY , packet->playerPositions[i].state );
+			m_pScene->Sync( packet->playerPositions[ i ].id, packet->playerPositions[i].hp, position, packet->playerPositions[ i ].rotY , packet->playerPositions[i].state, packet->playerPositions[i].canUseSkill);
 		}
 		m_pScene->SetPlayingTime(packet->playingTime);
 		m_pScene->SetWinningTime(packet->winningTime);

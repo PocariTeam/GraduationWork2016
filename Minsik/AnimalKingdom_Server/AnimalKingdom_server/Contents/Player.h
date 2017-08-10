@@ -11,9 +11,15 @@ class CStateMachine;
 
 #define		MONKEY_DAMAGE		12
 #define		MONKEY_SPEED		80.0f
+#define		MONKEY_COOLTIME		10.0f
 
 #define		CHAMEL_DAMAGE		23
 #define		CHAMEL_SPEED		90.0f
+#define		CHAMEL_COOLTIME		10.0f
+
+#define		BAT_DAMAGE			15
+#define		BAT_SPEED			85.0f
+#define		BAT_COOLTIME		10.0f
 
 class Player {
 	int				hp_;
@@ -99,4 +105,5 @@ public:
 	void			setStatByCharacter();
 	void			powerUp();
 	void			powerDown();
+	FLOAT			getCanUseSkill();
 };

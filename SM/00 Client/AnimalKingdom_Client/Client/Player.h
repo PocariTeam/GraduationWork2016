@@ -24,7 +24,7 @@ public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 public:
 	void			Move( const float& fTimeDelta );
-	void			Sync( NxVec3& vPos, int hp, float fRotateY, STATE state);
+	void			Sync( NxVec3& vPos, int hp, float fRotateY, STATE state , FLOAT canUseSkill);
 	virtual void	Attack( STATE eState );
 	virtual void	UseSkill();
 	virtual void	ThrowBanana( void );
@@ -72,6 +72,7 @@ protected:
 
 	BOOL					m_bSkillOn;
 	float					m_fDefenceTime;
+	FLOAT					m_fCanUseSkill;
 };
 
 #endif // Player_h__

@@ -296,14 +296,14 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	if( CRenderer::GetInstance()->m_bWireFrame ) CPhysics::GetInstance()->Render( pContext );
 }
 
-void CJungle::Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state )
+void CJungle::Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill)
 {
 	auto find_iter = m_mapPlayer.find( id );
 	if( find_iter == m_mapPlayer.end() ) return;
 
 	NxVec3	vPosition{ vPos.x, vPos.y, vPos.z };
 
-	find_iter->second->Sync( vPosition, hp, fRotateY, state );
+	find_iter->second->Sync( vPosition, hp, fRotateY, state , canUseSkill);
 }
 
 void CJungle::NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt )
