@@ -424,6 +424,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	{
 		for( NxU32 i = 0; i < iActorCnt; i++ )
 		{
+			dpActorArray = m_pScene->getActors();
 			NxActor* pActor = dpActorArray[ i ];
 			NxVec3  vPos = pActor->getGlobalPosition();
 			NxU32   iActorShapeCnt = pActor->getNbShapes();

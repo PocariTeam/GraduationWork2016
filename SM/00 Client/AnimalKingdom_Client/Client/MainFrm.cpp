@@ -29,8 +29,6 @@ HRESULT CMainFrm::Initialize( const HINSTANCE hInst, const HWND hWnd )
 
 	ID3D11Device* pDevice{ m_pGraphicDev->Get_Device() };
 	m_pContext = m_pGraphicDev->Get_Context();
-
-	CLightMgr::GetInstance()->Initialize( pDevice );
 	m_pRenderTargetMgr = CRenderTargetMgr::GetInstance();
 	m_pInputMgr = CInputMgr::GetInstance();
 	m_pRenderer = CRenderer::GetInstance();
@@ -134,7 +132,6 @@ DWORD CMainFrm::Release( void )
 
 	CPhysics::DestroyInstance();
 	CAnimationMgr::DestroyInstance();
-	CLightMgr::DestroyInstance();
 	CRenderer::DestroyInstance();
 	CRenderTargetMgr::DestroyInstance();
 	CAnimateMeshMgr::DestroyInstance();

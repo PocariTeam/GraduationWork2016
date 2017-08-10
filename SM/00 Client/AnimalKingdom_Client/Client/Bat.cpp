@@ -27,7 +27,7 @@ HRESULT CBat::Initialize( ID3D11Device* pDevice, NxController* pCharacterControl
 	m_pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Bat" );
 	m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Bat" );
 	m_pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_BAT );
-	m_dwActorCnt = 1;
+	m_dwActorCnt = 8;
 	m_eCharactor = eType;
 	m_vOption.x = 1.f;		// Ä«Å÷ ÇÑ´Ù
 
@@ -45,6 +45,15 @@ int CBat::Update( const float& fTimeDelta )
 		XMMATRIX mtxWorld;
 		m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
 		m_mtxWorld._24 += 3.f;
+		mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 0.1f, 0.1f, 0.1f ) );
+
+		XMStoreFloat4x4( &m_mtxWorld, mtxWorld );
+	}
+
+	else if( STATE_DOWN == m_pStateMachine->GetCurrentState() )
+	{
+		XMMATRIX mtxWorld;
+		m_mtxWorld = CMathematics::ConvertToXMFloat4x4( &m_pCharacterController->getActor()->getGlobalPose() );
 		mtxWorld = XMMatrixMultiply( XMLoadFloat4x4( &m_mtxWorld ), XMMatrixRotationY( m_vRotate.y ) * XMMatrixScaling( 0.1f, 0.1f, 0.1f ) );
 
 		XMStoreFloat4x4( &m_mtxWorld, mtxWorld );

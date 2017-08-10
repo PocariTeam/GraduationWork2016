@@ -377,6 +377,21 @@ void Player::Attack( STATE eState )
 		}
 	}
 
+	else if( character_ == CHARACTER_BAT )
+	{
+		switch( eState )
+		{
+		case STATE_ATT1:
+			pActor = actorArray_[ 3 ];
+			break;
+		case STATE_ATT2:
+			pActor = actorArray_[ 6 ];
+			break;
+		default:
+			return;
+		}
+	}
+
 	if( pActor )
 	{
 		NxSweepQueryHit result[ 100 ];

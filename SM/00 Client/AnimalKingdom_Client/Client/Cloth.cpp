@@ -338,7 +338,8 @@ int CCloth::Update( const float& fTimeDelta )
 	if( nullptr != m_pOwner )
 	{
 		NxMat34 mtxAnimation = m_pOwner->GetAnimator()->GetCurrentAnimationMatrix( m_pOwner, "Head" );
-		NxMat33 mtxRotation{};
+		NxMat33 mtxRotationX{};
+		NxMat34 mtxRotationY{};
 		NxVec3	vOffset{};
 		float fRadian = m_pOwner->GetRotateY();
 		NxVec3 vAcc{};
@@ -346,39 +347,36 @@ int CCloth::Update( const float& fTimeDelta )
 		switch( m_pOwner->GetCharacterType() )
 		{
 		case CHARACTER_CHM:
-			mtxRotation.rotX( 0 );
+			mtxRotationX.rotX( -XM_PIDIV4 );
 			vOffset = NxVec3( 0.f, 2.75f, 2.f );
-			vAcc = NxVec3( sin(fRadian), 0.f, -cos(fRadian));
+			// vAcc = NxVec3( sin(fRadian), 0.f, -cos(fRadian));
 			break;
 		case CHARACTER_MON:
-			mtxRotation.rotX( XM_PI );
+			mtxRotationX.rotX( XM_PIDIV4 + XM_PI );
 			vOffset = NxVec3( 0.f, -0.2f, 0.08f );
-			vAcc = NxVec3( sin( fRadian ), 0.f, -cos( fRadian ) );
+			// vAcc = NxVec3( sin( fRadian ), 0.f, -cos( fRadian ) );
 			break;
 		case CHARACTER_BAT:
-			mtxRotation.rotX( 0 );
-			vOffset = NxVec3( 0.f, 2.75f, 2.f );
-			vAcc = NxVec3( -cos( fRadian ), 0.f, sin( fRadian ) );
+			mtxRotationX.rotX( -XM_PIDIV4 );
+			vOffset = NxVec3( 0.f, 80.f, 30.f );
+			// vAcc = NxVec3( -cos( fRadian ), 0.f, sin( fRadian ) );
 			break;
 		default:
 			break;
 		}
 
-		NxMat34 mtxLocal{ mtxRotation, vOffset };
+		NxMat34 mtxLocal{ mtxRotationX, vOffset };
 		m_pActor->moveGlobalPose( mtxAnimation * mtxLocal );
 
 		NxBounds3 bounds;
 		m_pCloth->getWorldBounds( bounds );
 		NxVec3 center;
 		bounds.getCenter( center );
-		//printf( "%f %f %f\n", vAcc.x, vAcc.y, vAcc.z );
 		NxReal radius = bounds.min.distance( bounds.max );
-		//if( center.z > 0.f ) vAcc.z *= -1.f; if( center.y > 0.f ) vAcc.y *= -1.f; if( center.x > 0.f ) vAcc.x *= -1.f;
 		NxReal range = 5.f;
 		
 		m_pCloth->setExternalAcceleration( NxVec3(NxMath::rand(-0.5f, 0.5f), NxMath::rand(0.f, 0.5f), NxMath::rand(0.f, 0.5f)) );
 		m_pCloth->addForceAtPos(center, NxMath::rand(0.f, pow(radius, 3.f) * 5.f)/*pow(radius, 3.f) * 2.f*/, radius);
-		//m_pCloth->addForceAtVertex(NxVec3(0.f, 0.f, 1.f + NxMath::rand(0.f, pow(radius, 3.f) * 2.f)), 1094);
 	}
 
 	return 0;
