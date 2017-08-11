@@ -5,14 +5,16 @@
 #include "Function.h"
 #include "TextureMgr.h"
 #include "Mesh.h"
-#include "ParticleMgr.h"
+#include "EffectMgr.h"
 #include "Mathematics.h"
 #include "Shader.h"
 #include "ShaderMgr.h"
 #include "Define.h"
+#include "RenderState.h"
+#include "Renderer.h"
 
 CTrail::CTrail()
-	: CParticleObject()
+	: CEffectObject()
 	, m_pShader( nullptr )
 	, m_pConstantBuffer( nullptr )
 {
@@ -31,7 +33,7 @@ HRESULT CTrail::Initialize( ID3D11Device* pDevice, const XMFLOAT4X4& mtxWorld, c
 	m_vVelocity.x = vPos.x;
 	m_vVelocity.y = vPos.y;
 	m_vVelocity.z = vPos.z;
-	m_vVelocity.w = CParticleMgr::PARTICLE_TRAIL;
+	m_vVelocity.w = CEffectMgr::EFFECT_TRAIL;
 	m_iTrailCnt = TRAIL_LENGTH;
 
 	CB_PARTICLE tIniData{};
@@ -141,7 +143,13 @@ void CTrail::Render( ID3D11DeviceContext* pContext )
 		pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
 		SetConstantBuffer( pContext );
 		m_pShader->Render( pContext );
+		
+		CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
+		
 		pContext->Draw( TRAIL_LENGTH, 0 );
+		
+		if( CRenderer::m_bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
+		else CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 	}
 }
 

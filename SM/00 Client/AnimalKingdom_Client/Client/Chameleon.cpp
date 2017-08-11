@@ -7,8 +7,8 @@
 #include "Player.h"
 #include "Mathematics.h"
 #include "StateMachine.h"
-#include "ParticleMgr.h"
-#include "ParticleObject.h"
+#include "EffectMgr.h"
+#include "EffectObject.h"
 
 CChameleon::CChameleon()
 	: CPlayer()
@@ -19,9 +19,9 @@ CChameleon::~CChameleon()
 {
 }
 
-HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
+HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID )
 {
-	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose );
+	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose, iID );
 
 	// Mesh, Texture, AnimationController 생성
 	m_pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Chameleon" );
@@ -30,8 +30,8 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 	m_dwActorCnt = 7;
 	m_eCharactor = eType;
 	m_vOption.x = 1.f;		// 카툰 한다
-	m_pTrail[ 0 ] = CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
-	m_pTrail[ 1 ] = CParticleMgr::GetInstance()->Add( CParticleMgr::PARTICLE_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
+	m_pTrail[ 0 ] = CEffectMgr::GetInstance()->Add( CEffectMgr::EFFECT_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
+	m_pTrail[ 1 ] = CEffectMgr::GetInstance()->Add( CEffectMgr::EFFECT_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
 
 	return S_OK;
 }
@@ -99,11 +99,11 @@ XMFLOAT4X4* CChameleon::GetWorld()
 	return &m_mtxWorld;
 }
 
-CChameleon* CChameleon::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
+CChameleon* CChameleon::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID )
 {
 	CChameleon* pChameleon = new CChameleon;
 
-	if ( FAILED( pChameleon->Initialize( pDevice, pCharacterController, pActorOriginPose, eType ) ) )
+	if ( FAILED( pChameleon->Initialize( pDevice, pCharacterController, pActorOriginPose, eType, iID ) ) )
 	{
 		pChameleon->Release();
 		pChameleon = nullptr;

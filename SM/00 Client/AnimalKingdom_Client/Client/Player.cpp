@@ -23,6 +23,7 @@ CPlayer::CPlayer()
 	, m_pAnimator( nullptr )
 	, m_pCharacterController( nullptr )
 	, m_pActorsOriginPose( nullptr )
+	, m_iID( 0 )
 	, m_dwActorCnt( 0 )
 	, m_vRotate( 0.f, -XM_PI, 0.f )
 	, m_pInputMgr( CInputMgr::GetInstance() )
@@ -43,13 +44,14 @@ CPlayer::~CPlayer()
 {
 }
 
-HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose )
+HRESULT CPlayer::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, int iID )
 {
 	m_pCharacterController = pCharacterController;
 	m_pCharacterController->getActor()->userData = this;
 	m_pActor = ( NxActor* )m_pCharacterController->getUserData();
 	m_pStateMachine = CStateMachine::Create( this );
 	m_pActorsOriginPose = pActorOriginPose;
+	m_iID = iID;
 
 	return S_OK;
 }
@@ -247,20 +249,20 @@ void CPlayer::SweapOff( void )
 	m_bSweap = false;
 }
 
-CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType )
+CPlayer* CPlayer::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType, int iID )
 {
 	CPlayer* pPlayer{ nullptr };
 
 	switch( eType )
 	{
 	case CHARACTER_CHM:
-		pPlayer = CChameleon::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
+		pPlayer = CChameleon::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType, iID );
 		break;
 	case CHARACTER_MON:
-		pPlayer = CMonkey::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
+		pPlayer = CMonkey::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType, iID );
 		break;
 	case CHARACTER_BAT:
-		pPlayer = CBat::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType );
+		pPlayer = CBat::Create( pDevice, pCharacterController, pActorOriginPoseArray, eType, iID );
 		break;
 	}
 

@@ -7,8 +7,6 @@
 #include "Player.h"
 #include "Mathematics.h"
 #include "StateMachine.h"
-#include "ParticleMgr.h"
-#include "ParticleObject.h"
 
 CBat::CBat()
 	: CPlayer()
@@ -19,9 +17,9 @@ CBat::~CBat()
 {
 }
 
-HRESULT CBat::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
+HRESULT CBat::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID )
 {
-	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose );
+	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose, iID );
 
 	// Mesh, Texture, AnimationController »ý¼º
 	m_pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Bat" );
@@ -85,11 +83,11 @@ XMFLOAT4X4* CBat::GetWorld()
 	return &m_mtxWorld;
 }
 
-CBat* CBat::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
+CBat* CBat::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID )
 {
 	CBat* pBat = new CBat;
 
-	if( FAILED( pBat->Initialize( pDevice, pCharacterController, pActorOriginPose, eType ) ) )
+	if( FAILED( pBat->Initialize( pDevice, pCharacterController, pActorOriginPose, eType, iID ) ) )
 	{
 		pBat->Release();
 		pBat = nullptr;

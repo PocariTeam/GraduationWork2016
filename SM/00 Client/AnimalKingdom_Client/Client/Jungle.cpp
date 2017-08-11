@@ -20,7 +20,7 @@
 #include "Sign_UI.h"
 #include "StateMachine.h"
 #include "EventCamera.h"
-#include "ParticleMgr.h"
+#include "EffectMgr.h"
 #include "Skill_UI.h"
 
 bool CJungle::m_bStart = false;
@@ -58,7 +58,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	CNetworkMgr::GetInstance()->unreadyAllPlayer();
 
 	CLightMgr::GetInstance()->Initialize( pDevice );
-	CParticleMgr::GetInstance()->Initialize( pDevice );
+	CEffectMgr::GetInstance()->Initialize( pDevice );
 	CPhysics::GetInstance()->Load_Scene( pDevice, m_listShader, &m_mapPlayer, "../Executable/Resources/Scene/Jungle.xml" );
 	m_iPlayerID = CNetworkMgr::GetInstance()->getID();
 	m_iFocus = m_iPlayerID;
@@ -299,7 +299,7 @@ DWORD CJungle::Release( void )
 
 	CScene::Release();
 
-	CParticleMgr::DestroyInstance();
+	CEffectMgr::DestroyInstance();
 	CRenderer::GetInstance()->Clear_AlphaObject();
 	CLightMgr::DestroyInstance();
 	CPhysics::GetInstance()->Release_Scene();

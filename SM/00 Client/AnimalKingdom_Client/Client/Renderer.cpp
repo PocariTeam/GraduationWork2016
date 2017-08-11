@@ -6,7 +6,6 @@
 #include "RenderState.h"
 #include "RenderTargetMgr.h"
 #include "LightMgr.h"
-#include "ParticleMgr.h"
 #include "Functor.h"
 
 CRenderer*	CSingleton<CRenderer>::m_pInstance;
@@ -256,11 +255,6 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	// Z값에 따른 소팅을 수행한다.
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
-
-	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
-	// CParticleMgr::GetInstance()->Render( pContext );
-	if( m_bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
-	else CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 
 	if( !m_listAlphaObject.empty() )
 	{

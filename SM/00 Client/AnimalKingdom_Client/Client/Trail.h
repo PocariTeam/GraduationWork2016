@@ -3,14 +3,14 @@
 #ifndef Trail_h__
 #define Trail_h__
 
-#include "ParticleObject.h"
+#include "EffectObject.h"
 #include "Struct.h"
 
 #define TRAIL_LENGTH 31
 
 class CShader;
 class CTrail
-	: public CParticleObject
+	: public CEffectObject
 {
 private:
 	explicit CTrail();

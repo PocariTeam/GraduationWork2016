@@ -292,21 +292,6 @@
     <Filter Include="소스 파일\02 Utility\07 Mathematics / TypeConversion">
       <UniqueIdentifier>{e3fe9a7b-39e0-45c8-9173-0688545150ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Particle">
-      <UniqueIdentifier>{8dfa6167-3e4f-44d4-aac1-20cb7738bbe2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Particle\00 Manager">
-      <UniqueIdentifier>{c18df937-0e60-4932-b3be-a1d3712b3443}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Particle\01 Object">
-      <UniqueIdentifier>{4e43bb6c-9789-47e2-8a35-7884f30a2af3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Particle\01 Object\00 Trail">
-      <UniqueIdentifier>{aeadb38c-c61e-4cc7-9ef8-972414816b79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Particle\01 Object\01 Fire">
-      <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\00 Client\03 Object\01 InGame\00 Player\02 Bat">
       <UniqueIdentifier>{6b20794f-d699-4e1a-a853-3649e9ec26b6}</UniqueIdentifier>
     </Filter>
@@ -318,6 +303,21 @@
     </Filter>
     <Filter Include="소스 파일\03 Resources\04 Shader\99 HLSL\05 Particle">
       <UniqueIdentifier>{7194901a-274d-428b-9151-dda2dfbf53b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect">
+      <UniqueIdentifier>{8dfa6167-3e4f-44d4-aac1-20cb7738bbe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\00 Manager">
+      <UniqueIdentifier>{c18df937-0e60-4932-b3be-a1d3712b3443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object">
+      <UniqueIdentifier>{4e43bb6c-9789-47e2-8a35-7884f30a2af3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\00 Trail">
+      <UniqueIdentifier>{aeadb38c-c61e-4cc7-9ef8-972414816b79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\01 Fire">
+      <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -654,14 +654,8 @@
     <ClInclude Include="Cloth.h">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\05 Cloth</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleMgr.h">
-      <Filter>소스 파일\02 Utility\06 Particle\00 Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleObject.h">
-      <Filter>소스 파일\02 Utility\06 Particle\01 Object</Filter>
-    </ClInclude>
     <ClInclude Include="Trail.h">
-      <Filter>소스 파일\02 Utility\06 Particle\01 Object\00 Trail</Filter>
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object\00 Trail</Filter>
     </ClInclude>
     <ClInclude Include="Bat.h">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\02 Bat</Filter>
@@ -671,6 +665,12 @@
     </ClInclude>
     <ClInclude Include="ComponentShader.h">
       <Filter>소스 파일\03 Resources\04 Shader\02 Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectMgr.h">
+      <Filter>소스 파일\02 Utility\06 Effect\00 Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectObject.h">
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -956,14 +956,8 @@
     <ClCompile Include="Cloth.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\05 Cloth</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleMgr.cpp">
-      <Filter>소스 파일\02 Utility\06 Particle\00 Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleObject.cpp">
-      <Filter>소스 파일\02 Utility\06 Particle\01 Object</Filter>
-    </ClCompile>
     <ClCompile Include="Trail.cpp">
-      <Filter>소스 파일\02 Utility\06 Particle\01 Object\00 Trail</Filter>
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object\00 Trail</Filter>
     </ClCompile>
     <ClCompile Include="Bat.cpp">
       <Filter>소스 파일\00 Client\03 Object\01 InGame\00 Player\02 Bat</Filter>
@@ -973,6 +967,12 @@
     </ClCompile>
     <ClCompile Include="ComponentShader.cpp">
       <Filter>소스 파일\03 Resources\04 Shader\02 Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectMgr.cpp">
+      <Filter>소스 파일\02 Utility\06 Effect\00 Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectObject.cpp">
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1054,6 +1054,9 @@
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Particle_Trail.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\05 Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Alpha.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\01 AnimateMesh</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -469,7 +469,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 					NxController* pController = CreateCharacterController( pActor, dpCharacterActors, j );
 					pController->getActor()->setGroup( COL_GROUP( COL_PLAYER1 << iCreatePlayerCnt ) );
-					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, eType );
+					CGameObject* pPlayer = CPlayer::Create( pDevice, pController, pActorOriginPose, eType, ( signed )pPlayerInfo[ iCreatePlayerCnt ].id );
 					for( int k = 0; k < j; ++k ) dpCharacterActors[ k ]->userData = pPlayer;
 					pShader_Animate_Shadow->Add_RenderObject( pPlayer );
 					pShader_Animate->Add_RenderObject( pPlayer );

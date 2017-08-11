@@ -6,7 +6,7 @@
 #include "Player.h"
 
 class NxActor;
-class CParticleObject;
+class CEffectObject;
 class CBat
 	: public CPlayer
 {
@@ -14,7 +14,7 @@ public:
 	explicit CBat();
 	virtual ~CBat();
 private:
-	HRESULT	Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType );
+	HRESULT	Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID );
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );
@@ -22,7 +22,7 @@ public:
 	virtual void Attack( STATE eState );
 	XMFLOAT4X4*	GetWorld();
 public:
-	static CBat* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType );
+	static CBat* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID );
 };
 
 #endif // Bat_h__

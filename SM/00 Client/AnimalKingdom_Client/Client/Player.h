@@ -18,7 +18,7 @@ protected:
 	explicit CPlayer();
 	virtual ~CPlayer();
 protected:
-	virtual HRESULT Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose );
+	virtual HRESULT Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, int iID );
 public:
 	void			Check_Key( const float& fTimeDelta );
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
@@ -54,8 +54,9 @@ public:
 public:
 	void			Change_State( STATE eState );
 public:
-	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType );
+	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType, int iID );
 protected:
+	int						m_iID;
 	int						m_iHp;
 	CHARACTER				m_eCharactor;
 	NxVec3					m_vOverlapped;

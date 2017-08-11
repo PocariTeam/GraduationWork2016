@@ -17,9 +17,9 @@ CMonkey::~CMonkey()
 {
 }
 
-HRESULT CMonkey::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
+HRESULT CMonkey::Initialize( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID )
 {
-	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose );
+	CPlayer::Initialize( pDevice, pCharacterController, pActorOriginPose, iID );
 
 	// Mesh, Texture, AnimationController »ý¼º
 	m_pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Monkey" );
@@ -84,11 +84,11 @@ void CMonkey::ThrowBanana()
 	CPhysics::GetInstance()->ThrowBanana( NxVec3( mtxWorld._14 + vNormalDir.x * 5.f, mtxWorld._24 + vNormalDir.y * 5.f, mtxWorld._34 + vNormalDir.z * 5.f ), NxVec3( vNormalDir.x, vNormalDir.y, vNormalDir.z ), static_cast<COL_GROUP>( m_pCharacterController->getActor()->getGroup() ) );
 }
 
-CMonkey* CMonkey::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType )
+CMonkey* CMonkey::Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPose, CHARACTER eType, int iID )
 {
 	CMonkey* pChameleon = new CMonkey;
 
-	if( FAILED( pChameleon->Initialize( pDevice, pCharacterController, pActorOriginPose, eType ) ) )
+	if( FAILED( pChameleon->Initialize( pDevice, pCharacterController, pActorOriginPose, eType, iID ) ) )
 	{
 		pChameleon->Release();
 		pChameleon = nullptr;
