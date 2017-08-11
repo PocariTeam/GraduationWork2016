@@ -1,4 +1,4 @@
-63
+64
 Texture_Back 4 ../Executable/Resources/Texture/UI/Back/Back%d.png
 Texture_Banana 1 ../Executable/Resources/Texture/Banana/Banana.png
 Texture_Billboard_Master 1 ../Executable/Resources/Texture/UI/Billboard/Billboard_Master.png
@@ -17,6 +17,7 @@ Texture_Next 4 ../Executable/Resources/Texture/UI/Next/Next%d.png
 Texture_Refresh 3 ../Executable/Resources/Texture/UI/Refresh/Refresh%d.png
 Texture_Ready 4 ../Executable/Resources/Texture/UI/Ready/Ready%d.png
 Texture_Start 4 ../Executable/Resources/Texture/UI/Start/Start%d.png
+Texture_Skill 3 ../Executable/Resources/Texture/UI/Skill/Skill%d.png
 Texture_Wnd 1 ../Executable/Resources/Texture/UI/Wnd/Wnd.png
 Texture_Crown 1 ../Executable/Resources/Texture/Crown/Crown.png
 Texture_ID0 1 ../Executable/Resources/Texture/UI/ID/ID0.png

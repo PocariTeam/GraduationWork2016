@@ -1,8 +1,9 @@
-19
+21
 Shader_3D_UI 0 6 1 ../Executable/Resources/Shader/3D_UI.fx
 Shader_ActorShape 0 0 1 ../Executable/Resources/Shader/ActorShape.fx
 Shader_AnimateMesh 0 6 1 ../Executable/Resources/Shader/AnimateMesh.fx
 Shader_AnimateMesh_Shadow 0 6 1 ../Executable/Resources/Shader/AnimateMesh_Shadow.fx
+Shader_Banana 2 3 1 ../Executable/Resources/Shader/Banana.fx
 Shader_Blend 0 5 1 ../Executable/Resources/Shader/Blend.fx
 Shader_Cloth 0 7 1 ../Executable/Resources/Shader/Cloth.fx
 Shader_Debug 0 5 1 ../Executable/Resources/Shader/Debug.fx
@@ -15,6 +16,7 @@ Shader_Mesh_I_Shadow 1 3 1 ../Executable/Resources/Shader/Mesh_I_Shadow.fx
 Shader_Number_UI 0 5 1 ../Executable/Resources/Shader/Number_UI.fx
 Shader_Number_UI_I 1 5 1 ../Executable/Resources/Shader/Number_UI_I.fx
 Shader_Skydome 0 3 1 ../Executable/Resources/Shader/Skydome.fx
-Shader_Sign_UI 0 5 1 ../Executable/Resources/Shader/Sign_UI.fx
-Shader_Trail 3 5 1 ../Executable/Resources/Shader/Particle_Trail.fx
+Shader_Sign_UI 2 5 1 ../Executable/Resources/Shader/Sign_UI.fx
+Shader_Skill_UI 0 5 1 ../Executable/Resources/Shader/Skill_UI.fx
+Shader_Trail 2 5 1 ../Executable/Resources/Shader/Particle_Trail.fx
 Shader_UI 0 5 1 ../Executable/Resources/Shader/UI.fx

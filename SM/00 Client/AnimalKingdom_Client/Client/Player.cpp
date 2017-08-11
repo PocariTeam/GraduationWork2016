@@ -15,6 +15,7 @@
 #include "Monkey.h"
 #include "Section.h"
 #include "Bat.h"
+#include "Jungle.h"
 
 CPlayer::CPlayer()
 	: CGameObject()
@@ -29,7 +30,7 @@ CPlayer::CPlayer()
 	, m_dpSections( nullptr )
 	, m_iSectionCnt( 0 )
 	, m_iHp( 100 )
-	, m_bAlpha( false )
+	, m_bInCave( false )
 	, m_vOverlapped( 0.f, 1.f, 0.f )
 	, m_eCharactor( CHARACTER_CHM )
 	, m_fDefenceTime( 0.f )
@@ -129,17 +130,19 @@ int CPlayer::Update( const float& fTimeDelta )
 	for( ; i < m_iSectionCnt; ++i )
 		if( m_dpSections[ i ]->Check_InPlane( XMFLOAT3( vPos.x, vPos.y, vPos.z ) ) )
 		{
-			m_bAlpha = true;
+			m_bInCave = true;
 			break;
 		}
 
-	if( i == m_iSectionCnt ) m_bAlpha = false;
+	if( i == m_iSectionCnt ) m_bInCave = false;
 
 	return 0;
 }
 
 void CPlayer::Render( ID3D11DeviceContext* pContext )
 {
+	if( CJungle::m_bFocusIncave != m_bInCave )
+		return;
 	m_pAnimator->Render( pContext );
 	m_pTexture->Render( pContext );
 	m_pMesh->Render( pContext );

@@ -45,10 +45,11 @@ public:
 	NxMat34*		GetActorsOriginPose( void ) { return m_pActorsOriginPose; }
 	virtual XMFLOAT4X4*	GetWorld();
 	void			ResetOverlapped();
-	bool			GetAlpha() { return m_bAlpha; }
+	bool			InCave() { return m_bInCave; }
 	int*			GetHP() { return &m_iHp; }
 	STATE			GetCurrentState();
 	float			GetRotateY() { return m_vRotate.y; }
+	float*			GetCanUseSkill() { return &m_fCanUseSkill; }
 	void			SetSkillOn(BOOL s) { m_bSkillOn = s; }
 public:
 	void			Change_State( STATE eState );
@@ -68,7 +69,7 @@ protected:
 	bool					m_bSweap;
 	CSection**				m_dpSections;
 	UINT					m_iSectionCnt;
-	bool					m_bAlpha;
+	bool					m_bInCave;
 
 	BOOL					m_bSkillOn;
 	float					m_fDefenceTime;

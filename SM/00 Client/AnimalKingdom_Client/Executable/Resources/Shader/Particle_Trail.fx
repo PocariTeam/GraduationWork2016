@@ -7,7 +7,7 @@ struct PARTICLE_INFO
 	float4 vVelocity;
 };
 
-cbuffer cbCamera : register( b0 )
+cbuffer cbParticle : register( b0 )
 {
 	PARTICLE_INFO tParticle[ TRAIL_LENGTH ];
 };

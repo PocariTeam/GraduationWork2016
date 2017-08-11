@@ -7,15 +7,18 @@
 #include "Enum.h"
 
 class CShader;
+class CGameObject;
 class CRenderer
 	: public CSingleton<CRenderer>
 {
 public:
 	HRESULT Add_RenderGroup( RENDERGROUP eGroup, CShader* pShader );
+	HRESULT Add_RenderGroup_Alpha( CGameObject* pGameObject );
 	HRESULT Copy_RenderGroup( list<CShader*>* pRenderGroup );
 	HRESULT Initialize( ID3D11Device* pDevice );
+	void Update( const float& fTimeDelta );
 	void Render( ID3D11DeviceContext* pContext );
-	void Clear_RenderGroup( void );
+	void Clear_AlphaObject( void );
 	void SetWireframe( void );
 	void SetRenderTargetDebug( void );
 	void InCave( void );
@@ -40,6 +43,8 @@ public:
 	void Render_RenderTargetDebug( ID3D11DeviceContext* pContext );
 public:
 	DWORD Release( void );
+private:
+	list<CGameObject*>	m_listAlphaObject{};
 };
 
 #endif

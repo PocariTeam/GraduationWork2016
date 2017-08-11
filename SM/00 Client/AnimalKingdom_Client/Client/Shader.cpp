@@ -180,6 +180,8 @@ HRESULT CShader::CreateDS( ID3D11Device* pDevice, const char* pFilePath )
 
 HRESULT CShader::CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize )
 {
+	::Safe_Release( m_pConstantBuffer );
+
 	D3D11_BUFFER_DESC Buffer_Desc;
 	ZeroMemory( &Buffer_Desc, sizeof( Buffer_Desc ) );
 	Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;

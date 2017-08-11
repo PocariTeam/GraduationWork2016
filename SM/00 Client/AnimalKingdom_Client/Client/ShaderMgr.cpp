@@ -4,8 +4,7 @@
 #include "Functor.h"
 #include "NormalShader.h"
 #include "InstancingShader.h"
-#include "ParticleShader.h"
-#include "TrailShader.h"
+#include "ComponentShader.h"
 
 CShaderMgr*		CSingleton<CShaderMgr>::m_pInstance;
 
@@ -56,11 +55,8 @@ HRESULT CShaderMgr::Add( ID3D11Device* pDevice, eShaderType eType, CShader::INPU
 	case CShaderMgr::SHADER_INSTANCING:
 		pShader = CInstancingShader::Create( pDevice, eInputType, pFilePath );
 		break;
-	case CShaderMgr::SHADER_PARTICLE:
-		pShader = CParticleShader::Create( pDevice, eInputType, pFilePath );
-		break;
-	case CShaderMgr::SHADER_TRAIL:
-		pShader = CTrailShader::Create( pDevice, eInputType, pFilePath );
+	case CShaderMgr::SHADER_COMPONENT:
+		pShader = CComponentShader::Create( pDevice, eInputType, pFilePath );
 		break;
 	}
 

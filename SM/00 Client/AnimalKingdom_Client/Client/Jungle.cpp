@@ -21,8 +21,10 @@
 #include "StateMachine.h"
 #include "EventCamera.h"
 #include "ParticleMgr.h"
+#include "Skill_UI.h"
 
 bool CJungle::m_bStart = false;
+bool CJungle::m_bFocusIncave = false;
 
 CJungle::CJungle()
 	: CScene()
@@ -34,6 +36,7 @@ CJungle::CJungle()
 	, m_bDebug( false )
 	, m_pStateNotify( nullptr )
 	, m_dpHP_Bar( nullptr )
+	, m_dpSkill_UI( nullptr )
 	, m_iFocus( 0 )
 	, m_bFinished( false )
 	, m_dpCrownTime_UI( nullptr )
@@ -83,13 +86,11 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	// 머리 위의 ID
 	player_iter = m_mapPlayer.begin();
-	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Sign_UI" );
 	for( ; player_iter != m_mapPlayer.end(); ++player_iter )
-		pShader->Add_RenderObject( CSign_UI::Create( CTextureMgr::GetInstance()->Clone( ( player_iter->first == m_iPlayerID ) ? "Texture_ID2" : "Texture_ID3" ), player_iter->second->GetWorld(), player_iter->first ) );
-	m_listShader[ RENDER_ALPHA ].push_front( pShader );
+		CRenderer::GetInstance()->Add_RenderGroup_Alpha( CSign_UI::Create( CTextureMgr::GetInstance()->Clone( ( player_iter->first == m_iPlayerID ) ? "Texture_ID2" : "Texture_ID3" ), player_iter->second, player_iter->second->GetWorld(), player_iter->first ) );
 
 	// Timer UI
-	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
+	CShader*	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Number_UI_I" );
 	m_dpTime_UI = new CNumber_UI*[ NUM_END ];
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_TEN ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( -0.1f, 0.9f, 0.05f, 0.1f ), 0 ) );
 	pShader->Add_RenderObject( m_dpTime_UI[ NUM_ONE ] = CNumber_UI::Create( CNumber_UI::NUMBER_TIME, XMFLOAT4( -0.05f, 0.9f, 0.05f, 0.1f ), 0 ) );
@@ -131,6 +132,7 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 
 	// HP Bar
 	m_dpHP_Bar = new CBar_UI*[ m_dwPlayerCnt ];
+
 	player_iter = m_mapPlayer.begin();
 
 	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
@@ -140,9 +142,19 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 		player_iter++;
 	}
 
-	// Ready / Start / End 표시
-	m_pStateNotify = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_RUReady" ), XMFLOAT4( -1.f, 1.f, 2.f, 2.f ) );
-	pShader->Add_RenderObject( m_pStateNotify );
+	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	// Skill UI
+	m_dpSkill_UI = new CSkill_UI*[ m_dwPlayerCnt ];
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_Skill_UI" );
+	player_iter = m_mapPlayer.begin();
+
+	for( UINT i = 0; i < m_dwPlayerCnt; ++i )
+	{
+		m_dpSkill_UI[ i ] = CSkill_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_Skill" ), XMFLOAT4( -0.96f + i * 0.5f, -0.53f, 0.1f, 0.166f ), player_iter->second->GetCanUseSkill(), player_iter->second->GetCharacterType() );
+		pShader->Add_RenderObject( m_dpSkill_UI[ i ] );
+		player_iter++;
+	}
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	// 체력바 옆 ID 표시
@@ -157,6 +169,12 @@ HRESULT CJungle::Initialize( HWND hWnd, ID3D11Device* pDevice )
 			pShader->Add_RenderObject( CNumber_UI::Create( CNumber_UI::NUMBER_OTHER_ID, XMFLOAT4( -0.985f + i * 0.5f, -0.74f, 0.15f, 0.15f ), player_iter->first ) );
 		player_iter++;
 	}
+	m_listShader[ RENDER_UI ].push_back( pShader );
+
+	// Ready / Start / End 표시
+	pShader = CShaderMgr::GetInstance()->Clone( "Shader_UI" );
+	m_pStateNotify = CNormal_UI::Create( CTextureMgr::GetInstance()->Clone( "Texture_RUReady" ), XMFLOAT4( -1.f, 1.f, 2.f, 2.f ) );
+	pShader->Add_RenderObject( m_pStateNotify );
 	m_listShader[ RENDER_UI ].push_back( pShader );
 
 	CRenderer::GetInstance()->Copy_RenderGroup( m_listShader );
@@ -228,7 +246,7 @@ void CJungle::Change_CrownUI_Position( void )
 int CJungle::Update( const float& fTimeDelta )
 {
 	CScene::Update( fTimeDelta );
-	CParticleMgr::GetInstance()->Update( fTimeDelta );
+	CRenderer::GetInstance()->Update( fTimeDelta );
 
 	auto focus_iter = m_mapPlayer.find( m_iFocus );
 	if( m_bStart )
@@ -237,7 +255,7 @@ int CJungle::Update( const float& fTimeDelta )
 		m_mapPlayer[ m_iPlayerID ]->Check_Key( fTimeDelta );
 		if( focus_iter != m_mapPlayer.end() )
 		{
-			if( focus_iter->second->GetAlpha() )
+			if( m_bFocusIncave = focus_iter->second->InCave() )
 				CRenderer::GetInstance()->InCave();
 			else
 				CRenderer::GetInstance()->OutCave();
@@ -258,6 +276,7 @@ int CJungle::Update( const float& fTimeDelta )
 DWORD CJungle::Release( void )
 {
 	m_bStart = false;
+	m_bFocusIncave = false;
 	CRenderer::GetInstance()->OutCave();
 	m_mapPlayer.erase( m_mapPlayer.begin(), m_mapPlayer.end() );
 
@@ -275,9 +294,13 @@ DWORD CJungle::Release( void )
 	delete[] m_dpHP_Bar;
 	m_dpHP_Bar = nullptr;
 
+	delete[] m_dpSkill_UI;
+	m_dpSkill_UI = nullptr;
+
 	CScene::Release();
 
 	CParticleMgr::DestroyInstance();
+	CRenderer::GetInstance()->Clear_AlphaObject();
 	CLightMgr::DestroyInstance();
 	CPhysics::GetInstance()->Release_Scene();
 

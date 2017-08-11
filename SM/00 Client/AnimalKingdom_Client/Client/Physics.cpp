@@ -464,6 +464,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 						pActorOriginPose[ j ] = dpCharacterActors[ j ]->getGlobalPose();
 						// Collision Grouping 은 CreateActor 함수 안에서 현재 하고 있음 ( 추후 변경도 가능 )
 					}
+
 					dpActorArray = m_pScene->getActors();
 
 					NxController* pController = CreateCharacterController( pActor, dpCharacterActors, j );
@@ -800,7 +801,6 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		plistShader[ RENDER_DEPTHTEST ].push_back( pShader_Cloth );
 		plistShader[ RENDER_LIGHT ].push_back( pShader_Light );
 		plistShader[ RENDER_BLEND ].push_back( pShader_Blend );
-		plistShader[ RENDER_ALPHA ].push_back( CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" ) );
 		plistShader[ RENDER_INCAVE ].push_back( pShader_Mesh_Alpha );
 		plistShader[ RENDER_DEBUG ].push_back( pShader_Debug );
 
@@ -1031,7 +1031,7 @@ void CPhysics::CreateBanana( void )
 
 	CBanana*	pBanana = CBanana::Create( pActor, COL_DYNAMIC );
 	pActor->userData = pBanana;
-	m_pShaderlist[ RENDER_ALPHA ].front()->Add_RenderObject( pBanana );
+	CRenderer::GetInstance()->Add_RenderGroup_Alpha( pBanana );
 	m_BananaQueue.push( pBanana );
 }
 

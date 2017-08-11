@@ -9,9 +9,12 @@
 #include "TextureMgr.h"
 #include "Enum.h"
 #include "Physics.h"
+#include "Shader.h"
+#include "ShaderMgr.h"
 
 CBanana::CBanana()
 	: CGameObject()
+	, m_pShader( nullptr )
 	, m_vScale( 0.06f, 0.06f, 0.06f )
 	, m_eMasterGroup( COL_DYNAMIC )
 	, m_fLifeTime( 0.f )
@@ -29,6 +32,7 @@ HRESULT CBanana::Initialize( NxActor* pActor, COL_GROUP eMaster )
 	m_eMasterGroup = eMaster;
 	m_pActor = pActor;
 	m_vOption.w = 1.f;
+	m_pShader = CShaderMgr::GetInstance()->Clone( "Shader_Banana" );
 
 	return S_OK;
 }
@@ -107,6 +111,8 @@ void CBanana::Frozen( void )
 
 void CBanana::Render( ID3D11DeviceContext* pContext )
 {
+	m_pShader->SetConstantBuffer( pContext, *GetWorld(), m_vOption );
+	m_pShader->Render( pContext );
 	m_pTexture->Render( pContext );
 	m_pMesh->Render( pContext );
 }
@@ -115,7 +121,10 @@ DWORD CBanana::Release( void )
 {
 	// CPhysics::GetInstance()->GetSDK()->releaseCCDSkeleton( *( m_pActor->getShapes()[ 0 ]->getCCDSkeleton() ) );
 	if( 0 == CGameObject::Release() )
+	{
+		::Safe_Release( m_pShader );
 		delete this;
+	}
 
 	return 0;
 }

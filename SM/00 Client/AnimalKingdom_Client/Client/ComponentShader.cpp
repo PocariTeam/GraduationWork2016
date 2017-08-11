@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "TrailShader.h"
+#include "ComponentShader.h"
 #include "Function.h"
 #include "GameObject.h"
 #include "Functor.h"
@@ -7,85 +7,58 @@
 #include "ParticleObject.h"
 #include "Define.h"
 
-CTrailShader::CTrailShader()
+CComponentShader::CComponentShader()
 	: CShader()
 {
 }
 
-CTrailShader::CTrailShader( const CTrailShader& Instance )
+CComponentShader::CComponentShader( const CComponentShader& Instance )
 	: CShader( Instance )
 {
 }
 
-CTrailShader::~CTrailShader()
+CComponentShader::~CComponentShader()
 {
 }
 
-CShader* CTrailShader::Clone( void )
+CShader* CComponentShader::Clone( void )
 {
-	return new CTrailShader( *this );
+	return new CComponentShader( *this );
 }
 
-void CTrailShader::Update( const float& fTimeDelta )
+void CComponentShader::Render( ID3D11DeviceContext* pContext )
 {
-	if( m_vecRenderObject.empty() )
-		return;
-
-	DWORD dwObjectCnt = ( DWORD )m_vecRenderObject.size();
-
-	for( DWORD i = 0; i < dwObjectCnt; ++i )
-		m_vecRenderObject[ i ]->Update( fTimeDelta );
-}
-
-void CTrailShader::Render( ID3D11DeviceContext* pContext )
-{
-	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
 	pContext->IASetInputLayout( m_pInputLayout );
 	pContext->VSSetShader( m_pVS, NULL, 0 );
 	pContext->HSSetShader( m_pHS, NULL, 0 );
 	pContext->DSSetShader( m_pDS, NULL, 0 );
 	pContext->GSSetShader( m_pGS, NULL, 0 );
 	pContext->PSSetShader( m_pPS, NULL, 0 );
-
-	if( m_vecRenderObject.empty() )
-		return;
-
-	DWORD dwObjectCnt = ( DWORD )m_vecRenderObject.size();
-
-	for( DWORD i = 0; i < dwObjectCnt; ++i )
-	{
-		SetConstantBuffer( pContext, ( ( CParticleObject* )m_vecRenderObject[ i ] )->GetParticleData(), ( ( CParticleObject* )m_vecRenderObject[ i ] )->GetParticleDataCnt() * sizeof( CB_PARTICLE ) );
-		m_vecRenderObject[ i ]->Render( pContext );
-	}
 }
 
-DWORD CTrailShader::Release( void )
+DWORD CComponentShader::Release( void )
 {
 	DWORD dwRefCnt = CShader::Release();
-
-	for_each( m_vecRenderObject.begin(), m_vecRenderObject.end(), ReleaseElement() );
-	m_vecRenderObject.erase( m_vecRenderObject.begin(), m_vecRenderObject.end() );
-	m_vecRenderObject.swap( vector<CGameObject*>{} );
 
 	delete this;
 
 	return dwRefCnt;
 }
 
-CTrailShader* CTrailShader::Create( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
+CComponentShader* CComponentShader::Create( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
 {
-	CTrailShader* pTrailShader = new CTrailShader;
+	CComponentShader* pComponentShader = new CComponentShader;
 
-	if( FAILED( pTrailShader->Initialize( pDevice, eInputType, pFilePath ) ) )
+	if( FAILED( pComponentShader->Initialize( pDevice, eInputType, pFilePath ) ) )
 	{
-		pTrailShader->Release();
-		pTrailShader = nullptr;
+		pComponentShader->Release();
+		pComponentShader = nullptr;
 	}
 
-	return pTrailShader;
+	return pComponentShader;
 }
 
-HRESULT CTrailShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
+HRESULT CComponentShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath )
 {
 	D3D11_INPUT_ELEMENT_DESC* pInputDesc{ nullptr };
 	UINT iArrCnt{};
@@ -111,6 +84,22 @@ HRESULT CTrailShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eIn
 		iArrCnt = ARRAYSIZE( VTX_Element );
 	}
 	break;
+	case CShader::INPUT_PNTT:
+	{
+		D3D11_INPUT_ELEMENT_DESC	VTX_Element[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT
+			, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		pInputDesc = VTX_Element;
+		iArrCnt = ARRAYSIZE( VTX_Element );
+	}
+	break;
 	}
 
 	if( FAILED( CreateVS( pDevice, pFilePath, pInputDesc, iArrCnt ) ) )
@@ -123,17 +112,12 @@ HRESULT CTrailShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eIn
 	CreateHS( pDevice, pFilePath );
 	CreateDS( pDevice, pFilePath );
 
-	CreateConstantBuffer( pDevice, sizeof( CB_PARTICLE ) * MAX_TRAIL_CNT );
+	CreateConstantBuffer( pDevice );
 
 	return S_OK;
 }
-void CTrailShader::Add_RenderObject( CGameObject* pGameObject )
-{
-	pGameObject->Add_Ref();
-	m_vecRenderObject.push_back( pGameObject );
-}
 
-void CTrailShader::SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData, UINT iDataSize )
+void CComponentShader::SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID pData, UINT iDataSize )
 {
 	UINT	iStride{ iDataSize }, iOffset{ 0 };
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;

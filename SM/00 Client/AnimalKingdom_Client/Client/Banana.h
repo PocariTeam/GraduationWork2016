@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Enum.h"
 
+class CShader;
 class CBanana
 	: public CGameObject
 {
@@ -27,6 +28,7 @@ public:
 	DWORD		Release( void );
 	COL_GROUP	GetMasterCollisionGroup() const;
 private:
+	CShader*	m_pShader;
 	XMFLOAT3	m_vScale;
 	COL_GROUP	m_eMasterGroup;
 	float		m_fLifeTime;

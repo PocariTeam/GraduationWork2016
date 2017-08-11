@@ -18,12 +18,8 @@ public:
 	HRESULT	Initialize( ID3D11Device* pDevice );
 	DWORD	Release( void );
 	CParticleObject* Add( PARTICLE_TYPE eType, const XMFLOAT4X4& mtxWorld, const XMFLOAT2& vSize, const float fAge, XMFLOAT3& vVelocity = XMFLOAT3{ 0.f, 0.f, 0.f } );
-public:
-	void	Update( const float& fTimeDelta );
-	void	Render( ID3D11DeviceContext* pContext );
 private:
 	ID3D11Device*	m_pDevice;
-	CShader*		m_pParticleShaderArr[ PARTICLE_END ]{};
 };
 
 #endif // ParticleMgr_h__

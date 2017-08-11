@@ -14,6 +14,7 @@
 #include "Animator.h"
 #include "RenderState.h"
 #include "Renderer.h"
+#include "Jungle.h"
 
 #define TEAR_MEMORY_FACTOR 1
 
@@ -385,6 +386,8 @@ int CCloth::Update( const float& fTimeDelta )
 void CCloth::Render( ID3D11DeviceContext* pContext )
 {
 	if( nullptr == m_pOwner ) return;
+	if( CJungle::m_bFocusIncave != m_pOwner->InCave() )
+		return;
 
 	DWORD dwVTXCnt = *m_tReceiveBuffers.numVerticesPtr;
 	DWORD dwIDXCnt = *m_tReceiveBuffers.numIndicesPtr / 3;

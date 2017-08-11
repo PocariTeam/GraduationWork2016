@@ -79,7 +79,7 @@ int CLobby::Update( const float& fTimeDelta )
 DWORD CLobby::Release( void )
 {
 	CScene::Release();
-	m_pRenderer->Clear_RenderGroup();
+	m_pRenderer->Clear_AlphaObject();
 	m_pRenderer = nullptr;
 	m_pInputMgr = nullptr;
 

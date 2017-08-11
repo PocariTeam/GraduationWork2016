@@ -219,9 +219,9 @@
     <ClInclude Include="MediaPath.h" />
     <ClInclude Include="ParticleMgr.h" />
     <ClInclude Include="ParticleObject.h" />
-    <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
+    <ClInclude Include="Skill_UI.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="ThirdCamera.h" />
     <ClInclude Include="InputMgr.h" />
@@ -276,7 +276,7 @@
     <ClInclude Include="ThreeD_UI.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Trail.h" />
-    <ClInclude Include="TrailShader.h" />
+    <ClInclude Include="ComponentShader.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="Wallpaper.h" />
@@ -398,9 +398,9 @@
     <ClCompile Include="MediaPath_WIN.cpp" />
     <ClCompile Include="ParticleMgr.cpp" />
     <ClCompile Include="ParticleObject.cpp" />
-    <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
+    <ClCompile Include="Skill_UI.cpp" />
     <ClCompile Include="Stream.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />
     <ClCompile Include="InputMgr.cpp" />
@@ -452,7 +452,7 @@
     <ClCompile Include="ThreeD_UI.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Trail.cpp" />
-    <ClCompile Include="TrailShader.cpp" />
+    <ClCompile Include="ComponentShader.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wallpaper.cpp" />
     <ClCompile Include="AnimationSet.cpp" />
@@ -554,6 +554,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Banana.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Mesh_I.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -596,13 +604,21 @@
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Particle_Trail.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Sign_UI.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Skill_UI.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

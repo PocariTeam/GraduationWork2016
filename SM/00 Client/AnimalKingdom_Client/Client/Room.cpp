@@ -132,7 +132,7 @@ DWORD CRoom::Release( void )
 {
 	CScene::Release();
 
-	m_pRenderer->Clear_RenderGroup();
+	m_pRenderer->Clear_AlphaObject();
 
 	delete[] m_dpBtns;
 	m_dpBtns = nullptr;

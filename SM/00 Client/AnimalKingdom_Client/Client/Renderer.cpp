@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "GameObject.h"
 #include "Shader.h"
 #include "Function.h"
 #include "RenderState.h"
 #include "RenderTargetMgr.h"
 #include "LightMgr.h"
 #include "ParticleMgr.h"
+#include "Functor.h"
 
 CRenderer*	CSingleton<CRenderer>::m_pInstance;
 bool		CRenderer::m_bWireFrame = false;
@@ -38,21 +40,15 @@ void CRenderer::OutCave( void )
 	m_bInCave = false;
 }
 
-void CRenderer::Clear_RenderGroup( void )
+void CRenderer::Clear_AlphaObject( void )
 {
-	/*for( int i = 0; i < RENDER_END; ++i ) {
-		if( m_pRenderGroup[ i ].empty() ) continue;
-		auto iter = m_pRenderGroup[ i ].begin();
-		for( ; iter != m_pRenderGroup[ i ].end(); )
-			iter = m_pRenderGroup[ i ].erase( iter );
-
-		m_pRenderGroup[ i ].clear();
-	}*/
+	for_each( m_listAlphaObject.begin(), m_listAlphaObject.end(), ReleaseElement() );
+	m_listAlphaObject.erase( m_listAlphaObject.begin(), m_listAlphaObject.end() );
 }
 
 DWORD CRenderer::Release( void )
 {
-	Clear_RenderGroup();
+	Clear_AlphaObject();
 	CRenderState::Release();
 
 	delete this;
@@ -73,6 +69,16 @@ HRESULT CRenderer::Add_RenderGroup( RENDERGROUP eGroup, CShader* pShader )
 	return S_OK;
 }
 
+HRESULT CRenderer::Add_RenderGroup_Alpha( CGameObject* pGameObject )
+{
+	if( nullptr == pGameObject )
+		return E_FAIL;
+
+	m_listAlphaObject.push_back( pGameObject );
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Copy_RenderGroup( list<CShader*>* pRenderGroup )
 {
 	if( nullptr == pRenderGroup )
@@ -88,6 +94,16 @@ HRESULT CRenderer::Initialize( ID3D11Device* pDevice )
 	CRenderState::Initialize( pDevice );
 
 	return S_OK;
+}
+
+void CRenderer::Update( const float& fTimeDelta )
+{
+	if( m_listAlphaObject.empty() ) return;
+
+	auto Advance_iter = m_listAlphaObject.begin();
+
+	for( ; Advance_iter != m_listAlphaObject.end(); ++Advance_iter )
+		( *Advance_iter )->Update( fTimeDelta );
 }
 
 void CRenderer::Render( ID3D11DeviceContext* pContext )
@@ -242,17 +258,18 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 	CRenderState::Set_BlendState( pContext, CRenderState::BL_ALPHA );
 
 	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NO_CULL );
-	CParticleMgr::GetInstance()->Render( pContext );
+	// CParticleMgr::GetInstance()->Render( pContext );
 	if( m_bWireFrame )	CRenderState::Set_Rasterize( pContext, CRenderState::RS_WIREFRAME );
 	else CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
 
-
-	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_ALPHA ].begin();
-	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_ALPHA ].end();
-
-	for( ; iter != iter_end; ++iter )
+	if( !m_listAlphaObject.empty() )
 	{
-		( *iter )->Render( pContext );
+		m_listAlphaObject.sort( []( CGameObject*& a, CGameObject*& b ) { return a->GetWorld()->_34 > b->GetWorld()->_34; } );
+
+		auto Advance_iter = m_listAlphaObject.begin();
+
+		for( ; Advance_iter != m_listAlphaObject.end(); ++Advance_iter )
+			( *Advance_iter )->Render( pContext );
 	}
 
 	if( m_bInCave ) Render_InCave( pContext );

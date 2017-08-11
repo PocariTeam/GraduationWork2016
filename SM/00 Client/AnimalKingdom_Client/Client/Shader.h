@@ -22,6 +22,7 @@ protected:
 	HRESULT CreateGS( ID3D11Device* pDevice, const char* pFilePath );
 	HRESULT CreateHS( ID3D11Device* pDevice, const char* pFilePath );
 	HRESULT CreateDS( ID3D11Device* pDevice, const char* pFilePath );
+public:
 	virtual HRESULT CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize = sizeof( CB_WORLD ) );
 public:
 	virtual CShader*	Clone( void )PURE;

@@ -21,6 +21,7 @@ public:
 	static CInstancingShader*	Create( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath );
 private:
 	HRESULT		Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE eInputType, const TCHAR* pFilePath );
+public:
 	HRESULT		CreateConstantBuffer( ID3D11Device* pDevice, UINT iBufferSize = sizeof( CB_WORLD ) );
 public:
 	vector<CGameObject*>*	GetRenderObjects() { return &m_vecRenderObject; }

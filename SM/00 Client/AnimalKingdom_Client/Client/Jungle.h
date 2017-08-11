@@ -10,6 +10,7 @@ class CBar_UI;
 class CPlayer;
 class CNumber_UI;
 class CSection;
+class CSkill_UI;
 class CJungle
 	: public CScene
 {
@@ -55,11 +56,14 @@ private:
 	/* Ready / Start / End */
 public:
 	static	bool			m_bStart;
+	static  bool			m_bFocusIncave;
 private:
 	bool					m_bFinished;
 	CNormal_UI*				m_pStateNotify;
 	/* HP Bar */
 	CBar_UI**				m_dpHP_Bar;
+	/* Skill Time UI */
+	CSkill_UI**				m_dpSkill_UI;
 };
 
 #endif // Jungle_h__

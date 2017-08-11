@@ -5,6 +5,8 @@
 
 #include "UserInterface.h"
 
+class CShader;
+class CPlayer;
 class CSign_UI
 	: public CUserInterface
 {
@@ -12,9 +14,9 @@ private:
 	explicit CSign_UI();
 	virtual ~CSign_UI();
 private:
-	HRESULT		Initialize( CTexture* pTexture, XMFLOAT4X4* pDest, UINT iID );
+	HRESULT		Initialize( CTexture* pTexture, CPlayer* pOwner, XMFLOAT4X4* pDest, UINT iID );
 public:
-	static CSign_UI*	Create( CTexture* pTexture, XMFLOAT4X4* pDest, UINT iID );
+	static CSign_UI*	Create( CTexture* pTexture, CPlayer* pOwner, XMFLOAT4X4* pDest, UINT iID );
 public:
 	void Render( ID3D11DeviceContext* pContext );
 	int Update( const float& fTimeDelta );
@@ -25,6 +27,8 @@ public:
 	void SetNumber( UINT iNum );
 	void SetPosition( XMFLOAT2& vPos ) {}
 private:
+	CPlayer*	m_pOwner;
+	CShader*	m_pShader;
 	bool		m_bHide;
 	XMFLOAT4X4*	m_pDestWorld;
 	float		m_fOffset;

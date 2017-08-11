@@ -7,9 +7,14 @@
 #include "Mesh.h"
 #include "ParticleMgr.h"
 #include "Mathematics.h"
+#include "Shader.h"
+#include "ShaderMgr.h"
+#include "Define.h"
 
 CTrail::CTrail()
 	: CParticleObject()
+	, m_pShader( nullptr )
+	, m_pConstantBuffer( nullptr )
 {
 }
 
@@ -39,6 +44,9 @@ HRESULT CTrail::Initialize( ID3D11Device* pDevice, const XMFLOAT4X4& mtxWorld, c
 		tIniData.m_vOption.y -= 1.f / TRAIL_LENGTH;
 		m_tParticleInfo[ i ] = tIniData;
 	}
+
+	m_pShader = CShaderMgr::GetInstance()->Clone( "Shader_Trail" );
+	CreateConstantBuffer( pDevice );
 
 	return S_OK;
 }
@@ -89,6 +97,35 @@ LPVOID CTrail::GetParticleData()
 	return m_tParticleInfo;
 }
 
+HRESULT CTrail::CreateConstantBuffer( ID3D11Device* pDevice )
+{
+	::Safe_Release( m_pConstantBuffer );
+
+	D3D11_BUFFER_DESC Buffer_Desc;
+	ZeroMemory( &Buffer_Desc, sizeof( Buffer_Desc ) );
+	Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+	Buffer_Desc.ByteWidth = sizeof( CB_PARTICLE ) * TRAIL_LENGTH;
+	Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	pDevice->CreateBuffer( &Buffer_Desc, nullptr, &m_pConstantBuffer );
+
+	return S_OK;
+}
+
+void CTrail::SetConstantBuffer( ID3D11DeviceContext* pContext )
+{
+	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
+
+	pContext->Map( m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
+	memcpy_s( MappedSubresource.pData, sizeof( CB_PARTICLE ) * TRAIL_LENGTH, m_tParticleInfo, sizeof( CB_PARTICLE ) * TRAIL_LENGTH );
+
+	pContext->Unmap( m_pConstantBuffer, 0 );
+	pContext->VSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );
+	pContext->GSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );
+	pContext->PSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );
+}
+
 int CTrail::Update( const float& fTimeDelta )
 {
 	// if( m_vOption.y > 0 )
@@ -99,13 +136,21 @@ int CTrail::Update( const float& fTimeDelta )
 
 void CTrail::Render( ID3D11DeviceContext* pContext )
 {
-	if( m_bActive ) pContext->Draw( TRAIL_LENGTH, 0 );
+	if( m_bActive )
+	{
+		pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_POINTLIST );
+		SetConstantBuffer( pContext );
+		m_pShader->Render( pContext );
+		pContext->Draw( TRAIL_LENGTH, 0 );
+	}
 }
 
 DWORD CTrail::Release( void )
 {
 	if( 0 == CGameObject::Release() )
 	{
+		::Safe_Release( m_pShader );
+		::Safe_Release( m_pConstantBuffer );
 		delete this;
 	}
 

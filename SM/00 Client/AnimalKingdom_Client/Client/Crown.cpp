@@ -100,6 +100,9 @@ void CCrown::Render( ID3D11DeviceContext* pContext )
 {
 	if( CJungle::m_bStart )
 	{
+		if( nullptr != m_pOwner )
+			if( CJungle::m_bFocusIncave != m_pOwner->InCave() )
+				return;
 		m_pTexture->Render( pContext );
 		m_pMesh->Render( pContext );
 	}
