@@ -100,9 +100,6 @@ void CStateMachine::Change_State( STATE eState )
 	case STATE_DEAD:
 		Change_State( &CDeadState::getInstance() );
 		break;
-	case STATE_DEFEND_END:
-		Change_State(&CDeadState::getInstance());
-		break;
 	}
 }
 
