@@ -322,6 +322,9 @@
     <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\01 Dummy">
       <UniqueIdentifier>{691c087c-1550-47d9-9eb3-7e3acc874135}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03 Resources\04 Shader\03 Stencil">
+      <UniqueIdentifier>{355ed8f6-e628-49f5-9fb7-e6ba63df602a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -678,6 +681,9 @@
     <ClInclude Include="Dummy.h">
       <Filter>소스 파일\02 Utility\06 Effect\01 Object\01 Dummy</Filter>
     </ClInclude>
+    <ClInclude Include="StencilShader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -982,6 +988,9 @@
     </ClCompile>
     <ClCompile Include="Dummy.cpp">
       <Filter>소스 파일\02 Utility\06 Effect\01 Object\01 Dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="StencilShader.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

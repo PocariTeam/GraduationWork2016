@@ -382,7 +382,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 
 	CNetworkMgr::GetInstance()->getPlayerInfo( pPlayerInfo, iPlayerCnt );
 
-	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave
+	CShader*	pShader_Mesh, *pShader_Light, *pShader_Blend, *pShader_Debug, *pShader_Animate, *pShader_Skydome, *pShader_Cave, *pShader_Stencil
 			 , *pShader_Mesh_Alpha, *pShader_Cloth, *pShader_Environment[ 15 ], *pShader_Animate_Shadow, *pShader_Mesh_Shadow, *pShader_Environment_Shadow[ 15 ];
 
 	pShader_Skydome = CShaderMgr::GetInstance()->Clone( "Shader_Skydome" );
@@ -400,6 +400,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 	pShader_Animate = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh" );
 	pShader_Mesh_Alpha = CShaderMgr::GetInstance()->Clone( "Shader_Mesh_Alpha" );
 	pShader_Cloth = CShaderMgr::GetInstance()->Clone( "Shader_Cloth" );
+	pShader_Stencil = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh_Stencil" );
 	pShader_Animate_Shadow = CShaderMgr::GetInstance()->Clone( "Shader_AnimateMesh_Shadow" );
 
 	CMesh* pSkydome_Mesh = CMeshMgr::GetInstance()->Clone( "Mesh_Skydome" );
@@ -473,6 +474,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 					for( int k = 0; k < j; ++k ) dpCharacterActors[ k ]->userData = pPlayer;
 					pShader_Animate_Shadow->Add_RenderObject( pPlayer );
 					pShader_Animate->Add_RenderObject( pPlayer );
+					pShader_Stencil->Add_RenderObject( pPlayer );
 					pmapPlayer->insert( make_pair( ( int )pPlayerInfo[ iCreatePlayerCnt ].id, ( CPlayer* )pPlayer ) );
 					iCreatePlayerCnt++;
 				}
@@ -789,6 +791,7 @@ HRESULT CPhysics::SetupScene( ID3D11Device* pDevice, list<CShader*>* plistShader
 		plistShader[ RENDER_OUTCAVE ].push_back( pShader_Mesh );
 		plistShader[ RENDER_SHADOW ].push_back( pShader_Mesh_Shadow );
 		plistShader[ RENDER_SHADOW ].push_back( pShader_Animate_Shadow );
+		plistShader[ RENDER_STENCIL ].push_back( pShader_Stencil );
 
 		for( int i = 0; i < 15; ++i )
 		{

@@ -5,6 +5,7 @@
 #include "NormalShader.h"
 #include "InstancingShader.h"
 #include "ComponentShader.h"
+#include "StencilShader.h"
 
 CShaderMgr*		CSingleton<CShaderMgr>::m_pInstance;
 
@@ -57,6 +58,9 @@ HRESULT CShaderMgr::Add( ID3D11Device* pDevice, eShaderType eType, CShader::INPU
 		break;
 	case CShaderMgr::SHADER_COMPONENT:
 		pShader = CComponentShader::Create( pDevice, eInputType, pFilePath );
+		break;
+	case CShaderMgr::SHADER_STENCIL:
+		pShader = CStencilShader::Create( pDevice, eInputType, pFilePath );
 		break;
 	}
 

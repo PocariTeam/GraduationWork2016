@@ -223,6 +223,7 @@
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
     <ClInclude Include="Skill_UI.h" />
+    <ClInclude Include="StencilShader.h" />
     <ClInclude Include="Stream.h" />
     <ClInclude Include="ThirdCamera.h" />
     <ClInclude Include="InputMgr.h" />
@@ -403,6 +404,7 @@
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
     <ClCompile Include="Skill_UI.cpp" />
+    <ClCompile Include="StencilShader.cpp" />
     <ClCompile Include="Stream.cpp" />
     <ClCompile Include="ThirdCamera.cpp" />
     <ClCompile Include="InputMgr.cpp" />

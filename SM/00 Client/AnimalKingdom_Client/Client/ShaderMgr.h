@@ -10,7 +10,7 @@ class CShaderMgr
 	: public CSingleton<CShaderMgr>
 {
 public:
-	enum eShaderType{ SHADER_NORMAL, SHADER_INSTANCING, SHADER_COMPONENT, SHADER_END };
+	enum eShaderType{ SHADER_NORMAL, SHADER_INSTANCING, SHADER_COMPONENT, SHADER_STENCIL, SHADER_END };
 	using SHADER_TYPE = eShaderType;
 public:
 	CShader* Clone( const char* pKey );

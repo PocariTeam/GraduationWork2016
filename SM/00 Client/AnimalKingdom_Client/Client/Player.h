@@ -34,6 +34,7 @@ public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext );
 	void			Render_Dummy( ID3D11DeviceContext* pContext );
+	void			Render_Stencil( ID3D11DeviceContext* pContext );
 	virtual DWORD	Release( void );
 public:
 	void			MinimizeController( void );

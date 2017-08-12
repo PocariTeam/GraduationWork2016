@@ -32,6 +32,7 @@ public:
 	static bool			m_bInCave;
 public:
 	void Render_ShadowMap( ID3D11DeviceContext* pContext );
+	void Render_Stencil( ID3D11DeviceContext* pContext );
 	void Render_Background( ID3D11DeviceContext* pContext );
 	void Render_DepthTest( ID3D11DeviceContext* pContext );
 	void Render_OutCave( ID3D11DeviceContext* pContext );

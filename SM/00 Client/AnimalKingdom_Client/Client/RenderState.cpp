@@ -67,6 +67,45 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	DepthDesc.DepthEnable = false;
 	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_NO_TEST ] );
 
+	/* DS_STENCIL_WRITE */
+	ZeroMemory( &DepthDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
+	DepthDesc.DepthEnable = false;
+	DepthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	DepthDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	DepthDesc.StencilEnable = true;
+	DepthDesc.StencilReadMask = 0xff;
+	DepthDesc.StencilWriteMask = 0xff;
+	DepthDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+	DepthDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	DepthDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+	DepthDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_STENCIL_WRITE ] );
+
+	/* DS_STENCIL_COMPARE */
+	ZeroMemory( &DepthDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
+	DepthDesc.DepthEnable = false;
+	DepthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	DepthDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	DepthDesc.StencilEnable = true;
+	DepthDesc.StencilReadMask = 0xff;
+	DepthDesc.StencilWriteMask = 0xff;
+	DepthDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	DepthDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	DepthDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+
+	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_STENCIL_COMPARE ] );
+
+
 	/* RS_SHADOW */
 	D3D11_RASTERIZER_DESC RSShadowDesc;
 	ZeroMemory( &RSShadowDesc, sizeof( D3D11_RASTERIZER_DESC ) );
