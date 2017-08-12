@@ -214,6 +214,7 @@
     <ClInclude Include="Crown.h" />
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Dummy.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="EventCamera.h" />
     <ClInclude Include="MediaPath.h" />
@@ -393,6 +394,7 @@
     <ClCompile Include="CollisionReport.cpp" />
     <ClCompile Include="Crown.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
+    <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="EventCamera.cpp" />
     <ClCompile Include="MediaPath_WIN.cpp" />

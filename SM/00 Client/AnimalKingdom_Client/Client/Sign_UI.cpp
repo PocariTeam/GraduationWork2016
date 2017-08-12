@@ -49,6 +49,7 @@ void CSign_UI::Render( ID3D11DeviceContext* pContext )
 {
 	if( m_bHide ) return;
 	if( CJungle::m_bFocusIncave != m_pOwner->InCave() ) return;
+	if( CHARACTER_CHM == m_pOwner->GetCharacterType() && m_pOwner->GetSkillOn() ) return;
 
 	m_pShader->SetConstantBuffer( pContext, m_mtxWorld, m_vOption );
 	m_pShader->Render( pContext );

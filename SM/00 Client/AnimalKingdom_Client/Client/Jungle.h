@@ -43,7 +43,6 @@ public:
 private:
 	map<int, CPlayer*>		m_mapPlayer;
 	int						m_iPlayerID;
-	int						m_iFocus;		// 자신이 죽고, 다른 플레이어 볼 때 사용( 다른 플레이어 ID )
 	int						m_iCrownIndex;
 	PlayerInfo*				m_pPlayerInfo;
 	UINT					m_dwPlayerCnt;
@@ -58,6 +57,7 @@ private:
 public:
 	static	bool			m_bStart;
 	static  bool			m_bFocusIncave;
+	static  int				m_iFocus;		// 자신이 죽고, 다른 플레이어 볼 때 사용( 다른 플레이어 ID )
 private:
 	bool					m_bFinished;
 	CNormal_UI*				m_pStateNotify;

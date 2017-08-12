@@ -26,6 +26,7 @@
 
 bool CJungle::m_bStart = false;
 bool CJungle::m_bFocusIncave = false;
+int  CJungle::m_iFocus = 0;
 
 CJungle::CJungle()
 	: CScene()
@@ -38,7 +39,6 @@ CJungle::CJungle()
 	, m_pStateNotify( nullptr )
 	, m_dpHP_Bar( nullptr )
 	, m_dpSkill_UI( nullptr )
-	, m_iFocus( 0 )
 	, m_bFinished( false )
 	, m_dpCrownTime_UI( nullptr )
 	, m_pCrownmark_UI( nullptr )

@@ -316,8 +316,11 @@
     <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\00 Trail">
       <UniqueIdentifier>{aeadb38c-c61e-4cc7-9ef8-972414816b79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\01 Fire">
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\02 Fire">
       <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\01 Dummy">
+      <UniqueIdentifier>{691c087c-1550-47d9-9eb3-7e3acc874135}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -672,6 +675,9 @@
     <ClInclude Include="EffectObject.h">
       <Filter>소스 파일\02 Utility\06 Effect\01 Object</Filter>
     </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object\01 Dummy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -973,6 +979,9 @@
     </ClCompile>
     <ClCompile Include="EffectObject.cpp">
       <Filter>소스 파일\02 Utility\06 Effect\01 Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Dummy.cpp">
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object\01 Dummy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

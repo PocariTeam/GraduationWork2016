@@ -33,6 +33,8 @@ HRESULT CChameleon::Initialize( ID3D11Device* pDevice, NxController* pCharacterC
 	m_pTrail[ 0 ] = CEffectMgr::GetInstance()->Add( CEffectMgr::EFFECT_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "LHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
 	m_pTrail[ 1 ] = CEffectMgr::GetInstance()->Add( CEffectMgr::EFFECT_TRAIL, CMathematics::ConvertToXMFloat4x4( &( m_pAnimator->GetCurrentAnimationMatrix( this, "RHand", true ) ) ), XMFLOAT2( 4, 4 ), 1.f );
 
+	CEffectMgr::GetInstance()->Add( CEffectMgr::EFFECT_DUMMY, this );
+
 	return S_OK;
 }
 
@@ -60,7 +62,8 @@ int CChameleon::Update( const float& fTimeDelta )
 
 void CChameleon::Render( ID3D11DeviceContext* pContext )
 {
-	CPlayer::Render( pContext );
+	if( !m_bSkillOn )
+		CPlayer::Render( pContext );
 }
 
 DWORD CChameleon::Release( void )

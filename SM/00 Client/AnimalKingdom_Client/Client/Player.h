@@ -33,6 +33,7 @@ public:
 public:
 	virtual int		Update( const float& fTimeDelta );
 	virtual void	Render( ID3D11DeviceContext* pContext );
+	void			Render_Dummy( ID3D11DeviceContext* pContext );
 	virtual DWORD	Release( void );
 public:
 	void			MinimizeController( void );
@@ -51,6 +52,8 @@ public:
 	float			GetRotateY() { return m_vRotate.y; }
 	float*			GetCanUseSkill() { return &m_fCanUseSkill; }
 	void			SetSkillOn(BOOL s) { m_bSkillOn = s; }
+	BOOL			GetSkillOn() { return m_bSkillOn; }
+	int				GetID() { return m_iID; }
 public:
 	void			Change_State( STATE eState );
 public:

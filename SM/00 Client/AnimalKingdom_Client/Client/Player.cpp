@@ -150,6 +150,13 @@ void CPlayer::Render( ID3D11DeviceContext* pContext )
 	m_pMesh->Render( pContext );
 }
 
+void CPlayer::Render_Dummy( ID3D11DeviceContext* pContext )
+{
+	m_pAnimator->Render( pContext );
+	m_pTexture->Render( pContext );
+	m_pMesh->Render( pContext );
+}
+
 DWORD CPlayer::Release( void )
 {
 	DWORD dwRefCnt = CGameObject::Release();
