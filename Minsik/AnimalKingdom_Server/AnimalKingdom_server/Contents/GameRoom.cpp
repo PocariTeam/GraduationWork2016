@@ -403,6 +403,23 @@ void GameRoom::sendUseSkill(int id, bool use)
 	}
 }
 
+void GameRoom::sendDefendEnd(int id)
+{
+	SAFE_LOCK(lock_);
+
+	if (players_.find(id) == players_.end())  return;
+
+	S_DefendEnd packet;
+	packet.header.packetID = PAK_ID::PAK_ANS_DefendEnd;
+	packet.header.size = sizeof(packet);
+	packet.id = id;
+
+	for (auto iter = players_.begin(); iter != players_.end(); iter++)
+	{
+		(iter->second)->getSession()->send((char*)&packet);
+	}
+}
+
 
 BOOL GameRoom::setupGame()
 {
@@ -642,9 +659,10 @@ void GameRoom::loseCrown(Player *player)
 		break;
 	case CHARACTER_BAT:
 		mtxRotation.rotX( 0 );
-		vOffset = NxVec3( 0.f, 9.75f + 2.5f, 0.f );
+		vOffset = NxVec3(0.f, 9.75f + 2.5f, 5.f);
 		break;
 	default:
+		SLog(L"undefined character type!");
 		break;
 	}
 	NxMat34 mtxLocal{ mtxRotation, vOffset };

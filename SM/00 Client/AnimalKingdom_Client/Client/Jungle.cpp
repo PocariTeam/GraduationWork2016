@@ -22,6 +22,7 @@
 #include "EventCamera.h"
 #include "EffectMgr.h"
 #include "Skill_UI.h"
+#include "Animator.h"
 
 bool CJungle::m_bStart = false;
 bool CJungle::m_bFocusIncave = false;
@@ -319,7 +320,7 @@ void CJungle::Render( ID3D11DeviceContext* pContext )
 	if( CRenderer::GetInstance()->m_bWireFrame ) CPhysics::GetInstance()->Render( pContext );
 }
 
-void CJungle::Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill)
+void CJungle::Sync( UINT id, float hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill)
 {
 	auto find_iter = m_mapPlayer.find( id );
 	if( find_iter == m_mapPlayer.end() ) return;
@@ -486,9 +487,20 @@ void CJungle::NotifyUseSkill(UINT ID, BOOL use)
 {
 	auto find_iter = m_mapPlayer.find(ID);
 
+	if (find_iter == m_mapPlayer.end()) return;
+
 	find_iter->second->SetSkillOn(use);
 
 	printf("%d 플레이어 스킬사용 : %d \n", ID, use);
+}
+
+void CJungle::NotifyDefendEnd(UINT ID)
+{
+	auto find_iter = m_mapPlayer.find(ID);
+
+	if (find_iter == m_mapPlayer.end()) return;
+
+	(find_iter->second->GetAnimator())->Play();
 }
 
 CScene* CJungle::Create( HWND hWnd, ID3D11Device* pDevice )

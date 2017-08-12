@@ -129,8 +129,8 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 				const float minimunVelocity = 50.0f;
 				if (velocity.magnitude() > minimunVelocity)
 				{
-					int iDamage = ((CBanana*)pair.actors[iBananaIndex]->userData)->m_pPlayer->getDamage();
-					((Player*)pair.actors[iNoBananaIndex]->userData)->proceedBeaten(iDamage);
+					float fDamage = ((CBanana*)pair.actors[iBananaIndex]->userData)->m_pPlayer->getDamage();
+					((Player*)pair.actors[iNoBananaIndex]->userData)->proceedBeaten(fDamage);
 
 				}
 				
@@ -139,41 +139,4 @@ void CCollisionReport::onContactNotify( NxContactPair& pair, NxU32 events )
 			( ( CBanana* )pair.actors[ iBananaIndex ]->userData )->Frozen();
 		}
 	}
-
-	//// 왕관 테스트
-	//int iCrownIndex{ -1 };
-	//if (0 == strcmp(pair.actors[1]->getName(), "Crown"))	iCrownIndex = 1;
-	//else if (0 == strcmp(pair.actors[0]->getName(), "Crown"))	iCrownIndex = 0;
-
-	//if( -1 != iCrownIndex )
-	//{
-	//	int iNoCrownIndex = ( iCrownIndex == 0 ) ? 1 : 0;
-	//	if( COL_STATIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() )
-	//		&& COL_DYNAMIC != COL_GROUP( pair.actors[ iNoCrownIndex ]->getGroup() ) )
-	//	{
-	//		UINT roomNum = (UINT)pair.actors[iCrownIndex]->getScene().userData;
-	//		Player* crownOwner = (Player*)pair.actors[iNoCrownIndex]->userData;
-	//		if (crownOwner->getHp() > 0 &&RoomManager::getInstance().hasWinner(roomNum) == false)
-	//		{
-	//			RoomManager::getInstance().sendGetCrown(roomNum, crownOwner);
-	//			crownOwner->powerUp();
-	//			pair.actors[iCrownIndex]->raiseBodyFlag(NX_BF_KINEMATIC);
-	//			pair.actors[iCrownIndex]->setGlobalPosition(NxVec3(0.0, 1000.0f, 1000.0f));
-	//		}
-	//	}
-	//}
-
-	//UINT roomNum = (UINT)pair.actors[0]->getScene().userData;
-	//RoomManager::getInstance().sendDynamicSync(roomNum);
-
-	// 충돌감지된 동적객체 하나에 대한 싱크 
-	//for (int i = 0; i < 2; ++i)
-	//{
-	//	RoomManager::getInstance().sendDynamicOneSync((UINT)pair.actors[i]->getScene().userData, pair.actors[i]);
-	//}
-	
-	//static int i = 0;
-	//printf("Sync count: %d \n",i++);
-	//printf( " [CCollisionReport] %s 와 %s가 충돌!\n ", pair.actors[ 0 ]->getName(), pair.actors[ 1 ]->getName() );
-	//printf( " [CCollisionReport] %f, %f, %f에서 충돌!\n ", pair.actors[ 1 ]->getGlobalPosition().x, pair.actors[ 1 ]->getGlobalPosition().y, pair.actors[ 1 ]->getGlobalPosition().z );
 }

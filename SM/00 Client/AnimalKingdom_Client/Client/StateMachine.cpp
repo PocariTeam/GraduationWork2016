@@ -102,6 +102,8 @@ void CStateMachine::Change_State( STATE eState )
 	case STATE_DEAD:
 		Change_State( CDeadState::GetInstance() );
 		break;
+	default:
+		printf("undefined state! \n");
 	}
 }
 

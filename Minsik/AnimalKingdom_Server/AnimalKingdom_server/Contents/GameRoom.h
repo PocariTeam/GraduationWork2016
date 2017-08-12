@@ -44,6 +44,7 @@ public:
 	void			sendFinishGame();
 	void			sendGetCrown(Player* player);
 	void			sendUseSkill(int id, bool use);
+	void			sendDefendEnd(int id);
 
 	UINT			getPlayerCount() { return playerCount_; }
 

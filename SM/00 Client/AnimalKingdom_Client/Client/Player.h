@@ -24,7 +24,7 @@ public:
 	void			Jump( const float& fTimeDelta, float fAnimatePercent );
 public:
 	void			Move( const float& fTimeDelta );
-	void			Sync( NxVec3& vPos, int hp, float fRotateY, STATE state , FLOAT canUseSkill);
+	void			Sync( NxVec3& vPos, float hp, float fRotateY, STATE state , FLOAT canUseSkill);
 	virtual void	Attack( STATE eState );
 	virtual void	UseSkill();
 	virtual void	ThrowBanana( void );
@@ -46,7 +46,7 @@ public:
 	virtual XMFLOAT4X4*	GetWorld();
 	void			ResetOverlapped();
 	bool			InCave() { return m_bInCave; }
-	int*			GetHP() { return &m_iHp; }
+	float*			GetHP() { return &m_fHp; }
 	STATE			GetCurrentState();
 	float			GetRotateY() { return m_vRotate.y; }
 	float*			GetCanUseSkill() { return &m_fCanUseSkill; }
@@ -57,7 +57,7 @@ public:
 	static CPlayer* Create( ID3D11Device* pDevice, NxController* pCharacterController, NxMat34* pActorOriginPoseArray, CHARACTER eType, int iID );
 protected:
 	int						m_iID;
-	int						m_iHp;
+	float					m_fHp;
 	CHARACTER				m_eCharactor;
 	NxVec3					m_vOverlapped;
 	CStateMachine*			m_pStateMachine;

@@ -28,7 +28,7 @@ public:
 	int Update( const float& fTimeDelta );
 	DWORD Release( void );
 	void  Render( ID3D11DeviceContext* pContext );
-	void  Sync( UINT id, int hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill);
+	void  Sync( UINT id, float hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill);
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
 	void  Change_CameraDest( void );
@@ -37,6 +37,7 @@ public:
 	virtual void  NotifyWinner( UINT ID );
 	virtual void NotifyCrownOwner(UINT ID);
 	virtual void NotifyUseSkill(UINT ID, BOOL use);
+	virtual void NotifyDefendEnd(UINT ID);
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice );
 private:

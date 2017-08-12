@@ -33,8 +33,8 @@ typedef enum {
 	PAK_ANS_SyncDynamic,
 	PAK_ANS_SyncDynamicOne,
 	PAK_RJT_Request,
-	PAK_ANS_UseSkill
-
+	PAK_ANS_UseSkill,
+	PAK_ANS_DefendEnd
 } PAK_ID;
 
 #define CHARACTER_MAX     (3)
@@ -85,7 +85,7 @@ struct PlayerInfo
 struct PlayerSyncInfo
 {
 	UINT		id;
-	INT			hp;
+	FLOAT		hp;
 	Vector3		position;
 	FLOAT		rotY;
 	STATE		state;
@@ -187,6 +187,11 @@ struct S_UseSkill
 	BOOL		use;
 };
 
+struct S_DefendEnd
+{
+	HEADER		header;
+	UINT		id;
+};
 
 /////////////////////////////////////////////////////////////
 

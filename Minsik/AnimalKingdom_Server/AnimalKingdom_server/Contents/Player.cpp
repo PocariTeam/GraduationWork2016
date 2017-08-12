@@ -195,11 +195,14 @@ void Player::setState( STATE state )
 	if (state == STATE_DEFEND_END)
 	{
 		animator_->Play();
+		// 다른 플레이어들에게 방어애니메이션의 재시작을 알리는 패킷 ( 방어 중 공격받으면 애니메이션 자체가 멈춰버리는 버그가 있음 )
+		// RoomManager::getInstance().sendDefendEnd(roomNum_, session_->getID()); 
 	}
 	else
 	{
 		stateMachine_->Change_State(state);
 	}
+	
 }
 
 bool Player::checkBlocking( NxVec3& vDir )
@@ -240,7 +243,7 @@ bool Player::checkFalling( void )
 	return false;
 }
 
-void Player::proceedBeaten( int damage )
+void Player::proceedBeaten( float damage )
 {
 	if (RoomManager::getInstance().hasWinner(roomNum_)) return;
 
@@ -280,17 +283,17 @@ void Player::setStatByCharacter()
 		speed_ = 0;
 		break;
 	case CHARACTER::CHARACTER_CHM:
-		m_fJumpHeight = JUMP_HEIGHT;
+		m_fJumpHeight = CHAMEL_JUMP;
 		damage_ = CHAMEL_DAMAGE;
 		speed_ = CHAMEL_SPEED;
 		break;
 	case CHARACTER::CHARACTER_MON:
-		m_fJumpHeight = JUMP_HEIGHT;
+		m_fJumpHeight = MONKEY_JUMP;
 		damage_ = MONKEY_DAMAGE;
 		speed_ = MONKEY_SPEED;
 		break;
 	case CHARACTER::CHARACTER_BAT:
-		m_fJumpHeight = JUMP_HEIGHT;
+		m_fJumpHeight = BAT_JUMP;
 		damage_ = BAT_DAMAGE;
 		speed_ = BAT_SPEED;
 		break;
@@ -301,27 +304,33 @@ void Player::setStatByCharacter()
 
 void Player::powerUp()
 {
-	int defaultDamage;
-	float defaultSpeed;
+	float defaultDamage = 0;
+	float defaultSpeed = 0.f;
+	float defaultJump = 0.f;
 
 	switch (character_)
 	{
 	case CHARACTER_CHM:
 		defaultDamage = CHAMEL_DAMAGE;
 		defaultSpeed = CHAMEL_SPEED;
+		defaultJump = CHAMEL_JUMP;
 		break;
 	case CHARACTER_MON:
 		defaultDamage = MONKEY_DAMAGE;
 		defaultSpeed = MONKEY_SPEED;
+		defaultJump = MONKEY_JUMP;
 		break;
 	case CHARACTER_BAT:
 		defaultDamage = BAT_DAMAGE;
 		defaultSpeed = BAT_SPEED;
+		defaultJump = BAT_JUMP;
 		break;
+	default:
+		SLog(L"undefined character type!");
 	}
-	damage_ = int(defaultDamage * 1.5);
-	speed_ = defaultSpeed * 0.5f;
-	m_fJumpHeight = JUMP_HEIGHT*0.7f;
+	damage_ = defaultDamage * 1.4f;
+	speed_ = defaultSpeed * 0.6f;
+	m_fJumpHeight = defaultJump*0.7f;
 }
 
 void Player::powerDown()
@@ -426,7 +435,7 @@ void Player::Attack( STATE eState )
 	}
 }
 
-void Player::setHp(int hp)
+void Player::setHp(float hp)
 {
 	if (hp > MAX_CHAR_HP) hp = MAX_CHAR_HP;
 	hp_ = hp;
@@ -434,21 +443,21 @@ void Player::setHp(int hp)
 
 void Player::UseSkill()
 {
-
 	switch (character_)
 	{
 	case CHARACTER::CHARACTER_CHM:
+		skillTime_ = 10.0f; //  카멜레온 스킬 지속시간
 		coolTime_ = CHAMEL_COOLTIME;
-		skillTime_ = 5.0f; //  임시로 지속시간은 5초
 		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
 		break;
 	case CHARACTER::CHARACTER_MON:
+		if (hp_ == MAX_CHAR_HP) break;
 		coolTime_ = MONKEY_COOLTIME;
-		setHp((int)(MAX_CHAR_HP*1.2));
+		setHp(hp_+ MAX_CHAR_HP*0.2f);
 		break;
 	case CHARACTER::CHARACTER_BAT:
+		skillTime_ = 5.0f; //  박쥐 스킬 지속시간
 		coolTime_ = BAT_COOLTIME;
-		skillTime_ = 5.0f; //  임시로 지속시간은 5초
 		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
 		break;
 	default:

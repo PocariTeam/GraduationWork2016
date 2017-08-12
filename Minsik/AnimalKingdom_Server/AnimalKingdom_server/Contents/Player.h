@@ -6,24 +6,26 @@ class NxActor;
 class CAnimator;
 class CStateMachine;
 
-#define		MAX_CHAR_HP			100
-#define		JUMP_HEIGHT			130.f
+#define		MAX_CHAR_HP			100.f
 
-#define		MONKEY_DAMAGE		12
+#define		MONKEY_DAMAGE		12.f
 #define		MONKEY_SPEED		80.0f
-#define		MONKEY_COOLTIME		10.0f
+#define		MONKEY_COOLTIME		12.0f
+#define		MONKEY_JUMP			130.f
 
-#define		CHAMEL_DAMAGE		23
+#define		CHAMEL_DAMAGE		23.f
 #define		CHAMEL_SPEED		90.0f
-#define		CHAMEL_COOLTIME		10.0f
+#define		CHAMEL_COOLTIME		20.0f
+#define		CHAMEL_JUMP			140.f
 
-#define		BAT_DAMAGE			15
-#define		BAT_SPEED			85.0f
-#define		BAT_COOLTIME		10.0f
+#define		BAT_DAMAGE			17.f
+#define		BAT_SPEED			100.0f
+#define		BAT_COOLTIME		15.0f
+#define		BAT_JUMP			160.f
 
 class Player {
-	int				hp_;
-	int				damage_;
+	float			hp_;
+	float			damage_;
 	bool			beaten_;
 	Session*		session_;
 	CHARACTER		character_;
@@ -89,8 +91,8 @@ public:
 	void			sweapOff( void );
 	void			setMoveDir(Vector3 vDir);
 	void			setState(STATE state);
-	int				getHp() { return hp_; }
-	void			setHp(int hp);
+	float			getHp() { return hp_; }
+	void			setHp(float hp);
 	bool			checkBlocking( NxVec3& vDir );
 	bool			checkBlocking( float fRotateY );
 	bool			checkFalling( void );
@@ -98,8 +100,8 @@ public:
 	void			setBeaten( bool bBeaten ) { beaten_ = bBeaten; }
 	void			defendOn() { defend = true; }
 	void			defendOff() { defend = false; }
-	int				getDamage() { return damage_; }
-	void			proceedBeaten(int damage);
+	float			getDamage() { return damage_; }
+	void			proceedBeaten(float damage);
 	void			minimizeController();
 	CHARACTER		GetCharacterType() { return character_; }
 	void			setStatByCharacter();

@@ -273,6 +273,12 @@ void CNetworkMgr::processPacket()
 		m_pScene->NotifyUseSkill(packet->id, packet->use);
 		break;
 	}
+	case PAK_ID::PAK_ANS_DefendEnd:
+	{
+		S_DefendEnd* packet = (S_DefendEnd*)m_saveBuf;
+		m_pScene->NotifyDefendEnd(packet->id);
+		break;
+	}
 	case PAK_ID::PAK_RJT_Request:
 	{
 		printf( "\n !! 요청 실패 !! \n" );

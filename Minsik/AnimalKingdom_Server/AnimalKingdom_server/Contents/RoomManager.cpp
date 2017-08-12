@@ -138,6 +138,20 @@ void RoomManager::sendUseSkill(UINT roomNum, int id, bool use)
 	}
 }
 
+void RoomManager::sendDefendEnd(UINT roomNum, int id)
+{
+	SAFE_LOCK(lock_);
+
+	if (roomNum < GAMEROOM_CAPACITY)
+	{
+		roomArray_[roomNum]->sendDefendEnd(id);
+	}
+	else
+	{
+		SLog(L"! wrong room number, inputNumber: %d", roomNum);
+	}
+}
+
 BOOL RoomManager::getPlaying(UINT roomNum)
 {
 	SAFE_LOCK(lock_);

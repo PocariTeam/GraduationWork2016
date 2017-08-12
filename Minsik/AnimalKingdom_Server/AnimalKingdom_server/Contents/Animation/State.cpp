@@ -297,3 +297,4 @@ STATE CSKillState::GetState(void)
 {
 	return STATE_SKILL;
 }
+

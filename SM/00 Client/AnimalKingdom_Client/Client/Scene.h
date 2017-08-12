@@ -24,10 +24,11 @@ public:
 	virtual void NotifyGameStart(void) {}
 	virtual void NotifyGameFinished( void ) {}
 	virtual void NotifyWinner( UINT ID ) {}
-	virtual void Sync( UINT id, int hp, XMFLOAT3 vDir, float fRotateY, STATE state, FLOAT canUseSkill ) {}
+	virtual void Sync( UINT id, float hp, XMFLOAT3 vDir, float fRotateY, STATE state, FLOAT canUseSkill ) {}
 	virtual void NotifyCrownOwner(UINT ID) {}
 	virtual void NotifyEnterRoom() {};
 	virtual void NotifyUseSkill(UINT ID, BOOL use) {}
+	virtual void NotifyDefendEnd(UINT ID) {}
 public:
 	static CScene* Create( HWND hWnd, ID3D11Device* pDevice, BYTE byStageNum );
 	virtual void	SetPlayingTime(const float& fTime) {};

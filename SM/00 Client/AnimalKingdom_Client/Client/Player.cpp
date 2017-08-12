@@ -30,7 +30,7 @@ CPlayer::CPlayer()
 	, m_bSweap( false )
 	, m_dpSections( nullptr )
 	, m_iSectionCnt( 0 )
-	, m_iHp( 100 )
+	, m_fHp( 100 )
 	, m_bInCave( false )
 	, m_vOverlapped( 0.f, 1.f, 0.f )
 	, m_eCharactor( CHARACTER_CHM )
@@ -93,11 +93,11 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 	if( eState == STATE_DEFEND )
 	{
 		m_fDefenceTime += fTimeDelta;
-		if( m_fDefenceTime > 1.f || false == m_pInputMgr->Get_KeyboardState( DIK_A ) )
+		if( m_fDefenceTime > 2.f || false == m_pInputMgr->Get_KeyboardState( DIK_A ) )
 		{
 			m_fDefenceTime = 0.f;
-			eState = STATE_DEFEND_END;
 			m_pAnimator->Play();
+			CNetworkMgr::GetInstance()->sendCharacterState(STATE_DEFEND_END);
 		}
 	}
 
@@ -213,7 +213,7 @@ void CPlayer::Move( const float& fTimeDelta )
 	m_vDir = m_vDir * m_fSpeed * fTimeDelta;*/
 }
 
-void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state, FLOAT canUseSkill)
+void CPlayer::Sync( NxVec3& vPos, float hp, float fRotateY, STATE state, FLOAT canUseSkill)
 {
 	//NxU32	dwCollisionFlag;
 	//vPos.subtract( vPos, m_pCharacterController->getActor()->getGlobalPosition() );
@@ -221,9 +221,13 @@ void CPlayer::Sync( NxVec3& vPos, int hp, float fRotateY, STATE state, FLOAT can
 	NxExtendedVec3 setPos{ vPos.x, vPos.y, vPos.z };
 	m_pCharacterController->setPosition( setPos );
 	m_vRotate.y = fRotateY;
-	m_iHp = hp;
-	m_pStateMachine->Change_State( state );
+	m_fHp = hp;
 	m_fCanUseSkill = canUseSkill;
+	m_pStateMachine->Change_State(state);
+
+	// 애니메이션 멈춤을 방지하기 위한 임시 방편 ( 기본상태일때는 무조건 재생)
+	// 단, 방어 풀리는 애니메이션을 볼 수 없음
+	if (state == STATE_IDLE) m_pAnimator->Play(); 
 }
 
 void CPlayer::Attack( STATE eState )

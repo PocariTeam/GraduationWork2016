@@ -16,7 +16,7 @@ CBar_UI::~CBar_UI()
 {
 }
 
-HRESULT CBar_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, int* pDest, int iMax, float fSpeed )
+HRESULT CBar_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, float* pDest, int iMax, float fSpeed )
 {
 	m_pTexture = pTexture;
 	m_vPosSize_Dest = vPosSize;
@@ -29,7 +29,7 @@ HRESULT CBar_UI::Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, int* 
 	return S_OK;
 }
 
-CBar_UI* CBar_UI::Create( CTexture* pTexture, const XMFLOAT4& vPosSize, int* pDest, int iMax, float fSpeed )
+CBar_UI* CBar_UI::Create( CTexture* pTexture, const XMFLOAT4& vPosSize, float* pDest, int iMax, float fSpeed )
 {
 	CBar_UI*	pBar_UI = new CBar_UI;
 
@@ -57,9 +57,9 @@ int CBar_UI::Update( const float& fTimeDelta )
 	if( m_fLerpTime == 1.f )
 	{
 		if( m_iPrevious > *m_pData )
-			m_iPrevious = int( *m_pData * fTimeDelta * m_fSpeed + m_iPrevious * ( 1.f - fTimeDelta * m_fSpeed ) );
+			m_iPrevious = *m_pData * fTimeDelta * m_fSpeed + m_iPrevious * ( 1.f - fTimeDelta * m_fSpeed ) ;
 		else if( m_iPrevious < *m_pData )
-			m_iPrevious = int( m_iPrevious * fTimeDelta * m_fSpeed + *m_pData * ( 1.f - fTimeDelta * m_fSpeed ) );
+			m_iPrevious =  m_iPrevious * fTimeDelta * m_fSpeed + *m_pData * ( 1.f - fTimeDelta * m_fSpeed ) ;
 
 		m_mtxWorld._31 = m_vPosSize_Dest.z * float( m_iPrevious ) / float( m_iMax );
 		return 0;

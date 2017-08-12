@@ -12,9 +12,9 @@ private:
 	explicit CBar_UI();
 	virtual ~CBar_UI();
 private:
-	HRESULT		Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, int* pDest, int iMax, float fSpeed );
+	HRESULT		Initialize( CTexture* pTexture, const XMFLOAT4& vPosSize, float* pDest, int iMax, float fSpeed );
 public:
-	static CBar_UI*	Create( CTexture* pTexture, const XMFLOAT4& vPosSize, int* pDest, int iMax, float fSpeed = 2.f );
+	static CBar_UI*	Create( CTexture* pTexture, const XMFLOAT4& vPosSize, float* pDest, int iMax, float fSpeed = 2.f );
 public:
 	void Render( ID3D11DeviceContext* pContext );
 	int Update( const float& fTimeDelta );
@@ -26,8 +26,8 @@ private:
 	bool	m_bHide;
 	float	m_fSpeed;
 	int		m_iMax;
-	int		m_iPrevious;
-	int*	m_pData;
+	float	m_iPrevious;
+	float*	m_pData;
 };
 
 #endif // Bar_UI_h__
