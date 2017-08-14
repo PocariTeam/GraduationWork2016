@@ -7,6 +7,11 @@
 #include "Player.h"
 #include "Mathematics.h"
 #include "StateMachine.h"
+#include "EffectMgr.h"
+#include "Jungle.h"
+#include "GameObject.h"
+#include "Texture.h"
+#include "Mesh.h"
 
 CBat::CBat()
 	: CPlayer()
@@ -25,6 +30,9 @@ HRESULT CBat::Initialize( ID3D11Device* pDevice, NxController* pCharacterControl
 	m_pMesh = CAnimateMeshMgr::GetInstance()->Clone( "Mesh_Bat" );
 	m_pTexture = CTextureMgr::GetInstance()->Clone( "Texture_Bat" );
 	m_pAnimator = CAnimationMgr::GetInstance()->Clone( CHARACTER_BAT );
+
+	CEffectMgr::GetInstance()->Add( CEffectMgr::EFFECT_SCAN, this );
+
 	m_dwActorCnt = 8;
 	m_eCharactor = eType;
 	m_vOption.x = 1.f;		// Ä«Å÷ ÇÑ´Ù
@@ -63,6 +71,14 @@ int CBat::Update( const float& fTimeDelta )
 void CBat::Render( ID3D11DeviceContext* pContext )
 {
 	CPlayer::Render( pContext );
+}
+
+void CBat::Render_Stencil( ID3D11DeviceContext* pContext )
+{
+	if( m_iID == CJungle::m_iFocus ) return;
+	m_pAnimator->Render( pContext );
+	m_pTexture->Render( pContext );
+	m_pMesh->Render( pContext );
 }
 
 DWORD CBat::Release( void )

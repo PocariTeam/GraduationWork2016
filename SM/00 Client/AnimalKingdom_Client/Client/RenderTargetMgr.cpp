@@ -379,6 +379,11 @@ void CRenderTargetMgr::ClearDepthStencilView( ID3D11DeviceContext* pContext )
 	pContext->ClearDepthStencilView( m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0 );
 }
 
+void CRenderTargetMgr::ClearStencilView( ID3D11DeviceContext* pContext )
+{
+	pContext->ClearDepthStencilView( m_pDepthStencilView, D3D11_CLEAR_STENCIL, 1.f, 0 );
+}
+
 void CRenderTargetMgr::ClearShadowDepthStencilView( ID3D11DeviceContext* pContext )
 {
 	pContext->ClearDepthStencilView( m_pShadowDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0 );

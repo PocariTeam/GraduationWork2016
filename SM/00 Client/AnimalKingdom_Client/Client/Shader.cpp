@@ -87,7 +87,7 @@ HRESULT CShader::CreatePS( ID3D11Device* pDevice, const char* pFilePath )
 	{
 		if( NULL != pErrorBlob )
 		{
-//			MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
+			// MessageBoxA( 0, ( char* )pErrorBlob->GetBufferPointer(), 0, 0 );
 			pErrorBlob->Release();
 			pErrorBlob = nullptr;
 		}

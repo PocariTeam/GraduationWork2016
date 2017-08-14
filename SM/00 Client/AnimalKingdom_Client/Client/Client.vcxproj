@@ -220,6 +220,7 @@
     <ClInclude Include="MediaPath.h" />
     <ClInclude Include="EffectMgr.h" />
     <ClInclude Include="EffectObject.h" />
+    <ClInclude Include="Scan.h" />
     <ClInclude Include="Section.h" />
     <ClInclude Include="Sign_UI.h" />
     <ClInclude Include="Skill_UI.h" />
@@ -401,6 +402,7 @@
     <ClCompile Include="MediaPath_WIN.cpp" />
     <ClCompile Include="EffectMgr.cpp" />
     <ClCompile Include="EffectObject.cpp" />
+    <ClCompile Include="Scan.cpp" />
     <ClCompile Include="Section.cpp" />
     <ClCompile Include="Sign_UI.cpp" />
     <ClCompile Include="Skill_UI.cpp" />
@@ -510,6 +512,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Stencil.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Background.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -597,6 +607,11 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Noise.fx">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\Number_UI.fx">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>

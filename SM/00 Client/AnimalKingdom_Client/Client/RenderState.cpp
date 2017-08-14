@@ -8,7 +8,7 @@ ID3D11RasterizerState*		CRenderState::m_pRasterizerState[ RS_END ];
 
 void CRenderState::Set_DepthStencilState( ID3D11DeviceContext* pContext, DS_STATE eDS_State )
 {
-	pContext->OMSetDepthStencilState( m_pDepthStencilState[ eDS_State ], 0 );
+	pContext->OMSetDepthStencilState( m_pDepthStencilState[ eDS_State ], 1 );
 }
 
 void CRenderState::Set_Rasterize( ID3D11DeviceContext* pContext, RS_STATE eRS_State )
@@ -18,7 +18,8 @@ void CRenderState::Set_Rasterize( ID3D11DeviceContext* pContext, RS_STATE eRS_St
 
 void CRenderState::Set_BlendState( ID3D11DeviceContext* pContext, BL_STATE eBL_State )
 {
-	pContext->OMSetBlendState( m_pBlendState[ eBL_State ], nullptr, 0xffffffff );
+	float fBlendFactor[] = { 0.f, 0.f, 0.f, 0.f };
+	pContext->OMSetBlendState( m_pBlendState[ eBL_State ], fBlendFactor, 0xffffffff );
 }
 
 HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
@@ -43,6 +44,23 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 
 	pDevice->CreateBlendState( &BlendStateDesc, &m_pBlendState[ BL_ALPHA ] );
 
+	/* BL_STENCIL */
+	ZeroMemory( &BlendStateDesc, sizeof( D3D11_BLEND_DESC ) );
+	BlendStateDesc.AlphaToCoverageEnable = false;
+	BlendStateDesc.IndependentBlendEnable = false;
+	ZeroMemory( &BlendStateDesc.RenderTarget[ 0 ], sizeof( D3D11_RENDER_TARGET_BLEND_DESC ) );
+	BlendStateDesc.RenderTarget[ 0 ].BlendEnable = false;
+	BlendStateDesc.RenderTarget[ 0 ].SrcBlend = D3D11_BLEND_ONE;
+	BlendStateDesc.RenderTarget[ 0 ].DestBlend = D3D11_BLEND_ZERO;
+	BlendStateDesc.RenderTarget[ 0 ].BlendOp = D3D11_BLEND_OP_ADD;
+	BlendStateDesc.RenderTarget[ 0 ].SrcBlendAlpha = D3D11_BLEND_ONE;
+	BlendStateDesc.RenderTarget[ 0 ].DestBlendAlpha = D3D11_BLEND_ZERO;
+	BlendStateDesc.RenderTarget[ 0 ].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	BlendStateDesc.RenderTarget[ 0 ].RenderTargetWriteMask = 0;
+
+	pDevice->CreateBlendState( &BlendStateDesc, &m_pBlendState[ BL_STENCIL ] );
+
+
 	/* DS_NO_WRITE */
 	D3D11_DEPTH_STENCIL_DESC DepthDesc;
 	ZeroMemory( &DepthDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
@@ -50,16 +68,6 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	DepthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	DepthDesc.DepthFunc = D3D11_COMPARISON_NEVER;
 	DepthDesc.StencilEnable = false;
-	DepthDesc.StencilReadMask = 0xff;
-	DepthDesc.StencilWriteMask = 0xff;
-	DepthDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	DepthDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-	DepthDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	DepthDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-	DepthDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	DepthDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-	DepthDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	DepthDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
 	pDevice->CreateDepthStencilState( &DepthDesc, &m_pDepthStencilState[ DS_NO_WRITE ] );
 
@@ -71,7 +79,7 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	ZeroMemory( &DepthDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
 	DepthDesc.DepthEnable = false;
 	DepthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	DepthDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	DepthDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 	DepthDesc.StencilEnable = true;
 	DepthDesc.StencilReadMask = 0xff;
 	DepthDesc.StencilWriteMask = 0xff;
@@ -90,7 +98,7 @@ HRESULT CRenderState::Initialize( ID3D11Device* pDevice )
 	ZeroMemory( &DepthDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
 	DepthDesc.DepthEnable = false;
 	DepthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	DepthDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	DepthDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	DepthDesc.StencilEnable = true;
 	DepthDesc.StencilReadMask = 0xff;
 	DepthDesc.StencilWriteMask = 0xff;

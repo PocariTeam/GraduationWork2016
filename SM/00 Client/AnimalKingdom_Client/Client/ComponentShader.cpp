@@ -125,9 +125,7 @@ HRESULT CComponentShader::Initialize( ID3D11Device* pDevice, CShader::INPUT_TYPE
 	if( FAILED( CreateVS( pDevice, pFilePath, pInputDesc, iArrCnt ) ) )
 		return E_FAIL;
 
-	if( FAILED( CreatePS( pDevice, pFilePath ) ) )
-		return E_FAIL;
-
+	CreatePS( pDevice, pFilePath );
 	CreateGS( pDevice, pFilePath );
 	CreateHS( pDevice, pFilePath );
 	CreateDS( pDevice, pFilePath );
@@ -143,9 +141,7 @@ void CComponentShader::SetConstantBuffer( ID3D11DeviceContext* pContext, LPVOID 
 	D3D11_MAPPED_SUBRESOURCE MappedSubresource;
 	pContext->Map( m_pConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresource );
 
-	CB_PARTICLE* pStruct = ( CB_PARTICLE* )MappedSubresource.pData;
-
-	memcpy_s( pStruct, iStride, pData, iStride );
+	memcpy_s( MappedSubresource.pData, iStride, pData, iStride );
 
 	pContext->Unmap( m_pConstantBuffer, 0 );
 	pContext->VSSetConstantBuffers( SLOT_WORLD, 1, &m_pConstantBuffer );

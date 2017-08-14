@@ -316,14 +316,17 @@
     <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\00 Trail">
       <UniqueIdentifier>{aeadb38c-c61e-4cc7-9ef8-972414816b79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\02 Fire">
-      <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\01 Dummy">
       <UniqueIdentifier>{691c087c-1550-47d9-9eb3-7e3acc874135}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\03 Resources\04 Shader\03 Stencil">
       <UniqueIdentifier>{355ed8f6-e628-49f5-9fb7-e6ba63df602a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\02 Scan">
+      <UniqueIdentifier>{c20b0b39-4ce8-4f1d-96e5-a83449d02e46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02 Utility\06 Effect\01 Object\03 Fire">
+      <UniqueIdentifier>{d05f8991-bd25-4eb9-9e92-53f43903a0e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -681,8 +684,11 @@
     <ClInclude Include="Dummy.h">
       <Filter>소스 파일\02 Utility\06 Effect\01 Object\01 Dummy</Filter>
     </ClInclude>
+    <ClInclude Include="Scan.h">
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object\02 Scan</Filter>
+    </ClInclude>
     <ClInclude Include="StencilShader.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\03 Resources\04 Shader\03 Stencil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -989,8 +995,11 @@
     <ClCompile Include="Dummy.cpp">
       <Filter>소스 파일\02 Utility\06 Effect\01 Object\01 Dummy</Filter>
     </ClCompile>
+    <ClCompile Include="Scan.cpp">
+      <Filter>소스 파일\02 Utility\06 Effect\01 Object\02 Scan</Filter>
+    </ClCompile>
     <ClCompile Include="StencilShader.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\03 Resources\04 Shader\03 Stencil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1075,6 +1084,12 @@
     </FxCompile>
     <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Alpha.fx">
       <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\01 AnimateMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\AnimateMesh_Stencil.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\01 AnimateMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Executable\Resources\Shader\Noise.fx">
+      <Filter>소스 파일\03 Resources\04 Shader\99 HLSL\00 UI</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

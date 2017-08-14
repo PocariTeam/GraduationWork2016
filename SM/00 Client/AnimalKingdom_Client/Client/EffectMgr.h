@@ -13,7 +13,7 @@ class CEffectMgr
 	: public CSingleton<CEffectMgr>
 {
 public:
-	enum eEffect_Type	{ EFFECT_TRAIL, EFFECT_DUMMY, /*EFFECT_FIRE, */EFFECT_END };
+	enum eEffect_Type	{ EFFECT_TRAIL, EFFECT_DUMMY, EFFECT_SCAN, /*EFFECT_FIRE, */EFFECT_END };
 	using EFFECT_TYPE = eEffect_Type;
 public:
 	HRESULT	Initialize( ID3D11Device* pDevice );

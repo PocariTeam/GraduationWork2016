@@ -110,7 +110,6 @@ void CRenderer::Render( ID3D11DeviceContext* pContext )
 	if( nullptr == m_pRenderGroup ) return;
 
 	Render_ShadowMap( pContext );
-	Render_Stencil( pContext );
 
 	Render_Background( pContext );
 	Render_DepthTest( pContext );
@@ -119,6 +118,8 @@ void CRenderer::Render( ID3D11DeviceContext* pContext )
 		Render_Light( pContext );
 		Render_Blend( pContext );
 	}
+	
+	Render_Stencil( pContext );
 	Render_Alpha( pContext );
 	Render_UI( pContext );
 
@@ -152,7 +153,10 @@ void CRenderer::Render_ShadowMap( ID3D11DeviceContext* pContext )
 void CRenderer::Render_Stencil( ID3D11DeviceContext* pContext )
 {
 	CRenderState::Set_Rasterize( pContext, CRenderState::RS_NULL );
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_STENCIL );
 	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_STENCIL_WRITE );
+	CRenderTargetMgr::GetInstance()->ClearStencilView( pContext );
+	CRenderTargetMgr::GetInstance()->SetRenderTargetView( pContext, CRenderTargetMgr::RT_BACK, 1 );
 
 	SHADERLIST::iterator	iter = m_pRenderGroup[ RENDER_STENCIL ].begin();
 	SHADERLIST::iterator	iter_end = m_pRenderGroup[ RENDER_STENCIL ].end();
@@ -161,6 +165,9 @@ void CRenderer::Render_Stencil( ID3D11DeviceContext* pContext )
 	{
 		( *iter )->Render( pContext );
 	}
+
+	CRenderState::Set_DepthStencilState( pContext, CRenderState::DS_NULL );
+	CRenderState::Set_BlendState( pContext, CRenderState::BL_NULL );
 }
 
 void CRenderer::Render_Background( ID3D11DeviceContext* pContext )

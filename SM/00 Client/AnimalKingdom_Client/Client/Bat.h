@@ -18,6 +18,7 @@ private:
 public:
 	virtual int Update( const float& fTimeDelta );
 	virtual void Render( ID3D11DeviceContext* pContext );
+	virtual void Render_Stencil( ID3D11DeviceContext* pContext );
 	virtual DWORD Release( void );
 	virtual void Attack( STATE eState );
 	XMFLOAT4X4*	GetWorld();

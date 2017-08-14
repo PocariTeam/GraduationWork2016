@@ -5,6 +5,7 @@
 #include "Trail.h"
 #include "Renderer.h"
 #include "Dummy.h"
+#include "Scan.h"
 
 CEffectMgr*	CSingleton<CEffectMgr>::m_pInstance;
 
@@ -46,6 +47,10 @@ CEffectObject* CEffectMgr::Add( EFFECT_TYPE eType, CPlayer* pOwner )
 	{
 	case EFFECT_DUMMY:
 		pEffectObject = CDummy::Create( m_pDevice, pOwner );
+		CRenderer::GetInstance()->Add_RenderGroup_Alpha( pEffectObject );
+		break;
+	case EFFECT_SCAN:
+		pEffectObject = CScan::Create( m_pDevice, pOwner );
 		CRenderer::GetInstance()->Add_RenderGroup_Alpha( pEffectObject );
 		break;
 	default:

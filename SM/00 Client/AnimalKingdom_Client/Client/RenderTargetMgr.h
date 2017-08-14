@@ -30,6 +30,7 @@ public:
 	void				ResizeRenderTarget( const WORD& wSizeX, const WORD& wSizeY );
 	void				ClearRenderTargetView( ID3D11DeviceContext* pContext );
 	void				ClearDepthStencilView( ID3D11DeviceContext* pContext );
+	void				ClearStencilView( ID3D11DeviceContext* pContext );
 	void				ClearShadowDepthStencilView( ID3D11DeviceContext* pContext );
 	void				ResetRenderTargetView( ID3D11DeviceContext* pContext );
 	void				SetRenderTargetView( ID3D11DeviceContext* pContext, UINT iSelect, UINT iCnt );
