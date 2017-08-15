@@ -20,7 +20,7 @@ class CStateMachine;
 
 #define		BAT_DAMAGE			17.f
 #define		BAT_SPEED			100.0f
-#define		BAT_COOLTIME		15.0f
+#define		BAT_COOLTIME		20.0f
 #define		BAT_JUMP			160.f
 
 class Player {

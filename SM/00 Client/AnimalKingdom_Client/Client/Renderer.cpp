@@ -280,7 +280,7 @@ void CRenderer::Render_Alpha( ID3D11DeviceContext* pContext )
 
 	if( !m_listAlphaObject.empty() )
 	{
-		m_listAlphaObject.sort( []( CGameObject*& a, CGameObject*& b ) { return a->GetWorld()->_34 > b->GetWorld()->_34; } );
+		// m_listAlphaObject.sort( []( CGameObject*& a, CGameObject*& b ) { return a->GetWorld()->_34 > b->GetWorld()->_34; } );
 
 		auto Advance_iter = m_listAlphaObject.begin();
 

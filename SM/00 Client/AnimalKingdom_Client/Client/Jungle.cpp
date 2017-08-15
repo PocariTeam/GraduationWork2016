@@ -252,6 +252,7 @@ int CJungle::Update( const float& fTimeDelta )
 	auto focus_iter = m_mapPlayer.find( m_iFocus );
 	if( m_bStart )
 	{
+		Check_PlayerSkill();
 		CPhysics::GetInstance()->Update( fTimeDelta );
 		m_mapPlayer[ m_iPlayerID ]->Check_Key( fTimeDelta );
 		if( focus_iter != m_mapPlayer.end() )
@@ -379,6 +380,25 @@ void CJungle::Check_Key( const float& fTimeDelta )
 	else if( !CInputMgr::GetInstance()->Get_KeyboardState( DIK_RETURN )
 		&& !CInputMgr::GetInstance()->Get_KeyboardState( DIK_SPACE ) )
 		m_bOverlapped = true;
+}
+
+void CJungle::Check_PlayerSkill( void )
+{
+	if( m_bDebug ) return;
+
+	auto player_iter = m_mapPlayer.find( m_iFocus );
+	if( player_iter == m_mapPlayer.end() ) return;
+
+	if( CHARACTER_BAT == player_iter->second->GetCharacterType() )
+	{
+		if( player_iter->second->GetSkillOn() )
+		{
+			( ( CThirdCamera* )m_pCamera )->SetOffset( XMFLOAT3( 0.f, 200.f, -400.f ) );
+			return;
+		}
+	}
+
+	( ( CThirdCamera* )m_pCamera )->SetOffset( XMFLOAT3( 0.f, 100.f, -200.f ) );
 }
 
 void CJungle::Change_CameraDest( void )

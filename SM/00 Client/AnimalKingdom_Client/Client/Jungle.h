@@ -31,6 +31,7 @@ public:
 	void  Sync( UINT id, float hp, XMFLOAT3 vPos, float fRotateY, STATE state, FLOAT canUseSkill);
 	void  NotifyPlayerInfo( PlayerInfo* pPlayerInfo, UINT& dwPlayerCnt );
 	void  Check_Key( const float& fTimeDelta );
+	void  Check_PlayerSkill( void );
 	void  Change_CameraDest( void );
 	virtual void  NotifyGameStart( void );
 	virtual void  NotifyGameFinished();

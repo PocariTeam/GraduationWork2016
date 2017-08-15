@@ -19,7 +19,9 @@ public:
 public:
 	void   SetDestWorldTranspose( XMFLOAT4X4* pWorldTranspose ) { m_pDestWorldTranspose = pWorldTranspose; }
 	void   WinnerEvent();
+	void   SetOffset( XMFLOAT3& vOffset ) { m_vDestOffset = vOffset; }
 private:
+	XMFLOAT3	m_vDestOffset;
 	XMFLOAT4X4*	m_pDestWorldTranspose;
 	XMFLOAT3	m_vOffset;
 	XMFLOAT3	m_vCurrent;

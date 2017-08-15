@@ -9,6 +9,7 @@ CThirdCamera::CThirdCamera()
 	, m_pDestWorldTranspose( nullptr )
 	, m_vOffset( 0.f, 0.f, 0.f )
 	, m_vCurrent( 0.f, 0.f, 0.f )
+	, m_vDestOffset( 0.f, 0.f, 0.f )
 	, m_bWinnerEvent( false )
 {
 }
@@ -21,6 +22,7 @@ HRESULT CThirdCamera::Initialize( ID3D11Device* pDevice, XMFLOAT4X4* pWorldTrans
 {
 	m_pDestWorldTranspose = pWorldTranspose;
 	m_vOffset = vOffset;
+	m_vDestOffset = vOffset;
 	m_vAt = XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 );
 	m_vCurrent = m_vAt;
 	m_vEye = XMFLOAT3( m_vAt.x + m_vOffset.x, m_vAt.y + m_vOffset.y, m_vAt.z + m_vOffset.z );
@@ -63,6 +65,16 @@ int CThirdCamera::Update( const float& fTimeDelta )
 		XMStoreFloat3( &m_vOffset, vOffset );
 	}
 
+	else if( m_vOffset.x != m_vDestOffset.x || m_vOffset.y != m_vDestOffset.y || m_vOffset.z != m_vDestOffset.z )
+	{
+		XMVECTOR	vOffset{ XMLoadFloat3( &m_vOffset ) };
+		XMVECTOR	vDest{ XMLoadFloat3( &m_vDestOffset ) };
+
+		vOffset = XMVectorLerp( vOffset, vDest, fTimeDelta );
+
+		XMStoreFloat3( &m_vOffset, vOffset );
+	}
+	
 	XMVECTOR	vAt{ XMLoadFloat3( &XMFLOAT3( m_pDestWorldTranspose->_14, m_pDestWorldTranspose->_24, m_pDestWorldTranspose->_34 ) ) };
 	XMVECTOR	vCurrent{ XMLoadFloat3( &m_vCurrent ) };
 	XMVECTOR	vEye{ XMLoadFloat3( &m_vOffset ) };

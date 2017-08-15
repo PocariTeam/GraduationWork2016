@@ -456,7 +456,7 @@ void Player::UseSkill()
 		setHp(hp_+ MAX_CHAR_HP*0.2f);
 		break;
 	case CHARACTER::CHARACTER_BAT:
-		skillTime_ = 5.0f; //  박쥐 스킬 지속시간
+		skillTime_ = 7.0f; //  박쥐 스킬 지속시간
 		coolTime_ = BAT_COOLTIME;
 		RoomManager::getInstance().sendUseSkill(roomNum_, session_->getID(), true);
 		break;
