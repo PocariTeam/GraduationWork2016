@@ -89,17 +89,17 @@ void CPlayer::Check_Key( const float& fTimeDelta )
 			eState = STATE_IDLE;
 	}
 
-	// 방어 중일때 방어가 풀리는 조건 체크
-	if( eState == STATE_DEFEND )
-	{
-		m_fDefenceTime += fTimeDelta;
-		if( m_fDefenceTime > 2.f || false == m_pInputMgr->Get_KeyboardState( DIK_A ) )
-		{
-			m_fDefenceTime = 0.f;
-			m_pAnimator->Play();
-			CNetworkMgr::GetInstance()->sendCharacterState(STATE_DEFEND_END);
-		}
-	}
+	//// 방어 중일때 방어가 풀리는 조건 체크
+	//if( eState == STATE_DEFEND )
+	//{
+	//	m_fDefenceTime += fTimeDelta;
+	//	if( m_fDefenceTime > 2.f || false == m_pInputMgr->Get_KeyboardState( DIK_A ) )
+	//	{
+	//		m_fDefenceTime = 0.f;
+	//		m_pAnimator->Play();
+	//		CNetworkMgr::GetInstance()->sendCharacterState(STATE_DEFEND_END);
+	//	}
+	//}
 
 	if( eState != m_pStateMachine->GetCurrentState() )
 		CNetworkMgr::GetInstance()->sendCharacterState( eState );

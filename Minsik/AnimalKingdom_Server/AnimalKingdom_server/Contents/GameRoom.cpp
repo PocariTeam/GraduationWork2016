@@ -659,7 +659,7 @@ void GameRoom::loseCrown(Player *player)
 		break;
 	case CHARACTER_BAT:
 		mtxRotation.rotX( 0 );
-		vOffset = NxVec3(0.f, 9.75f + 2.5f, 5.f);
+		vOffset = NxVec3(0.f, 135.f, 15.f);
 		break;
 	default:
 		SLog(L"undefined character type!");
