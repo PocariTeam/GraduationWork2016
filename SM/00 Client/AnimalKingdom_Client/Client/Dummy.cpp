@@ -61,8 +61,16 @@ int CDummy::Update( const float& fTimeDelta )
 	BOOL bActive{ m_pOwner->GetSkillOn() };
 
 	if( bActive ) {
-		if( m_vOption.w > 0.3f )
-			m_vOption.w -= fTimeDelta;
+		if (m_pOwner->GetID() != CJungle::m_iFocus)
+		{
+			if( m_vOption.w > -0.05f )
+				m_vOption.w -= fTimeDelta * 0.5f;
+		}
+		else
+		{
+			if (m_vOption.w > 0.3f)
+				m_vOption.w -= fTimeDelta * 0.5f;
+		}
 	}
 	else m_vOption.w = 1.f;
 
@@ -73,7 +81,6 @@ void CDummy::Render( ID3D11DeviceContext* pContext )
 {
 	if( m_pOwner->GetSkillOn() )
 	{
-		if( m_pOwner->GetID() != CJungle::m_iFocus ) return;
 		m_pShader->SetConstantBuffer( pContext, *m_pOwner->GetWorld(), m_vOption );
 		m_pShader->Render( pContext );
 		m_pOwner->Render_Dummy( pContext );

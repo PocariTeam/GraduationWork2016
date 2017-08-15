@@ -388,6 +388,8 @@ void CCloth::Render( ID3D11DeviceContext* pContext )
 	if( nullptr == m_pOwner ) return;
 	if( CJungle::m_bFocusIncave != m_pOwner->InCave() )
 		return;
+	if (CHARACTER_BAT == m_pOwner->GetCharacterType())
+		return;
 
 	DWORD dwVTXCnt = *m_tReceiveBuffers.numVerticesPtr;
 	DWORD dwIDXCnt = *m_tReceiveBuffers.numIndicesPtr / 3;
