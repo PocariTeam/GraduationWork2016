@@ -65,9 +65,9 @@ HRESULT CRoom::Initialize( HWND hWnd, ID3D11Device* pDevice )
 	pShader->Add_RenderObject( m_dpBtns[ BTN_BACK ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -1.f, -0.8f, 0.6f, 0.2f ) ) );
 	// pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_NEXT ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( -0.4f, 0.2f, 0.2f, 0.55f ) ) );
 	// pShader->Add_RenderObject( m_dpBtns[ BTN_MAP_PREVIOUS ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Back" ), XMFLOAT4( 0.8f, 0.2f, 0.2f, 0.55f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_CHAMELEON ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Chameleon" ), XMFLOAT4( -0.35f, -0.35f, 0.26f, 0.65f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_MONKEY ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Monkey" ), XMFLOAT4( -0.07f, -0.35f, 0.26f, 0.65f ) ) );
-	pShader->Add_RenderObject( m_dpBtns[ BTN_BAT ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Bat" ), XMFLOAT4( 0.21f, -0.35f, 0.26f, 0.65f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_CHAMELEON ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Chameleon" ), XMFLOAT4( -0.35f, -0.35f, 0.4f, 0.65f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_MONKEY ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Monkey" ), XMFLOAT4( 0.1f, -0.35f, 0.4f, 0.65f ) ) );
+	pShader->Add_RenderObject( m_dpBtns[ BTN_BAT ] = CButton_UI::Create( m_pTextureMgr->Clone( "Texture_Select_Bat" ), XMFLOAT4( 0.55f, -0.35f, 0.4f, 0.65f ) ) );
 	
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( -0.35f, 1.f, 0.45f, 0.8f ) ) );
 	pShader->Add_RenderObject( CNormal_UI::Create( m_pTextureMgr->Clone( "Texture_Slot" ), XMFLOAT4( 0.1f, 1.f, 0.45f, 0.8f ) ) );
