@@ -328,7 +328,7 @@ void Player::powerUp()
 	default:
 		SLog(L"undefined character type!");
 	}
-	damage_ = defaultDamage * 1.4f;
+	damage_ = defaultDamage * 1.3f;
 	speed_ = defaultSpeed * 0.6f;
 	m_fJumpHeight = defaultJump*0.7f;
 }

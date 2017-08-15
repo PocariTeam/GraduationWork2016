@@ -8,17 +8,17 @@ class CStateMachine;
 
 #define		MAX_CHAR_HP			100.f
 
-#define		MONKEY_DAMAGE		12.f
+#define		MONKEY_DAMAGE		16.f
 #define		MONKEY_SPEED		80.0f
-#define		MONKEY_COOLTIME		12.0f
+#define		MONKEY_COOLTIME		17.0f
 #define		MONKEY_JUMP			130.f
 
 #define		CHAMEL_DAMAGE		23.f
 #define		CHAMEL_SPEED		90.0f
-#define		CHAMEL_COOLTIME		20.0f
+#define		CHAMEL_COOLTIME		23.0f
 #define		CHAMEL_JUMP			140.f
 
-#define		BAT_DAMAGE			17.f
+#define		BAT_DAMAGE			20.f
 #define		BAT_SPEED			100.0f
 #define		BAT_COOLTIME		20.0f
 #define		BAT_JUMP			160.f
